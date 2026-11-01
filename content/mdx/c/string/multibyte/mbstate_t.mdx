@@ -1,0 +1,68 @@
+---
+title: "mbstate_t"
+slug: "c/string/multibyte/mbstate_t"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/multibyte/mbstate_t"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;uchar.h&gt;</code></p>
+
+<p class="decl-header">Defined in header <code>&lt;wchar.h&gt;</code></p>
+
+```c
+struct mbstate_t;
+```
+
+<p class="decl-note"><span class="std std-since std-c95">(since C95)</span></p>
+
+<p>The type <code>mbstate_t</code> is a trivial non-array type that can represent any of the conversion states that can occur in an implementation-defined set of supported multibyte character encoding rules. Zero-initialized value of <code>mbstate_t</code> represents the initial conversion state, although other values of <code>mbstate_t</code> may exist that also represent the initial conversion state.</p>
+
+<p>Possible implementation of <code>mbstate_t</code> is a struct type holding an array representing the incomplete multibyte character, an integer counter indicating the number of bytes in the array that have been processed, and a representation of the current shift state.</p>
+
+<p>The following functions should not be called from multiple threads without synchronization with the <code>mbstate_t*</code> argument of a null pointer due to possible data races: <a href="/reference/c/string/multibyte/mbrlen/">mbrlen</a>, <a href="/reference/c/string/multibyte/mbrtowc/">mbrtowc</a>, <a href="/reference/c/string/multibyte/mbsrtowcs/">mbsrtowcs</a>, <a href="/reference/c/string/multibyte/mbtowc/">mbtowc</a>, <a href="/reference/c/string/multibyte/wcrtomb/">wcrtomb</a>, <a href="/reference/c/string/multibyte/wcsrtombs/">wcsrtombs</a>, <a href="/reference/c/string/multibyte/wctomb/">wctomb</a>.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.1/2 Introduction (p: 402)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.1/2 Introduction (p: 348)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/multibyte/mbsinit/">mbsinit</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>checks if the mbstate_t object represents initial shift state   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/multibyte/mbstate_t" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+mbstate_t</td></tr>
+</table></section>

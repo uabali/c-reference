@@ -1,0 +1,52 @@
+[
+  {
+    "slug": "arena",
+    "title": "A bump allocator",
+    "summary": "Parsers and compilers often allocate a pile of small objects that die together. An arena is a cursor into one buffer.",
+    "compiler": "clang",
+    "options": "-std=c23 -Wall -Wextra",
+    "godboltCompiler": "cclang1810",
+    "body": [
+      "arena_alloc rounds the cursor up to the alignment, then hands back the next slice. Failure is a null pointer, the same contract as malloc, but free is 'throw the whole arena away'.",
+      "This one uses a caller-provided buffer so the example has no hidden allocation. A production arena would grow with malloc."
+    ],
+    "code": "#include <stddef.h>\n#include <stdint.h>\n#include <stdio.h>\n#include <string.h>\ntypedef struct {\n    unsigned char *base;\n    size_t used;\n    size_t cap;\n} Arena;\nvoid *arena_alloc(Arena *arena, size_t size, size_t align) {\n    size_t pad = (align - (arena->used % align)) % align;\n    if (size > arena->cap || pad > arena->cap - size || arena->used > arena->cap - size - pad) return nullptr;\n    arena->used += pad;\n    void *pointer = arena->base + arena->used;\n    arena->used += size;\n    return pointer;\n}\nint main(void) {\n    unsigned char storage[64];\n    Arena arena = { storage, 0, sizeof storage };\n    int *number = arena_alloc(&arena, sizeof *number, alignof(int));\n    char *text = arena_alloc(&arena, 4, 1);\n    if (!number || !text) return 1;\n    *number = 7;\n    memcpy(text, \"ok\", 3);\n    printf(\"%d %s\\n\", *number, text);\n    return *number == 7 && text[0] == 'o' ? 0 : 1;\n}\n"
+  },
+  {
+    "slug": "builder",
+    "title": "A growing string",
+    "summary": "Appending to a C string means owning the capacity, not calling strcat in a loop.",
+    "compiler": "clang",
+    "options": "-std=c23 -Wall -Wextra",
+    "godboltCompiler": "cclang1810",
+    "body": [
+      "The buffer doubles when it is too small. realloc may move it, so the struct holds the only pointer.",
+      "On failure the old contents stay valid, because the realloc result goes through a temporary."
+    ],
+    "code": "#include <stdint.h>\n#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\ntypedef struct { char *data; size_t len; size_t cap; } Buf;\nint buf_append(Buf *buf, const char *text) {\n    size_t extra = strlen(text);\n    if (buf->len + extra + 1 < buf->len) return -1;\n    if (buf->len + extra + 1 > buf->cap) {\n        size_t cap = buf->cap ? buf->cap : 16;\n        while (buf->len + extra + 1 > cap) {\n            if (cap > (SIZE_MAX / 2)) return -1;\n            cap *= 2;\n        }\n        char *next = realloc(buf->data, cap);\n        if (!next) return -1;\n        buf->data = next;\n        buf->cap = cap;\n    }\n    memcpy(buf->data + buf->len, text, extra + 1);\n    buf->len += extra;\n    return 0;\n}\nint main(void) {\n    Buf buf = {0};\n    if (buf_append(&buf, \"hello\") || buf_append(&buf, \" world\")) return 1;\n    printf(\"%s\\n\", buf.data);\n    int ok = strcmp(buf.data, \"hello world\") == 0;\n    free(buf.data);\n    return ok ? 0 : 1;\n}\n"
+  },
+  {
+    "slug": "callbacks",
+    "title": "A table of commands",
+    "summary": "A name and a function pointer is the smallest plugin table. qsort is the same idea with one slot.",
+    "compiler": "clang",
+    "options": "-std=c23 -Wall -Wextra",
+    "godboltCompiler": "cclang1810",
+    "body": [
+      "The table is an array of structs. Lookup is a loop. The call is through the pointer, so adding a command does not add a branch at the call site."
+    ],
+    "code": "#include <stdio.h>\n#include <string.h>\ntypedef int (*Command)(int);\nint increment(int value) { return value + 1; }\nint twice(int value) { return value * 2; }\nint main(void) {\n    struct { const char *name; Command fn; } table[] = {\n        { \"inc\", increment },\n        { \"dbl\", twice },\n    };\n    Command chosen = nullptr;\n    for (size_t i = 0; i < sizeof table / sizeof table[0]; i++) {\n        if (strcmp(table[i].name, \"dbl\") == 0) chosen = table[i].fn;\n    }\n    if (!chosen) return 1;\n    printf(\"%d\\n\", chosen(4));\n    return chosen(4) == 8 ? 0 : 1;\n}\n"
+  },
+  {
+    "slug": "config",
+    "title": "One line of configuration",
+    "summary": "A lot of C tools start as a loop over key=value lines. The hazards are the missing equals sign and the buffer length.",
+    "compiler": "clang",
+    "options": "-std=c23 -Wall -Wextra",
+    "godboltCompiler": "cclang1810",
+    "body": [
+      "parse refuses a missing separator and a key that does not fit. The value is copied with snprintf so it is terminated even when the source is longer than the destination."
+    ],
+    "code": "#include <stdio.h>\n#include <string.h>\nint parse_line(const char *line, char *key, size_t key_cap, char *value, size_t value_cap) {\n    const char *eq = strchr(line, '=');\n    if (!eq || eq == line || key_cap == 0 || value_cap == 0) return -1;\n    size_t key_len = (size_t)(eq - line);\n    if (key_len >= key_cap) return -1;\n    memcpy(key, line, key_len);\n    key[key_len] = '\\0';\n    snprintf(value, value_cap, \"%s\", eq + 1);\n    return 0;\n}\nint main(void) {\n    char key[32], value[32];\n    if (parse_line(\"port=8080\", key, sizeof key, value, sizeof value)) return 1;\n    if (parse_line(\"=nope\", key, sizeof key, value, sizeof value) == 0) return 1;\n    printf(\"%s %s\\n\", key, value);\n    return strcmp(key, \"port\") == 0 && strcmp(value, \"8080\") == 0 ? 0 : 1;\n}\n"
+  }
+]

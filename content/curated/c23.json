@@ -1,0 +1,106 @@
+{
+  "intro": "C23 is ISO/IEC 9899:2024. The rows below are the changes that show up in ordinary code. A feature being in the standard does not mean the compiler on a given machine has it: this site's examples were checked with Clang 18 (-std=c23) and GCC 13 (-std=c2x). Clang 18 here has nullptr, typeof, _BitInt, [[attributes]], stdckdint.h, and #elifdef. It does not have constexpr or #embed. GCC 13 has constexpr objects and not stdckdint.h or #embed.",
+  "rows": [
+    {
+      "feature": "Null pointer",
+      "older": "NULL, which may be 0 or (void *)0",
+      "c23": "nullptr of type nullptr_t",
+      "page": "c/language/nullptr"
+    },
+    {
+      "feature": "Attributes",
+      "older": "Vendor syntax such as __attribute__",
+      "c23": "[[nodiscard]], [[maybe_unused]], [[deprecated]], [[fallthrough]], [[noreturn]]",
+      "page": "c/language/attributes"
+    },
+    {
+      "feature": "Checked calls",
+      "older": "A comment that says check the return",
+      "c23": "[[nodiscard]], optionally with a message",
+      "page": "c/language/attributes/nodiscard"
+    },
+    {
+      "feature": "Constants",
+      "older": "Macros or enum",
+      "c23": "constexpr objects, usable as array lengths",
+      "page": "c/language/constexpr"
+    },
+    {
+      "feature": "Type of an expression",
+      "older": "GCC typeof as an extension",
+      "c23": "typeof and typeof_unqual",
+      "page": "c/language/typeof"
+    },
+    {
+      "feature": "Exact integer width",
+      "older": "stdint.h typedefs, when the platform has them",
+      "c23": "_BitInt(N), no integer promotions",
+      "page": "c/language/arithmetic_types"
+    },
+    {
+      "feature": "Binary include",
+      "older": "A generated .c array",
+      "c23": "#embed",
+      "page": "c/preprocessor/embed"
+    },
+    {
+      "feature": "Overflow",
+      "older": "Hand-written checks, easy to get wrong for signed types",
+      "c23": "ckd_add, ckd_sub, ckd_mul in stdckdint.h",
+      "page": "c/numeric/ckd_add"
+    },
+    {
+      "feature": "Empty parameter list",
+      "older": "int f(); meant unspecified arguments",
+      "c23": "int f(); means int f(void);",
+      "page": "c/language/function_declaration"
+    },
+    {
+      "feature": "Zero a struct",
+      "older": "= {0}",
+      "c23": "= {} empty initializer",
+      "page": "c/language/initialization"
+    },
+    {
+      "feature": "bool",
+      "older": "stdbool.h and the _Bool keyword",
+      "c23": "bool, true, and false are keywords",
+      "page": "c/language/arithmetic_types"
+    },
+    {
+      "feature": "Alignment",
+      "older": "_Alignas and _Alignof",
+      "c23": "alignas and alignof",
+      "page": "c/language/alignof"
+    },
+    {
+      "feature": "Assertions",
+      "older": "_Static_assert(expr, msg)",
+      "c23": "static_assert, message optional",
+      "page": "c/language/static_assert"
+    },
+    {
+      "feature": "Duplicating a string",
+      "older": "A POSIX strdup, not ISO",
+      "c23": "strdup and strndup in string.h",
+      "page": "c/string/byte"
+    },
+    {
+      "feature": "Preprocessor",
+      "older": "Nested #else / #ifdef",
+      "c23": "#elifdef, #elifndef, #embed, __VA_OPT__",
+      "page": "c/preprocessor"
+    },
+    {
+      "feature": "auto",
+      "older": "A storage-class leftover",
+      "c23": "auto as type inference for an object with an initializer",
+      "page": "c/language/declarations"
+    }
+  ],
+  "notes": [
+    "The comparison is about the language, not about one compiler's extensions. GCC accepted many of these as extensions before the standard did.",
+    "constexpr functions and #embed are real C23, and they are the two items this project's compilers cannot check yet.",
+    "Annex K bounds-checked functions (strcpy_s and the rest) remain optional. Do not treat them as the C23 story."
+  ]
+}

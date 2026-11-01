@@ -1,0 +1,129 @@
+---
+title: "isblank"
+slug: "c/string/byte/isblank"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/byte/isblank"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;ctype.h&gt;</code></p>
+
+```c
+int isblank( int ch );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>Checks if the given character is a blank character in the current C locale. In the default C locale, only space (<code>0x20</code>) and horizontal tab (<code>0x09</code>) are classified as blank.</p>
+
+<p>The behavior is undefined if the value of <code>ch</code> is not representable as <code>unsigned char</code> and is not equal to <code>EOF</code>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>ch</td><td>-</td><td>character to classify</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Non-zero value if the character is a blank character, zero otherwise.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <ctype.h>
+#include <limits.h>
+ 
+int main(void)
+{
+    for (int ndx=0; ndx<=UCHAR_MAX; ndx++)
+        if (isblank(ndx)) printf("0x%02x\n", ndx);
+}
+```
+
+<p>Output:</p>
+
+```text
+0x09
+0x20
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.4.1.3 The isblank function (p: 145)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.4.1.3 The isblank function (p: 201)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.4.1.3 The isblank function (p: 182)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/wide/iswblank/">iswblank</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if a wide character is a blank character   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/byte/isblank" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+isblank</td></tr>
+</table>
+
+<table class="ref-table">
+<tr><th colspan="3">ASCII values</th><th rowspan="2">characters</th><th rowspan="2"><p><a href="/reference/c/string/byte/iscntrl/"><code>iscntrl</code></a>  <a href="/reference/c/string/wide/iswcntrl/"><code>iswcntrl</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isprint/"><code>isprint</code></a>  <a href="/reference/c/string/wide/iswprint/"><code>iswprint</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isspace/"><code>isspace</code></a>  <a href="/reference/c/string/wide/iswspace/"><code>iswspace</code></a></p></th><th rowspan="2"><p><strong><code>isblank</code></strong>  <a href="/reference/c/string/wide/iswblank/"><code>iswblank</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isgraph/"><code>isgraph</code></a>  <a href="/reference/c/string/wide/iswgraph/"><code>iswgraph</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/ispunct/"><code>ispunct</code></a>   <a href="/reference/c/string/wide/iswpunct/"><code>iswpunct</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isalnum/"><code>isalnum</code></a>   <a href="/reference/c/string/wide/iswalnum/"><code>iswalnum</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isalpha/"><code>isalpha</code></a>   <a href="/reference/c/string/wide/iswalpha/"><code>iswalpha</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isupper/"><code>isupper</code></a>  <a href="/reference/c/string/wide/iswupper/"><code>iswupper</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/islower/"><code>islower</code></a>  <a href="/reference/c/string/wide/iswlower/"><code>iswlower</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isdigit/"><code>isdigit</code></a>  <a href="/reference/c/string/wide/iswdigit/"><code>iswdigit</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isxdigit/"><code>isxdigit</code></a>  <a href="/reference/c/string/wide/iswxdigit/"><code>iswxdigit</code></a></p></th></tr>
+<tr><th>decimal</th><th>hexadecimal</th><th>octal</th></tr>
+<tr><td>0–8</td><td><code>\x0</code>–<code>\x8</code></td><td><code>\0</code>–<code>\10</code></td><td>control codes (<code>NUL</code>, etc.)</td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>9</td><td><code>\x9</code></td><td><code>\11</code></td><td>tab (<code>\t</code>)</td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>10–13</td><td><code>\xA</code>–<code>\xD</code></td><td><code>\12</code>–<code>\15</code></td><td>whitespaces (<code>\n</code>, <code>\v</code>, <code>\f</code>, <code>\r</code>)</td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>14–31</td><td><code>\xE</code>–<code>\x1F</code></td><td><code>\16</code>–<code>\37</code></td><td>control codes</td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>32</td><td><code>\x20</code></td><td><code>\40</code></td><td>space</td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>33–47</td><td><code>\x21</code>–<code>\x2F</code></td><td><code>\41</code>–<code>\57</code></td><td><code>!&quot;#$%&amp;&#x27;()*+,-./</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>48–57</td><td><code>\x30</code>–<code>\x39</code></td><td><code>\60</code>–<code>\71</code></td><td><code>0123456789</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td></tr>
+<tr><td>58–64</td><td><code>\x3A</code>–<code>\x40</code></td><td><code>\72</code>–<code>\100</code></td><td><code>:;&lt;=&gt;?@</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>65–70</td><td><code>\x41</code>–<code>\x46</code></td><td><code>\101</code>–<code>\106</code></td><td><code>ABCDEF</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td></tr>
+<tr><td>71–90</td><td><code>\x47</code>–<code>\x5A</code></td><td><code>\107</code>–<code>\132</code></td><td><code>GHIJKLMNOP</code> <code>QRSTUVWXYZ</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>91–96</td><td><code>\x5B</code>–<code>\x60</code></td><td><code>\133</code>–<code>\140</code></td><td><code>[\]^_`</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>97–102</td><td><code>\x61</code>–<code>\x66</code></td><td><code>\141</code>–<code>\146</code></td><td><code>abcdef</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td></tr>
+<tr><td>103–122</td><td><code>\x67</code>–<code>\x7A</code></td><td><code>\147</code>–<code>\172</code></td><td><code>ghijklmnop</code> <code>qrstuvwxyz</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>123–126</td><td><code>\x7B</code>–<code>\x7E</code></td><td><code>\173</code>–<code>\176</code></td><td><code>{|}~</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>127</td><td><code>\x7F</code></td><td><code>\177</code></td><td>backspace character (<code>DEL</code>)</td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+</table>

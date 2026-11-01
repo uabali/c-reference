@@ -1,0 +1,131 @@
+---
+title: "_Alignof (since C11) (deprecated in C23) , alignof (since C23) operator"
+slug: "c/language/_Alignof"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/_Alignof"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Queries the alignment requirement of its operand type.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+_Alignof( type-name )
+alignof( type-name )
+```
+
+<aside class="revision"><p class="rev-mark"><span class="std std-until std-c23">(until C23)</span></p><p>This operator is typically used through the convenience macro <a href="/reference/c/types/"><code>alignof</code></a>, which is provided in the header <a href="/reference/c/types/"><code>&lt;stdalign.h&gt;</code></a></p></aside>
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>Returns the <a href="/reference/c/language/object/#Alignment">alignment requirement</a> of the type <a href="/reference/c/language/compatible_type/#Type_names">named</a> by <em>type-name</em>. If <em>type-name</em> is an array type, the result is the alignment requirement of the array element type. The <em>type-name</em> cannot be function type or an incomplete type.</p>
+
+<p>The result is an integer constant of type <a href="/reference/c/types/size_t/">size_t</a>.</p>
+
+<p>The operand is not evaluated (so external identifiers used in the operand do not have to be defined).</p>
+
+<p>If <em>type-name</em> is a <a href="/reference/c/language/array/">VLA</a> type, its size expression is not evaluated.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The use of <code>_Alignof</code><span class="std std-until std-c23">(until C23)</span><code>alignof</code><span class="std std-since std-c23">(since C23)</span> with expressions is allowed by some C compilers as a non-standard extension.</p>
+
+<h3 id="Keywords">Keywords</h3>
+
+<p><a href="/reference/c/keyword/alignof/"><code>alignof</code></a>, <a href="/reference/c/keyword/_Alignof/"><code>_Alignof</code></a></p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdalign.h>
+#include <stddef.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    printf("Alignment of char = %zu\n", alignof(char));
+    printf("Alignment of max_align_t = %zu\n", alignof(max_align_t));
+    printf("alignof(float[10]) = %zu\n", alignof(float[10]));
+    printf("alignof(struct{char c; int n;}) = %zu\n",
+            alignof(struct {char c; int n;}));
+}
+```
+
+<p>Possible output:</p>
+
+```text
+Alignment of char = 1
+Alignment of max_align_t = 16
+alignof(float[10]) = 4
+alignof(struct{char c; int n;}) = 4
+```
+
+<h3 id="Defect_reports">Defect reports</h3>
+
+<p>The following behavior-changing defect reports were applied retroactively to previously published C standards.</p>
+
+<table class="ref-table">
+<tr><th>DR</th><th>Applied to</th><th>Behavior as published</th><th>Correct behavior</th></tr>
+<tr><td><a href="https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2396.htm#dr_494" rel="noreferrer" target="_blank">DR 494</a></td><td>C11</td><td>whether the size expression in a VLA is evaluated in <code>_Alignof</code> was unspecified</td><td>it is unevaluated</td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.3.4 The sizeof and alignof operators (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.3.4 The sizeof and _Alignof operators (p: 64-65)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.3.4 The sizeof and _Alignof operators (p: 90-91)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/types/max_align_t/">max_align_t</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>a type with alignment requirement as great as any other scalar type   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td><a href="/reference/c/language/alignas/"><code>_Alignas</code></a><span class="std std-until std-c23">(until C23)</span><a href="/reference/c/language/alignas/"><code>alignas</code></a><span class="std std-since std-c23">(since C23)</span></td><td>sets alignment requirements of an object <span class="mark-note">(specifier)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/alignof" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+<code>alignof</code> operator</td></tr>
+</table>

@@ -1,0 +1,149 @@
+---
+title: "toupper"
+slug: "c/string/byte/toupper"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/byte/toupper"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;ctype.h&gt;</code></p>
+
+```c
+int toupper( int ch );
+```
+
+<p>Converts the given character to uppercase according to the character conversion rules defined by the currently installed C locale.</p>
+
+<p>In the default <code>&quot;C&quot;</code> locale, the following lowercase letters <code>abcdefghijklmnopqrstuvwxyz</code> are replaced with respective uppercase letters <code>ABCDEFGHIJKLMNOPQRSTUVWXYZ</code>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>ch</td><td>-</td><td>character to be converted. If the value of <code>ch</code> is not representable as <code>unsigned char</code> and does not equal <code>EOF</code>, the behavior is undefined.</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Uppercase version of <code>ch</code> or unmodified <code>ch</code> if no uppercase version is listed in the current C locale.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <ctype.h>
+#include <limits.h>
+#include <locale.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    // in the default locale:
+    for (unsigned char l = 0, u; l != UCHAR_MAX; ++l)
+        if ((u = toupper(l)) != l)
+            printf("%c%c ", l, u);
+    printf("\n\n");
+ 
+    unsigned char c = '\xb8'; // the character ž in ISO-8859-15
+                              // but ¸ (cedilla) in ISO-8859-1
+    setlocale(LC_ALL, "en_US.iso88591");
+    printf("in iso8859-1, toupper('0x%x') gives 0x%x\n", c, toupper(c));
+    setlocale(LC_ALL, "en_US.iso885915");
+    printf("in iso8859-15, toupper('0x%x') gives 0x%x\n", c, toupper(c));
+}
+```
+
+<p>Possible output:</p>
+
+```text
+aA bB cC dD eE fF gG hH iI jJ kK lL mM nN oO pP qQ rR sS tT uU vV wW xX yY zZ
+ 
+in iso8859-1, toupper('0xb8') gives 0xb8
+in iso8859-15, toupper('0xb8') gives 0xb4
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.4.2.2 The toupper function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.4.2.2 The toupper function (p: 147-148)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.4.2.2 The toupper function (p: 204)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.4.2.2 The toupper function (p: 185)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.3.2.2 The toupper function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/byte/tolower/">tolower</a></td><td>converts a character to lowercase   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/towupper/">towupper</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>converts a wide character to uppercase   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/byte/toupper" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+toupper</td></tr>
+</table>

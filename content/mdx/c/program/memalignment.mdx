@@ -1,0 +1,108 @@
+---
+title: "memalignment"
+slug: "c/program/memalignment"
+category: "program"
+source: "https://en.cppreference.com/w/c/program/memalignment"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdlib.h&gt;</code></p>
+
+```c
+size_t memalignment( const void *p );
+```
+
+<p class="decl-note"><span class="std std-since std-c23">(since C23)</span></p>
+
+<p>Returns the maximum alignment satisfied by the provided address. The return value can be greater than any alignment value supported by the implementation. If <code>p</code> is a null pointer value, <code>0</code> is returned to indicate that the pointer cannot be used to access an object of any type.</p>
+
+<p>If the return value compares is greater than or equal to <code>alignof(T)</code>, the alignment requirement for the type <code>T</code> is satisfied by the pointer.</p>
+
+<p>A <a href="/reference/c/language/conformance/">freestanding implementation</a> needs to provide <code>memalignment</code>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>p</td><td>-</td><td>pointer to query alignment</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>The alignment value of <code>p</code>, or <code>0</code> if <code>p</code> is a null pointer value.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>On common platforms where</p>
+
+<ul>
+<li>
+<p>null pointers are cast to integer</p>
+
+<code>0</code>
+
+<p>,</p>
+</li>
+<li>
+<p>pointer values are directly cast to the numeric values of virtual addresses, and</p>
+</li>
+<li>
+<a href="/reference/c/types/size_t/">size_t</a>
+
+<p>is same as</p>
+
+<a href="/reference/c/types/integer/">uintptr_t</a>
+
+<p>,</p>
+</li>
+</ul>
+
+<p>this function can be implemented as <code>return (size_t)p &amp; -(size_t)p;</code>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main()
+{
+    alignas(128) int i = 0;
+    printf("%zu\n%zu\n", memalignment(nullptr), memalignment(&i));
+}
+```
+
+<p>Possible output:</p>
+
+```text
+0
+128
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.9.1 The memalignment function (p: 374)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/memory/aligned_alloc/">aligned_alloc</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>allocates aligned memory   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/memory/free_aligned_sized/">free_aligned_sized</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>deallocates previously allocated sized and aligned memory   <span class="mark-note">(function)</span></td></tr>
+</table>

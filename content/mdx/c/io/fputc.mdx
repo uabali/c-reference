@@ -1,0 +1,193 @@
+---
+title: "fputc, putc"
+slug: "c/io/fputc"
+category: "io"
+source: "https://en.cppreference.com/w/c/io/fputc"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+```c
+int fputc( int ch, FILE* stream );
+```
+
+```c
+int putc( int ch, FILE* stream );
+```
+
+<p>Writes a character <code>ch</code> to the given output stream <code>stream</code>. <code>putc()</code> may be implemented as a macro and evaluate <code>stream</code> more than once, so the corresponding argument should never be an expression with side effects.</p>
+
+<p>Internally, the character is converted to <code>unsigned char</code> just before being written.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>ch</td><td>-</td><td>character to be written</td></tr>
+<tr><td>stream</td><td>-</td><td>output stream</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>On success, returns the written character.</p>
+
+<p>On failure, returns <a href="/reference/c/io/">EOF</a> and sets the <em>error</em> indicator (see <a href="/reference/c/io/ferror/">ferror()</a>) on <code>stream</code>.</p>
+
+<h3 id="Example">Example</h3>
+
+<p>Shows <code>putc</code> with error checking</p>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(void)
+{
+    int ret_code = 0;
+    for (char c = 'a'; (ret_code != EOF) && (c != 'z'); c++)
+        ret_code = putc(c, stdout);
+ 
+    // Test whether EOF was reached.
+    if (ret_code == EOF && ferror(stdout))
+    {
+        perror("putc()");
+        fprintf(stderr, "putc() failed in file %s at line # %d\n",
+                __FILE__, __LINE__ - 7);
+        exit(EXIT_FAILURE);
+    }
+    putc('\n', stdout);
+ 
+    return EXIT_SUCCESS;
+}
+```
+
+<p>Output:</p>
+
+```text
+abcdefghijklmnopqrstuvwxy
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.7.3 The fputc function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.7.7 The putc function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.7.3 The fputc function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.7.7 The putc function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.7.3 The fputc function (p: 331)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.7.7 The putc function (p: 333)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.7.3 The fputc function (p: 297)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.7.8 The putc function (p: 299)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9.7.3 The fputc function</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9.7.8 The putc function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/putchar/">putchar</a></td><td>writes a character to <a href="/reference/c/io/std_streams/">stdout</a>   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c/fputc" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+fputc, putc</td></tr>
+</table>

@@ -1,0 +1,264 @@
+---
+title: "mbstowcs, mbstowcs_s"
+slug: "c/string/multibyte/mbstowcs"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/multibyte/mbstowcs"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdlib.h&gt;</code></p>
+
+<p class="decl-note">(1)</p>
+
+```c
+size_t mbstowcs( wchar_t          *dst, const char          *src, size_t len)
+```
+
+<p class="decl-note"><span class="std std-until std-c99">(until C99)</span></p>
+
+```c
+size_t mbstowcs( wchar_t *restrict dst, const char *restrict src, size_t len)
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+errno_t mbstowcs_s(size_t *restrict retval, wchar_t *restrict dst,
+                  rsize_t dstsz, const char *restrict src, rsize_t len);
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Converts a multibyte character string from the array whose first element is pointed to by <code>src</code> to its wide character representation. Converted characters are stored in the successive elements of the array pointed to by <code>dst</code>. No more than <code>len</code> wide characters are written to the destination array.</p>
+
+<p class="li-note">Each character is converted as if by a call to <a href="/reference/c/string/multibyte/mbtowc/">mbtowc</a>, except that the mbtowc conversion state is unaffected. The conversion stops if:</p>
+
+<p class="li-note">* The multibyte null character was converted and stored.</p>
+
+<p class="li-note">* An invalid (in the current C locale) multibyte character was encountered.</p>
+
+<p class="li-note">* The next wide character to be stored would exceed <code>len</code>.</p>
+
+<p class="li-note">If <code>src</code> and <code>dst</code> overlap, the behavior is undefined</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Same as (1), except that</p>
+
+<p class="li-note">* conversion is as-if by <a href="/reference/c/string/multibyte/mbrtowc/">mbrtowc</a>, not <a href="/reference/c/string/multibyte/mbtowc/">mbtowc</a></p>
+
+<p class="li-note">* the function returns its result as an out-parameter <code>retval</code></p>
+
+<p class="li-note">* if no null character was written to <code>dst</code> after <code>len</code> wide characters were written, then <code>L&#x27;\0&#x27;</code> is stored in <code>dst[len]</code>, which means len+1 total wide characters are written</p>
+
+<p class="li-note">* if <code>dst</code> is a null pointer, the number of wide characters that would be produced is stored in <code>*retval</code></p>
+
+<p class="li-note">* the function clobbers the destination array from the terminating null and until <code>dstsz</code></p>
+
+<p class="li-note">* If <code>src</code> and <code>dst</code> overlap, the behavior is unspecified.</p>
+
+<div class="li-note"><p>* the following errors are detected at runtime and call the currently installed</p>
+
+<a href="/reference/c/error/set_constraint_handler_s/">constraint handler</a>
+
+<p>function:</p>
+
+<dl>
+<dd><ul>
+<li>
+<code>retval</code>
+
+<p>or</p>
+
+<code>src</code>
+
+<p>is a null pointer</p>
+</li>
+<li>
+<code>dstsz</code>
+
+<p>or</p>
+
+<code>len</code>
+
+<p>is greater than</p>
+
+RSIZE_MAX/sizeof(wchar_t)
+
+<p>(unless</p>
+
+<code>dst</code>
+
+<p>is null)</p>
+</li>
+<li>
+<code>dstsz</code>
+
+<p>is not zero (unless</p>
+
+<code>dst</code>
+
+<p>is null)</p>
+</li>
+<li>
+<p>There is no null character in the first</p>
+
+<code>dstsz</code>
+
+<p>multibyte characters in the</p>
+
+<code>src</code>
+
+<p>array and</p>
+
+<code>len</code>
+
+<p>is greater than</p>
+
+<code>dstsz</code>
+
+<p>(unless</p>
+
+<code>dst</code>
+
+<p>is null)</p>
+</li>
+</ul></dd>
+<dd><p>As with all bounds-checked functions,</p>
+
+<code>mbstowcs_s</code>
+
+<p>is only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<a href="/reference/c/program/"><code>&lt;stdlib.h&gt;</code></a>
+
+<p>.</p></dd>
+</dl></div>
+
+<h3 id="Notes">Notes</h3>
+
+<p>In most implementations, <code>mbstowcs</code> updates a global static object of type <a href="/reference/c/string/multibyte/mbstate_t/">mbstate_t</a> as it processes through the string, and cannot be called simultaneously by two threads, <a href="/reference/c/string/multibyte/mbsrtowcs/">mbsrtowcs</a> should be used in such cases.</p>
+
+<p>POSIX specifies a common extension: if <code>dst</code> is a null pointer, this function returns the number of wide characters that would be written to <code>dst</code>, if converted. Similar behavior is standard for <code>mbstowcs_s</code> and for <a href="/reference/c/string/multibyte/mbsrtowcs/">mbsrtowcs</a>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>dst</td><td>-</td><td>pointer to wide character array where the wide string will be stored</td></tr>
+<tr><td>src</td><td>-</td><td>pointer to the first element of a null-terminated multibyte string to convert</td></tr>
+<tr><td>len</td><td>-</td><td>number of wide characters available in the array pointed to by dst</td></tr>
+<tr><td>dstsz</td><td>-</td><td>max number of wide characters that will be written (size of the <code>dst</code> array)</td></tr>
+<tr><td>retval</td><td>-</td><td>pointer to a size_t object where the result will be stored</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  On success, returns the number of wide characters, excluding the terminating <code>L&#x27;\0&#x27;</code>, written to the destination array. On conversion error (if invalid multibyte character was encountered), returns <code>(size_t)-1</code>.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  zero on success (in which case the number of wide characters excluding terminating zero that were, or would be written to <code>dst</code>, is stored in <code>*retval</code>), non-zero on error. In case of a runtime constraint violation, stores <code>(size_t)-1</code> in <code>*retval</code> (unless <code>retval</code> is null) and sets <code>dst[0]</code> to <code>L&#x27;\0&#x27;</code> (unless <code>dst</code> is null or <code>dstmax</code> is zero or greater than RSIZE_MAX)</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <locale.h>
+#include <stdlib.h>
+#include <wchar.h>
+ 
+int main(void)
+{
+    setlocale(LC_ALL, "en_US.utf8");
+    const char* mbstr = u8"z\u00df\u6c34\U0001F34C"; // or u8"zß水🍌"
+    wchar_t wstr[5];
+    mbstowcs(wstr, mbstr, 5);
+    wprintf(L"MB string: %s\n", mbstr);
+    wprintf(L"Wide string: %ls\n", wstr);
+}
+```
+
+<p>Output:</p>
+
+```text
+MB string: zß水🍌
+Wide string: zß水🍌
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.8.1 The mbstowcs function (p: 359)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.6.5.1 The mbstowcs_s function (p: 611-612)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20.8.1 The mbstowcs function (p: 323)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.10.8.1 The mbstowcs function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/multibyte/mbsrtowcs/">mbsrtowcs<br />mbsrtowcs_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>converts a narrow multibyte character string to wide string, given state   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/wcstombs/">wcstombs<br />wcstombs_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>converts a wide string to narrow multibyte character string   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/multibyte/mbstowcs" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+mbstowcs</td></tr>
+</table></section></section>

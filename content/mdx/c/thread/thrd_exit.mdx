@@ -1,0 +1,82 @@
+---
+title: "thrd_exit"
+slug: "c/thread/thrd_exit"
+category: "thread"
+source: "https://en.cppreference.com/w/c/thread/thrd_exit"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;threads.h&gt;</code></p>
+
+```c
+_Noreturn void thrd_exit( int res );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span>  <span class="std std-until std-c23">(until C23)</span></p>
+
+```c
+[[noreturn]] void thrd_exit( int res );
+```
+
+<p class="decl-note"><span class="std std-since std-c23">(since C23)</span></p>
+
+<p>First, for every thread-specific storage key which was created with a non-null destructor and for which the associated value is non-null (see <a href="/reference/c/thread/tss_create/">tss_create</a>), <code>thrd_exit</code> sets the value associated with the key to <code>NULL</code> and then invokes the destructor with the previous value of the key. The order in which the destructors are invoked is unspecified.</p>
+
+<p>If, after this, there remain keys with both non-null destructors and values (e.g. if a destructor executed <a href="/reference/c/thread/tss_set/">tss_set</a>), the process is repeated up to <a href="/reference/c/thread/TSS_DTOR_ITERATIONS/">TSS_DTOR_ITERATIONS</a> times.</p>
+
+<p>Finally, the <code>thrd_exit</code> function terminates execution of the calling thread and sets its result code to <code>res</code>.</p>
+
+<p>If the last thread in the program is terminated with <code>thrd_exit</code>, the entire program terminates as if by calling <a href="/reference/c/program/exit/">exit</a> with <a href="/reference/c/program/EXIT_status/">EXIT_SUCCESS</a> as the argument (so the functions registered by <a href="/reference/c/program/atexit/">atexit</a> are executed in the context of that last thread)</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>res</td><td>-</td><td>the result value to return</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>(none)</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.5.5 The thrd_exit function (p: 280)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.5.5 The thrd_exit function (p: 384)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/thread/thrd_join/">thrd_join</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>blocks until a thread terminates   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/thrd_detach/">thrd_detach</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>detaches a thread   <span class="mark-note">(function)</span></td></tr>
+</table>

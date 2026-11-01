@@ -1,0 +1,72 @@
+---
+title: "atomic_signal_fence"
+slug: "c/atomic/atomic_signal_fence"
+category: "atomic"
+source: "https://en.cppreference.com/w/c/atomic/atomic_signal_fence"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdatomic.h&gt;</code></p>
+
+```c
+void atomic_signal_fence( memory_order order );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Establishes memory synchronization ordering of non-atomic and relaxed atomic accesses, as instructed by <code>order</code>, between a thread and a signal handler executed on the same thread. This is equivalent to <a href="/reference/c/atomic/atomic_thread_fence/">atomic_thread_fence</a>, except no CPU instructions for memory ordering are issued. Only reordering of the instructions by the compiler is suppressed as <code>order</code> instructs. For example, a fence with release semantics prevents reads or writes from being moved past subsequent writes and a fence with acquire semantics prevents reads or writes from being moved ahead of preceding reads.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>order</td><td>-</td><td>the memory ordering executed by this fence</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>(none)</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17.4.2 The atomic_signal_fence function (p: 204-205)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17.4.2 The atomic_signal_fence function (p: 279)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/atomic/atomic_thread_fence/">atomic_thread_fence</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>generic memory order-dependent fence synchronization primitive   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/atomic/atomic_signal_fence" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+atomic_signal_fence</td></tr>
+</table>

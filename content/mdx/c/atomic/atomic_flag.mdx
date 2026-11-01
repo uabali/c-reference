@@ -1,0 +1,106 @@
+---
+title: "atomic_flag"
+slug: "c/atomic/atomic_flag"
+category: "atomic"
+source: "https://en.cppreference.com/w/c/atomic/atomic_flag"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdatomic.h&gt;</code></p>
+
+```c
+typedef struct /* unspecified */ atomic_flag;
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p><code>atomic_flag</code> is an atomic boolean type. Unlike other atomic types, it is guaranteed to be lock-free. Unlike <a href="/reference/c/thread/#Atomic_operations"><code>atomic_bool</code></a>, <code>atomic_flag</code> does not provide load or store operations.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17.1/5 atomic_flag (p: 293)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17.8 Atomic flag type and operations (p: 302-303)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17.1/4 atomic_flag (p: 200)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17.8 Atomic flag type and operations (p: 208-209)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17.1/4 atomic_flag (p: 273)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17.8 Atomic flag type and operations (p: 285-286)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/atomic/ATOMIC_FLAG_INIT/">ATOMIC_FLAG_INIT</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>initializes a new <code>atomic_flag</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td><a href="/reference/c/atomic/atomic_flag_test_and_set/">atomic_flag_test_and_set<br />atomic_flag_test_and_set_explicit</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>sets an atomic_flag to true and returns the old value   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/atomic/atomic_flag_clear/">atomic_flag_clear<br />atomic_flag_clear_explicit</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>sets an atomic_flag to false   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/atomic/atomic_flag" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+atomic_flag</td></tr>
+</table>

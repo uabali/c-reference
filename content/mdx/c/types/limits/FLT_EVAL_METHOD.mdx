@@ -1,0 +1,50 @@
+---
+title: "FLT_EVAL_METHOD"
+slug: "c/types/limits/FLT_EVAL_METHOD"
+category: "types"
+source: "https://en.cppreference.com/w/c/types/limits/FLT_EVAL_METHOD"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;float.h&gt;</code></p>
+
+```c
+#define FLT_EVAL_METHOD /* implementation-defined */
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>Specifies range and precision of floating-point values obtained from floating-point constants and from all operations (operators, implicit conversions of operands) except assignment, cast, and library function call.</p>
+
+<table class="ref-table ref-dsc">
+<tr><td>Value</td><td>Explanation</td></tr>
+<tr><td>negative values except <code>-1</code></td><td>implementation-defined behavior</td></tr>
+<tr><td><code>-1</code></td><td>the default precision is not known</td></tr>
+<tr><td><code>0</code></td><td>all operations and constants evaluate in the range and precision of the type used. Additionally, <code>float_t</code> and <code>double_t</code> are equivalent to <code>float</code> and <code>double</code> respectively</td></tr>
+<tr><td><code>1</code></td><td>all operations and constants evaluate in the range and precision of <code>double</code>. Additionally, both <code>float_t</code> and <code>double_t</code> are equivalent to <code>double</code></td></tr>
+<tr><td><code>2</code></td><td>all operations and constants evaluate in the range and precision of <code>long double</code>. Additionally, both <code>float_t</code> and <code>double_t</code> are equivalent to <code>long double</code></td></tr>
+</table>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Regardless of the value of <code>FLT_EVAL_METHOD</code>, any floating-point expression may be <em>contracted</em>, that is, calculated as if all intermediate results have infinite range and precision (unless <a href="/reference/c/preprocessor/impl/"><code>#pragma</code></a> <code>STDC FP_CONTRACT</code> is off).</p>
+
+<p>Cast and assignment strip away any extraneous range and precision: this models the action of storing a value from an extended-precision FPU register into a standard-sized memory location.</p>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/float_t/">float_t</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>most efficient floating-point type at least as wide as <code>float</code>   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/float_t/">double_t</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>most efficient floating-point type at least as wide as <code>double</code>   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/types/climits/FLT_EVAL_METHOD" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+FLT_EVAL_METHOD</td></tr>
+</table>

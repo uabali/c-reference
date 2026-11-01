@@ -1,0 +1,244 @@
+---
+title: "nan, nanf, nanl, nand32, nand64, nand128"
+slug: "c/numeric/math/nan.2"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/nan.2"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+float       nanf( const char* arg );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+double      nan( const char* arg );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+long double nanl( const char* arg );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+_Decimal32  nand32( const char* arg );
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+_Decimal64  nand64( const char* arg );
+```
+
+<p class="decl-note">(5) <span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+_Decimal128 nand128( const char* arg );
+```
+
+<p class="decl-note">(6) <span class="std std-since std-c23">(since C23)</span></p>
+
+<p>Converts the implementation-defined character string <code>arg</code> into the corresponding quiet NaN value, as if by calling the appropriate parsing function <code>strtoX</code>, as follows:</p>
+
+<ul>
+<li>
+<p>The call</p>
+
+<code>nan(&quot;n-char-sequence&quot;)</code>
+
+<p>, where</p>
+
+<em>n-char-sequence</em>
+
+<p>is a sequence of digits, Latin letters, and underscores, is equivalent to the call</p>
+
+<code>/*strtoX*/(&quot;NAN(n-char-sequence)&quot;, (char**)NULL);</code>
+
+<p>.</p>
+</li>
+<li>
+<p>The call</p>
+
+<code>nan(&quot;&quot;)</code>
+
+<p>is equivalent to the call</p>
+
+<code>/*strtoX*/(&quot;NAN()&quot;, (char**)NULL);</code>
+
+<p>.</p>
+</li>
+<li>
+<p>The call</p>
+
+<code>nan(&quot;string&quot;)</code>
+
+<p>, where</p>
+
+<code>string</code>
+
+<p>is neither an</p>
+
+<em>n-char-sequence</em>
+
+<p>nor an empty string, is equivalent to the call</p>
+
+<code>/*strtoX*/(&quot;NAN&quot;, (char**)NULL);</code>
+
+<p>.</p>
+</li>
+</ul>
+
+<p class="li-note"><span class="li-num">1)</span>  The parsing function is <a href="/reference/c/string/byte/strtof/">strtof</a>.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  The parsing function is <a href="/reference/c/string/byte/strtof/">strtod</a>.</p>
+
+<p class="li-note"><span class="li-num">3)</span>  The parsing function is <a href="/reference/c/string/byte/strtof/">strtold</a>.</p>
+
+<p class="li-note"><span class="li-num">4)</span>  The parsing function is strtod32.</p>
+
+<p class="li-note"><span class="li-num">5)</span>  The parsing function is strtod64.</p>
+
+<p class="li-note"><span class="li-num">6)</span>  The parsing function is strtod128.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>The functions returning decimal floating point values are declared if and only the implementation predefines <code>__STDC_IEC_60559_DFP__</code> (i.e. the implementation supports decimal floating point numbers).</p></aside>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>arg</td><td>-</td><td>narrow character string identifying the contents of a NaN</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>The quiet NaN value that corresponds to the identifying string <code>arg</code> or zero if the implementation does not support quiet NaNs.</p>
+
+<p>If the implementation supports IEEE floating-point arithmetic (IEC 60559), it also supports quiet NaNs.</p>
+
+<h3 id="Error_handling">Error handling</h3>
+
+<p>This function is not subject to any of the error conditions specified in <a href="/reference/c/numeric/math/math_errhandling/"><code>math_errhandling</code></a>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <math.h>
+#include <stdint.h>
+#include <inttypes.h>
+#include <string.h>
+ 
+int main(void)
+{
+    double f1 = nan("1");
+    uint64_t f1n; memcpy(&f1n, &f1, sizeof f1);
+    printf("nan(\"1\")   = %f (%" PRIx64 ")\n", f1, f1n);
+ 
+    double f2 = nan("2");
+    uint64_t f2n; memcpy(&f2n, &f2, sizeof f2);
+    printf("nan(\"2\")   = %f (%" PRIx64 ")\n", f2, f2n);
+ 
+    double f3 = nan("0xF");
+    uint64_t f3n; memcpy(&f3n, &f3, sizeof f3);
+    printf("nan(\"0xF\") = %f (%" PRIx64 ")\n", f3, f3n);
+}
+```
+
+<p>Possible output:</p>
+
+```text
+nan("1")   = nan (7ff8000000000001)
+nan("2")   = nan (7ff8000000000002)
+nan("0xF") = nan (7ff800000000000f)
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.11.2 The nan functions (p: 186-187)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.8.2 The nan functions (p: 386)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.11.2 The nan functions (p: 256)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.8.2 The nan functions (p: 529)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.11.2 The nan functions (p: 237)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.9.8.2 The fabs functions (p: 465)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/isnan/">isnan</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if the given number is NaN   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/NAN/">NAN</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>evaluates to a quiet NaN of type <code>float</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/nan.2" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+nanf, nan, nanl</td></tr>
+</table>

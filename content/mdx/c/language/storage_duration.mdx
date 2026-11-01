@@ -1,0 +1,485 @@
+---
+title: "Storage-class specifiers"
+slug: "c/language/storage_duration"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/storage_duration"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Specify <em>storage duration</em> and <em>linkage</em> of objects and functions:</p>
+
+<dl>
+<dd><ul>
+<li>
+<code>auto</code>
+
+<p>- automatic duration and no linkage</p>
+</li>
+<li>
+<code>register</code>
+
+<p>- automatic duration and no linkage; address of this variable cannot be taken</p>
+</li>
+<li>
+<code>static</code>
+
+<p>- static duration and internal linkage (unless at block scope)</p>
+</li>
+<li>
+<code>extern</code>
+
+<p>- static duration and external linkage (unless already declared internal)</p>
+</li>
+</ul></dd>
+</dl>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><dl>
+<dd><ul>
+<li>
+<code>_Thread_local</code><span class="std std-until std-c23">(until C23)</span>
+
+<code>thread_local</code><span class="std std-since std-c23">(since C23)</span>
+
+<p>- thread storage duration</p>
+</li>
+</ul></dd>
+</dl></aside>
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>Storage-class specifiers appear in <a href="/reference/c/language/declarations/">declarations</a> and <a href="/reference/c/language/compound_literal/">compound literal</a> expressions<span class="std std-since std-c23">(since C23)</span>. At most one specifier may be used, except that <code>_Thread_local</code><span class="std std-until std-c23">(until C23)</span><code>thread_local</code><span class="std std-since std-c23">(since C23)</span> may be combined with <code>static</code> or <code>extern</code> to adjust linkage<span class="std std-since std-c11">(since C11)</span>. The storage-class specifiers determine two independent properties of the names they declare: <em>storage duration</em> and <em>linkage</em>.</p>
+
+<p class="li-note"><span class="li-num">1)</span>  The <code>auto</code> specifier is only allowed for objects declared at block scope (except function parameter lists). It indicates automatic storage duration and no linkage, which are the defaults for these kinds of declarations.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  The <code>register</code> specifier is only allowed for objects declared at block scope, including function parameter lists. It indicates automatic storage duration and no linkage (which is the default for these kinds of declarations), but additionally hints the optimizer to store the value of this variable in a CPU register if possible. Regardless of whether this optimization takes place or not, variables declared <code>register</code> cannot be used as arguments to the <a href="/reference/c/language/operator_member_access/">address-of operator</a>, cannot use <a href="/reference/c/language/alignas/"><code>_Alignas</code></a><span class="std std-until std-c23">(until C23)</span><a href="/reference/c/language/alignas/"><code>alignas</code></a><span class="std std-since std-c23">(since C23)</span><span class="std std-since std-c11">(since C11)</span>, and <code>register</code> arrays are not convertible to pointers.</p>
+
+<p class="li-note"><span class="li-num">3)</span>  The <code>static</code> specifier specifies both static storage duration (unless combined with <code>_Thread_local</code>)<span class="std std-since std-c11">(since C11)</span> and internal linkage (unless used at block scope). It can be used with functions at file scope and with variables at both file and block scope, but not in function parameter lists.</p>
+
+<p class="li-note"><span class="li-num">4)</span>  The <code>extern</code> specifier specifies static storage duration (unless combined with <code>_Thread_local</code><span class="std std-until std-c23">(until C23)</span><code>thread_local</code><span class="std std-since std-c23">(since C23)</span>)<span class="std std-since std-c11">(since C11)</span> and external linkage. It can be used with function and object declarations in both file and block scope (excluding function parameter lists). If <code>extern</code> appears on a redeclaration of an identifier that was already declared with internal linkage, the linkage remains internal. Otherwise (if the prior declaration was external, no-linkage, or is not in scope), the linkage is external.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><p class="li-note"><span class="li-num">5)</span>  <code>_Thread_local</code><span class="std std-until std-c23">(until C23)</span><code>thread_local</code><span class="std std-since std-c23">(since C23)</span> indicates <em>thread storage duration</em>. It cannot be used with function declarations. If it is used on a declaration of an object, it must be present on every declaration of the same object. If it is used on a block-scope declaration, it must be combined with either <code>static</code> or <code>extern</code> to decide linkage.</p></aside>
+
+<p>If no storage-class specifier is provided, the defaults are:</p>
+
+<dl>
+<dd><code>extern</code>
+
+<p>for all functions</p></dd>
+<dd><code>extern</code>
+
+<p>for objects at file scope</p></dd>
+<dd><code>auto</code>
+
+<p>for objects at block scope</p></dd>
+</dl>
+
+<p>For any struct or union declared with a storage-class specifier, the storage duration (but not linkage) applies to their members, recursively.</p>
+
+<p>Function declarations at block scope can use <code>extern</code> or none at all. Function declarations at file scope can use <code>extern</code> or <code>static</code>.</p>
+
+<p>Function parameters cannot use any storage-class specifiers other than <code>register</code>. Note that <code>static</code> has special meaning in function parameters of array type.</p>
+
+<h3 id="Storage_duration">Storage duration</h3>
+
+<p>Every <a href="/reference/c/language/object/">object</a> has a property called <em>storage duration</em>, which limits the object <a href="/reference/c/language/lifetime/">lifetime</a>. There are four kinds of storage duration in C:</p>
+
+<dl>
+<dd><ul>
+<li>
+<em><strong>automatic</strong></em>
+
+<p>storage duration. The storage is allocated when the</p>
+
+<a href="/reference/c/language/statements/#Compound_statements">block</a>
+
+<p>in which the object was declared is entered and deallocated when it is exited by any means (</p>
+
+<a href="/reference/c/language/goto/">goto</a>
+
+<p>,</p>
+
+<a href="/reference/c/language/return/">return</a>
+
+<p>, reaching the end).</p>
+
+One exception is the <a href="/reference/c/language/array/#Variable-length_arrays">VLAs</a>; their storage is allocated when the declaration is executed, not on block entry, and deallocated when the declaration goes out of scope, not when the block is exited<span class="std std-since std-c99">(since C99)</span>
+
+<p>. If the block is entered recursively, a new allocation is performed for every recursion level. All function parameters and non-</p>
+
+<code>static</code>
+
+<p>block-scope objects have this storage duration,</p>
+
+as well as <a href="/reference/c/language/compound_literal/">compound literals</a> used at block scope<span class="std std-until std-c23">(until C23)</span>
+</li>
+<li>
+<em><strong>static</strong></em>
+
+<p>storage duration. The storage duration is the entire execution of the program, and the value stored in the object is initialized only once, prior to</p>
+
+<a href="/reference/c/language/main_function/">main function</a>
+
+<p>. All objects declared</p>
+
+<code>static</code>
+
+<p>and all objects with either internal or external linkage</p>
+
+that aren't declared <code>_Thread_local</code><span class="std std-until std-c23">(until C23)</span><code>thread_local</code><span class="std std-since std-c23">(since C23)</span><span class="std std-since std-c11">(since C11)</span>
+
+<p>have this storage duration.</p>
+</li>
+</ul></dd>
+</dl>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><dl>
+<dd><ul>
+<li>
+<em><strong>thread</strong></em>
+
+<p>storage duration. The storage duration is the entire execution of the thread in which it was created, and the value stored in the object is initialized when the thread is started. Each thread has its own, distinct, object. If the thread that executes the expression that accesses this object is not the thread that executed its initialization, the behavior is implementation-defined. All objects declared</p>
+
+<code>_Thread_local</code><span class="std std-until std-c23">(until C23)</span>
+
+<code>thread_local</code><span class="std std-since std-c23">(since C23)</span>
+
+<p>have this storage duration.</p>
+</li>
+</ul></dd>
+</dl></aside>
+
+<dl>
+<dd><ul>
+<li>
+<em><strong>allocated</strong></em>
+
+<p>storage duration. The storage is allocated and deallocated on request, using</p>
+
+<a href="/reference/c/memory/">dynamic memory allocation</a>
+
+<p>functions.</p>
+</li>
+</ul></dd>
+</dl>
+
+<h4 id="Linkage">Linkage</h4>
+
+<p>Linkage refers to the ability of an identifier (variable or function) to be referred to in other scopes. If a variable or function with the same identifier is declared in several scopes, but cannot be referred to from all of them, then several instances of the variable are generated. The following linkages are recognized:</p>
+
+<dl>
+<dd><ul>
+<li>
+<em><strong>no linkage</strong></em>
+
+<p>. The variable or function can be referred to only from the scope it is in (block scope). All block scope variables that are not declared</p>
+
+<code>extern</code>
+
+<p>have this linkage, as well as all function parameters and all identifiers that aren't functions or variables.</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<em><strong>internal linkage</strong></em>
+
+<p>. The variable or function can be referred to from all scopes in the current translation unit. All file scope variables which are declared</p>
+
+<code>static</code>
+
+or <code>constexpr</code><span class="std std-since std-c23">(since C23)</span>
+
+<p>have this linkage, and all file scope functions declared</p>
+
+<code>static</code>
+
+<p>(static function declarations are only allowed at file scope).</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<em><strong>external linkage</strong></em>
+
+<p>. The variable or function can be referred to from any other translation units in the entire program. All file scope variables which are not declared</p>
+
+<code>static</code>
+
+or <code>constexpr</code><span class="std std-since std-c23">(since C23)</span>
+
+<p>have this linkage, all file scope function declarations which are not declared</p>
+
+<code>static</code>
+
+<p>, all block scope function declarations, and, additionally, all variables or functions declared</p>
+
+<code>extern</code>
+
+<p>have this linkage unless a prior declaration with internal linkage is visible at that point.</p>
+</li>
+</ul></dd>
+</dl>
+
+<p>If the same identifier appears with both internal and external linkage in the same translation unit, the behavior is undefined. This is possible when <a href="/reference/c/language/extern/">tentative definitions</a> are used.</p>
+
+<h4 id="Linkage_and_libraries">Linkage and libraries</h4>
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: should this be a separate top-level entry in c/language under Miscellaneous?</td></tr>
+</table>
+
+<p>Declarations with external linkage are commonly made available in header files so that all translation units that <a href="/reference/c/preprocessor/include/">#include</a> the file may refer to the same identifier that are defined elsewhere.</p>
+
+<p>Any declaration with internal linkage that appears in a header file results in a separate and distinct object in each translation unit that includes that file.</p>
+
+<aside class="revision"><p>Library interface, header file "flib.h":</p>
+
+```c
+#ifndef FLIB_H
+#define FLIB_H
+void f(void);              // function declaration with external linkage
+extern int state;          // variable declaration with external linkage
+static const int size = 5; // definition of a read-only variable with internal linkage
+enum { MAX = 10 };         // constant definition
+inline int sum (int a, int b) { return a + b; } // inline function definition
+#endif // FLIB_H
+```
+
+<p>Library implementation, source file "flib.c":</p>
+
+```c
+#include "flib.h"
+ 
+static void local_f(int s) {} // definition with internal linkage (only used in this file)
+static int local_state;       // definition with internal linkage (only used in this file)
+ 
+int state;                       // definition with external linkage (used by main.c)
+void f(void) { local_f(state); } // definition with external linkage (used by main.c)
+```
+
+<p>Application code, source file "main.c":</p>
+
+```c
+#include "flib.h"
+ 
+int main(void)
+{
+    int x[MAX] = {size}; // uses the constant and the read-only variable
+    state = 7;           // modifies state in flib.c
+    f();                 // calls f() in flib.c
+}
+```</aside>
+
+<h3 id="Keywords">Keywords</h3>
+
+<p><a href="/reference/c/keyword/auto/"><code>auto</code></a>, <a href="/reference/c/keyword/register/"><code>register</code></a>, <a href="/reference/c/keyword/static/"><code>static</code></a>, <a href="/reference/c/keyword/extern/"><code>extern</code></a>, <a href="/reference/c/keyword/_Thread_local/"><code>_Thread_local</code></a> <a href="/reference/c/keyword/thread_local/"><code>thread_local</code></a></p>
+
+<h3 id="Notes">Notes</h3>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-until std-c23">(until C23)</span></p><p>The keyword <code>_Thread_local</code> is usually used through the convenience macro <a href="/reference/c/thread/thread_local/">thread_local</a>, defined in the header <a href="/reference/c/thread/"><code>&lt;threads.h&gt;</code></a>.</p></aside>
+
+<p>The <a href="/reference/c/language/typedef/"><code>typedef</code></a> and <a href="/reference/c/language/constexpr/"><code>constexpr</code></a><span class="std std-since std-c23">(since C23)</span> specifiers are formally listed as storage-class specifiers in the C language grammar, but do not specify storage.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>The auto specifier is also used for type inference.</p></aside>
+
+<p>Names at file scope that are <code>const</code> and not <code>extern</code> have external linkage in C (as the default for all file-scope declarations), but internal linkage in C++.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+ 
+// static storage duration
+int A;
+ 
+int main(void)
+{
+    printf("&A = %p\n", (void*)&A);
+ 
+    // automatic storage duration
+    int A = 1;   // hides global A
+    printf("&A = %p\n", (void*)&A);
+ 
+    // allocated storage duration
+    int* ptr_1 = malloc(sizeof(int));   // start allocated storage duration
+    printf("address of int in allocated memory = %p\n", (void*)ptr_1);
+    free(ptr_1);                        // stop allocated storage duration
+}
+```
+
+<p>Possible output:</p>
+
+```text
+&A = 0x600ae4
+&A = 0x7ffefb064f5c
+address of int in allocated memory = 0x1f28c30
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.2 Linkages of identifiers (p: 35-36)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.4 Storage durations of objects (p: 36-37)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.1 Storage-class specifiers (p: 97-100)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.2 Linkages of identifiers (p: 29-30)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.4 Storage durations of objects (p: 30)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.1 Storage-class specifiers (p: 79)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.2 Linkages of identifiers (p: 36-37)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.4 Storage durations of objects (p: 38-39)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.1 Storage-class specifiers (p: 109-110)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.2 Linkages of identifiers (p: 30-31)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.4 Storage durations of objects (p: 32)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.1 Storage-class specifiers (p: 98-99)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.1.2.2 Linkages of identifiers</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.1.2.4 Storage durations of objects</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.5.1 Storage-class specifiers</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/storage_duration" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Storage class specifiers</td></tr>
+</table>

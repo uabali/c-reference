@@ -1,0 +1,102 @@
+---
+title: "mtx_timedlock"
+slug: "c/thread/mtx_timedlock"
+category: "thread"
+source: "https://en.cppreference.com/w/c/thread/mtx_timedlock"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;threads.h&gt;</code></p>
+
+```c
+int mtx_timedlock( mtx_t *restrict mutex,
+                   const struct timespec *restrict time_point );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Blocks the current thread until the mutex pointed to by <code>mutex</code> is locked or until the <code>TIME_UTC</code> based absolute calendar time point pointed to by <code>time_point</code> has been reached.</p>
+
+<p>Since this function takes an absolute time, if a duration is required, the calendar time point must be calculated manually.</p>
+
+<p>The behavior is undefined if the current thread has already locked the mutex and the mutex is not recursive.</p>
+
+<p>The behavior is undefined if the mutex does not support timeout.</p>
+
+<p>Prior calls to <a href="/reference/c/thread/mtx_unlock/">mtx_unlock</a> on the same mutex <em>synchronize-with</em> this operation (if this operation succeeds), and all lock/unlock operations on any given mutex form a single total order (similar to the modification order of an atomic)</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>mutex</td><td>-</td><td>pointer to the mutex to lock</td></tr>
+<tr><td>time_point</td><td>-</td><td>pointer to the absolute calendar time until which to wait for the timeout</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p><a href="/reference/c/thread/thrd_errors/">thrd_success</a> if successful, <code>thrd_timedout</code> if the timeout time has been reached before the mutex is locked, <a href="/reference/c/thread/thrd_errors/">thrd_error</a> if an error occurs.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.4.4 The mtx_timedlock function (p: 278)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.4.4 The mtx_timedlock function (p: 381-382)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/chrono/timespec/">timespec</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>time in seconds and nanoseconds  <span class="mark-note">(struct)</span></td></tr>
+<tr><td><a href="/reference/c/thread/mtx_lock/">mtx_lock</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>blocks until locks a mutex   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/mtx_trylock/">mtx_trylock</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>locks a mutex or returns without blocking if already locked   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/mtx_unlock/">mtx_unlock</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>unlocks a mutex   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/timed_mutex/try_lock_until" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+timed_mutex::try_lock_until</td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/recursive_timed_mutex/try_lock_until" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+recursive_timed_mutex::try_lock_until</td></tr>
+</table>
+
+<h3 id="External_links">External links</h3>
+
+<table class="ref-table">
+<tr><td><a href="https://www.gnu.org/software/libc/manual/html_node/ISO-C-Mutexes.html" rel="noreferrer" target="_blank">GNU GCC Libc Manual: ISO-C-Mutexes</a></td></tr>
+</table>

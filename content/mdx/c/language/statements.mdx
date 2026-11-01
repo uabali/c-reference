@@ -1,0 +1,254 @@
+---
+title: "Statements"
+slug: "c/language/statements"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/statements"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Statements are fragments of the C program that are executed in sequence. The body of any function is a compound statement, which, in turn is a sequence of statements and declarations:</p>
+
+```c
+int main(void)
+{ // start of a compound statement
+    int n = 1; // declaration (not a statement)
+    n = n+1; // expression statement
+    printf("n = %d\n", n); // expression statement
+    return 0; // return statement
+} // end of compound statement, end of function body
+```
+
+<p>There are five types of statements:</p>
+
+<p class="li-note"><span class="li-num">1)</span>  <a href="/reference/c/language/statements/#Compound_statements">compound statements</a></p>
+
+<p class="li-note"><span class="li-num">2)</span>  <a href="/reference/c/language/statements/#Expression_statements">expression statements</a></p>
+
+<p class="li-note"><span class="li-num">3)</span>  <a href="/reference/c/language/statements/#Selection_statements">selection statements</a></p>
+
+<p class="li-note"><span class="li-num">4)</span>  <a href="/reference/c/language/statements/#Iteration_statements">iteration statements</a></p>
+
+<p class="li-note"><span class="li-num">5)</span>  <a href="/reference/c/language/statements/#Jump_statements">jump statements</a></p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>An <a href="/reference/c/language/attributes/">attribute specifier sequence</a> (<em>attr-spec-seq</em>) can be applied to an unlabeled statement, in which case (except for an expression statement) the attributes are applied to the respective statement.</p></aside>
+
+<h3 id="Labels">Labels</h3>
+
+<p>Any statement can be <em>labeled</em>, by providing a name followed by a colon before the statement itself.</p>
+
+```text
+attr-spec-seq(optional)(since C23) identifier :
+attr-spec-seq(optional)(since C23) case constant-expression :
+attr-spec-seq(optional)(since C23) default :
+```
+
+<p class="li-note"><span class="li-num">1)</span>  Target for <a href="/reference/c/language/goto/">goto</a>.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Case label in a <a href="/reference/c/language/switch/">switch</a> statement.</p>
+
+<p class="li-note"><span class="li-num">3)</span>  Default label in a <a href="/reference/c/language/switch/">switch</a> statement.</p>
+
+<p>Any statement (but not a declaration) may be preceded by any number of <em>labels</em>, each of which declares <em>identifier</em> to be a label name, which must be unique within the enclosing function (in other words, label names have <a href="/reference/c/language/scope/">function scope</a>).</p>
+
+<p>Label declaration has no effect on its own, does not alter the flow of control, or modify the behavior of the statement that follows in any way.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-until std-c23">(until C23)</span></p><p>A label shall be followed by a statement.</p></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>A label can appear without its following statement. If a label appears alone in a block, it behaves as if it is followed by a <a href="/reference/c/language/statements/#Expression_statements">null statement</a>.</p>
+
+<p>The optional <a href="/reference/c/language/attributes/"><em>attr-spec-seq</em></a> is applied to the label.</p></aside>
+
+<h3 id="Compound_statements">Compound statements</h3>
+
+<p>A compound statement, or <em>block</em>, is a brace-enclosed sequence of statements and declarations.</p>
+
+```text
+{ statement | declaration...(optional) }
+attr-spec-seq(optional) { unlabeled-statement | label | declaration...(optional) }
+```
+
+<p>The compound statement allows a set of declarations and statements to be grouped into one unit that can be used anywhere a single statement is expected (for example, in an <a href="/reference/c/language/if/">if</a> statement or an iteration statement):</p>
+
+```c
+if (expr) // start of if-statement
+{ // start of block
+  int n = 1; // declaration
+  printf("%d\n", n); // expression statement
+} // end of block, end of if-statement
+```
+
+<p>Each compound statement introduces its own <a href="/reference/c/language/scope/">block scope</a>.</p>
+
+<p>The initializers of the variables with automatic <a href="/reference/c/language/storage_duration/">storage duration</a> declared inside a block and the VLA declarators are executed when flow of control passes over these declarations in order, as if they were statements:</p>
+
+```c
+int main(void)
+{ // start of block
+  { // start of block
+       puts("hello"); // expression statement
+       int n = printf("abc\n"); // declaration, prints "abc", stores 4 in n
+       int a[n*printf("1\n")]; // declaration, prints "1", allocates 8*sizeof(int)
+       printf("%zu\n", sizeof(a)); // expression statement
+  } // end of block, scope of n and a ends
+  int n = 7; // n can be reused
+}
+```
+
+<h3 id="Expression_statements">Expression statements</h3>
+
+<p>An expression followed by a semicolon is a statement.</p>
+
+```text
+expression(optional) ;
+attr-spec-seq expression ;
+```
+
+<p>Most statements in a typical C program are expression statements, such as assignments or function calls.</p>
+
+<p>An expression statement without an expression is called a <em>null statement</em>. It is often used to provide an empty body to a <a href="/reference/c/language/for/">for</a> or <a href="/reference/c/language/while/">while</a> loop. It can also be used to carry a label in the end of a compound statement or before a declaration:</p>
+
+```c
+puts("hello"); // expression statement
+char *s;
+while (*s++ != '\0')
+    ; // null statement
+```
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>The optional <a href="/reference/c/language/attributes/"><em>attr-spec-seq</em></a> is applied to the expression.</p>
+
+<p>An <em>attr-spec-seq</em> followed by <code>;</code> does not form an expression statement. It forms an <a href="/reference/c/language/declarations/">attribute declaration</a> instead.</p></aside>
+
+<h3 id="Selection_statements">Selection statements</h3>
+
+<p>The selection statements choose between one of several statements depending on the value of an expression.</p>
+
+```text
+attr-spec-seq(optional)(since C23) if ( expression ) statement
+attr-spec-seq(optional)(since C23) if ( expression ) statement else statement
+attr-spec-seq(optional)(since C23) switch ( expression ) statement
+```
+
+<p class="li-note"><span class="li-num">1)</span>  <a href="/reference/c/language/if/">if</a> statement</p>
+
+<p class="li-note"><span class="li-num">2)</span>  <a href="/reference/c/language/if/">if</a> statement with an else clause</p>
+
+<p class="li-note"><span class="li-num">3)</span>  <a href="/reference/c/language/switch/">switch</a> statement</p>
+
+<h3 id="Iteration_statements">Iteration statements</h3>
+
+<p>The iteration statements repeatedly execute a statement.</p>
+
+```text
+attr-spec-seq(optional)(since C23) while ( expression ) statement
+attr-spec-seq(optional)(since C23) do statement while ( expression ) ;
+attr-spec-seq(optional)(since C23) for ( init-clause ; expression(optional) ; expression(optional) ) statement
+```
+
+<p class="li-note"><span class="li-num">1)</span>  <a href="/reference/c/language/while/">while</a> loop</p>
+
+<p class="li-note"><span class="li-num">2)</span>  <a href="/reference/c/language/do/">do-while</a> loop</p>
+
+<p class="li-note"><span class="li-num">3)</span>  <a href="/reference/c/language/for/">for</a> loop</p>
+
+<h3 id="Jump_statements">Jump statements</h3>
+
+<p>The jump statements unconditionally transfer flow control.</p>
+
+```text
+attr-spec-seq(optional)(since C23) break ;
+attr-spec-seq(optional)(since C23) continue ;
+attr-spec-seq(optional)(since C23) return expression(optional) ;
+attr-spec-seq(optional)(since C23) goto identifier ;
+```
+
+<p class="li-note"><span class="li-num">1)</span>  <a href="/reference/c/language/break/">break</a> statement</p>
+
+<p class="li-note"><span class="li-num">2)</span>  <a href="/reference/c/language/continue/">continue</a> statement</p>
+
+<p class="li-note"><span class="li-num">3)</span>  <a href="/reference/c/language/return/">return</a> statement with an optional expression</p>
+
+<p class="li-note"><span class="li-num">4)</span>  <a href="/reference/c/language/goto/">goto</a> statement</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.8 Statements and blocks (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.8 Statements and blocks (p: 106-112)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.8 Statements and blocks (p: 146-154)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.8 Statements and blocks (p: 131-139)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.6 STATEMENTS</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/statements" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Statements</td></tr>
+</table>

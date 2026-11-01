@@ -1,0 +1,106 @@
+---
+title: "thrd_sleep"
+slug: "c/thread/thrd_sleep"
+category: "thread"
+source: "https://en.cppreference.com/w/c/thread/thrd_sleep"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;threads.h&gt;</code></p>
+
+```c
+int thrd_sleep( const struct timespec* duration,
+                struct timespec* remaining );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Blocks the execution of the current thread for <em>at least</em> until the TIME_UTC based duration pointed to by <code>duration</code> has elapsed.</p>
+
+<p>The sleep may resume earlier if a <a href="/reference/c/program/signal/">signal</a> that is not ignored is received. In such case, if <code>remaining</code> is not <a href="/reference/c/types/NULL/">NULL</a>, the remaining time duration is stored into the object pointed to by <code>remaining</code>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>duration</td><td>-</td><td>pointer to the duration to sleep for</td></tr>
+<tr><td>remaining</td><td>-</td><td>pointer to the object to put the remaining time on interruption. May be <a href="/reference/c/types/NULL/">NULL</a>, in which case it is ignored</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p><code>0</code> on successful sleep, <code>-1</code> if a signal occurred, other negative value if an error occurred.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p><code>duration</code> and <code>remaining</code> may point at the same object, which simplifies re-running the function after a signal.</p>
+
+<p>The actual sleep time may be longer than requested because it is rounded up to the timer granularity and because of scheduling and context switching overhead.</p>
+
+<p>The POSIX equivalent of this function is <a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/nanosleep.html" rel="noreferrer" target="_blank"><code>nanosleep</code></a>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <threads.h>
+#include <time.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    printf("Time: %s", ctime(&(time_t){time(NULL)}));
+    thrd_sleep(&(struct timespec){.tv_sec=1}, NULL); // sleep 1 sec
+    printf("Time: %s", ctime(&(time_t){time(NULL)}));
+}
+```
+
+<p>Output:</p>
+
+```text
+Time: Mon Feb  2 16:18:41 2015
+Time: Mon Feb  2 16:18:42 2015
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.5.7 The thrd_sleep function (p: 281)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.5.7 The thrd_sleep function (p: 385)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/thread/thrd_yield/">thrd_yield</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>yields the current time slice   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/sleep_for" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+sleep_for</td></tr>
+</table>

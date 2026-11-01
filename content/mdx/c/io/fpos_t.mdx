@@ -1,0 +1,124 @@
+---
+title: "fpos_t"
+slug: "c/io/fpos_t"
+category: "io"
+source: "https://en.cppreference.com/w/c/io/fpos_t"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+```c
+typedef /* implementation-defined */ fpos_t;
+```
+
+<p><code>fpos_t</code> is a non-array complete object type, can be used to store (by <a href="/reference/c/io/fgetpos/">fgetpos</a>) and restore (by <a href="/reference/c/io/fsetpos/">fsetpos</a>) the position and multibyte parser state (if any) for a C stream.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c95">(since C95)</span></p><p>The multibyte parser state of a wide-oriented C stream is represented by a <a href="/reference/c/string/multibyte/mbstate_t/">mbstate_t</a> object, whose value is stored as part of the value of a <code>fpos_t</code> object by <a href="/reference/c/io/fgetpos/">fgetpos</a>.</p></aside>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.1 Introduction (p: 217-218)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.2 Streams (p: 218-219)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.1 Introduction (p: 296-298)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.2 Streams (p: 298-299)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.1 Introduction (p: 262-264)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.2 Streams (p: 264-265)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9.1 Introduction</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9.2 Streams</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/fgetpos/">fgetpos</a></td><td>gets the file position indicator   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fsetpos/">fsetpos</a></td><td>moves the file position indicator to a specific location in a file   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/mbstate_t/">mbstate_t</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>conversion state information necessary to iterate multibyte character strings   <span class="mark-note">(class)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c/fpos_t" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+fpos_t</td></tr>
+</table>

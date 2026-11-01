@@ -1,0 +1,175 @@
+---
+title: "wcspbrk"
+slug: "c/string/wide/wcspbrk"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/wide/wcspbrk"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;wchar.h&gt;</code></p>
+
+```c
+wchar_t *wcspbrk( const wchar_t *dest, const wchar_t *str );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c95">(since C95)</span></p>
+
+```c
+/*QWchar_t*/ *wcspbrk( /*QWchar_t*/ *dest, const wchar_t *str );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c23">(since C23)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Finds the first character in wide string pointed to by <code>dest</code>, that is also in wide string pointed to by <code>str</code>.</p>
+
+<div class="li-note"><span class="li-num">2)</span>
+
+<p>Type-generic function equivalent to</p>
+
+(1)
+
+<p>. Let</p>
+
+<code>T</code>
+
+<p>be an unqualified wide character object type.</p>
+
+<dl>
+<dd><ul>
+<li>
+<p>If</p>
+
+<code>dest</code>
+
+<p>is of type</p>
+
+<code>const T*</code>
+
+<p>, the return type is</p>
+
+<code>const wchar_t*</code>
+
+<p>.</p>
+</li>
+<li>
+<p>Otherwise, if</p>
+
+<code>dest</code>
+
+<p>is of type</p>
+
+<code>T*</code>
+
+<p>, the return type is</p>
+
+<code>wchar_t*</code>
+
+<p>.</p>
+</li>
+<li>
+<p>Otherwise, the behavior is undefined.</p>
+</li>
+</ul></dd>
+</dl>
+
+<p>If a macro definition of each of these generic functions is suppressed to access an actual function (e.g. if</p>
+
+<code>(wcspbrk)</code>
+
+<p>or a function pointer is used), the actual function declaration</p>
+
+(1)
+
+<p>becomes visible.</p></div>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>dest</td><td>-</td><td>pointer to the null-terminated wide string to be analyzed</td></tr>
+<tr><td>src</td><td>-</td><td>pointer to the null-terminated wide string that contains the characters to search for</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Pointer to the first character in <code>dest</code>, that is also in <code>str</code>, or a null pointer if no such character exists.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The name stands for "wide character string pointer break", because it returns a pointer to the first of the separator ("break") characters.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <wchar.h>
+ 
+int main(void)
+{
+    const wchar_t* str = L"Hello world, friend of mine!";
+    const wchar_t* sep = L" ,!";
+ 
+    unsigned int cnt = 0;
+    do {
+       str = wcspbrk(str, sep); // find separator
+       if (str) str += wcsspn(str, sep); // skip separator
+       ++cnt; // increment word count
+    } while (str && *str);
+ 
+    wprintf(L"There are %u words.\n", cnt);
+}
+```
+
+<p>Output:</p>
+
+```text
+There are 5 words.
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.4.5.3 The wcspbrk function (p: 436)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.4.5.3 The wcspbrk function (p: 382)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/wide/wcscspn/">wcscspn</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>returns the length of the maximum initial segment that consists   of only the wide chars <em>not</em> found in another wide string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcschr/">wcschr</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>finds the first occurrence of a wide character in a wide string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strpbrk/">strpbrk</a></td><td>finds the first location of any character in one string, in another string   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/wide/wcspbrk" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+wcspbrk</td></tr>
+</table></section>

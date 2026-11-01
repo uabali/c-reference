@@ -1,0 +1,465 @@
+---
+title: "Complex number arithmetic"
+slug: "c/numeric/complex"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/complex"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><p>If the macro constant <code>__STDC_NO_COMPLEX__</code> is defined by the implementation, the complex types, the header <strong><code>&lt;complex.h&gt;</code></strong> and all of the names listed here are not provided.</p></aside>
+
+<p>The C programming language, as of C99, supports complex number math with the three built-in types <code>double _Complex</code>, <code>float _Complex</code>, and <code>long double _Complex</code> (see <a href="/reference/c/keyword/_Complex/"><code>_Complex</code></a>). When the header <strong><code>&lt;complex.h&gt;</code></strong> is included, the three complex number types are also accessible as <code>double complex</code>, <code>float complex</code>, <code>long double complex</code>.</p>
+
+<p>In addition to the complex types, the three imaginary types may be supported: <code>double _Imaginary</code>, <code>float _Imaginary</code>, and <code>long double _Imaginary</code> (see <a href="/reference/c/keyword/_Imaginary/"><code>_Imaginary</code></a>). When the header <strong><code>&lt;complex.h&gt;</code></strong> is included, the three imaginary types are also accessible as <code>double imaginary</code>, <code>float imaginary</code>, and <code>long double imaginary</code>.</p>
+
+<p>Standard arithmetic operators <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code> can be used with real, complex, and imaginary types in any combination.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span> <span class="std std-until std-c11">(until C11)</span></p><p>A compiler that defines <code>__STDC_IEC_559_COMPLEX__</code> is recommended, but not required to support imaginary numbers. POSIX recommends checking if the macro <a href="/reference/c/numeric/complex/Imaginary_I/">_Imaginary_I</a> is defined to identify imaginary number support.</p></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><p>Imaginary numbers are supported if <code>__STDC_IEC_559_COMPLEX__</code> or <code>__STDC_IEC_60559_COMPLEX__</code><span class="std std-since std-c23">(since C23)</span> is defined.</p></aside>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;complex.h&gt;</code></td></tr>
+<tr><td colspan="2">Types</td></tr>
+<tr><td><a href="/reference/c/numeric/complex/imaginary/">imaginary</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>imaginary type macro   <span class="mark-note">(keyword macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/complex/">complex</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>complex type macro   <span class="mark-note">(keyword macro)</span></td></tr>
+<tr><td colspan="2">The imaginary constant</td></tr>
+<tr><td><a href="/reference/c/numeric/complex/Imaginary_I/">_Imaginary_I</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>the imaginary unit constant i   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/Complex_I/">_Complex_I</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>the complex unit constant i   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/I/">I</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>the complex or imaginary unit constant i   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2">Manipulation</td></tr>
+<tr><td><a href="/reference/c/numeric/complex/CMPLX/">CMPLX<br />CMPLXF<br />CMPLXL</a>
+
+<span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>constructs a complex number from real and imaginary parts   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/creal/">creal<br />crealf<br />creall</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the real part of a complex number   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/cimag/">cimag<br />cimagf<br />cimagl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the imaginary part a complex number   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/cabs/">cabs<br />cabsf<br />cabsl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the magnitude of a complex number   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/carg/">carg<br />cargf<br />cargl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the phase angle of a complex number   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/conj/">conj<br />conjf<br />conjl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex conjugate   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/cproj/">cproj<br />cprojf<br />cprojl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the projection on Riemann sphere   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Exponential functions</td></tr>
+<tr><td><a href="/reference/c/numeric/complex/cexp/">cexp<br />cexpf<br />cexpl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex base-e exponential   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/clog/">clog<br />clogf<br />clogl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex natural logarithm   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Power functions</td></tr>
+<tr><td><a href="/reference/c/numeric/complex/cpow/">cpow<br />cpowf<br />cpowl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex power function   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/csqrt/">csqrt<br />csqrtf<br />csqrtl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex square root   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Trigonometric functions</td></tr>
+<tr><td><a href="/reference/c/numeric/complex/csin/">csin<br />csinf<br />csinl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex sine   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/ccos/">ccos<br />ccosf<br />ccosl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex cosine   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/ctan/">ctan<br />ctanf<br />ctanl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex tangent   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/casin/">casin<br />casinf<br />casinl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex arc sine   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/cacos/">cacos<br />cacosf<br />cacosl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex arc cosine   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/catan/">catan<br />catanf<br />catanl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex arc tangent   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Hyperbolic functions</td></tr>
+<tr><td><a href="/reference/c/numeric/complex/csinh/">csinh<br />csinhf<br />csinhl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex hyperbolic sine   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/ccosh/">ccosh<br />ccoshf<br />ccoshl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex hyperbolic cosine   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/ctanh/">ctanh<br />ctanhf<br />ctanhl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex hyperbolic tangent   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/casinh/">casinh<br />casinhf<br />casinhl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex arc hyperbolic sine   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/cacosh/">cacosh<br />cacoshf<br />cacoshl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex arc hyperbolic cosine   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/catanh/">catanh<br />catanhf<br />catanhl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex arc hyperbolic tangent   <span class="mark-note">(function)</span></td></tr>
+</table>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The following function names are potentially<span class="std std-since std-c23">(since C23)</span> reserved for future addition to <strong><code>&lt;complex.h&gt;</code></strong> and are not available for use in the programs that include that header: cerf, cerfc, cexp2, cexpm1, clog10, clog1p, clog2, clgamma, ctgamma, csinpi, ccospi, ctanpi, casinpi, cacospi, catanpi, ccompoundn, cpown, cpowr, crootn, crsqrt, cexp10m1, cexp10, cexp2m1, clog10p1, clog2p1, clogp1<span class="std std-since std-c23">(since C23)</span>, along with their -<code>f</code> and -<code>l</code> suffixed variants.</p>
+
+<p>Although the C standard names the inverse hyperbolic with "complex arc hyperbolic sine" etc., the inverse functions of the hyperbolic functions are the area functions. Their argument is the area of a hyperbolic sector, not an arc. The correct names are "complex inverse hyperbolic sine" etc. Some authors use "complex area hyperbolic sine" etc.</p>
+
+<p>A complex or imaginary number is infinite if one of its parts is infinite, even if the other part is NaN.</p>
+
+<p>A complex or imaginary number is finite if both parts are neither infinities nor NaNs.</p>
+
+<p>A complex or imaginary number is a zero if both parts are positive or negative zeroes.</p>
+
+<p>While MSVC does provide a <a href="https://learn.microsoft.com/en-us/cpp/c-runtime-library/complex-math-support" rel="noreferrer" target="_blank"><code>&lt;complex.h&gt;</code></a> header, it does not implement complex numbers as native types, but as <code>struct</code>s, which are incompatible with standard C complex types and do not support the <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code> operators.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <complex.h>
+#include <stdio.h>
+#include <tgmath.h>
+ 
+int main(void)
+{
+    double complex z1 = I * I;     // imaginary unit squared
+    printf("I * I = %.1f%+.1fi\n", creal(z1), cimag(z1));
+ 
+    double complex z2 = pow(I, 2); // imaginary unit squared
+    printf("pow(I, 2) = %.1f%+.1fi\n", creal(z2), cimag(z2));
+ 
+    double PI = acos(-1);
+    double complex z3 = exp(I * PI); // Euler's formula
+    printf("exp(I*PI) = %.1f%+.1fi\n", creal(z3), cimag(z3));
+ 
+    double complex z4 = 1 + 2 * I, z5 = 1 - 2 * I; // conjugates
+    printf("(1+2i)*(1-2i) = %.1f%+.1fi\n", creal(z4 * z5), cimag(z4 * z5));
+}
+```
+
+<p>Output:</p>
+
+```text
+I * I = -1.0+0.0i
+pow(I, 2) = -1.0+0.0i
+exp(I*PI) = -1.0+0.0i
+(1+2i)*(1-2i) = 5.0+0.0i
+```
+
+<h3 id="References">References</h3>
+
+<table class="ref-table">
+<tr><th>Extended content</th></tr>
+<tr><td><section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.8.3/1/2</p>
+
+<code>__STDC_NO_COMPLEX__</code>
+
+<p>(p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.8.3/1/2</p>
+
+<code>__STDC_IEC_559_COMPLEX__</code>
+
+<p>(p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3 Complex arithmetic</p>
+
+<code>&lt;complex.h&gt;</code>
+
+<p>(p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math</p>
+
+<code>&lt;tgmath.h&gt;</code>
+
+<p>(p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.1 Complex arithmetic</p>
+
+<code>&lt;complex.h&gt;</code>
+
+<p>(p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>Annex G (normative) IEC 60559-compatible complex arithmetic (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.8.3/1/2</p>
+
+<code>__STDC_NO_COMPLEX__</code>
+
+<p>(p: 128)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.8.3/1/2</p>
+
+<code>__STDC_IEC_559_COMPLEX__</code>
+
+<p>(p: 128)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3 Complex arithmetic</p>
+
+<code>&lt;complex.h&gt;</code>
+
+<p>(p: 136-144)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math</p>
+
+<code>&lt;tgmath.h&gt;</code>
+
+<p>(p: 272-273)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.1 Complex arithmetic</p>
+
+<code>&lt;complex.h&gt;</code>
+
+<p>(p: 391)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>Annex G (normative) IEC 60559-compatible complex arithmetic (p: 469-479)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.8.3/1/2</p>
+
+<code>__STDC_NO_COMPLEX__</code>
+
+<p>(p: 177)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.8.3/1/2</p>
+
+<code>__STDC_IEC_559_COMPLEX__</code>
+
+<p>(p: 177)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3 Complex arithmetic</p>
+
+<code>&lt;complex.h&gt;</code>
+
+<p>(p: 188-199)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math</p>
+
+<code>&lt;tgmath.h&gt;</code>
+
+<p>(p: 373-375)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.1 Complex arithmetic</p>
+
+<code>&lt;complex.h&gt;</code>
+
+<p>(p: 455)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>Annex G (normative) IEC 60559-compatible complex arithmetic (p: 532-545)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.8/2</p>
+
+<code>__STDC_IEC_559_COMPLEX__</code>
+
+<p>(p: 161)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3 Complex arithmetic</p>
+
+<code>&lt;complex.h&gt;</code>
+
+<p>(p: 170-180)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 Type-generic math</p>
+
+<code>&lt;tgmath.h&gt;</code>
+
+<p>(p: 335-337)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.1 Complex arithmetic</p>
+
+<code>&lt;complex.h&gt;</code>
+
+<p>(p: 401)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>Annex G (informative) IEC 60559-compatible complex arithmetic (p: 467-480)</p>
+</li>
+</ul></dd>
+</dl></section></td></tr>
+</table>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/complex" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Complex number arithmetic</td></tr>
+</table>

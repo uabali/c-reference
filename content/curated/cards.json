@@ -1,0 +1,158 @@
+[
+  {
+    "slug": "pointer",
+    "title": "A pointer is an address",
+    "minutes": 5,
+    "difficulty": "Beginner",
+    "page": "c/language/pointer",
+    "lead": "The value of a pointer is where an object lives, or nullptr if it lives nowhere.",
+    "points": [
+      "Follow it with *p. Take an address with &object.",
+      "p + 1 steps by one object, not one byte.",
+      "The pointer does not own the object unless you decide it does."
+    ]
+  },
+  {
+    "slug": "array-decay",
+    "title": "Arrays decay",
+    "minutes": 5,
+    "difficulty": "Beginner",
+    "page": "c/language/array",
+    "lead": "In most expressions an array becomes a pointer to its first element. The length does not go with it.",
+    "points": [
+      "void f(int a[10]) is void f(int *a).",
+      "sizeof keeps the length only while the name still denotes the array.",
+      "Pass the count as a separate argument."
+    ]
+  },
+  {
+    "slug": "string",
+    "title": "A string is a zero",
+    "minutes": 5,
+    "difficulty": "Beginner",
+    "page": "c/language/string_literal",
+    "lead": "C text is an array of char whose last used element is zero. The library stops there.",
+    "points": [
+      "strlen does not count the zero. sizeof of a literal does.",
+      "A literal is not writable.",
+      "strncpy does not promise a terminator."
+    ]
+  },
+  {
+    "slug": "malloc",
+    "title": "malloc and free are a pair",
+    "minutes": 5,
+    "difficulty": "Beginner",
+    "page": "c/memory/malloc",
+    "lead": "The heap object lives until free, including after the function that allocated it returns.",
+    "points": [
+      "Check the pointer. Null means failure.",
+      "The bytes are uninitialized.",
+      "free(nullptr) is safe. free twice is not."
+    ]
+  },
+  {
+    "slug": "struct-pad",
+    "title": "Structs have holes",
+    "minutes": 5,
+    "difficulty": "Intermediate",
+    "page": "c/language/struct",
+    "lead": "The compiler inserts padding so each field is aligned. sizeof can be larger than the sum of the fields.",
+    "points": [
+      "Do not memcmp two structs if padding might differ.",
+      "Reorder fields to shrink the object.",
+      "A file format should use explicit widths, not the compiler's layout."
+    ]
+  },
+  {
+    "slug": "ub",
+    "title": "Undefined means no promise",
+    "minutes": 5,
+    "difficulty": "Intermediate",
+    "page": "c/language/behavior",
+    "lead": "If the standard says undefined, the compiler may assume that path never happens.",
+    "points": [
+      "Signed overflow, dangling pointers, and data races are in this bucket.",
+      "A check after the bad access does not help.",
+      "Sanitizers catch a lot of it. They are not a proof."
+    ]
+  },
+  {
+    "slug": "const-volatile",
+    "title": "const and volatile are not locks",
+    "minutes": 5,
+    "difficulty": "Intermediate",
+    "page": "c/language/const",
+    "lead": "const is a compile-time view. volatile is 'do not delete this access'. Neither one synchronizes threads.",
+    "points": [
+      "const int * and int * const are different.",
+      "volatile ++ is not atomic.",
+      "Shared flags between threads want stdatomic.h."
+    ]
+  },
+  {
+    "slug": "nullptr-card",
+    "title": "nullptr is not zero",
+    "minutes": 5,
+    "difficulty": "Beginner",
+    "page": "c/language/nullptr",
+    "lead": "C23 adds a null pointer constant with its own type, so it stops pretending to be an integer.",
+    "points": [
+      "It converts to any pointer type.",
+      "It does not convert to an ordinary int.",
+      "_Generic can tell it apart from 0."
+    ]
+  },
+  {
+    "slug": "nodiscard-card",
+    "title": "Do not drop the result",
+    "minutes": 5,
+    "difficulty": "Beginner",
+    "page": "c/language/attributes/nodiscard",
+    "lead": "[[nodiscard]] turns a discarded return value into a warning.",
+    "points": [
+      "Put it on error codes and on functions that allocate.",
+      "(void)call() discards on purpose.",
+      "The attribute belongs on the declaration the caller sees."
+    ]
+  },
+  {
+    "slug": "checked-math",
+    "title": "Ask if the add fits",
+    "minutes": 5,
+    "difficulty": "Intermediate",
+    "page": "c/numeric/ckd_add",
+    "lead": "ckd_add writes the wrapped result and returns true when the real result does not fit.",
+    "points": [
+      "A true return means do not use the value as a size.",
+      "The type of the result pointer chooses the width.",
+      "This header is C23."
+    ]
+  },
+  {
+    "slug": "printf-card",
+    "title": "The format string is code",
+    "minutes": 5,
+    "difficulty": "Beginner",
+    "page": "c/io/fprintf",
+    "lead": "printf trusts the format. A user-controlled format string is an attack, and a mismatched argument is undefined.",
+    "points": [
+      "Keep the format a literal.",
+      "Use snprintf for a buffer, and read the returned length.",
+      "%zu is size_t. %s of a null pointer is undefined."
+    ]
+  },
+  {
+    "slug": "qsort-card",
+    "title": "qsort calls you back",
+    "minutes": 5,
+    "difficulty": "Intermediate",
+    "page": "c/algorithm/qsort",
+    "lead": "The comparator is a function pointer. It must be a consistent order, and it must not overflow.",
+    "points": [
+      "Return (a > b) - (a < b), not a - b.",
+      "Cast the const void * to the real element type.",
+      "The sort is not required to be stable."
+    ]
+  }
+]

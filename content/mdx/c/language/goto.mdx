@@ -1,0 +1,161 @@
+---
+title: "goto statement"
+slug: "c/language/goto"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/goto"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Transfers control unconditionally to the desired location.</p>
+
+<p>Used when it is otherwise impossible to transfer control to the desired location using conventional constructs.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+attr-spec-seq(optional) goto label ;
+```
+
+<table class="ref-table ref-params">
+<tr><td><em>label</em></td><td>-</td><td>target <a href="/reference/c/language/statements/#Labels">label</a> for the <code>goto</code> statement</td></tr>
+<tr><td><em>attr-spec-seq</em></td><td>-</td><td><span class="std std-since std-c23">(C23)</span>optional list of <a href="/reference/c/language/attributes/">attributes</a>, applied to the <code>goto</code> statement</td></tr>
+</table>
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>The <code>goto</code> statement causes an unconditional jump (transfer of control) to the statement prefixed by the named <em>label</em> (which must appear in the same function as the goto statement), except when this jump would enter the scope of a <a href="/reference/c/language/array/">variable-length array</a> or another <a href="/reference/c/language/declarations/">variably-modified type</a>.<span class="std std-since std-c99">(since C99)</span></p>
+
+<p>A <em>label</em> is an identifier followed by a colon (<code>:</code>) and a statement<span class="std std-until std-c23">(until C23)</span>. Labels are the only identifiers that have <em>function scope</em>: they can be used (in a goto statement) anywhere in the same function in which they appear. There may be multiple labels before any statement.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><p>Entering the scope of a non-variably modified variable is permitted:</p>
+
+```c
+goto lab1; // OK: going into the scope of a regular variable
+    int n = 5;
+lab1:; // Note, n is uninitialized, as if declared by int n;
+ 
+//   goto lab2;   // Error: going into the scope of two VM types
+     double a[n]; // a VLA
+     int (*p)[n]; // a VM pointer
+lab2:
+```
+
+<p>If <code>goto</code> leaves the scope of a VLA, it is deallocated (and may be reallocated if its initialization is executed again):</p>
+
+```c
+{
+   int n = 1;
+label:;
+   int a[n]; // re-allocated 10 times, each with a different size
+   if (n++ < 10) goto label; // leaving the scope of a VM
+}
+```</aside>
+
+<h3 id="Keywords">Keywords</h3>
+
+<p><a href="/reference/c/keyword/goto/"><code>goto</code></a></p>
+
+<h3 id="Notes">Notes</h3>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-until std-c23">(until C23)</span></p><p>Because declarations are not statements, a label before a declaration must use a null statement (a semicolon immediately after the colon). Same applies to a label before the end of a block.</p></aside>
+
+<p>C++ imposes additional limitations on the <code>goto</code> statement, but allows labels before declarations (which are statements in C++).</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+ 
+int main(void)
+{
+    // goto can be used to leave a multi-level loop easily
+    for (int x = 0; x < 3; x++) {
+        for (int y = 0; y < 3; y++) {
+            printf("(%d;%d)\n",x,y);
+            if (x + y >= 3) goto endloop;
+        }
+    }
+endloop:;
+}
+```
+
+<p>Output:</p>
+
+```text
+(0;0)
+(0;1)
+(0;2)
+(1;0)
+(1;1)
+(1;2)
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.8.6.1 The goto statement (p: 110-111)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.8.6.1 The goto statement (p: 152-153)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.8.6.1 The goto statement (p: 137-138)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.6.6.1 The goto statement</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/goto" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+<code>goto</code> statement</td></tr>
+</table>

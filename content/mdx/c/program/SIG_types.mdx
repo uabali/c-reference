@@ -1,0 +1,117 @@
+---
+title: "SIGTERM, SIGSEGV, SIGINT, SIGILL, SIGABRT, SIGFPE"
+slug: "c/program/SIG_types"
+category: "program"
+source: "https://en.cppreference.com/w/c/program/SIG_types"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;signal.h&gt;</code></p>
+
+```c
+#define SIGTERM /*implementation defined*/
+```
+
+```c
+#define SIGSEGV /*implementation defined*/
+```
+
+```c
+#define SIGINT /*implementation defined*/
+```
+
+```c
+#define SIGILL /*implementation defined*/
+```
+
+```c
+#define SIGABRT /*implementation defined*/
+```
+
+```c
+#define SIGFPE /*implementation defined*/
+```
+
+<p>Each of the above macro constants expands to an integer constant expression with distinct values, which represent different signals sent to the program.</p>
+
+<table class="ref-table ref-dsc">
+<tr><td>Constant</td><td>Explanation</td></tr>
+<tr><td><code>SIGTERM</code></td><td>termination request, sent to the program</td></tr>
+<tr><td><code>SIGSEGV</code></td><td>invalid memory access (segmentation fault)</td></tr>
+<tr><td><code>SIGINT</code></td><td>external interrupt, usually initiated by the user</td></tr>
+<tr><td><code>SIGILL</code></td><td>invalid program image, such as invalid instruction</td></tr>
+<tr><td><code>SIGABRT</code></td><td>abnormal termination condition, as is e.g. initiated by <a href="/reference/c/program/abort/">abort()</a></td></tr>
+<tr><td><code>SIGFPE</code></td><td>erroneous arithmetic operation such as divide by zero</td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.14/3 Signal handling &lt;signal.h&gt; (p: 193)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.14/3 Signal handling &lt;signal.h&gt; (p: 265)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.14/3 Signal handling &lt;signal.h&gt; (p: 246)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.7 SIGNAL HANDLING &lt;signal.h&gt;</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/program/signal/">signal</a></td><td>sets a signal handler for particular signal   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/program/raise/">raise</a></td><td>runs the signal handler for particular signal   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/utility/program/SIG_types" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+signal types</td></tr>
+</table>

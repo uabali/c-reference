@@ -1,0 +1,211 @@
+---
+title: "fgets"
+slug: "c/io/fgets"
+category: "io"
+source: "https://en.cppreference.com/w/c/io/fgets"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+```c
+char* fgets( char*          str, int count, FILE*          stream );
+```
+
+<p class="decl-note"><span class="std std-until std-c99">(until C99)</span></p>
+
+```c
+char* fgets( char* restrict str, int count, FILE* restrict stream );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>Reads at most <code>count - 1</code> characters from the given file stream and stores them in the character array pointed to by <code>str</code>. Parsing stops if a newline character is found (in which case <code>str</code> will contain that newline character) or if end-of-file occurs. If bytes are read and no errors occur, writes a null character at the position immediately after the last character written to <code>str</code>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>str</td><td>-</td><td>pointer to an element of a char array</td></tr>
+<tr><td>count</td><td>-</td><td>maximum number of characters to write (typically the length of <code>str</code>)</td></tr>
+<tr><td>stream</td><td>-</td><td>file stream to read the data from</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p><code>str</code> on success, null pointer on failure.</p>
+
+<p>If the end-of-file condition is encountered, sets the <em>eof</em> indicator on <code>stream</code> (see <a href="/reference/c/io/feof/">feof()</a>). This is only a failure if it causes no bytes to be read, in which case a null pointer is returned and the contents of the array pointed to by <code>str</code> are not altered (i.e. the first byte is not overwritten with a null character).</p>
+
+<p>If the failure has been caused by some other error, sets the <em>error</em> indicator (see <a href="/reference/c/io/ferror/">ferror()</a>) on <code>stream</code>. The contents of the array pointed to by <code>str</code> are indeterminate (it may not even be null-terminated).</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p><a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/fgets.html" rel="noreferrer" target="_blank">POSIX additionally requires</a> that <code>fgets</code> sets <a href="/reference/c/error/errno/">errno</a> if a read error occurs.</p>
+
+<p>Although the standard specification is <a href="https://stackoverflow.com/questions/23388620" rel="noreferrer" target="_blank">unclear</a> in the cases where <code>count &lt;= 1</code>, common implementations do</p>
+
+<ul>
+<li>
+<p>if</p>
+
+<code>count &lt; 1</code>
+
+<p>, do nothing, report error,</p>
+</li>
+<li>
+<p>if</p>
+
+<code>count == 1</code>
+
+<p>,</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>some implementations do nothing, report error,</p>
+</li>
+<li>
+<p>others read nothing, store zero in</p>
+
+<code>str[0]</code>
+
+<p>, report success.</p>
+</li>
+</ul></dd>
+</dl>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(void)
+{
+    FILE* tmpf = tmpfile();
+    fputs("Alan Turing\n", tmpf);
+    fputs("John von Neumann\n", tmpf);
+    fputs("Alonzo Church\n", tmpf);
+ 
+    rewind(tmpf);
+ 
+    char buf[8];
+    while (fgets(buf, sizeof buf, tmpf) != NULL)
+          printf("\"%s\"\n", buf);
+ 
+    if (feof(tmpf))
+       puts("End of file reached");
+}
+```
+
+<p>Output:</p>
+
+```text
+"Alan Tu"
+"ring
+"
+"John vo"
+"n Neuma"
+"nn
+"
+"Alonzo "
+"Church
+"
+End of file reached
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.7.2 The fgets function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.7.2 The fgets function (p: 241)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.7.2 The fgets function (p: 331)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.7.2 The fgets function (p: 296)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9.7.2 The fgets function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/fscanf/">scanf<br />fscanf<br />sscanf<br />scanf_s<br />fscanf_s<br />sscanf_s</a>
+
+<span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>reads formatted input from <a href="/reference/c/io/std_streams/">stdin</a>, a file stream or a buffer   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/gets/">gets<br />gets_s</a>
+
+<span class="std std-until std-c11">(removed in C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>reads a character string from <a href="/reference/c/io/std_streams/">stdin</a>   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fputs/">fputs</a></td><td>writes a character string to a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/experimental/dynamic/getline/">getline<br />getwline<br />getdelim<br />getwdelim</a>
+
+<span class="std std-since std-other">(dynamic memory TR)</span></td><td>read from a stream into an automatically resized buffer until delimiter/end of line   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c/fgets" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+fgets</td></tr>
+</table>

@@ -1,0 +1,138 @@
+---
+title: "isnormal"
+slug: "c/numeric/math/isnormal"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/isnormal"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+#define isnormal(arg) /* implementation defined */
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>Determines if the given floating-point number <code>arg</code> is normal, i.e. is neither zero, subnormal, infinite, nor <code>NaN</code>. The macro returns an integral value.</p>
+
+<p><a href="/reference/c/types/limits/FLT_EVAL_METHOD/">FLT_EVAL_METHOD</a> is ignored: even if the argument is evaluated with more range and precision than its type, it is first converted to its semantic type, and the classification is based on that.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>arg</td><td>-</td><td>floating-point value</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Nonzero integral value if <code>arg</code> is normal, <code>0</code> otherwise.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <float.h>
+#include <math.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    printf("isnormal(NAN)         = %d\n", isnormal(NAN));
+    printf("isnormal(INFINITY)    = %d\n", isnormal(INFINITY));
+    printf("isnormal(0.0)         = %d\n", isnormal(0.0));
+    printf("isnormal(DBL_MIN/2.0) = %d\n", isnormal(DBL_MIN / 2.0));
+    printf("isnormal(1.0)         = %d\n", isnormal(1.0));
+}
+```
+
+<p>Output:</p>
+
+```text
+isnormal(NAN)         = 0
+isnormal(INFINITY)    = 0
+isnormal(0.0)         = 0
+isnormal(DBL_MIN/2.0) = 0
+isnormal(1.0)         = 1
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.3.5 The isnormal macro (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.3.5 The isnormal macro (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.3.5 The isnormal macro (p: 237)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.3.5 The isnormal macro (p: 217-218)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/fpclassify/">fpclassify</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>classifies the given floating-point value   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/isfinite/">isfinite</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if the given number has finite value   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/isinf/">isinf</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if the given number is infinite   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/isnan/">isnan</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if the given number is NaN   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/isnormal" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+isnormal</td></tr>
+</table>

@@ -1,0 +1,120 @@
+---
+title: "I"
+slug: "c/numeric/complex/I"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/complex/I"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;complex.h&gt;</code></p>
+
+```c
+#define I /* unspecified */
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>The <code>I</code> macro expands to either <a href="/reference/c/numeric/complex/Complex_I/">_Complex_I</a> or <a href="/reference/c/numeric/complex/Imaginary_I/">_Imaginary_I</a>. If the implementation does not support imaginary types, then the macro always expands to <a href="/reference/c/numeric/complex/Complex_I/">_Complex_I</a>.</p>
+
+<p>A program may undefine and perhaps then redefine the macro <code>I</code>.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The macro is not named <code>i</code>, which is the name of the imaginary unit in mathematics, because the name <code>i</code> was already used in many C programs, e.g. as a loop counter variable.</p>
+
+<p>The macro <code>I</code> is often used to form complex numbers, with expressions such as <code>x + y*I</code>. If <code>I</code> is defined as <a href="/reference/c/numeric/complex/Complex_I/">_Complex_I</a>, then such expression may create a value with imaginary component <code>+0.0</code> even when <code>y</code> is <code>-0.0</code>, which is significant for complex number functions with branch cuts. The macro <a href="/reference/c/numeric/complex/CMPLX/">CMPLX</a> provides a way to construct a complex number precisely.</p>
+
+<p>GCC provides a non-portable extension that allows imaginary constants to be specified with the suffix <code>i</code> on integer literals: <code>1.0fi</code>, <code>1.0i</code>, and <code>1.0li</code> are imaginary units in GNU C. A similar approach is part of standard C++ as of C++14 (<code>1.0if</code>, <code>1.0i</code>, and <code>1.0il</code> are the imaginary units in C++)</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <complex.h>
+ 
+int main(void)
+{
+    printf("I = %.1f%+.1fi\n", creal(I), cimag(I));
+ 
+    double complex z1 = I * I;     // imaginary unit squared
+    printf("I * I = %.1f%+.1fi\n", creal(z1), cimag(z1));
+ 
+    double complex z = 1.0 + 2.0*I; // usual way to form a complex number pre-C11
+    printf("z = %.1f%+.1fi\n", creal(z), cimag(z));
+}
+```
+
+<p>Output:</p>
+
+```text
+I = 0.0+1.0i
+I * I = -1.0+0.0i
+z = 1.0+2.0i
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3.1/6 I (p: 188)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>G.6/1 I (p: 537)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3.1/4 I (p: 170)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>G.6/1 I (p: 472)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/complex/Imaginary_I/">_Imaginary_I</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>the imaginary unit constant i   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/Complex_I/">_Complex_I</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>the complex unit constant i   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/CMPLX/">CMPLX<br />CMPLXF<br />CMPLXL</a>
+
+<span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>constructs a complex number from real and imaginary parts   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/complex/operator_q__q_i" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+operator""i</td></tr>
+</table></section>

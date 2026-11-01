@@ -1,0 +1,136 @@
+---
+title: "SIG_DFL, SIG_IGN"
+slug: "c/program/SIG_strategies"
+category: "program"
+source: "https://en.cppreference.com/w/c/program/SIG_strategies"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;signal.h&gt;</code></p>
+
+```c
+#define SIG_DFL /*implementation defined*/
+```
+
+```c
+#define SIG_IGN /*implementation defined*/
+```
+
+<p>The <strong>SIG_DFL</strong> and <strong>SIG_IGN</strong> macros expand into integral expressions that are not equal to an address of any function. The macros define signal handling strategies for <code>signal()</code> function.</p>
+
+<table class="ref-table ref-dsc">
+<tr><td>Constant</td><td>Explanation</td></tr>
+<tr><td><code>SIG_DFL</code></td><td>default signal handling</td></tr>
+<tr><td><code>SIG_IGN</code></td><td>signal is ignored</td></tr>
+</table>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <signal.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    /* using the default signal handler */
+    raise(SIGTERM);
+    printf("Exit main()\n");   /* never reached */
+}
+```
+
+<p>Output:</p>
+
+```text
+(none)
+```
+
+<h3 id="Example_2">Example</h3>
+
+```c
+#include <signal.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    /* ignoring the signal */
+    signal(SIGTERM, SIG_IGN);
+    raise(SIGTERM);
+    printf("Exit main()\n");
+}
+```
+
+<p>Output:</p>
+
+```text
+Exit main()
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.14/3 Signal handling &lt;signal.h&gt; (p: 193)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.14/3 Signal handling &lt;signal.h&gt; (p: 265)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.14/3 Signal handling &lt;signal.h&gt; (p: 246)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.7 SIGNAL HANDLING &lt;signal.h&gt;</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/utility/program/SIG_strategies" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+SIG_DFL, SIG_IGN</td></tr>
+</table>

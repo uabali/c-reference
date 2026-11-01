@@ -1,0 +1,230 @@
+---
+title: "fmax, fmaxf, fmaxl"
+slug: "c/numeric/math/fmax"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/fmax"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+float       fmaxf( float x, float y );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+double      fmax( double x, double y );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+long double fmaxl( long double x, long double y );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;tgmath.h&gt;</code></p>
+
+```c
+#define fmax( x, y )
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="li-note"><span class="li-num">1-3)</span>  Returns the larger of two floating-point arguments, treating NaNs as missing data (between a NaN and a numeric value, the numeric value is chosen).</p>
+
+<p class="li-note"><span class="li-num">4)</span>  Type-generic macro: If any argument has type <code>long double</code>, <code>fmaxl</code> is called. Otherwise, if any argument has integer type or has type <code>double</code>, <code>fmax</code> is called. Otherwise, <code>fmaxf</code> is called.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>x, y</td><td>-</td><td>floating-point values</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>If successful, returns the larger of two floating-point values. The value returned is exact and does not depend on any rounding modes.</p>
+
+<h3 id="Error_handling">Error handling</h3>
+
+<p>This function is not subject to any of the error conditions specified in <a href="/reference/c/numeric/math/math_errhandling/"><code>math_errhandling</code></a>.</p>
+
+<p>If the implementation supports IEEE floating-point arithmetic (IEC 60559),</p>
+
+<ul>
+<li>
+<p>If one of the two arguments is NaN, the value of the other argument is returned.</p>
+</li>
+<li>
+<p>Only if both arguments are NaN is NaN returned.</p>
+</li>
+</ul>
+
+<h3 id="Notes">Notes</h3>
+
+<p>This function is not required to be sensitive to the sign of zero, although some implementations additionally enforce that if one argument is +0 and the other is -0, then +0 is returned.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <math.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    printf("fmax(2,1)    = %f\n", fmax(2,1));
+    printf("fmax(-Inf,0) = %f\n", fmax(-INFINITY,0));
+    printf("fmax(NaN,-1) = %f\n", fmax(NAN,-1));
+}
+```
+
+<p>Output:</p>
+
+```text
+fmax(2,1)    = 2.000000
+fmax(-Inf,0) = 0.000000
+fmax(NaN,-1) = -1.000000
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.12.2 The fmax functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.9.2 The fmax functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.12.2 The fmax functions (p: 188)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 397)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.9.2 The fmax functions (p: 386)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.12.2 The fmax functions (p: 257-258)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 373-375)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.9.2 The fmax functions (p: 530)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.12.2 The fmax functions (p: 238-239)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 Type-generic math &lt;tgmath.h&gt; (p: 335-337)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.9.9.2 The fmax functions (p: 466)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/isgreater/">isgreater</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if the first floating-point argument is greater than the second   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/fmin/">fmin<br />fminf<br />fminl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>determines smaller of two floating-point values   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/fmax" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+fmax</td></tr>
+</table>

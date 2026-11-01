@@ -1,0 +1,173 @@
+---
+title: "catanf, catan, catanl"
+slug: "c/numeric/complex/catan"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/complex/catan"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;complex.h&gt;</code></p>
+
+```c
+float complex       catanf( float complex z );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+double complex      catan( double complex z );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+long double complex catanl( long double complex z );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;tgmath.h&gt;</code></p>
+
+```c
+#define atan( z )
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="li-note"><span class="li-num">1-3)</span>  Computes the complex arc tangent of <code>z</code> with branch cuts outside the interval [−i,+i] along the imaginary axis.</p>
+
+<p class="li-note"><span class="li-num">4)</span>  Type-generic macro: If <code>z</code> has type <code>long double complex</code>, <code>catanl</code> is called. if <code>z</code> has type <code>double complex</code>, <code>catan</code> is called, if <code>z</code> has type <code>float complex</code>, <code>catanf</code> is called. If <code>z</code> is real or integer, then the macro invokes the corresponding real function (<code>atanf</code>, <code>atan</code>, <code>atanl</code>). If <code>z</code> is imaginary, then the macro invokes the corresponding real version of the function <a href="/reference/c/numeric/math/atanh/">atanh</a>, implementing the formula atan(iy) = i atanh(y), and the return type of the macro is imaginary.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>z</td><td>-</td><td>complex argument</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>If no errors occur, complex arc tangent of <code>z</code> is returned, in the range of a strip unbounded along the imaginary axis and in the interval [−π/2; +π/2] along the real axis.</p>
+
+<p>Errors and special cases are handled as if the operation is implemented by <code>-I * catanh(I*z)</code>.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Inverse tangent (or arc tangent) is a multivalued function and requires a branch cut on the complex plane. The branch cut is conventionally placed at the line segments (-∞i,-i) and (+i,+∞i) of the imaginary axis.</p>
+
+<p>The mathematical definition of the principal value of inverse tangent is</p>
+
+atan z = -12 i [ln(1 - iz) - ln (1 + iz]
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <float.h>
+#include <complex.h>
+ 
+int main(void)
+{
+    double complex z = catan(2*I);
+    printf("catan(+0+2i) = %f%+fi\n", creal(z), cimag(z));
+ 
+    double complex z2 = catan(-conj(2*I)); // or CMPLX(-0.0, 2)
+    printf("catan(-0+2i) (the other side of the cut) = %f%+fi\n", creal(z2), cimag(z2));
+ 
+    double complex z3 = 2*catan(2*I*DBL_MAX); // or CMPLX(0, INFINITY)
+    printf("2*catan(+0+i*Inf) = %f%+fi\n", creal(z3), cimag(z3));
+}
+```
+
+<p>Output:</p>
+
+```text
+catan(+0+2i) = 1.570796+0.549306i
+catan(-0+2i) (the other side of the cut) = -1.570796+0.549306i
+2*catan(+0+i*Inf) = 3.141593+0.000000i
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3.5.3 The catan functions (p: 191)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 373-375)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>G.7 Type-generic math &lt;tgmath.h&gt; (p: 545)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3.5.3 The catan functions (p: 173)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 Type-generic math &lt;tgmath.h&gt; (p: 335-337)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>G.7 Type-generic math &lt;tgmath.h&gt; (p: 480)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/complex/casin/">casin<br />casinf<br />casinl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex arc sine   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/cacos/">cacos<br />cacosf<br />cacosl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex arc cosine   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/ctan/">ctan<br />ctanf<br />ctanl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex tangent   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/atan/">atan<br />atanf<br />atanl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes arc tangent (\({\small\arctan{x} }\)arctan(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/complex/atan" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+atan</td></tr>
+</table></section>

@@ -1,0 +1,162 @@
+---
+title: "continue statement"
+slug: "c/language/continue"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/continue"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Causes the remaining portion of the enclosing <a href="/reference/c/language/for/">for</a>, <a href="/reference/c/language/while/">while</a> or <a href="/reference/c/language/do/">do-while</a> loop body to be skipped.</p>
+
+<p>Used when it is otherwise awkward to ignore the remaining portion of the loop using conditional statements.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+attr-spec-seq(optional) continue ;
+```
+
+<table class="ref-table ref-params">
+<tr><td><em>attr-spec-seq</em></td><td>-</td><td><span class="std std-since std-c23">(C23)</span>optional list of <a href="/reference/c/language/attributes/">attributes</a>, applied to the <code>continue</code> statement</td></tr>
+</table>
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>The <code>continue</code> statement causes a jump, as if by <a href="/reference/c/language/goto/">goto</a>, to the end of the loop body (it may only appear within the loop body of <a href="/reference/c/language/for/">for</a>, <a href="/reference/c/language/while/">while</a>, and <a href="/reference/c/language/do/">do-while</a> loops).</p>
+
+<p>For <a href="/reference/c/language/while/">while</a> loop, it acts as</p>
+
+```c
+while (/* ... */) {
+   // ... 
+   continue; // acts as goto contin;
+   // ... 
+   contin:;
+}
+```
+
+<p>For <a href="/reference/c/language/do/">do-while</a> loop, it acts as:</p>
+
+```c
+do {
+    // ... 
+    continue; // acts as goto contin;
+    // ... 
+    contin:;
+} while (/* ... */);
+```
+
+<p>For <a href="/reference/c/language/for/">for</a> loop, it acts as:</p>
+
+```c
+for (/* ... */) {
+    // ... 
+    continue; // acts as goto contin;
+    // ... 
+    contin:;
+}
+```
+
+<h3 id="Keywords">Keywords</h3>
+
+<p><a href="/reference/c/keyword/continue/"><code>continue</code></a></p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+ 
+int main(void) 
+{
+    for (int i = 0; i < 10; i++) {
+        if (i != 5) continue;
+        printf("%d ", i);             // this statement is skipped each time i != 5
+    }
+ 
+    printf("\n");
+ 
+    for (int j = 0; j < 2; j++) {
+        for (int k = 0; k < 5; k++) { // only this loop is affected by continue
+            if (k == 3) continue;
+            printf("%d%d ", j, k);    // this statement is skipped each time k == 3
+        }
+    }
+}
+```
+
+<p>Output:</p>
+
+```text
+5
+00 01 02 04 10 11 12 14
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.8.6.2 The continue statement (p: 111)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.8.6.2 The continue statement (p: 153)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.8.6.2 The continue statement (p: 138)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.6.6.2 The continue statement</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/continue" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+<code>continue</code> statement</td></tr>
+</table>

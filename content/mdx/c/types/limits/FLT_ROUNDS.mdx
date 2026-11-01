@@ -1,0 +1,47 @@
+---
+title: "FLT_ROUNDS"
+slug: "c/types/limits/FLT_ROUNDS"
+category: "types"
+source: "https://en.cppreference.com/w/c/types/limits/FLT_ROUNDS"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;float.h&gt;</code></p>
+
+```c
+#define FLT_ROUNDS /* implementation defined */
+```
+
+<p>Returns the current rounding direction of floating-point arithmetic operations.</p>
+
+<table class="ref-table ref-dsc">
+<tr><td>Value</td><td>Explanation</td></tr>
+<tr><td><code>-1</code></td><td>the default rounding direction is not known</td></tr>
+<tr><td><code>0</code></td><td>toward zero; same meaning as <a href="/reference/c/numeric/fenv/FE_round/">FE_TOWARDZERO</a></td></tr>
+<tr><td><code>1</code></td><td>to nearest; same meaning as <a href="/reference/c/numeric/fenv/FE_round/">FE_TONEAREST</a></td></tr>
+<tr><td><code>2</code></td><td>towards positive infinity; same meaning as <a href="/reference/c/numeric/fenv/FE_round/">FE_UPWARD</a></td></tr>
+<tr><td><code>3</code></td><td>towards negative infinity; same meaning as <a href="/reference/c/numeric/fenv/FE_round/">FE_DOWNWARD</a></td></tr>
+<tr><td>other values</td><td>implementation-defined behavior</td></tr>
+</table>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The rounding mode can be changed with <a href="/reference/c/numeric/fenv/feround/">fesetround</a> and <strong>FLT_ROUNDS</strong> reflects that change.</p>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/fenv/feround/">fegetround<br />fesetround</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>gets or sets rounding direction   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/fenv/FE_round/">FE_DOWNWARD<br />FE_TONEAREST<br />FE_TOWARDZERO<br />FE_UPWARD</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>floating-point rounding direction   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/types/climits/FLT_ROUNDS" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+FLT_ROUNDS</td></tr>
+</table>

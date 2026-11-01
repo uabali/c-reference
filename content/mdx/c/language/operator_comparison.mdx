@@ -1,0 +1,390 @@
+---
+title: "Comparison operators"
+slug: "c/language/operator_comparison"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/operator_comparison"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Comparison operators are binary operators that test a condition and return <strong>1</strong> if that condition is logically <strong>true</strong> and <strong>0</strong> if that condition is <strong>false</strong>.</p>
+
+<table class="ref-table">
+<tr><th>Operator</th><th>Operator name</th><th>Example</th><th>Description</th></tr>
+<tr><td><code>==</code></td><td>equal to</td><td><code>a == b</code></td><td><strong>a</strong> is equal to <strong>b</strong></td></tr>
+<tr><td><code>!=</code></td><td>not equal to</td><td><code>a != b</code></td><td><strong>a</strong> is not equal to <strong>b</strong></td></tr>
+<tr><td><code>&lt;</code></td><td>less than</td><td><code>a &lt; b</code></td><td><strong>a</strong> is less than <strong>b</strong></td></tr>
+<tr><td><code>&gt;</code></td><td>greater than</td><td><code>a &gt; b</code></td><td><strong>a</strong> is greater than <strong>b</strong></td></tr>
+<tr><td><code>&lt;=</code></td><td>less than or equal to</td><td><code>a &lt;= b</code></td><td><strong>a</strong> is less than or equal to <strong>b</strong></td></tr>
+<tr><td><code>&gt;=</code></td><td>greater than or equal to</td><td><code>a &gt;= b</code></td><td><strong>a</strong> is greater than or equal to <strong>b</strong></td></tr>
+</table>
+
+<h3 id="Relational_operators">Relational operators</h3>
+
+<p>The relational operator expressions have the form</p>
+
+```text
+lhs < rhs
+lhs > rhs
+lhs <= rhs
+lhs >= rhs
+```
+
+<p class="li-note"><span class="li-num">1)</span>  less-than expression</p>
+
+<p class="li-note"><span class="li-num">2)</span>  greater-than expression</p>
+
+<p class="li-note"><span class="li-num">3)</span>  less or equal expression</p>
+
+<div class="li-note"><span class="li-num">4)</span>
+
+<p>greater or equal expression</p>
+
+<p>where</p>
+
+<table class="ref-table ref-params">
+<tr><td><em>lhs</em>, <em>rhs</em></td><td>-</td><td>expressions that both have real type or both have pointer to object type</td></tr>
+</table></div>
+
+<p>The type of any relational operator expression is <code>int</code>, and its value (which is not an lvalue) is <code>1</code> when the specified relationship holds true and <code>0</code> when the specified relationship does not hold.</p>
+
+<p>If <em>lhs</em> and <em>rhs</em> are expressions of any <a href="/reference/c/language/types/">real type</a>, then</p>
+
+<ul>
+<li>
+<a href="/reference/c/language/conversion/#Usual_arithmetic_conversions">usual arithmetic conversions</a>
+
+<p>are performed</p>
+</li>
+<li>
+<p>the values of the operands after conversion are compared in the usual mathematical sense (except that positive and negative zeroes compare equal and any comparison involving a NaN value returns zero)</p>
+</li>
+</ul>
+
+<p>Note that complex and imaginary numbers cannot be compared with these operators.</p>
+
+<p>If <em>lhs</em> and <em>rhs</em> are expressions of pointer type, they must be both pointers to objects of <a href="/reference/c/language/types/#Compatible_types">compatible types</a>, except that qualifications of the pointed-to objects are ignored.</p>
+
+<ul>
+<li>
+<p>a pointer to an object that is not an element of an array is treated as if it were pointing to an element of an array with one element</p>
+</li>
+<li>
+<p>if two pointers point to the same object, or both point one past the end of the same array, they compare equal</p>
+</li>
+<li>
+<p>if two pointers point to different elements of the same array, the one pointing at the element with the larger index compares greater.</p>
+</li>
+<li>
+<p>if one pointer points to the element of an array and the other pointer points one past the end of the same array, the one-past-the-end pointer compares greater</p>
+</li>
+<li>
+<p>if the two pointers point to members of the same</p>
+
+<a href="/reference/c/language/struct/">struct</a>
+
+<p>, the pointer to the member declared later in the struct definition compares greater than then pointer to the member declared earlier.</p>
+</li>
+<li>
+<p>pointers to members of the same union compare equal</p>
+</li>
+<li>
+<p>all other pointer comparisons invoke undefined behavior</p>
+</li>
+</ul>
+
+```c
+#include <assert.h>
+int main(void)
+{
+    assert(1 < 2);
+    assert(2+2 <= 4.0); // int converts to double, two 4.0's compare equal
+ 
+    struct { int x,y; } s;
+    assert(&s.x < &s.y); // struct members compare in order of declaration
+ 
+    double d = 0.0/0.0; // NaN
+    assert( !(d < d) );
+    assert( !(d > d) );
+    assert( !(d <= d) );
+    assert( !(d >= d) );
+    assert( !(d == d) );
+ 
+    float f = 0.1; // f = 0.100000001490116119384765625
+    double g = 0.1; // g = 0.1000000000000000055511151231257827021181583404541015625
+    assert(f > g); // different values
+}
+```
+
+<h3 id="Equality_operators">Equality operators</h3>
+
+<p>The equality operator expressions have the form</p>
+
+```text
+lhs == rhs
+lhs != rhs
+```
+
+<p class="li-note"><span class="li-num">1)</span>  equal-to expression</p>
+
+<div class="li-note"><span class="li-num">2)</span>
+
+<p>not equal to expression</p>
+
+<p>where</p>
+
+<table class="ref-table ref-params">
+<tr><td><em>lhs</em>, <em>rhs</em></td><td>-</td><td><p>expressions that</p>
+
+<ul>
+<li>
+<p>both have any</p>
+
+<a href="/reference/c/language/arithmetic_types/">arithmetic types</a>
+
+<p>(including complex and imaginary)</p>
+</li>
+</ul>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><ul>
+<li>
+<p>both have type</p>
+
+<a href="/reference/c/types/nullptr_t/">nullptr_t</a>
+</li>
+<li>
+<p>one has type</p>
+
+<a href="/reference/c/types/nullptr_t/">nullptr_t</a>
+
+<p>and the other is a null pointer constant</p>
+</li>
+</ul></aside>
+
+<ul>
+<li>
+<p>both are pointers to objects or functions of</p>
+
+<a href="/reference/c/language/types/#Compatible_types">compatible</a>
+
+<p>types, ignoring qualifiers of the pointed-to types</p>
+</li>
+<li>
+<p>one is a pointer to object and the other is a pointer to (possibly qualified)</p>
+
+<code>void</code>
+</li>
+<li>
+<p>one is a pointer to object or function and the other is a null pointer constant such as</p>
+
+<a href="/reference/c/types/NULL/">NULL</a>
+
+or <code>nullptr</code><span class="std std-since std-c23">(since C23)</span>
+</li>
+</ul></td></tr>
+</table></div>
+
+<p>The type of any equality operator expression is <code>int</code>, and its value (which is not an lvalue) is <code>1</code> when the specified relationship holds true and <code>0</code> when the specified relationship does not hold.</p>
+
+<ul>
+<li>
+<p>if both operands have arithmetic types,</p>
+
+<a href="/reference/c/language/conversion/#Usual_arithmetic_conversions">usual arithmetic conversions</a>
+
+<p>are performed and the resulting values are compared in the usual mathematical sense (except that positive and negative zeroes compare equal and any comparison involving a NaN value, including equality with itself, returns zero). In particular, values of complex type are equal if their real parts compare equal and their imaginary parts compare equal.</p>
+</li>
+</ul>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><ul>
+<li>
+<p>two</p>
+
+<a href="/reference/c/types/nullptr_t/">nullptr_t</a>
+
+<p>value or one</p>
+
+<a href="/reference/c/types/nullptr_t/">nullptr_t</a>
+
+<p>value and a null pointer constant compare equal</p>
+</li>
+</ul></aside>
+
+<ul>
+<li>
+<p>if one operand is a pointer and the other is a null pointer constant, the null pointer constant is first</p>
+
+<a href="/reference/c/language/conversion/">converted</a>
+
+<p>to the type of the pointer (which gives a null pointer value), and the two pointers are compared as described below</p>
+</li>
+<li>
+<p>if one operand is a pointer and the other is a pointer to void, the non-void pointer is</p>
+
+<a href="/reference/c/language/conversion/">converted</a>
+
+<p>to the pointer to void and the two pointers are compared as described below</p>
+</li>
+<li>
+<p>two pointers compare equal if any of the following is true:</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>they are both null pointer values of their type</p>
+</li>
+<li>
+<p>they are both pointers to the same object or function</p>
+</li>
+<li>
+<p>one pointer is to a struct/union/array object and the other is to its first member/any member/first element</p>
+</li>
+<li>
+<p>they are both pointing one past the last element of the same array</p>
+</li>
+<li>
+<p>one is one past the end of an array, and the other is at the start of a different array (of the same type) that follows the first in a larger array or in a struct with no padding</p>
+</li>
+</ul></dd>
+</dl>
+
+<p>(as with relational operators, pointers to objects that aren't elements of any array behave as pointers to elements of arrays of size 1)</p>
+
+<h4 id="Notes">Notes</h4>
+
+<p>Objects of struct type do not compare equal automatically, and comparing them with <a href="/reference/c/string/byte/memcmp/">memcmp</a> is not reliable because the padding bytes may have any values.</p>
+
+<p>Because pointer comparison works with pointers to void, the macro <a href="/reference/c/types/NULL/">NULL</a> may be defined as <code>(void*)0</code> in C, although that would be invalid in C++ where void pointers do not implicitly convert to typed pointers</p>
+
+<p>Care must be taken when comparing floating-point values for equality, because the results of many operations cannot be represented exactly and must be rounded. In practice, floating-point numbers are usually compared allowing for the difference of one or more units of the last place.</p>
+
+```c
+#include <assert.h>
+int main(void)
+{
+    assert(2+2 == 4.0); // int converts to double, two 4.0's compare equal
+ 
+    int n[2][3] = {1,2,3,4,5,6};
+    int* p1 = &n[0][2]; // last element in the first row
+    int* p2 = &n[1][0]; // start of second row
+    assert(p1+1 == p2); // compare equal
+ 
+    double d = 0.0/0.0; // NaN
+    assert( d != d ); // NaN does not equal itself
+ 
+    float f = 0.1; // f = 0.100000001490116119384765625
+    double g = 0.1; // g = 0.1000000000000000055511151231257827021181583404541015625
+    assert(f != g); // different values
+}
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.8 Relational operators (p: 68-69)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.9 Equality operators (p: 69-70)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.8 Relational operators (p: 95-96)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.9 Equality operators (p: 96-97)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.8 Relational operators (p: 85-86)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.9 Equality operators (p: 86-87)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.3.8 Relational operators</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.3.9 Equality operators</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<p><a href="/reference/c/language/operator_precedence/">Operator precedence</a></p>
+
+<table class="ref-table">
+<tr><th colspan="7">Common operators</th></tr>
+<tr><td><a href="/reference/c/language/operator_assignment/">assignment</a></td><td><a href="/reference/c/language/operator_incdec/">increment decrement</a></td><td><a href="/reference/c/language/operator_arithmetic/">arithmetic</a></td><td><a href="/reference/c/language/operator_logical/">logical</a></td><td><strong>comparison</strong></td><td><a href="/reference/c/language/operator_member_access/">member access</a></td><td><a href="/reference/c/language/operator_other/">other</a></td></tr>
+<tr><td><p><code>a = b a += b a -= b a *= b a /= b a %= b a &amp;= b a |= b a ^= b a &lt;&lt;= b a &gt;&gt;= b</code></p></td><td><p><code>++a --a a++ a--</code></p></td><td><p><code>+a -a a + b a - b a * b a / b a % b ~a a &amp; b a | b a ^ b a &lt;&lt; b a &gt;&gt; b</code></p></td><td><p><code>!a a &amp;&amp; b a || b</code></p></td><td><p><code>a == b a != b a &lt; b a &gt; b a &lt;= b a &gt;= b</code></p></td><td><p><code>a[b] *a &amp;a a-&gt;b a.b</code></p></td><td><p><code>a(...) a, b (type) a a ? b : c sizeof</code>   <code>_Alignof</code> <span class="std std-since std-c11">(since C11)</span> <span class="std std-until std-c23">(until C23)</span>   <code>alignof</code> <span class="std std-since std-c23">(since C23)</span></p></td></tr>
+</table>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/operator_comparison" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Comparison operators</td></tr>
+</table>

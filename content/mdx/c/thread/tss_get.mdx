@@ -1,0 +1,79 @@
+---
+title: "tss_get"
+slug: "c/thread/tss_get"
+category: "thread"
+source: "https://en.cppreference.com/w/c/thread/tss_get"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;threads.h&gt;</code></p>
+
+```c
+void *tss_get( tss_t tss_key );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Returns the value held in thread-specific storage for the current thread identified by <code>tss_key</code>. Different threads may get different values identified by the same key.</p>
+
+<p>On thread startup (see <a href="/reference/c/thread/thrd_create/">thrd_create</a>), the values associated with all TSS keys are NULL. Different value may be placed in the thread-specific storage with <a href="/reference/c/thread/tss_set/">tss_set</a>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>tss_key</td><td>-</td><td>thread-specific storage key, obtained from <a href="/reference/c/thread/tss_create/">tss_create</a> and not deleted by <a href="/reference/c/thread/tss_delete/">tss_delete</a></td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>The value on success, <a href="/reference/c/types/NULL/">NULL</a> on failure.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The POSIX equivalent for this function is <a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_getspecific.html" rel="noreferrer" target="_blank"><code>pthread_getspecific</code></a>.</p>
+
+<h3 id="Example">Example</h3>
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: no example</td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.6.3 The tss_get function (p: 282)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.6.3 The tss_get function (p: 386)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/thread/tss_set/">tss_set</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>write to thread-specific storage   <span class="mark-note">(function)</span></td></tr>
+</table>

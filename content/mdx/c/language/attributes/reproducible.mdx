@@ -1,0 +1,52 @@
+---
+title: "C attribute: unsequenced, reproducible (since C23)"
+slug: "c/language/attributes/reproducible"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/attributes/reproducible"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Provides the compiler with information about the access of objects by a function such that certain properties of function calls can be deduced.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+[[ unsequenced ]][[ __unsequenced__ ]]
+[[ reproducible ]][[ __reproducible__ ]]
+```
+
+<p class="li-note"><span class="li-num">1)</span>  Indicates that a function is <a href="/reference/c/language/attributes/reproducible/#Effectless">effectless</a>, <a href="/reference/c/language/attributes/reproducible/#Idempotent">idempotent</a>, <a href="/reference/c/language/attributes/reproducible/#Stateless">stateless</a>, and <a href="/reference/c/language/attributes/reproducible/#Independent">independent</a>.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Indicates that a function is effectless and idempotent.</p>
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>These attributes apply to a function declarator or to a type specifier that has a function type. The corresponding attribute is a property of the function type.</p>
+
+<h4 id="Effectless">Effectless</h4>
+
+<p>An evaluation of a function call is effectless if any store operation that is sequenced during the call is the modification of an object that synchronizes with the call; if additionally the operation is observable, all access to the object must be based on a unique pointer parameter of the function.</p>
+
+<h4 id="Idempotent">Idempotent</h4>
+
+<p>An evaluation <em>E</em> is idempotent if a second evaluation of <em>E</em> can be sequenced immediately after the original one without changing the resulting value, if any, or the observable state of the execution.</p>
+
+<h4 id="Stateless">Stateless</h4>
+
+<p>A function <em>F</em> is stateless if any definition of an object of static or thread <a href="/reference/c/language/storage_duration/">storage duration</a> in <em>F</em> or in a function that is called by <em>F</em> is <code>const</code> but not <code>volatile</code> qualified.</p>
+
+<h4 id="Independent">Independent</h4>
+
+<p>A function <em>F</em> is independent if for any object <em>X</em> that is observed by a call to <em>F</em> through an lvalue that is not based on a parameter of the call, all accesses to <em>X</em> in all calls to <em>F</em> during the same program execution observe the same value; otherwise if the access is based on a pointer parameter, there shall be a unique such pointer parameter <em>P</em> such that any access to <em>X</em> shall be to an lvalue that is based on <em>P</em>.</p>
+
+<p>An object <em>X</em> is observed by a function call if both synchronize, if <em>X</em> is not local to the call, if <em>X</em> has a lifetime that starts before the function call, and if an access of <em>X</em> is sequenced during the call; the last value of <em>X</em>, if any, that is stored before the call is said to be the value of <em>X</em> that is observed by the call.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>These attributes exist for the purpose of compiler optimization.</p>
+
+<p>If a function is reproducible, multiple subsequent calls can be treated as a single call.</p>
+
+<p>If a function is unsequenced, multiple subsequent calls can be treated as a single call, and the calls can be parallelized and reordered arbitrarily.</p>

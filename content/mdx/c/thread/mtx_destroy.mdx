@@ -1,0 +1,86 @@
+---
+title: "mtx_destroy"
+slug: "c/thread/mtx_destroy"
+category: "thread"
+source: "https://en.cppreference.com/w/c/thread/mtx_destroy"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;threads.h&gt;</code></p>
+
+```c
+void mtx_destroy( mtx_t *mutex );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Destroys the mutex pointed to by <code>mutex</code>.</p>
+
+<p>If there are threads waiting on <code>mutex</code>, the behavior is undefined.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>mutex</td><td>-</td><td>pointer to the mutex to destroy</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>(none)</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.4.1 The mtx_destroy function (p: 277)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.4.1 The mtx_destroy function (p: 380)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/mutex/~mutex" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+~mutex</td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/timed_mutex/~timed_mutex" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+~timed_mutex</td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/recursive_mutex/~recursive_mutex" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+~recursive_mutex</td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/recursive_timed_mutex/~recursive_timed_mutex" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+~recursive_timed_mutex</td></tr>
+</table>

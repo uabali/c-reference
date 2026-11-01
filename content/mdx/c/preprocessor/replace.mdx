@@ -1,0 +1,368 @@
+---
+title: "Replacing text macros"
+slug: "c/preprocessor/replace"
+category: "preprocessor"
+source: "https://en.cppreference.com/w/c/preprocessor/replace"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>The preprocessor supports text macro replacement and function-like text macro replacement.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+#define identifier replacement-list (optional)
+#define identifier ( parameters ) replacement-list
+#define identifier ( parameters, ... ) replacement-list
+#define identifier ( ... ) replacement-list
+#undef identifier
+```
+
+<h3 id="Explanation">Explanation</h3>
+
+<h4 id=".23define_directives"><code>#define</code> directives</h4>
+
+<p>The <code>#define</code> directives define the <em>identifier</em> as a macro, that is they instruct the compiler to replace all successive occurrences of <em>identifier</em> with <em>replacement-list</em>, which can be optionally additionally processed. If the identifier is already defined as any type of macro, the program is ill-formed unless the definitions are identical.</p>
+
+<h5 id="Object-like_macros">Object-like macros</h5>
+
+<p>Object-like macros replace every occurrence of a defined <em>identifier</em> with <em>replacement-list</em>. Version (1) of the <code>#define</code> directive behaves exactly like that.</p>
+
+<h5 id="Function-like_macros">Function-like macros</h5>
+
+<p>Function-like macros replace each occurrence of a defined <em>identifier</em> with <em>replacement-list</em>, additionally taking a number of arguments, which then replace corresponding occurrences of any of the <em>parameters</em> in the <em>replacement-list</em>.</p>
+
+<p>The syntax of a function-like macro invocation is similar to the syntax of a function call: each instance of the macro name followed by a ( as the next preprocessing token introduces the sequence of tokens that is replaced by the replacement-list. The sequence is terminated by the matching ) token, skipping intervening matched pairs of left and right parentheses.</p>
+
+<p>The number of arguments must be the same as the number of arguments in the macro definition (<em>parameters</em>) or the program is ill-formed. If the identifier is not in functional-notation, i.e. does not have parentheses after itself, it is not replaced at all.</p>
+
+<p>Version (2) of the <code>#define</code> directive defines a simple function-like macro.</p>
+
+<p>Version (3) of the <code>#define</code> directive defines a function-like macro with variable number of arguments. The additional arguments can be accessed using <code>__VA_ARGS__</code> identifier, which is then replaced with arguments, supplied with the identifier to be replaced.</p>
+
+<p>Version (4) of the <code>#define</code> directive defines a function-like macro with variable number of arguments, but no regular arguments. The arguments can be accessed only with <code>__VA_ARGS__</code> identifier, which is then replaced with arguments, supplied with identifier to be replaced.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>For versions (3,4), <em>replacement-list</em> may contain the token sequence <code>__VA_OPT__ (</code> <em>content</em> <code>)</code>, which is replaced by <em>content</em> if <code>__VA_ARGS__</code> is non-empty, and expands to nothing otherwise.</p>
+
+```c
+#define F(...) f(0 __VA_OPT__(,) __VA_ARGS__)
+F(a, b, c) // replaced by f(0, a, b, c)
+F()        // replaced by f(0)
+ 
+#define G(X, ...) f(0, X __VA_OPT__(,) __VA_ARGS__)
+G(a, b, c) // replaced by f(0, a, b, c)
+G(a, )     // replaced by f(0, a)
+G(a)       // replaced by f(0, a)
+ 
+#define SDEF(sname, ...) S sname __VA_OPT__(= { __VA_ARGS__ })
+SDEF(foo);       // replaced by S foo;
+SDEF(bar, 1, 2); // replaced by S bar = { 1, 2 };
+```</aside>
+
+<p>Note: if an argument of a function-like macro includes commas that are not protected by matched pairs of left and right parentheses (such as <code>macro(array[x = y, x + 1])</code> or <code>atomic_store (p, (struct S){ a, b });</code>), the comma is interpreted as macro argument separator, causing a compilation failure due to argument count mismatch.</p>
+
+<h4 id=".23_and_.23.23_operators"><code>#</code> and <code>##</code> operators</h4>
+
+<p>In function-like macros, a <code>#</code> operator before an identifier in the <em>replacement-list</em> runs the identifier through parameter replacement and encloses the result in quotes, effectively creating a string literal. In addition, the preprocessor adds backslashes to escape the quotes surrounding embedded string literals, if any, and doubles the backslashes within the string as necessary. All leading and trailing whitespace is removed, and any sequence of whitespace in the middle of the text (but not inside embedded string literals) is collapsed to a single space. This operation is called "stringification". If the result of stringification is not a valid string literal, the behavior is undefined.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><p>When <code>#</code> appears before <code>__VA_ARGS__</code>, the entire expanded <code>__VA_ARGS__</code> is enclosed in quotes:</p>
+
+```c
+#define showlist(...) puts(#__VA_ARGS__)
+showlist();            // expands to puts("")
+showlist(1, "x", int); // expands to puts("1, \"x\", int")
+```</aside>
+
+<p>A <code>##</code> operator between any two successive identifiers in the <em>replacement-list</em> runs parameter replacement on the two identifiers and then concatenates the result. This operation is called "concatenation" or "token pasting". Only tokens that form a valid token together may be pasted: identifiers that form a longer identifier, digits that form a number, or operators <code>+</code> and <code>=</code> that form a <code>+=</code>. A comment cannot be created by pasting <code>/</code> and <code>*</code> because comments are removed from text before macro substitution is considered. If the result of concatenation is not a valid token, the behavior is undefined.</p>
+
+<p>Note: Some compilers offer an extension that allows <code>##</code> to appear after a comma and before <code>__VA_ARGS__</code>, in which case the <code>##</code> does nothing when <code>__VA_ARGS__</code> is non-empty, but removes the comma when <code>__VA_ARGS__</code> is empty: this makes it possible to define macros such as <code>fprintf (stderr, format, ##__VA_ARGS__)</code>.</p>
+
+<p>The order of evaluation of <code>#</code> and <code>##</code> operators is unspecified.</p>
+
+<h4 id=".23undef_directive"><code>#undef</code> directive</h4>
+
+<p>The <code>#undef</code> directive undefines the <em>identifier</em>, that is it cancels the previous definition of the <em>identifier</em> by <code>#define</code> directive. If the identifier does not have an associated macro, the directive is ignored.</p>
+
+<h3 id="Predefined_macros">Predefined macros</h3>
+
+<p>The following macro names are predefined in any translation unit:</p>
+
+<table class="ref-table ref-dsc">
+<tr><td>__STDC__</td><td>expands to the integer constant <code>1</code>. This macro is intended to indicate a conforming implementation   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__STDC_VERSION__
+
+<span class="std std-since std-c95">(C95)</span></td><td><p>expands to an integer constant of type</p>
+
+<code>long</code>
+
+<p>whose value increases with each version of the C standard:</p>
+
+<ul>
+<li>
+<code>199409L</code>
+
+<span class="std std-since std-c95">(C95)</span>
+</li>
+<li>
+<code>199901L</code>
+
+<span class="std std-since std-c99">(C99)</span>
+</li>
+<li>
+<code>201112L</code>
+
+<span class="std std-since std-c11">(C11)</span>
+</li>
+<li>
+<code>201710L</code>
+
+<span class="std std-since std-c17">(C17)</span>
+</li>
+<li>
+<code>202311L</code>
+
+<span class="std std-since std-c23">(C23)</span>
+
+<span class="mark-note">(macro constant)</span>
+</li>
+</ul></td></tr>
+<tr><td>__STDC_HOSTED__
+
+<span class="std std-since std-c99">(C99)</span></td><td>expands to the integer constant <code>1</code> if the implementation is hosted (runs under an OS), <code>0</code> if freestanding (runs without an OS)   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__FILE__</td><td>expands to the name of the current file, as a character string literal, can be changed by the <a href="/reference/c/preprocessor/line/">#line</a> directive   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__LINE__</td><td>expands to the source file line number, an integer constant, can be changed by the <a href="/reference/c/preprocessor/line/">#line</a> directive   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__DATE__</td><td>expands to the date of translation, a character string literal of the form "Mmm dd yyyy". The name of the month is as if generated by <a href="/reference/c/chrono/asctime/">asctime</a> and the first character of "dd" is a space if the day of the month is less than 10   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__TIME__</td><td>expands to the time of translation, a character string literal of the form "hh:mm:ss", as in the time generated by <code>asctime()</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__STDC_UTF_16__
+
+<span class="std std-since std-c23">(C23)</span></td><td>expands to <code>1</code> to indicate that <code>char16_t</code> use UTF-16 encoding   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__STDC_UTF_32__
+
+<span class="std std-since std-c23">(C23)</span></td><td>expands to <code>1</code> to indicate that <code>char32_t</code> use UTF-32 encoding   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__STDC_EMBED_NOT_FOUND__<br />__STDC_EMBED_FOUND__<br />__STDC_EMBED_EMPTY__
+
+<span class="std std-since std-c23">(C23)</span></td><td>expand to <code>0</code>, <code>1</code>, and <code>2</code>, respectively   <span class="mark-note">(macro constant)</span></td></tr>
+</table>
+
+<p>The following additional macro names may be predefined by an implementation:</p>
+
+<table class="ref-table ref-dsc">
+<tr><td>__STDC_ISO_10646__
+
+<span class="std std-since std-c99">(C99)</span></td><td>expands to an integer constant of the form <code>yyyymmL</code>, if <code>wchar_t</code> uses Unicode; the date indicates the latest revision of Unicode supported   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__STDC_IEC_559__
+
+<span class="std std-since std-c99">(C99)</span></td><td>expands to <code>1</code> if IEC 60559 is supported <span class="mark-note">(deprecated)</span><span class="std std-since std-c23">(since C23)</span>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__STDC_IEC_559_COMPLEX__
+
+<span class="std std-since std-c99">(C99)</span></td><td>expands to <code>1</code> if IEC 60559 complex arithmetic is supported <span class="mark-note">(deprecated)</span><span class="std std-since std-c23">(since C23)</span>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__STDC_UTF_16__
+
+<span class="std std-since std-c11">(C11)</span></td><td>expands to <code>1</code> if <code>char16_t</code> use UTF-16 encoding   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__STDC_UTF_32__
+
+<span class="std std-since std-c11">(C11)</span></td><td>expands to <code>1</code> if <code>char32_t</code> use UTF-32 encoding   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__STDC_MB_MIGHT_NEQ_WC__
+
+<span class="std std-since std-c99">(C99)</span></td><td>expands to <code>1</code> if <code>&#x27;x&#x27; == L&#x27;x&#x27;</code> might be false for a member of the basic character set, such as on EBCDIC-based systems that use Unicode for <code>wchar_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__STDC_ANALYZABLE__
+
+<span class="std std-since std-c11">(C11)</span></td><td>expands to <code>1</code> if <a href="/reference/c/language/analyzability/">analyzability</a> is supported   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__STDC_LIB_EXT1__
+
+<span class="std std-since std-c11">(C11)</span></td><td>expands to an integer constant <code>201112L</code> if <a href="/reference/c/error/">bounds-checking interfaces</a> are supported   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__STDC_NO_ATOMICS__
+
+<span class="std std-since std-c11">(C11)</span></td><td>expands to <code>1</code> if <a href="/reference/c/language/atomic/">atomic</a> types and <a href="/reference/c/thread/#Atomic_operations">atomic operations library</a> are not supported   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__STDC_NO_COMPLEX__
+
+<span class="std std-since std-c11">(C11)</span></td><td>expands to <code>1</code> if <a href="/reference/c/language/arithmetic_types/#Complex_floating_types">complex types</a> and <a href="/reference/c/numeric/complex/">complex math library</a> are not supported   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__STDC_NO_THREADS__
+
+<span class="std std-since std-c11">(C11)</span></td><td>expands to <code>1</code> if <a href="/reference/c/thread/">multithreading</a> is not supported   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__STDC_NO_VLA__
+
+<span class="std std-since std-c11">(C11)</span></td><td>expands to <code>1</code> if <a href="/reference/c/language/array/#Variable-length_arrays">variable-length arrays</a> and variably-modified types<span class="std std-until std-c23">(until C23)</span>of automatic storage duration<span class="std std-since std-c23">(since C23)</span> are not supported   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__STDC_IEC_60559_BFP__
+
+<span class="std std-since std-c23">(C23)</span></td><td>expands to <code>202311L</code> if IEC 60559 binary floating-point arithmetic is supported   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__STDC_IEC_60559_DFP__
+
+<span class="std std-since std-c23">(C23)</span></td><td>expands to <code>202311L</code> if IEC 60559 decimal floating-point arithmetic is supported   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__STDC_IEC_60559_COMPLEX__
+
+<span class="std std-since std-c23">(C23)</span></td><td>expands to <code>202311L</code> if IEC 60559 complex arithmetic is supported   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__STDC_IEC_60559_TYPES__
+
+<span class="std std-since std-c23">(C23)</span></td><td>expands to <code>202311L</code> if IEC 60559 interchange and extended types are supported   <span class="mark-note">(macro constant)</span></td></tr>
+</table>
+
+<p>The values of these macros (except for <code>__FILE__</code> and <code>__LINE__</code>) remain constant throughout the translation unit. Attempts to redefine or undefine these macros result in undefined behavior.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><p>The predefined variable <code>__func__</code> (see <a href="/reference/c/language/function_definition/#func">function definition</a> for details) is not a preprocessor macro, even though it is sometimes used together with <code>__FILE__</code> and <code>__LINE__</code>, e.g. by <a href="/reference/c/error/assert/">assert</a>.</p></aside>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+ 
+// make function factory and use it
+#define FUNCTION(name, a) int fun_##name(int x) { return (a) * x; }
+ 
+FUNCTION(quadruple, 4)
+FUNCTION(double, 2)
+ 
+#undef FUNCTION
+#define FUNCTION 34
+#define OUTPUT(a) puts( #a )
+ 
+int main(void)
+{
+    printf("quadruple(13): %d\n", fun_quadruple(13) );
+    printf("double(21): %d\n", fun_double(21) );
+    printf("%d\n", FUNCTION);
+    OUTPUT(billion);               // note the lack of quotes
+}
+```
+
+<p>Output:</p>
+
+```text
+quadruple(13): 52
+double(21): 42
+34
+billion
+```
+
+<h3 id="Defect_reports">Defect reports</h3>
+
+<p>The following behavior-changing defect reports were applied retroactively to previously published C standards.</p>
+
+<table class="ref-table">
+<tr><th>DR</th><th>Applied to</th><th>Behavior as published</th><th>Correct behavior</th></tr>
+<tr><td><a href="https://www.open-std.org/jtc1/sc22/wg14/www/docs/dr_321.htm" rel="noreferrer" target="_blank">DR 321</a></td><td>C99</td><td>it was unclear if <code>L&#x27;x&#x27; == &#x27;x&#x27;</code> always holds among the basic character set</td><td><code>__STDC_MB_MIGHT_NEQ_WC__</code> added for the purpose</td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.4 Macro replacement (p: 187-184)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.9 Predefined macro names (p: 186-188)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.3 Macro replacement (p: 121-126)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.8 Predefined macro names (p: 127-129)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.3 Macro replacement (p: 166-173)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.8 Predefined macro names (p: 175-176)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.3 Macro replacement (p: 151-158)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.8 Predefined macro names (p: 160-161)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.8.3 Macro replacement</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.8.8 Predefined macro names</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/preprocessor/replace" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Replacing text macros</td></tr>
+</table>

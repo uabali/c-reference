@@ -1,0 +1,181 @@
+---
+title: "fsetpos"
+slug: "c/io/fsetpos"
+category: "io"
+source: "https://en.cppreference.com/w/c/io/fsetpos"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+```c
+int fsetpos( FILE* stream, const fpos_t* pos );
+```
+
+<p>Sets the file position indicator and the multibyte parsing state (if any) for the file stream <code>stream</code> according to the value pointed to by <code>pos</code>.</p>
+
+<p>Besides establishing new parse state and position, a call to this function undoes the effects of <a href="/reference/c/io/ungetc/">ungetc</a> and clears the end-of-file state, if it is set.</p>
+
+<p>If a read or write error occurs, the error indicator (<a href="/reference/c/io/ferror/">ferror</a>) for the stream is set.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>stream</td><td>-</td><td>file stream to modify</td></tr>
+<tr><td>pos</td><td>-</td><td>pointer to a <a href="/reference/c/io/fpos_t/">fpos_t</a> object to use as new value of file position indicator</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p><code>0</code> upon success, nonzero value otherwise.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>After seeking to a non-end position in a wide stream, the next call to any output function may render the remainder of the file undefined, e.g. by outputting a multibyte sequence of a different length.</p>
+
+<h3 id="Example">Example</h3>
+
+<p><code>fsetpos</code> with error checking</p>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(void)
+{
+    // Prepare an array of FP (floating-point) values.
+    #define SIZE 5
+    double A[SIZE] = {1.0, 2.0, 3.0, 4.0, 5.0};
+    // Write array to a file.
+    FILE * fp = fopen("test.bin", "wb");
+    fwrite(A,sizeof(double),SIZE,fp);
+    fclose (fp);
+ 
+    // Read the FP values into array B.
+    double B[SIZE];
+    fp = fopen("test.bin","rb");
+    fpos_t pos;
+    if (fgetpos(fp, &pos)) // current position: start of file
+    {
+        perror("fgetpos()");
+        fprintf(stderr, "fgetpos() failed in file %s at line # %d\n",
+                __FILE__, __LINE__ - 3);
+        exit(EXIT_FAILURE);
+    }
+ 
+    int ret_code = fread(B,sizeof(double),1,fp); // read one FP value
+    // current position: after reading one f-p value
+    printf("%.1f; read count = %d\n", B[0], ret_code); // print one FP value and ret_code
+ 
+    if (fsetpos(fp, &pos)) // reset current position to start of file
+    {
+        if (ferror(fp))
+        {
+            perror("fsetpos()");
+            fprintf(stderr, "fsetpos() failed in file %s at line # %d\n", __FILE__,
+                    __LINE__ - 5);
+            exit(EXIT_FAILURE);
+        }
+    }
+ 
+    ret_code = fread(B, sizeof(double), 1, fp); // reread first FP value
+    printf("%.1f; read count = %d\n", B[0], ret_code); // print one FP value and ret_code
+    fclose(fp);
+ 
+    return EXIT_SUCCESS;
+}
+```
+
+<p>Possible output:</p>
+
+```text
+1.0; read count = 1
+1.0; read count = 1
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.9.3 The fsetpos function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.9.3 The fsetpos function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.9.3 The fsetpos function (p: 337)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.9.3 The fsetpos function (p: 303)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9.9.3 The fsetpos function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/fgetpos/">fgetpos</a></td><td>gets the file position indicator   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/ftell/">ftell</a></td><td>returns the current file position indicator   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fseek/">fseek</a></td><td>moves the file position indicator to a specific location in a file   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c/fsetpos" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+fsetpos</td></tr>
+</table>

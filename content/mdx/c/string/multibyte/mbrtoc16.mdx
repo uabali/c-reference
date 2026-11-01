@@ -1,0 +1,215 @@
+---
+title: "mbrtoc16"
+slug: "c/string/multibyte/mbrtoc16"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/multibyte/mbrtoc16"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;uchar.h&gt;</code></p>
+
+```c
+size_t mbrtoc16( char16_t* restrict pc16, const char* restrict s,
+                 size_t n, mbstate_t* restrict ps );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Converts a single code point from its narrow multibyte character representation to its variable-length 16-bit wide character representation (typically, UTF-16).</p>
+
+<p>If <code>s</code> is not a null pointer, inspects at most <code>n</code> bytes of the multibyte character string, beginning with the byte pointed to by <code>s</code> to determine the number of bytes necessary to complete the next multibyte character (including any shift sequences, and taking into account the current multibyte conversion state <code>*ps</code>). If the function determines that the next multibyte character in <code>s</code> is complete and valid, converts it to the corresponding 16-bit wide character and stores it in <code>*pc16</code> (if <code>pc16</code> is not null).</p>
+
+<p>If the multibyte character in <code>*s</code> corresponds to a multi-char16_t sequence (e.g. a surrogate pair in UTF-16), then after the first call to this function, <code>*ps</code> is updated in such a way that the next call to <code>mbrtoc16</code> will write out the additional <code>char16_t</code>, without considering <code>*s</code>.</p>
+
+<p>If <code>s</code> is a null pointer, the values of <code>n</code> and <code>pc16</code> are ignored and the call is equivalent to <code>mbrtoc16(NULL, &quot;&quot;, 1, ps)</code>.</p>
+
+<p>If the wide character produced is the null character, the conversion state <code>*ps</code> represents the initial shift state.</p>
+
+<p>If the macro <code>__STDC_UTF_16__</code> is defined, the 16-bit encoding used by this function is UTF-16; otherwise, it is implementation-defined. The macro is always defined and the encoding is always UTF-16.<span class="std std-since std-c23">(since C23)</span> In any case, the multibyte character encoding used by this function is specified by the currently active C locale.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>pc16</td><td>-</td><td>pointer to the location where the resulting 16-bit wide character will be written</td></tr>
+<tr><td>s</td><td>-</td><td>pointer to the multibyte character string used as input</td></tr>
+<tr><td>n</td><td>-</td><td>limit on the number of bytes in s that can be examined</td></tr>
+<tr><td>ps</td><td>-</td><td>pointer to the conversion state object used when interpreting the multibyte string</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>The first of the following that applies:</p>
+
+<ul>
+<li>
+<code>0</code>
+
+<p>if the character converted from</p>
+
+<code>s</code>
+
+<p>(and stored in</p>
+
+<code>*pc16</code>
+
+<p>if non-null) was the null character</p>
+</li>
+<li>
+<p>the number of bytes</p>
+
+<code>[1...n]</code>
+
+<p>of the multibyte character successfully converted from</p>
+
+<code>s</code>
+</li>
+<li>
+<code>(size_t)-3</code>
+
+<p>if the next</p>
+
+<code>char16_t</code>
+
+<p>from a multi-</p>
+
+<code>char16_t</code>
+
+<p>character (e.g. a surrogate pair) has now been written to</p>
+
+<code>*pc16</code>
+
+<p>. No bytes are processed from the input in this case.</p>
+</li>
+<li>
+<code>(size_t)-2</code>
+
+<p>if the next</p>
+
+<code>n</code>
+
+<p>bytes constitute an incomplete, but so far valid, multibyte character. Nothing is written to</p>
+
+<code>*pc16</code>
+
+<p>.</p>
+</li>
+<li>
+<code>(size_t)-1</code>
+
+<p>if encoding error occurs. Nothing is written to</p>
+
+<code>*pc16</code>
+
+<p>, the value</p>
+
+<a href="/reference/c/error/errno_macros/">EILSEQ</a>
+
+<p>is stored in</p>
+
+<a href="/reference/c/error/errno/">errno</a>
+
+<p>and the value of</p>
+
+<code>*ps</code>
+
+<p>is unspecified.</p>
+</li>
+</ul>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <locale.h>
+#include <stdio.h>
+#include <uchar.h>
+ 
+mbstate_t state;
+ 
+int main(void)
+{
+    setlocale(LC_ALL, "en_US.utf8");
+    const char in[] = u8"zß水🍌"; // or "z\u00df\u6c34\U0001F34C"
+    const size_t in_sz = sizeof in / sizeof *in;
+ 
+    printf("Processing %zu UTF-8 code units: [ ", in_sz);
+    for (size_t n = 0; n < in_sz; ++n)
+        printf("%#x ", (unsigned char)in[n]);
+    puts("]");
+ 
+    char16_t out[in_sz];
+    const char *p_in = in, *end = in + in_sz;
+    char16_t *p_out = out;
+    for (size_t rc; (rc = mbrtoc16(p_out, p_in, end - p_in, &state));)
+    {
+        if (rc == (size_t)-1)     // invalid input
+            break;
+        else if(rc == (size_t)-2) // truncated input
+            break;
+        else if(rc == (size_t)-3) // UTF-16 high surrogate
+            p_out += 1;
+        else
+        {
+            p_in += rc;
+            p_out += 1;
+        };
+    }
+ 
+    const size_t out_sz = p_out - out + 1;
+    printf("into %zu UTF-16 code units: [ ", out_sz);
+    for (size_t x = 0; x < out_sz; ++x)
+        printf("%#x ", out[x]);
+    puts("]");
+}
+```
+
+<p>Output:</p>
+
+```text
+Processing 11 UTF-8 code units: [ 0x7a 0xc3 0x9f 0xe6 0xb0 0xb4 0xf0 0x9f 0x8d 0x8c 0 ]
+into 6 UTF-16 code units: [ 0x7a 0xdf 0x6c34 0xd83c 0xdf4c 0 ]
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.30.1.3 The mbrtoc16 function (p: 408-409)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.28.1.1 The mbrtoc16 function (p: 398-399)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/multibyte/c16rtomb/">c16rtomb</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>converts a UTF-16 character to narrow multibyte encoding   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/multibyte/mbrtoc16" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+mbrtoc16</td></tr>
+</table>

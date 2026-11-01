@@ -1,0 +1,180 @@
+---
+title: "fputwc, putwc"
+slug: "c/io/fputwc"
+category: "io"
+source: "https://en.cppreference.com/w/c/io/fputwc"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;wchar.h&gt;</code></p>
+
+```c
+wint_t fputwc( wchar_t ch, FILE* stream );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c95">(since C95)</span></p>
+
+```c
+wint_t putwc( wchar_t ch, FILE* stream );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c95">(since C95)</span></p>
+
+<p>Writes a wide character <code>ch</code> to the given output stream <code>stream</code>.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  May be implemented as a macro and may evaluate <code>stream</code> more than once.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>ch</td><td>-</td><td>wide character to be written</td></tr>
+<tr><td>stream</td><td>-</td><td>the output stream</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Returns a copy of <code>ch</code> on success.</p>
+
+<p>On failure, returns WEOF and sets the <em>error</em> indicator (see <a href="/reference/c/io/ferror/">ferror()</a>) on <code>stream</code>.</p>
+
+<p>If an encoding error occurred, additionally sets <a href="/reference/c/error/errno/">errno</a> to <a href="/reference/c/error/errno_macros/">EILSEQ</a>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <errno.h>
+#include <locale.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <wchar.h>
+ 
+int main(void)
+{
+    setlocale(LC_ALL, "en_US.utf8");
+ 
+    errno = 0;
+    if (fputwc(L'🍌', stdout) == WEOF)
+    {
+        if (errno == EILSEQ)
+            puts("Encoding error in fputwc.");
+        else
+            puts("I/O error in fputwc.");
+        return EXIT_FAILURE;
+    }
+}
+```
+
+<p>Possible output:</p>
+
+```text
+🍌
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.3.3 The fputwc function (p: 430)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.3.8 The putwc function (p: 431-432)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.3.3 The fputwc function (p: 308)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.3.8 The putwc function (p: 310)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.3.3 The fputwc function (p: 422-423)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.3.8 The putwc function (p: 424)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.3.3 The fputwc function (p: 368)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.3.8 The putwc function (p: 370)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/putc/">fputc<br />putc</a></td><td>writes a character to a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fputws/">fputws</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>writes a wide string to a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fgetwc/">fgetwc<br />getwc</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>gets a wide character from a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c/fputwc" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+fputwc</td></tr>
+</table>

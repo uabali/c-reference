@@ -1,0 +1,108 @@
+---
+title: "Predefined null pointer constant (since C23)"
+slug: "c/language/nullptr"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/nullptr"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+nullptr
+```
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>The keyword <code>nullptr</code> denotes a predefined null pointer constant. It is a <a href="/reference/c/language/value_category/#Non-lvalue_object_expressions">non-lvalue</a> of type <a href="/reference/c/types/nullptr_t/">nullptr_t</a>. <code>nullptr</code> can be <a href="/reference/c/language/conversion/">converted</a> to a pointer types or <code>bool</code>, where the result is the null pointer value of that type or <code>false</code> respectively.</p>
+
+<h3 id="Keywords">Keywords</h3>
+
+<p><a href="/reference/c/keyword/nullptr/"><code>nullptr</code></a></p>
+
+<h3 id="Example">Example</h3>
+
+<p>Demonstrates that a copy of <code>nullptr</code> can also be used as a null pointer constant.</p>
+
+```c
+#include <stddef.h>
+#include <stdio.h>
+ 
+void g(int*)
+{
+    puts("Function g called");
+}
+ 
+#define DETECT_NULL_POINTER_CONSTANT(e) \
+    _Generic(e,                         \
+        void* : puts("void*"),          \
+        nullptr_t : puts("nullptr_t"),  \
+        default : puts("integer")       \
+    )
+ 
+int main()
+{
+    g(nullptr); // OK
+    g(NULL); // OK
+    g(0); // OK
+ 
+    auto cloned_nullptr = nullptr;
+    g(cloned_nullptr); // OK
+ 
+    [[maybe_unused]] auto cloned_NULL = NULL;
+//  g(cloned_NULL); // implementation-defined: maybe OK
+ 
+    [[maybe_unused]] auto cloned_zero = 0;
+//  g(cloned_zero); // Error
+ 
+    DETECT_NULL_POINTER_CONSTANT(((void*)0));
+    DETECT_NULL_POINTER_CONSTANT(0);
+    DETECT_NULL_POINTER_CONSTANT(nullptr);
+    DETECT_NULL_POINTER_CONSTANT(NULL); // implementation-defined
+}
+```
+
+<p>Possible output:</p>
+
+```text
+Function g called
+Function g called
+Function g called
+Function g called
+void*
+integer
+nullptr_t
+void*
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.4.4.6 Predefined constants (p: 66)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/types/NULL/">NULL</a></td><td>implementation-defined null pointer constant   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td><a href="/reference/c/types/nullptr_t/">nullptr_t</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>the type of the predefined null pointer constant <strong><code>nullptr</code></strong>   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/nullptr" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+nullptr</td></tr>
+</table>

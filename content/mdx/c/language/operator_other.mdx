@@ -1,0 +1,712 @@
+---
+title: "Other operators"
+slug: "c/language/operator_other"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/operator_other"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>A collection of operators that do not fit into any of the other major categories.</p>
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: consider a more general-purpose ToC for this and other tables that cover multiple topics</td></tr>
+</table>
+
+<table class="ref-table">
+<tr><th>Operator</th><th>Operator name</th><th>Example</th><th>Description</th></tr>
+<tr><td><code>(...)</code></td><td><a href="/reference/c/language/operator_other/#Function_call">function call</a></td><td><code>f(...)</code></td><td>call the function <strong>f</strong>(), with zero or more arguments</td></tr>
+<tr><td><code>,</code></td><td><a href="/reference/c/language/operator_other/#Comma_operator">comma operator</a></td><td><code>a, b</code></td><td>evaluate expression <strong>a</strong>, disregard its return value and complete any side-effects, then evaluate expression <strong>b</strong>, returning the type and the result of this evaluation</td></tr>
+<tr><td><code>(type)</code></td><td><a href="/reference/c/language/cast/">type cast</a></td><td><code>(type)a</code></td><td>cast the type of <strong>a</strong> to <strong>type</strong></td></tr>
+<tr><td><code>? :</code></td><td><a href="/reference/c/language/operator_other/#Conditional_operator">conditional operator</a></td><td><code>a ? b : c</code></td><td>if <strong>a</strong> is logically true (does not evaluate to zero) then evaluate expression <strong>b</strong>, otherwise evaluate expression <strong>c</strong></td></tr>
+<tr><td><code>sizeof</code></td><td><a href="/reference/c/language/sizeof/">sizeof operator</a></td><td><code>sizeof a</code></td><td>the size in bytes of <strong>a</strong></td></tr>
+<tr><td><code>_Alignof</code> <span class="std std-since std-c11">(since C11)</span></td><td><a href="/reference/c/language/alignof/">_Alignof operator</a></td><td><code>_Alignof(type)</code></td><td>the alignment required of <strong>type</strong></td></tr>
+<tr><td><code>typeof</code></td><td><a href="/reference/c/language/typeof_unqual/">typeof operators</a></td><td><code>typeof(a)</code></td><td>the type of <strong>a</strong></td></tr>
+</table>
+
+<h3 id="Function_call">Function call</h3>
+
+<p>The function call expression has the form</p>
+
+```text
+expression ( argument-list (optional) )
+```
+
+<p>where</p>
+
+<table class="ref-table ref-params">
+<tr><td><em>expression</em></td><td>-</td><td>any expression of pointer-to-function type (after <a href="/reference/c/language/conversion/#Lvalue_conversions">lvalue conversions</a>)</td></tr>
+<tr><td><em>argument-list</em></td><td>-</td><td>comma-separated list of expressions (which cannot be comma operators) of any complete object type. May be omitted when calling functions that take no arguments.</td></tr>
+</table>
+
+<p>The behavior of the function call expression depends on whether the prototype of the function being called is <a href="/reference/c/language/scope/">in scope</a> at the point of call.</p>
+
+<h4 id="Call_to_a_function_with_a_prototype">Call to a function with a prototype</h4>
+
+<p class="li-note"><span class="li-num">1)</span>  The number of parameters must equal the number of arguments (unless the ellipsis parameter is used).</p>
+
+<p class="li-note"><span class="li-num">2)</span>  The type of each parameter must be a type such that <a href="/reference/c/language/conversion/">implicit conversion as if by assignment</a> exists that converts the unqualified type of the corresponding argument to the type of the parameter.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><p class="li-note">Additionally, for every parameter of <a href="/reference/c/language/array/">array type</a> that uses the keyword <code>static</code> between <code>[</code> and <code>]</code>, the argument expression must designate a pointer to the element of an array with at least that many elements as specified in the size expression of the parameter.</p></aside>
+
+<p class="li-note"><span class="li-num">3)</span>  The arguments are evaluated <a href="/reference/c/language/eval_order/">in unspecified order and without sequencing</a>.</p>
+
+<div class="li-note"><span class="li-num">4)</span>
+
+<a href="/reference/c/language/operator_assignment/">Assignment</a>
+
+<p>is performed to copy the value of each argument to the corresponding function parameter, ignoring any type qualifiers on the parameter type and its possibly recursive elements or members, if any (note: the function can modify its parameters, and those changes do not affect the arguments; C function calls are only call-by-value).</p>
+
+<dl>
+<dd><ul>
+<li>
+<p>if there is a</p>
+
+<a href="/reference/c/language/variadic/">trailing ellipsis</a>
+
+<p>parameter,</p>
+
+<a href="https://en.cppreference.com/mwiki/index.php?title=conversion&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">Default argument promotions</a>
+
+<p>are performed on the remaining arguments, which are made available to</p>
+
+va_list
+
+<p>.</p>
+</li>
+</ul></dd>
+</dl></div>
+
+<div class="li-note"><span class="li-num">5)</span>
+
+<p>Function is executed, and the value it returns becomes the value of the function call expression (if the function returns void, the function call expression is a void expression)</p>
+
+```c
+void f(char* p, int x) {}
+int main(void)
+{
+    f("abc", 3.14); // array to pointer and float to int conversions
+}
+```</div>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-until std-c23">(until C23)</span></p><h4 id="Call_to_a_function_without_a_prototype">Call to a function without a prototype</h4>
+
+<p class="li-note"><span class="li-num">1)</span>  The arguments are evaluated <a href="/reference/c/language/eval_order/">in unspecified order and without sequencing</a>.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  <a href="/reference/c/language/conversion/#Default_argument_promotions">Default argument promotions</a> are performed on every argument expression.</p>
+
+<p class="li-note"><span class="li-num">3)</span>  <a href="/reference/c/language/operator_assignment/">Assignment</a> is performed to copy the value of each argument to the corresponding function parameter, ignoring any type qualifiers on the parameter type and its possibly recursive elements or members, if any.</p>
+
+<div class="li-note"><span class="li-num">4)</span>
+
+<p>Function is executed, and the value it returns becomes the value of the function call expression (if the function returns void, the function call expression is a void expression)</p>
+
+```c
+void f(); // no prototype
+int main(void)
+{
+    f(1, 1.0f); // UB unless f is defined to take an int and a double
+}
+void f(int a, double c) {}
+```</div>
+
+<p>The behavior of a function call to a function without a prototype is undefined if</p>
+
+<ul>
+<li>
+<p>the number of arguments does not match the number of parameters.</p>
+</li>
+<li>
+<p>the promoted types of the arguments are not</p>
+
+<a href="/reference/c/language/compatible_type/#Compatible_types">compatible</a>
+
+<p>with the promoted types of the parameters except that</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>signed and unsigned versions of the same integer type are considered compatible if the value of the argument is representable by both types.</p>
+</li>
+<li>
+<p>pointers to void and pointers to (possibly cvr-qualified) character types are considered compatible</p>
+</li>
+</ul></dd>
+</dl></aside>
+
+<h4 id="Notes">Notes</h4>
+
+<p>The evaluations of <em>expression</em> that designates the function to be called and all arguments are <a href="/reference/c/language/eval_order/">unsequenced</a> with respect to each other (but there is a sequence point before the body of the function begins executing)</p>
+
+```c
+(*pf[f1()]) (f2(), f3() + f4()); // f1, f2, f3, f4 may be called in any order
+```
+
+<p>Although function call is only defined for pointers to functions, it works with function designators due to the <a href="/reference/c/language/conversion/#Function_to_pointer_conversion">function-to-pointer implicit conversion</a>.</p>
+
+```c
+int f(void) { return 1; }
+int (*pf)(void) = f;
+ 
+int main(void)
+{
+    f();    // convert f to pointer, then call
+    (&f)(); // create a pointer to function, then call
+ 
+    pf();    // call the function
+    (*pf)(); // obtain the function designator, convert to pointer, then calls
+ 
+    (****f)(); // convert to pointer, obtain the function, repeat 4x, then call
+    (****pf)(); // also OK
+}
+```
+
+<p>Functions that ignore unused arguments, such as <a href="/reference/c/io/fprintf/">printf</a>, must be called with a prototype in scope (the prototype of such functions necessarily uses the <a href="/reference/c/language/variadic/">trailing ellipsis</a> parameter) to avoid invoking undefined behavior.</p>
+
+<p>The current standard wording of the semantics of preparing function parameters is defective, because it specifies that parameters are assigned from arguments while calling, which incorrectly rejects const-qualified parameter or member types, and inappropriately applies the semantics of volatile which is unimplementable for function parameters on many platforms. A post-C11 defect report <a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2396.htm#dr_427" rel="noreferrer" target="_blank">DR427</a> proposed change of such semantics from assignment to initialization, but was closed as not-a-defect.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-until std-c99">(until C99)</span></p><p>A function call expression where <em>expression</em> consists entirely of an identifier and that identifier is undeclared acts as though the identifier is declared as</p>
+
+```c
+extern int identifier(); // returns int and has no prototype
+```
+
+<p>So the following complete program is valid C89:</p>
+
+```c
+main()
+{
+    int n = atoi("123"); // implicitly declares atoi as int atoi()
+}
+```</aside>
+
+<h3 id="Comma_operator">Comma operator</h3>
+
+<p>The comma operator expression has the form</p>
+
+```text
+lhs , rhs
+```
+
+<p>where</p>
+
+<table class="ref-table ref-params">
+<tr><td><em>lhs</em></td><td>-</td><td>any expression</td></tr>
+<tr><td><em>rhs</em></td><td>-</td><td>any expression other than another comma operator (in other words, comma operator's <a href="/reference/c/language/operator_precedence/">associativity</a> is left-to-right)</td></tr>
+</table>
+
+<p>First, the left operand, <em>lhs</em>, is evaluated and its result value is discarded.</p>
+
+<p>Then, a <a href="/reference/c/language/eval_order/">sequence point</a> takes place, so that all side effects of <em>lhs</em> are complete.</p>
+
+<p>Then, the right operand, <em>rhs</em>, is evaluated and its result is returned by the comma operator as a <a href="/reference/c/language/value_category/">non-lvalue</a>.</p>
+
+<h3 id="Notes_2">Notes</h3>
+
+<p>The type of the <em>lhs</em> may be <code>void</code> (that is, it may be a call to a function that returns <code>void</code>, or it can be an expression <a href="/reference/c/language/cast/">cast</a> to <code>void</code>)</p>
+
+<p>The comma operator may be lvalue in C++, but never in C</p>
+
+<p>The comma operator may return a struct (the only other expressions that return structs are compound literals, function calls, assignments, and the conditional operator)</p>
+
+<p>In the following contexts, the comma operator cannot appear at the top level of an expression because the comma has a different meaning:</p>
+
+<ul>
+<li>
+<p>argument list in a function call</p>
+</li>
+<li>
+<p>initializer expression or</p>
+
+<a href="/reference/c/language/initialization/">initializer list</a>
+</li>
+<li>
+<a href="/reference/c/language/generic/">generic selection</a>
+</li>
+</ul>
+
+<p>If the comma operator has to be used in such context, it must be parenthesized:</p>
+
+```c
+// int n = 2,3; // error, comma assumed to begin the next declarator
+// int a[2] = {1,2,3}; // error: more initializers than elements
+int n = (2,3), a[2] = {(1,2),3}; // OK
+ 
+f(a, (t=3, t+2), c); // OK, first, stores 3 in t, then calls f with three arguments
+```
+
+<p>Top-level comma operator is also disallowed in array bounds</p>
+
+```c
+// int a[2,3]; // error
+int a[(2,3)]; // OK, VLA array of size 3 (VLA because (2,3) is not a constant expression)
+```
+
+<p>Comma operator is not allowed in <a href="/reference/c/language/constant_expression/">constant expressions</a>, regardless of whether it's on the top level or not</p>
+
+```c
+// static int n = (1,2); // Error: constant expression cannot call the comma operator
+```
+
+<h3 id="Cast_operator">Cast operator</h3>
+
+<p>See <a href="/reference/c/language/cast/">cast operator</a></p>
+
+<h3 id="Conditional_operator">Conditional operator</h3>
+
+<p>The conditional operator expression has the form</p>
+
+```text
+condition ? expression-true : expression-false
+```
+
+<p>where</p>
+
+<table class="ref-table ref-params">
+<tr><td><em>condition</em></td><td>-</td><td>an expression of scalar type</td></tr>
+<tr><td><em>expression-true</em></td><td>-</td><td>the expression that will be evaluated if condition compares unequal to zero</td></tr>
+<tr><td><em>expression-false</em></td><td>-</td><td>the expression that will be evaluated if condition compares equal to zero</td></tr>
+</table>
+
+<p>Only the following expressions are allowed as <em>expression-true</em> and <em>expression-false</em></p>
+
+<ul>
+<li>
+<p>two expressions of any</p>
+
+<a href="/reference/c/language/arithmetic_types/">arithmetic type</a>
+</li>
+<li>
+<p>two expressions of the same</p>
+
+<a href="/reference/c/language/struct/">struct</a>
+
+<p>or</p>
+
+<a href="/reference/c/language/union/">union</a>
+
+<p>type</p>
+</li>
+<li>
+<p>two expressions of void type</p>
+</li>
+<li>
+<p>two expressions of pointer type, pointing to types that are</p>
+
+<a href="/reference/c/language/compatible_type/#Compatible_types">compatible</a>
+
+<p>, ignoring cvr-qualifiers</p>
+</li>
+</ul>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><ul>
+<li>
+<p>two expressions of</p>
+
+<a href="/reference/c/types/nullptr_t/">nullptr_t</a>
+
+<p>type</p>
+</li>
+</ul></aside>
+
+<ul>
+<li>
+<p>one expression is a pointer and the other is the null pointer constant (such as</p>
+
+<a href="/reference/c/types/NULL/">NULL</a>
+
+<p>)</p>
+
+or a <a href="/reference/c/types/nullptr_t/">nullptr_t</a> value<span class="std std-since std-c23">(since C23)</span>
+</li>
+<li>
+<p>one expression is a pointer to object and the other is a pointer to void (possibly qualified)</p>
+</li>
+</ul>
+
+<p class="li-note"><span class="li-num">1)</span>  First, evaluates <em>condition</em>. There is a <a href="/reference/c/language/eval_order/">sequence point</a> after this evaluation.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  If the result of <em>condition</em> compares unequal to zero, executes <em>expression-true</em>, otherwise executes <em>expression-false</em></p>
+
+<p class="li-note"><span class="li-num">3)</span>  Performs a <a href="/reference/c/language/conversion/">conversion</a> from the result of the evaluation to the <em>common type</em>, defined as follows:</p>
+
+<span class="li-num">1)</span>
+
+<p>if the expressions have arithmetic type, the common type is the type after</p>
+
+<a href="/reference/c/language/conversion/#Usual_arithmetic_conversions">usual arithmetic conversions</a>
+
+<span class="li-num">2)</span>
+
+<p>if the expressions have struct/union type, the common type is that struct/union type</p>
+
+<span class="li-num">3)</span>
+
+<p>if the expressions are both void, the entire conditional operator expression is a void expression</p>
+
+<span class="li-num">4)</span>
+
+<p>if one is a pointer and the other is a null pointer constant</p>
+
+or a <a href="/reference/c/types/nullptr_t/">nullptr_t</a> value<span class="std std-since std-c23">(since C23)</span>
+
+<p>, the type is the type of that pointer</p>
+
+<span class="li-num">5)</span>
+
+<p>if both are pointers, the result is the pointer to the type that combines cvr-qualifiers of both pointed-to types (that is, if one is</p>
+
+<code>const int*</code>
+
+<p>and the other is</p>
+
+<code>volatile int*</code>
+
+<p>, the result is</p>
+
+<code>const volatile int*</code>
+
+<p>), and if the types were different, the pointed-to type is the</p>
+
+<a href="/reference/c/language/types/#Composite_type">composite type</a>
+
+<p>.</p>
+
+<span class="li-num">6)</span>
+
+<p>if one is a pointer to void, the result is a pointer to void with combined cvr-qualifiers</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><span class="li-num">7)</span>
+
+<p>if both have</p>
+
+<a href="/reference/c/types/nullptr_t/">nullptr_t</a>
+
+<p>type, the common type is also</p>
+
+<a href="/reference/c/types/nullptr_t/">nullptr_t</a></aside>
+
+```c
+#define ICE(x) (sizeof(*(1 ? ((void*)((x) * 0l)) : (int*)1)))
+ 
+// if x is an Integer Constant Expression then macro expands to
+ 
+sizeof(*(1 ? NULL : (int *) 1))  // (void *)((x)*0l)) -> NULL
+ 
+// according to point (4) this further converts into
+ 
+sizeof(int)
+ 
+// if x is not an Integer Constant Expression then macro expands to
+// according to point (6)
+ 
+(sizeof(*(void *)(x))           // Error due incomplete type
+```
+
+<h4 id="Notes_3">Notes</h4>
+
+<p>The conditional operator is never an <a href="/reference/c/language/value_category/">lvalue expression</a>, although it may return objects of struct/union type. The only other expressions that may return structs are <a href="/reference/c/language/operator_assignment/">assignment</a>, <a href="/reference/c/language/operator_other/#Comma_operator">comma</a>, <a href="/reference/c/language/operator_other/#Function_call">function call</a>, and <a href="/reference/c/language/compound_literal/">compound literal</a>.</p>
+
+<p>Note that in C++, it may be an lvalue expression.</p>
+
+<p>See <a href="/reference/c/language/operator_precedence/">operator precedence</a> for the details on the relative precedence of this operator and assignment.</p>
+
+<p>Conditional operator has right-to-left associativity, which allows chaining</p>
+
+```c
+#include <assert.h>
+ 
+enum vehicle { bus, airplane, train, car, horse, feet };
+ 
+enum vehicle choose(char arg)
+{
+    return arg == 'B' ? bus      :
+           arg == 'A' ? airplane :
+           arg == 'T' ? train    :
+           arg == 'C' ? car      :
+           arg == 'H' ? horse    :
+                        feet     ;
+}
+ 
+int main(void)
+{
+    assert(choose('H') == horse && choose('F') == feet);
+}
+```
+
+<h3 id="sizeof_operator"><code>sizeof</code> operator</h3>
+
+<p>See <a href="/reference/c/language/sizeof/">sizeof operator</a></p>
+
+<h3 id="Alignof_operator"><code>_Alignof</code> operator</h3>
+
+<p>See <a href="/reference/c/language/alignof/">_Alignof operator</a></p>
+
+<h3 id="typeof_operators"><code>typeof</code> operators</h3>
+
+<p>See <a href="/reference/c/language/typeof_unqual/">typeof operators</a></p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.2.2 Function calls (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.3.4 The sizeof and _Alignof operators (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.4 Cast operators (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.15 Conditional operator (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.17 Comma operator (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.3.5 Typeof specifiers (p: 115-118)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.2.2 Function calls (p: 58-59)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.3.4 The sizeof and _Alignof operators (p: 64-65)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.4 Cast operators (p: 65-66)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.15 Conditional operator (p: 71-72)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.17 Comma operator (p: 75)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.2.2 Function calls (p: 81-82)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.3.4 The sizeof and _Alignof operators (p: 90-91)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.4 Cast operators (p: 91)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.15 Conditional operator (p: 100)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.17 Comma operator (p: 105)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.2.2 Function calls (p: 71-72)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.3.4 The sizeof operator (p: 80-81)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.4 Cast operators (p: 81)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.15 Conditional operator (p: 90-91)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.17 Comma operator (p: 94)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.3.2.2 Function calls</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.3.3.4 The sizeof operator</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.3.4 Cast operators</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.3.15 Conditional operator</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.3.17 Comma operator</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_precedence/">Operator precedence</a>
+</li>
+</ul>
+
+<table class="ref-table">
+<tr><th colspan="7">Common operators</th></tr>
+<tr><td><a href="/reference/c/language/operator_assignment/">assignment</a></td><td><a href="/reference/c/language/operator_incdec/">increment decrement</a></td><td><a href="/reference/c/language/operator_arithmetic/">arithmetic</a></td><td><a href="/reference/c/language/operator_logical/">logical</a></td><td><a href="/reference/c/language/operator_comparison/">comparison</a></td><td><a href="/reference/c/language/operator_member_access/">member access</a></td><td><strong>other</strong></td></tr>
+<tr><td><p><code>a = b a += b a -= b a *= b a /= b a %= b a &amp;= b a |= b a ^= b a &lt;&lt;= b a &gt;&gt;= b</code></p></td><td><p><code>++a --a a++ a--</code></p></td><td><p><code>+a -a a + b a - b a * b a / b a % b ~a a &amp; b a | b a ^ b a &lt;&lt; b a &gt;&gt; b</code></p></td><td><p><code>!a a &amp;&amp; b a || b</code></p></td><td><p><code>a == b a != b a &lt; b a &gt; b a &lt;= b a &gt;= b</code></p></td><td><p><code>a[b] *a &amp;a a-&gt;b a.b</code></p></td><td><p><code>a(...) a, b (type) a a ? b : c sizeof</code>   <code>_Alignof</code> <span class="std std-since std-c11">(since C11)</span> <span class="std std-until std-c23">(until C23)</span>   <code>alignof</code> <span class="std std-since std-c23">(since C23)</span></p></td></tr>
+</table>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/operator_other" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Other operators</td></tr>
+</table>

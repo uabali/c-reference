@@ -1,0 +1,208 @@
+---
+title: "_Alignas (since C11) (deprecated in C23) , alignas (since C23)"
+slug: "c/language/_Alignas"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/_Alignas"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Appears in the <a href="/reference/c/language/declarations/">declaration</a> syntax as one of the type specifiers to modify the <a href="/reference/c/language/object/#Alignment">alignment requirement</a> of the object being declared.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+_Alignas ( expression )
+alignas ( expression )
+_Alignas ( type )
+alignas ( type )
+```
+
+<table class="ref-table ref-params">
+<tr><td><em>expression</em></td><td>-</td><td>any <a href="/reference/c/language/constant_expression/">integer constant expression</a> whose value is a valid <a href="/reference/c/language/object/#Alignment">alignment</a> or zero</td></tr>
+<tr><td><em>type</em></td><td>-</td><td>any <a href="/reference/c/language/compatible_type/#Type_names">type name</a></td></tr>
+</table>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-until std-c23">(until C23)</span></p><p>The keyword <code>_Alignas</code> is also available as convenience macro <a href="/reference/c/types/"><code>alignas</code></a>, available in the header <a href="/reference/c/types/"><code>&lt;stdalign.h&gt;</code></a>.</p></aside>
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>The <code>_Alignas</code><span class="std std-until std-c23">(until C23)</span><code>alignas</code><span class="std std-since std-c23">(since C23)</span> specifier can only be used when declaring objects that are not <a href="/reference/c/language/bit_field/">bit-fields</a>, and don't have the <a href="/reference/c/language/storage_duration/">register</a> storage class. It cannot be used in function parameter declarations, and cannot be used in a typedef.</p>
+
+<p>When used in a declaration, the declared object will have its <a href="/reference/c/language/object/#Alignment">alignment requirement</a> set to</p>
+
+<p class="li-note"><span class="li-num">1,2)</span>  the result of the <em>expression</em>, unless it is zero</p>
+
+<p class="li-note"><span class="li-num">3,4)</span>  the alignment requirement of <em>type</em>, that is, to <code>_Alignof(type)</code><span class="std std-until std-c23">(until C23)</span><code>alignof(type)</code><span class="std std-since std-c23">(since C23)</span></p>
+
+<p>except when this would weaken the alignment the type would have had naturally.</p>
+
+<p>If <em>expression</em> evaluates to zero, this specifier has no effect.</p>
+
+<p>When multiple <code>_Alignas</code><span class="std std-until std-c23">(until C23)</span><code>alignas</code><span class="std std-since std-c23">(since C23)</span> specifiers appear in the same declaration, the strictest one is used.</p>
+
+<p><code>_Alignas</code><span class="std std-until std-c23">(until C23)</span><code>alignas</code><span class="std std-since std-c23">(since C23)</span> specifier only needs to appear on the <a href="/reference/c/language/declarations/#Definitions">definition</a> of an object, but if any declaration uses <code>_Alignas</code><span class="std std-until std-c23">(until C23)</span><code>alignas</code><span class="std std-since std-c23">(since C23)</span>, it must specify the same alignment as the <code>_Alignas</code><span class="std std-until std-c23">(until C23)</span><code>alignas</code><span class="std std-since std-c23">(since C23)</span> on the definition. The behavior is undefined if different translation units specify different alignments for the same object.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>In C++, the <code>alignas</code> specifier may also be applied to the declarations of class/struct/union types and enumerations. This is not supported in C, but the alignment of a struct type can be controlled by using <code>_Alignas</code><span class="std std-until std-c23">(until C23)</span><code>alignas</code><span class="std std-since std-c23">(since C23)</span> in a member declaration.</p>
+
+<h3 id="Keywords">Keywords</h3>
+
+<p><a href="/reference/c/keyword/alignas/"><code>alignas</code></a>, <a href="/reference/c/keyword/_Alignas/"><code>_Alignas</code></a></p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdalign.h>
+#include <stdio.h>
+ 
+// every object of type struct sse_t will be aligned to 16-byte boundary
+// (note: needs support for DR 444)
+struct sse_t
+{
+    alignas(16) float sse_data[4];
+};
+ 
+// every object of type struct data will be aligned to 128-byte boundary
+struct data
+{
+    char x;
+    alignas(128) char cacheline[128]; // over-aligned array of char,
+                                      // not array of over-aligned chars
+};
+ 
+int main(void)
+{
+    printf("sizeof(data) = %zu (1 byte + 127 bytes padding + 128-byte array)\n",
+           sizeof(struct data));
+ 
+    printf("alignment of sse_t is %zu\n", alignof(struct sse_t));
+ 
+    alignas(2048) struct data d; // this instance of data is aligned even stricter
+    (void)d; // suppresses "maybe unused" warning
+}
+```
+
+<p>Output:</p>
+
+```text
+sizeof(data) = 256 (1 byte + 127 bytes padding + 128-byte array)
+alignment of sse_t is 16
+```
+
+<h3 id="Defect_reports">Defect reports</h3>
+
+<p>The following behavior-changing defect reports were applied retroactively to previously published C standards.</p>
+
+<table class="ref-table">
+<tr><th>DR</th><th>Applied to</th><th>Behavior as published</th><th>Correct behavior</th></tr>
+<tr><td><a href="https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2396.htm#dr_444" rel="noreferrer" target="_blank">DR 444</a></td><td>C11</td><td><code>_Alignas</code> was not allowed in struct and union members</td><td>allowed</td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.5 Alignment specifier (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.8 Alignment of objects (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.15 Alignment &lt;stdalign.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.5 Alignment specifier (p: 92)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.8 Alignment of objects (p: 36-37)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.15 Alignment &lt;stdalign.h&gt; (p: 196)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.5 Alignment specifier (p: 127-128)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.8 Alignment of objects (p: 48-49)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.15 Alignment &lt;stdalign.h&gt; (p: 268)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/types/max_align_t/">max_align_t</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>a type with alignment requirement as great as any other scalar type   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td><a href="/reference/c/language/alignof/"><code>_Alignof</code></a><span class="std std-until std-c23">(until C23)</span><a href="/reference/c/language/alignof/"><code>alignof</code></a><span class="std std-since std-c23">(since C23)</span></td><td>queries alignment requirements of an object <span class="mark-note">(operator)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/alignas" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+<code>alignas</code> specifier</td></tr>
+</table>

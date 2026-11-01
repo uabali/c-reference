@@ -1,0 +1,97 @@
+---
+title: "mtx_unlock"
+slug: "c/thread/mtx_unlock"
+category: "thread"
+source: "https://en.cppreference.com/w/c/thread/mtx_unlock"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;threads.h&gt;</code></p>
+
+```c
+int mtx_unlock( mtx_t *mutex );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Unlocks the mutex pointed to by <code>mutex</code>.</p>
+
+<p>The behavior is undefined if the mutex is not locked by the calling thread.</p>
+
+<p>This function <em>synchronizes-with</em> subsequent <a href="/reference/c/thread/mtx_lock/">mtx_lock</a>, <a href="/reference/c/thread/mtx_trylock/">mtx_trylock</a>, or <a href="/reference/c/thread/mtx_timedlock/">mtx_timedlock</a> on the same mutex. All lock/unlock operations on any given mutex form a single total order (similar to the modification order of an atomic).</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>mutex</td><td>-</td><td>pointer to the mutex to unlock</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p><a href="/reference/c/thread/thrd_errors/">thrd_success</a> if successful, <a href="/reference/c/thread/thrd_errors/">thrd_error</a> otherwise.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.4.6 The mtx_unlock function (p: 279)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.4.6 The mtx_unlock function (p: 382)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/thread/mtx_lock/">mtx_lock</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>blocks until locks a mutex   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/mtx_timedlock/">mtx_timedlock</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>blocks until locks a mutex or times out   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/mtx_trylock/">mtx_trylock</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>locks a mutex or returns without blocking if already locked   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/mutex/unlock" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+mutex::unlock</td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/timed_mutex/unlock" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+timed_mutex::unlock</td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/recursive_mutex/unlock" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+recursive_mutex::unlock</td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/recursive_timed_mutex/unlock" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+recursive_timed_mutex::unlock</td></tr>
+</table>

@@ -1,0 +1,935 @@
+---
+title: "vprintf, vfprintf, vsprintf, vsnprintf, vprintf_s, vfprintf_s, vsprintf_s, vsnprintf_s"
+slug: "c/io/vfprintf"
+category: "io"
+source: "https://en.cppreference.com/w/c/io/vfprintf"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+<p class="decl-note">(1)</p>
+
+```c
+int vprintf( const char* format, va_list vlist );
+```
+
+<p class="decl-note"><span class="std std-until std-c99">(until C99)</span></p>
+
+```c
+int vprintf( const char* restrict format, va_list vlist );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="decl-note">(2)</p>
+
+```c
+int vfprintf( FILE* stream, const char* format, va_list vlist );
+```
+
+<p class="decl-note"><span class="std std-until std-c99">(until C99)</span></p>
+
+```c
+int vfprintf( FILE* restrict stream, const char* restrict format,
+              va_list vlist );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="decl-note">(3)</p>
+
+```c
+int vsprintf( char* buffer, const char* format, va_list vlist );
+```
+
+<p class="decl-note"><span class="std std-until std-c99">(until C99)</span></p>
+
+```c
+int vsprintf( char* restrict buffer, const char* restrict format,
+              va_list vlist );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+int vsnprintf( char* restrict buffer, size_t bufsz,
+               const char* restrict format, va_list vlist );
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+int vprintf_s( const char* restrict format, va_list vlist );
+```
+
+<p class="decl-note">(5) <span class="std std-since std-c11">(since C11)</span></p>
+
+```c
+int vfprintf_s( FILE* restrict stream, const char* restrict format,
+                va_list vlist );
+```
+
+<p class="decl-note">(6) <span class="std std-since std-c11">(since C11)</span></p>
+
+```c
+int vsprintf_s( char* restrict buffer, rsize_t bufsz,
+                const char* restrict format, va_list vlist );
+```
+
+<p class="decl-note">(7) <span class="std std-since std-c11">(since C11)</span></p>
+
+```c
+int vsnprintf_s( char* restrict buffer, rsize_t bufsz,
+                 const char* restrict format, va_list vlist );
+```
+
+<p class="decl-note">(8) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Loads the data from the locations, defined by <code>vlist</code>, converts them to character string equivalents and writes the results to a variety of sinks.</p>
+
+<p class="li-note"><span class="li-num">1)</span>  Writes the results to <a href="/reference/c/io/std_streams/">stdout</a>.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Writes the results to a file stream <code>stream</code>.</p>
+
+<p class="li-note"><span class="li-num">3)</span>  Writes the results to a character string <code>buffer</code>.</p>
+
+<p class="li-note"><span class="li-num">4)</span>  Writes the results to a character string <code>buffer</code>. At most <code>bufsz - 1</code> characters are written. The resulting character string will be terminated with a null character, unless <code>bufsz</code> is zero. If <code>bufsz</code> is zero, nothing is written and <code>buffer</code> may be a null pointer, however the return value (number of bytes that would be written not including the null terminator) is still calculated and returned.</p>
+
+<div class="li-note"><span class="li-num">5-8)</span>
+
+<p>Same as</p>
+
+(1-4)
+
+<p>, except that the following errors are detected at runtime and call the currently installed</p>
+
+<a href="/reference/c/error/set_constraint_handler_s/">constraint handler</a>
+
+<p>function:</p>
+
+<dl>
+<dd><ul>
+<li>
+<p>the conversion specifier</p>
+
+<code>%n</code>
+
+<p>is present in</p>
+
+<code>format</code>
+</li>
+<li>
+<p>any of the arguments corresponding to</p>
+
+<code>%s</code>
+
+<p>is a null pointer</p>
+</li>
+<li>
+<code>format</code>
+
+<p>or</p>
+
+<code>buffer</code>
+
+<p>is a null pointer</p>
+</li>
+<li>
+<code>bufsz</code>
+
+<p>is zero or greater than</p>
+
+RSIZE_MAX
+</li>
+<li>
+<p>encoding errors occur in any of string and character conversion specifiers</p>
+</li>
+<li>
+<p>(for</p>
+
+<code>vsprintf_s</code>
+
+<p>only), the string to be stored in</p>
+
+<code>buffer</code>
+
+<p>(including the trailing null)) would be exceed</p>
+
+<code>bufsz</code>
+</li>
+</ul></dd>
+</dl>
+
+<p>As with all bounds-checked functions,</p>
+
+<code>vprintf_s</code>
+
+<p>,</p>
+
+<code>vfprintf_s</code>
+
+<p>,</p>
+
+<code>vsprintf_s</code>
+
+<p>, and</p>
+
+<code>vsnprintf_s</code>
+
+<p>are only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<a href="/reference/c/io/"><code>&lt;stdio.h&gt;</code></a>
+
+<p>.</p></div>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>stream</td><td>-</td><td>output file stream to write to</td></tr>
+<tr><td>buffer</td><td>-</td><td>pointer to a character string to write to</td></tr>
+<tr><td>bufsz</td><td>-</td><td>up to <code>bufsz - 1</code> characters may be written, plus the null terminator</td></tr>
+<tr><td>format</td><td>-</td><td>pointer to a null-terminated character string specifying how to interpret the data</td></tr>
+<tr><td>vlist</td><td>-</td><td>variable argument list containing the data to print.</td></tr>
+</table>
+
+<p>The <strong>format</strong> string consists of ordinary byte characters (except <code>%</code>), which are copied unchanged into the output stream, and conversion specifications. Each conversion specification has the following format:</p>
+
+<dl>
+<dd><ul>
+<li>
+<p>introductory</p>
+
+<code>%</code>
+
+<p>character.</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<span class="mark-note">(optional)</span>
+
+<p>one or more flags that modify the behavior of the conversion:</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<code>-</code>
+
+<p>: the result of the conversion is left-justified within the field (by default it is right-justified).</p>
+</li>
+<li>
+<code>+</code>
+
+<p>: the sign of signed conversions is always prepended to the result of the conversion (by default the result is preceded by minus only when it is negative).</p>
+</li>
+<li>
+<em>space</em>
+
+<p>: if the result of a signed conversion does not start with a sign character, or is empty, space is prepended to the result. It is ignored if</p>
+
+<code>+</code>
+
+<p>flag is present.</p>
+</li>
+<li>
+<code>#</code>
+
+<p>:</p>
+
+<em>alternative form</em>
+
+<p>of the conversion is performed. See the table below for exact effects otherwise the behavior is undefined.</p>
+</li>
+<li>
+<code>0</code>
+
+<p>: for integer and floating-point number conversions, leading zeros are used to pad the field instead of</p>
+
+<em>space</em>
+
+<p>characters. For integer numbers it is ignored if the precision is explicitly specified. For other conversions using this flag results in undefined behavior. It is ignored if</p>
+
+<code>-</code>
+
+<p>flag is present.</p>
+</li>
+</ul></dd>
+</dl></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<span class="mark-note">(optional)</span>
+
+<p>integer value or</p>
+
+<code>*</code>
+
+<p>that specifies minimum field width. The result is padded with</p>
+
+<em>space</em>
+
+<p>characters (by default), if required, on the left when right-justified, or on the right if left-justified. In the case when</p>
+
+<code>*</code>
+
+<p>is used, the width is specified by an additional argument of type</p>
+
+<code>int</code>
+
+<p>, which appears before the argument to be converted and the argument supplying precision if one is supplied. If the value of the argument is negative, it results with the</p>
+
+<code>-</code>
+
+<p>flag specified and positive field width (Note: This is the minimum width: The value is never truncated.).</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<span class="mark-note">(optional)</span>
+
+<code>.</code>
+
+<p>followed by integer number or</p>
+
+<code>*</code>
+
+<p>, or neither that specifies</p>
+
+<em>precision</em>
+
+<p>of the conversion. In the case when</p>
+
+<code>*</code>
+
+<p>is used, the</p>
+
+<em>precision</em>
+
+<p>is specified by an additional argument of type</p>
+
+<code>int</code>
+
+<p>, which appears before the argument to be converted, but after the argument supplying minimum field width if one is supplied. If the value of this argument is negative, it is ignored. If neither a number nor</p>
+
+<code>*</code>
+
+<p>is used, the precision is taken as zero. See the table below for exact effects of</p>
+
+<em>precision</em>
+
+<p>.</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<span class="mark-note">(optional)</span>
+
+<em>length modifier</em>
+
+<p>that specifies the size of the argument (in combination with the conversion format specifier, it specifies the type of the corresponding argument).</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>conversion format specifier.</p>
+</li>
+</ul></dd>
+</dl>
+
+<p>The following format specifiers are available:</p>
+
+<table class="ref-table">
+<tr><th rowspan="1">Conversion Specifier</th><th rowspan="1">Explanation</th><th colspan="9">Expected Argument Type</th></tr>
+<tr><th colspan="2"><strong>Length Modifier</strong>
+
+<strong>→</strong></th><th><code>hh</code>
+
+<p><span class="std std-since std-c99">(C99)</span></p></th><th><code>h</code></th><th>(none)</th><th><code>l</code></th><th><code>ll</code>
+
+<p><span class="std std-since std-c99">(C99)</span></p></th><th><code>j</code>
+
+<p><span class="std std-since std-c99">(C99)</span></p></th><th><code>z</code>
+
+<p><span class="std std-since std-c99">(C99)</span></p></th><th><code>t</code>
+
+<p><span class="std std-since std-c99">(C99)</span></p></th><th><code>L</code></th></tr>
+<tr><th><code>%</code></th><td>Writes literal <code>%</code>. The full conversion specification must be <code>%%</code>.</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td></tr>
+<tr><th><code>c</code></th><td><dl>
+<dd><p>Writes a</p>
+
+<strong>single character</strong>
+
+<p>.</p></dd>
+</dl>
+
+<p>The argument is first converted to <code>unsigned char</code>. If the <strong>l</strong> modifier is used, the argument is first converted to a character string as if by <strong>%ls</strong> with a <code>wchar_t[2]</code> argument.</p></td><td>N/A</td><td>N/A</td><td><code>int</code></td><td><code>wint_t</code></td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td></tr>
+<tr><th><code>s</code></th><td><dl>
+<dd><p>Writes a</p>
+
+<strong>character string</strong></dd>
+</dl>
+
+<p>The argument must be a pointer to the initial element of an array of characters. <em>Precision</em> specifies the maximum number of bytes to be written. If <em>Precision</em> is not specified, writes every byte up to and not including the first null terminator. If the <strong>l</strong> specifier is used, the argument must be a pointer to the initial element of an array of <code>wchar_t</code>, which is converted to char array as if by a call to <a href="/reference/c/string/multibyte/wcrtomb/">wcrtomb</a> with zero-initialized conversion state.</p></td><td>N/A</td><td>N/A</td><td><code>char*</code></td><td><code>wchar_t*</code></td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td></tr>
+<tr><th><code>d</code> <code>i</code></th><td><dl>
+<dd><p>Converts a</p>
+
+<strong>signed integer</strong>
+
+<p>into decimal representation</p>
+
+<em>[-]dddd</em>
+
+<p>.</p></dd>
+</dl>
+
+<p><em>Precision</em> specifies the minimum number of digits to appear. The default precision is <code>1</code>.  If both the converted value and the precision are <code>0</code> the conversion results in no characters.</p></td><td rowspan="1"><code>signed char</code></td><td rowspan="1"><code>short</code></td><td rowspan="1"><code>int</code></td><td rowspan="1"><code>long</code></td><td rowspan="1"><code>long long</code></td><td rowspan="1"><code>intmax_t</code></td><td rowspan="1"><p>signed</p>
+
+<code>size_t</code></td><td rowspan="1"><code>ptrdiff_t</code></td><td>N/A</td></tr>
+<tr><th><code>o</code></th><td><dl>
+<dd><p>Converts an</p>
+
+<strong>unsigned integer</strong>
+
+<p>into octal representation</p>
+
+<em>oooo</em>
+
+<p>.</p></dd>
+</dl>
+
+<p><em>Precision</em> specifies the minimum number of digits to appear. The default precision is <code>1</code>. If both the converted value and the precision are <code>0</code> the conversion results in no characters. In the <em>alternative implementation</em> precision is increased if necessary, to write one leading zero. In that case if both the converted value and the precision are <code>0</code>, single <code>0</code> is written.</p></td><td rowspan="3"><code>unsigned char</code></td><td rowspan="3"><code>unsigned short</code></td><td rowspan="3"><code>unsigned int</code></td><td rowspan="3"><code>unsigned long</code></td><td rowspan="3"><code>unsigned long long</code></td><td rowspan="3"><code>uintmax_t</code></td><td rowspan="3"><code>size_t</code></td><td rowspan="3"><p>unsigned version of</p>
+
+<code>ptrdiff_t</code></td><td>N/A</td></tr>
+<tr><th><code>x</code> <code>X</code></th><td><dl>
+<dd><p>Converts an</p>
+
+<strong>unsigned integer</strong>
+
+<p>into hexadecimal representation</p>
+
+<em>hhhh</em>
+
+<p>.</p></dd>
+</dl>
+
+<p>For the <code>x</code> conversion letters <code>abcdef</code> are used.  For the <code>X</code> conversion letters <code>ABCDEF</code> are used.  <em>Precision</em> specifies the minimum number of digits to appear. The default precision is <code>1</code>. If both the converted value and the precision are <code>0</code> the conversion results in no characters. In the <em>alternative implementation</em> <code>0x</code> or <code>0X</code> is prefixed to results if the converted value is nonzero.</p></td><td>N/A</td></tr>
+<tr><th><code>u</code></th><td><dl>
+<dd><p>Converts an</p>
+
+<strong>unsigned integer</strong>
+
+<p>into decimal representation</p>
+
+<em>dddd</em>
+
+<p>.</p></dd>
+</dl>
+
+<p><em>Precision</em> specifies the minimum number of digits to appear. The default precision is <code>1</code>. If both the converted value and the precision are <code>0</code> the conversion results in no characters.</p></td><td>N/A</td></tr>
+<tr><th><code>f</code> <code>F</code></th><td><dl>
+<dd><p>Converts</p>
+
+<strong>floating-point number</strong>
+
+<p>to the decimal notation in the style</p>
+
+<em>[-]ddd.ddd</em>
+
+<p>.</p></dd>
+</dl>
+
+<p><em>Precision</em> specifies the exact number of digits to appear after the decimal point character. The default precision is <code>6</code>. In the <em>alternative implementation</em> decimal point character is written even if no digits follow it. For infinity and not-a-number conversion style see notes.</p></td><td>N/A</td><td>N/A</td><td rowspan="4"><code>double</code></td><td rowspan="4"><code>double</code>
+
+<span class="std std-since std-c99">(C99)</span></td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td rowspan="4"><code>long double</code></td></tr>
+<tr><th><code>e</code> <code>E</code></th><td><dl>
+<dd><p>Converts</p>
+
+<strong>floating-point number</strong>
+
+<p>to the decimal exponent notation.</p></dd>
+</dl>
+
+<p>For the <code>e</code> conversion style <em>[-]d.ddd</em> <code>e</code><em>±dd</em> is used.  For the <code>E</code> conversion style <em>[-]d.ddd</em> <code>E</code><em>±dd</em> is used.  The exponent contains at least two digits, more digits are used only if necessary. If the value is <code>0</code>, the exponent is also <code>0</code>. <em>Precision</em> specifies the exact number of digits to appear after the decimal point character. The default precision is <code>6</code>. In the <em>alternative implementation</em> decimal point character is written even if no digits follow it. For infinity and not-a-number conversion style see notes.</p></td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td></tr>
+<tr><th><code>a</code>
+
+<code>A</code>
+
+<p><span class="std std-since std-c99">(C99)</span></p></th><td><dl>
+<dd><p>Converts</p>
+
+<strong>floating-point number</strong>
+
+<p>to the hexadecimal exponent notation.</p></dd>
+</dl>
+
+<p>For the <code>a</code> conversion style <em>[-]</em> <code>0x</code><em>h.hhh</em> <code>p</code><em>±d</em> is used.  For the <code>A</code> conversion style <em>[-]</em> <code>0X</code><em>h.hhh</em> <code>P</code><em>±d</em> is used.  The first hexadecimal digit is not <code>0</code> if the argument is a normalized floating-point value. If the value is <code>0</code>, the exponent is also <code>0</code>. <em>Precision</em> specifies the exact number of digits to appear after the hexadecimal point character. The default precision is sufficient for exact representation of the value. In the <em>alternative implementation</em> decimal point character is written even if no digits follow it. For infinity and not-a-number conversion style see notes.</p></td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td></tr>
+<tr><th><code>g</code> <code>G</code></th><td><dl>
+<dd><p>Converts</p>
+
+<strong>floating-point number</strong>
+
+<p>to decimal or decimal exponent notation depending on the value and the</p>
+
+<em>precision</em>
+
+<p>.</p></dd>
+</dl>
+
+<p>For the <code>g</code> conversion style conversion with style <code>e</code> or <code>f</code> will be performed.  For the <code>G</code> conversion style conversion with style <code>E</code> or <code>F</code> will be performed.  Let <code>P</code> equal the precision if nonzero, <code>6</code> if the precision is not specified, or <code>1</code> if the precision is <code>0</code>. Then, if a conversion with style <code>E</code> would have an exponent of <code>X</code>:</p>
+
+<ul>
+<li>
+<p>if</p>
+
+<em>P &gt; X ≥ −4</em>
+
+<p>, the conversion is with style</p>
+
+<code>f</code>
+
+<p>or</p>
+
+<code>F</code>
+
+<p>and precision</p>
+
+<em>P − 1 − X</em>
+
+<p>.</p>
+</li>
+<li>
+<p>otherwise, the conversion is with style</p>
+
+<code>e</code>
+
+<p>or</p>
+
+<code>E</code>
+
+<p>and precision</p>
+
+<em>P − 1</em>
+
+<p>.</p>
+</li>
+</ul>
+
+<p>Unless <em>alternative representation</em> is requested the trailing zeros are removed, also the decimal point character is removed if no fractional part is left. For infinity and not-a-number conversion style see notes.</p></td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td></tr>
+<tr><th><code>n</code></th><td><dl>
+<dd><p>Returns the</p>
+
+<strong>number of characters written</strong>
+
+<p>so far by this call to the function.</p></dd>
+</dl>
+
+<p>The result is <em>written</em> to the value pointed to by the argument. The specification may not contain any <em>flag</em>, <em>field width</em>, or <em>precision</em>.</p></td><td><code>signed char*</code></td><td><code>short*</code></td><td><code>int*</code></td><td><code>long*</code></td><td><code>long long*</code></td><td><code>intmax_t*</code></td><td><p>signed</p>
+
+<code>size_t*</code></td><td><code>ptrdiff_t*</code></td><td>N/A</td></tr>
+<tr><th><code>p</code></th><td>Writes an implementation defined character sequence defining a <strong>pointer</strong>.</td><td>N/A</td><td>N/A</td><td><code>void*</code></td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td></tr>
+</table>
+
+<p>The floating-point conversion functions convert infinity to <code>inf</code> or <code>infinity</code>. Which one is used is implementation defined.</p>
+
+<p>Not-a-number is converted to <code>nan</code> or <code>nan(char_sequence)</code>. Which one is used is implementation defined.</p>
+
+<p>The conversions <code>F</code>, <code>E</code>, <code>G</code>, <code>A</code> output <code>INF</code>, <code>INFINITY</code>, <code>NAN</code> instead.</p>
+
+<p>The conversion specifier used to print <code>char</code>, <code>unsigned char</code>, <code>signed char</code>, <code>short</code>, and <code>unsigned short</code> expects promoted types of <a href="/reference/c/language/conversion/#Default_argument_promotions">default argument promotions</a>, but before printing its value will be converted to <code>char</code>, <code>unsigned char</code>, <code>signed char</code>, <code>short</code>, and <code>unsigned short</code>. It is safe to pass values of these types because of the promotion that takes place when a variadic function is called.</p>
+
+<p>The correct conversion specifications for the fixed-width character types (<a href="/reference/c/types/integer/">int8_t</a>, etc) are defined in the header <a href="/reference/c/types/integer/"><code>&lt;inttypes.h&gt;</code></a> (although <a href="/reference/c/types/integer/">PRIdMAX</a>, <a href="/reference/c/types/integer/">PRIuMAX</a>, etc is synonymous with <code>%jd</code>, <code>%ju</code>, etc).</p>
+
+<p>The memory-writing conversion specifier <code>%n</code> is a common target of security exploits where format strings depend on user input and is not supported by the bounds-checked <code>printf_s</code> family of functions.</p>
+
+<p>There is a <a href="/reference/c/language/eval_order/">sequence point</a> after the action of each conversion specifier; this permits storing multiple <code>%n</code> results in the same variable or, as an edge case, printing a string modified by an earlier <code>%n</code> within the same call.</p>
+
+<p>If a conversion specification is invalid, the behavior is undefined.</p>
+
+<h3 id="Return_value">Return value</h3>
+
+<p class="li-note"><span class="li-num">1-3)</span>  The number of characters written if successful or negative value if an error occurred.</p>
+
+<p class="li-note"><span class="li-num">4)</span>  The number of characters written if successful or negative value if an error occurred. If the resulting string gets truncated due to <code>buf_size</code> limit, function returns the total number of characters (not including the terminating null-byte) which would have been written, if the limit was not imposed.</p>
+
+<p class="li-note"><span class="li-num">5,6)</span>  number of characters transmitted to the output stream or negative value if an output error, a runtime constrants violation error, or an encoding error occurred.</p>
+
+<p class="li-note"><span class="li-num">7)</span>  number of characters written to <code>buffer</code>, not counting the null character (which is always written as long as <code>buffer</code> is not a null pointer and <code>bufsz</code> is not zero and not greater than RSIZE_MAX), or zero on runtime constraint violations, and negative value on encoding errors</p>
+
+<p class="li-note"><span class="li-num">8)</span>  number of characters not including the terminating null character (which is always written as long as <code>buffer</code> is not a null pointer and <code>bufsz</code> is not zero and not greater than RSIZE_MAX), which would have been written to <code>buffer</code> if <code>bufsz</code> was ignored, or a negative value if a runtime constraints violation or an encoding error occurred</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>All these functions invoke va_arg at least once, the value of <code>arg</code> is indeterminate after the return. These functions do not invoke va_end, and it must be done by the caller.</p>
+
+<p><code>vsnprintf_s</code>, unlike <code>vsprintf_s</code>, will truncate the result to fit within the array pointed to by <code>buffer</code>.</p>
+
+<p>The implementation of <code>vsnprintf_s</code> in the <a href="https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/vsnprintf-s-vsnprintf-s-vsnprintf-s-l-vsnwprintf-s-vsnwprintf-s-l" rel="noreferrer" target="_blank">Microsoft CRT</a> does not conform to the C standard. Microsoft's version has an extra parameter <code>size_t count</code> in third position that contains the maximum amount of characters to be written, not including the null terminator. This parameter is possibly distinct from the buffer size provided via the parameter <code>size_t bufsz</code>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdarg.h>
+#include <stdio.h>
+#include <time.h>
+ 
+void debug_log(const char* fmt, ...)
+{
+    struct timespec ts;
+    timespec_get(&ts, TIME_UTC);
+    char time_buf[100];
+    size_t rc = strftime(time_buf, sizeof time_buf, "%D %T", gmtime(&ts.tv_sec));
+    snprintf(time_buf + rc, sizeof time_buf - rc, ".%06ld UTC", ts.tv_nsec / 1000);
+ 
+    va_list args1;
+    va_start(args1, fmt);
+    va_list args2;
+    va_copy(args2, args1);
+    char buf[1+vsnprintf(NULL, 0, fmt, args1)];
+    va_end(args1);
+    vsnprintf(buf, sizeof buf, fmt, args2);
+    va_end(args2);
+ 
+    printf("%s [debug]: %s\n", time_buf, buf);
+}
+ 
+int main(void)
+{
+    debug_log("Logging, %d, %d, %d", 1, 2, 3);
+}
+```
+
+<p>Possible output:</p>
+
+```text
+02/20/15 21:58:09.072683 UTC [debug]: Logging, 1, 2, 3
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.6.8 The vfprintf function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.6.10 The vprintf function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.6.12 The vsnprintf function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.6.13 The vsprintf function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.5.3.8 The vfprintf_s function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.5.3.10 The vprintf_s function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.5.3.12 The vsnprintf_s function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.5.3.13 The vsprintf_s function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.6.8 The vfprintf function (p: 238)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.6.10 The vprintf function (p: 239)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.6.12 The vsnprintf function (p: 239-240)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.6.13 The vsprintf function (p: 240)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.5.3.8 The vfprintf_s function (p: 434)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.5.3.10 The vprintf_s function (p: 435)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.5.3.12 The vsnprintf_s function (p: 436-437)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.5.3.13 The vsprintf_s function (p: 437)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.6.8 The vfprintf function (p: 326-327)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.6.10 The vprintf function (p: 328)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.6.12 The vsnprintf function (p: 329)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.6.13 The vsprintf function (p: 329)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.5.3.8 The vfprintf_s function (p: 597)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.5.3.10 The vprintf_s function (p: 598-599)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.5.3.12 The vsnprintf_s function (p: 600)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.5.3.13 The vsprintf_s function (p: 601)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.6.8 The vfprintf function (p: 292)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.6.10 The vprintf function (p: 293)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.6.12 The vsnprintf function (p: 294)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.6.13 The vsprintf function (p: 295)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9.6.7 The vfprintf function</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9.6.8 The vprintf function</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9.6.9 The vsprintf function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/vfwprintf/">vwprintf<br />vfwprintf<br />vswprintf<br />vwprintf_s<br />vfwprintf_s<br />vswprintf_s<br />vsnwprintf_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>prints formatted wide character output to <a href="/reference/c/io/std_streams/">stdout</a>, a file stream  or a buffer using variable argument list   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fprintf/">printf<br />fprintf<br />sprintf<br />snprintf<br />printf_s<br />fprintf_s<br />sprintf_s<br />snprintf_s</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>prints formatted output to <a href="/reference/c/io/std_streams/">stdout</a>, a file stream or a buffer   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/vfscanf/">vscanf<br />vfscanf<br />vsscanf<br />vscanf_s<br />vfscanf_s<br />vsscanf_s</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>reads formatted input from <a href="/reference/c/io/std_streams/">stdin</a>, a file stream or a buffer  using variable argument list   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c/vfprintf" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+vprintf, vfprintf, vsprintf, vsnprintf</td></tr>
+</table>

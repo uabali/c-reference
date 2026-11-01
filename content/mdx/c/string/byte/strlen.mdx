@@ -1,0 +1,218 @@
+---
+title: "strlen, strnlen_s"
+slug: "c/string/byte/strlen"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/byte/strlen"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;string.h&gt;</code></p>
+
+```c
+size_t strlen( const char* str );
+```
+
+<p class="decl-note">(1)</p>
+
+```c
+size_t strnlen_s( const char* str, size_t strsz );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Returns the length of the given null-terminated byte string, that is, the number of characters in a character array whose first element is pointed to by <code>str</code> up to and not including the first null character.</p>
+
+<p class="li-note">The behavior is undefined if <code>str</code> is not a pointer to a null-terminated byte string.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Same as (1), except that the function returns zero if <code>str</code> is a null pointer and returns <code>strsz</code> if the null character was not found in the first <code>strsz</code> bytes of <code>str</code>.</p>
+
+<div class="li-note"><p>The behavior is undefined if</p>
+
+<code>str</code>
+
+<p>is not a pointer to a null-terminated byte string and</p>
+
+<code>strsz</code>
+
+<p>is greater than the size of that character array.</p>
+
+<dl>
+<dd><p>As with all bounds-checked functions,</p>
+
+<code>strnlen_s</code>
+
+<p>is only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<a href="/reference/c/string/byte/"><code>&lt;string.h&gt;</code></a>
+
+<p>.</p></dd>
+</dl></div>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>str</td><td>-</td><td>pointer to the null-terminated byte string to be examined</td></tr>
+<tr><td>strsz</td><td>-</td><td>maximum number of characters to examine</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  The length of the null-terminated byte string <code>str</code>.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  The length of the null-terminated byte string <code>str</code> on success, zero if <code>str</code> is a null pointer, <code>strsz</code> if the null character was not found.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p><code>strnlen_s</code> and <code>wcsnlen_s</code> are the only <a href="/reference/c/error/">bounds-checked functions</a> that do not invoke the runtime constraints handler. They are pure utility functions used to provide limited support for non-null terminated strings.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#define __STDC_WANT_LIB_EXT1__ 1
+#include <stdio.h>
+#include <string.h>
+ 
+int main(void)
+{
+    const char str[] = "How many characters does this string contain?";
+ 
+    printf("without null character: %zu\n", strlen(str));
+    printf("with null character:    %zu\n", sizeof str);
+ 
+#ifdef __STDC_LIB_EXT1__
+    printf("without null character: %zu\n", strnlen_s(str, sizeof str));
+#endif
+}
+```
+
+<p>Possible output:</p>
+
+```text
+without null character: 45
+with null character:    46
+without null character: 45
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.6.3 The strlen function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.7.4.4 The strnlen_s function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.6.3 The strlen function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.7.4.4 The strnlen_s function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.6.3 The strlen function (p: 372)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.7.4.4 The strnlen_s function (p: 623)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.6.3 The strlen function (p: 334)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.11.6.3 The strlen function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/wide/wcslen/">wcslen<br />wcsnlen_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>returns the length of a wide string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/mblen/">mblen</a></td><td>returns the number of bytes in the next multibyte character   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/byte/strlen" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+strlen</td></tr>
+</table>

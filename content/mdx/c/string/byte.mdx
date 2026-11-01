@@ -1,0 +1,552 @@
+---
+title: "Null-terminated byte strings"
+slug: "c/string/byte"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/byte"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>A null-terminated byte string (NTBS) is a sequence of nonzero bytes followed by a byte with value zero (the terminating null character). Each byte in a byte string encodes one character of some character set. For example, the character array <code>{&#x27;\x63&#x27;,&#x27;\x61&#x27;,&#x27;\x74&#x27;,&#x27;\0&#x27;}</code> is an NTBS holding the string <code>&quot;cat&quot;</code> in <a href="/reference/c/language/ascii/">ASCII</a> encoding.</p>
+
+<h3 id="Functions">Functions</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2">Character classification</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;ctype.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/string/byte/isalnum/">isalnum</a></td><td>checks if a character is alphanumeric   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/isalpha/">isalpha</a></td><td>checks if a character is alphabetic   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/islower/">islower</a></td><td>checks if a character is lowercase   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/isupper/">isupper</a></td><td>checks if a character is an uppercase character   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/isdigit/">isdigit</a></td><td>checks if a character is a digit   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/isxdigit/">isxdigit</a></td><td>checks if a character is a hexadecimal character   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/iscntrl/">iscntrl</a></td><td>checks if a character is a control character   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/isgraph/">isgraph</a></td><td>checks if a character is a graphical character   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/isspace/">isspace</a></td><td>checks if a character is a space character   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/isblank/">isblank</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if a character is a blank character   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/isprint/">isprint</a></td><td>checks if a character is a printing character   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/ispunct/">ispunct</a></td><td>checks if a character is a punctuation character   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Character manipulation</td></tr>
+<tr><td><a href="/reference/c/string/byte/tolower/">tolower</a></td><td>converts a character to lowercase   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/toupper/">toupper</a></td><td>converts a character to uppercase   <span class="mark-note">(function)</span></td></tr>
+</table>
+
+<p>Note: additional functions whose names begin with either <code>to</code> or <code>is</code>, followed by a lowercase letter, may be added to the header <code>ctype.h</code> in future and should not be defined by programs that include that header.</p>
+
+<table class="ref-table">
+<tr><th colspan="3">ASCII values</th><th rowspan="2">characters</th><th rowspan="2"><p><a href="/reference/c/string/byte/iscntrl/"><code>iscntrl</code></a>  <a href="/reference/c/string/wide/iswcntrl/"><code>iswcntrl</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isprint/"><code>isprint</code></a>  <a href="/reference/c/string/wide/iswprint/"><code>iswprint</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isspace/"><code>isspace</code></a>  <a href="/reference/c/string/wide/iswspace/"><code>iswspace</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isblank/"><code>isblank</code></a>  <a href="/reference/c/string/wide/iswblank/"><code>iswblank</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isgraph/"><code>isgraph</code></a>  <a href="/reference/c/string/wide/iswgraph/"><code>iswgraph</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/ispunct/"><code>ispunct</code></a>   <a href="/reference/c/string/wide/iswpunct/"><code>iswpunct</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isalnum/"><code>isalnum</code></a>   <a href="/reference/c/string/wide/iswalnum/"><code>iswalnum</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isalpha/"><code>isalpha</code></a>   <a href="/reference/c/string/wide/iswalpha/"><code>iswalpha</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isupper/"><code>isupper</code></a>  <a href="/reference/c/string/wide/iswupper/"><code>iswupper</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/islower/"><code>islower</code></a>  <a href="/reference/c/string/wide/iswlower/"><code>iswlower</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isdigit/"><code>isdigit</code></a>  <a href="/reference/c/string/wide/iswdigit/"><code>iswdigit</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isxdigit/"><code>isxdigit</code></a>  <a href="/reference/c/string/wide/iswxdigit/"><code>iswxdigit</code></a></p></th></tr>
+<tr><th>decimal</th><th>hexadecimal</th><th>octal</th></tr>
+<tr><td>0–8</td><td><code>\x0</code>–<code>\x8</code></td><td><code>\0</code>–<code>\10</code></td><td>control codes (<code>NUL</code>, etc.)</td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>9</td><td><code>\x9</code></td><td><code>\11</code></td><td>tab (<code>\t</code>)</td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>10–13</td><td><code>\xA</code>–<code>\xD</code></td><td><code>\12</code>–<code>\15</code></td><td>whitespaces (<code>\n</code>, <code>\v</code>, <code>\f</code>, <code>\r</code>)</td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>14–31</td><td><code>\xE</code>–<code>\x1F</code></td><td><code>\16</code>–<code>\37</code></td><td>control codes</td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>32</td><td><code>\x20</code></td><td><code>\40</code></td><td>space</td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>33–47</td><td><code>\x21</code>–<code>\x2F</code></td><td><code>\41</code>–<code>\57</code></td><td><code>!&quot;#$%&amp;&#x27;()*+,-./</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>48–57</td><td><code>\x30</code>–<code>\x39</code></td><td><code>\60</code>–<code>\71</code></td><td><code>0123456789</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td></tr>
+<tr><td>58–64</td><td><code>\x3A</code>–<code>\x40</code></td><td><code>\72</code>–<code>\100</code></td><td><code>:;&lt;=&gt;?@</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>65–70</td><td><code>\x41</code>–<code>\x46</code></td><td><code>\101</code>–<code>\106</code></td><td><code>ABCDEF</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td></tr>
+<tr><td>71–90</td><td><code>\x47</code>–<code>\x5A</code></td><td><code>\107</code>–<code>\132</code></td><td><code>GHIJKLMNOP</code> <code>QRSTUVWXYZ</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>91–96</td><td><code>\x5B</code>–<code>\x60</code></td><td><code>\133</code>–<code>\140</code></td><td><code>[\]^_`</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>97–102</td><td><code>\x61</code>–<code>\x66</code></td><td><code>\141</code>–<code>\146</code></td><td><code>abcdef</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td></tr>
+<tr><td>103–122</td><td><code>\x67</code>–<code>\x7A</code></td><td><code>\147</code>–<code>\172</code></td><td><code>ghijklmnop</code> <code>qrstuvwxyz</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>123–126</td><td><code>\x7B</code>–<code>\x7E</code></td><td><code>\173</code>–<code>\176</code></td><td><code>{|}~</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>127</td><td><code>\x7F</code></td><td><code>\177</code></td><td>backspace character (<code>DEL</code>)</td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+</table>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2">Conversions to and from numeric formats</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdlib.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/string/byte/atof/">atof</a></td><td>converts a byte string to a floating-point value   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/atoi/">atoi<br />atol<br />atoll</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>converts a byte string to an integer value   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strtol/">strtol<br />strtoll</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>converts a byte string to an integer value   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strtoul/">strtoul<br />strtoull</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>converts a byte string to an unsigned integer value   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strtof/">strtof<br />strtod<br />strtold</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>converts a byte string to a floating-point value   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strfromf/">strfromf<br />strfromd<br />strfroml</a>
+
+<span class="std std-since std-c23">(C23)</span><br /><span class="std std-since std-c23">(C23)</span><br /><span class="std std-since std-c23">(C23)</span></td><td>converts a floating-point value to a byte string   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;inttypes.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/string/byte/strtoimax/">strtoimax<br />strtoumax</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>converts a byte string to <a href="/reference/c/types/integer/">intmax_t</a> or <a href="/reference/c/types/integer/">uintmax_t</a>   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">String manipulation</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;string.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/string/byte/strcpy/">strcpy<br />strcpy_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>copies one string to another   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strncpy/">strncpy<br />strncpy_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>copies a certain amount of characters from one string to another   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strcat/">strcat<br />strcat_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>concatenates two strings   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strncat/">strncat<br />strncat_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>concatenates a certain amount of characters of two strings   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strxfrm/">strxfrm</a></td><td>transform a string so that strcmp would produce the same result as strcoll   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strdup/">strdup</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>allocates a copy of a string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strndup/">strndup</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>allocates a copy of a string of specified size   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">String examination</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;string.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/string/byte/strlen/">strlen<br />strnlen_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>returns the length of a given string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strcmp/">strcmp</a></td><td>compares two strings   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strncmp/">strncmp</a></td><td>compares a certain amount of characters of two strings   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strcoll/">strcoll</a></td><td>compares two strings in accordance to the current locale   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strchr/">strchr</a></td><td>finds the first occurrence of a character   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strrchr/">strrchr</a></td><td>finds the last occurrence of a character   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strspn/">strspn</a></td><td>returns the length of the maximum initial segment that consists   of only the characters found in another byte string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strcspn/">strcspn</a></td><td>returns the length of the maximum initial segment that consists   of only the characters not found in another byte string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strpbrk/">strpbrk</a></td><td>finds the first location of any character in one string, in another string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strstr/">strstr</a></td><td>finds the first occurrence of a substring of characters   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strtok/">strtok<br />strtok_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>finds the next token in a byte string   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Character array manipulation</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;string.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/string/byte/memchr/">memchr</a></td><td>searches an array for the first occurrence of a character   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/memcmp/">memcmp</a></td><td>compares two buffers   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/memset/">memset<br />memset_explicit<br />memset_s</a>
+
+<span class="std std-since std-c23">(C23)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>fills a buffer with a character   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/memcpy/">memcpy<br />memcpy_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>copies one buffer to another   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/memmove/">memmove<br />memmove_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>moves one buffer to another   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/memccpy/">memccpy</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>copies one buffer to another, stopping after the specified delimiter   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Miscellaneous</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;string.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/string/byte/strerror/">strerror<br />strerror_s<br />strerrorlen_s</a>
+
+<span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>returns a text version of a given error code   <span class="mark-note">(function)</span></td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<table class="ref-table">
+<tr><th>Extended content</th></tr>
+<tr><td><section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.4 Character handling &lt;ctype.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.8 Format conversion of integer types &lt;inttypes.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 General utilities &lt;stdlib.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24 String handling &lt;string.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.2 Character handling &lt;ctype.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.5 Format conversion of integer types &lt;inttypes.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.12 General utilities &lt;stdlib.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.13 String handling &lt;string.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.6 General utilities &lt;stdlib.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.7 String handling &lt;string.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.4 Character handling &lt;ctype.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.8 Format conversion of integer types &lt;inttypes.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 General utilities &lt;stdlib.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24 String handling &lt;string.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.2 Character handling &lt;ctype.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.5 Format conversion of integer types &lt;inttypes.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.12 General utilities &lt;stdlib.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.13 String handling &lt;string.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.6 General utilities &lt;stdlib.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.7 String handling &lt;string.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.4 Character handling &lt;ctype.h&gt; (p: 200-204)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.8 Format conversion of integer types &lt;inttypes.h&gt; (p: 217-220)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 General utilities &lt;stdlib.h&gt; (p: 340-360)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24 String handling &lt;string.h&gt; (p: 362-372)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.2 Character handling &lt;ctype.h&gt; (p: 455)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.5 Format conversion of integer types &lt;inttypes.h&gt; (p: 455)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.12 General utilities &lt;stdlib.h&gt; (p: 456)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.13 String handling &lt;string.h&gt; (p: 456)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.6 General utilities &lt;stdlib.h&gt; (p: 604-613)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.7 String handling &lt;string.h&gt; (p: 614-623)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.4 Character handling &lt;ctype.h&gt; (p: 181-185)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.8 Format conversion of integer types &lt;inttypes.h&gt; (p: 198-201)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20 General utilities &lt;stdlib.h&gt; (p: 306-324)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21 String handling &lt;string.h&gt; (p: 325-334)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.2 Character handling &lt;ctype.h&gt; (p: 401)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.4 Format conversion of integer types &lt;inttypes.h&gt; (p: 401)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.10 General utilities &lt;stdlib.h&gt; (p: 402)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.11 String handling &lt;string.h&gt; (p: 402)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.3 CHARACTER HANDLING &lt;ctype.h&gt;</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.10 GENERAL UTILITIES &lt;stdlib.h&gt;</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.11 STRING HANDLING &lt;string.h&gt;</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.13.2 Character handling &lt;ctype.h&gt;</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.13.7 General utilities &lt;stdlib.h&gt;</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.13.8 String handling &lt;string.h&gt;</p>
+</li>
+</ul></dd>
+</dl></section></td></tr>
+</table>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/byte" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+<code>Null</code>-terminated byte strings</td></tr>
+</table>

@@ -1,0 +1,101 @@
+---
+title: "constexpr specifier (since C23)"
+slug: "c/language/constexpr"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/constexpr"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>A scalar object declared with the <code>constexpr</code> storage-class specifier is a <a href="/reference/c/language/constant_expression/">constant</a>. It must be fully and explicitly initialized according to the static initialization rules. It still has linkage appropriate to its declaration and it exist at runtime to have its address taken; it simply cannot be modified at runtime in any way, i.e. the compiler can use its knowledge of the object’s fixed value in any other <a href="/reference/c/language/constant_expression/">constant expression</a>.</p>
+
+<p>Additionally, the constant expression that is used for the initializer of such a constant is checked at compile time.</p>
+
+<p>An initializer of floating-point type must be evaluated with the translation-time floating-point environment.</p>
+
+<p>There are some restrictions on the type of an object that can be declared with <code>constexpr</code>. Namely, the following constructs are not allowed to be <code>constexpr</code>:</p>
+
+<ul>
+<li>
+<a href="/reference/c/language/pointer/">Pointers</a>
+
+<p>(except that null pointers can be</p>
+
+<code>constexpr</code>
+
+<p>),</p>
+</li>
+<li>
+<p>Variably modified types,</p>
+</li>
+<li>
+<a href="/reference/c/language/atomic/">Atomic types</a>
+
+<p>,</p>
+</li>
+<li>
+<a href="/reference/c/language/volatile/"><code>volatile</code></a>
+
+<p>types,</p>
+</li>
+<li>
+<a href="/reference/c/language/restrict/"><code>restrict</code></a>
+
+<p>pointers.</p>
+</li>
+</ul>
+
+<h3 id="Keywords">Keywords</h3>
+
+<p><a href="/reference/c/keyword/constexpr/"><code>constexpr</code></a></p>
+
+<h3 id="Notes">Notes</h3>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <fenv.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    constexpr float f = 23.0f;
+    constexpr float g = 33.0f;
+    fesetround(FE_TOWARDZERO);
+    constexpr float h = f / g; // is not affected by fesetround() above
+    printf("%f\n", h);
+}
+```
+
+<p>Output:</p>
+
+```text
+0.696969
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>TBD TBD (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/constexpr" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+<code>constexpr</code> type specifier</td></tr>
+</table>

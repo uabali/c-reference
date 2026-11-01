@@ -1,0 +1,404 @@
+---
+title: "Assignment operators"
+slug: "c/language/operator_assignment"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/operator_assignment"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Assignment and compound assignment operators are binary operators that modify the variable to their left using the value to their right.</p>
+
+<table class="ref-table">
+<tr><th>Operator</th><th>Operator name</th><th>Example</th><th>Description</th><th>Equivalent of</th></tr>
+<tr><td><code>=</code></td><td>basic assignment</td><td><code>a = b</code></td><td><strong>a</strong> becomes equal to <strong>b</strong></td><td>N/A</td></tr>
+<tr><td><code>+=</code></td><td>addition assignment</td><td><code>a += b</code></td><td><strong>a</strong> becomes equal to the addition of <strong>a</strong> and <strong>b</strong></td><td><code>a = a + b</code></td></tr>
+<tr><td><code>-=</code></td><td>subtraction assignment</td><td><code>a -= b</code></td><td><strong>a</strong> becomes equal to the subtraction of <strong>b</strong> from <strong>a</strong></td><td><code>a = a - b</code></td></tr>
+<tr><td><code>*=</code></td><td>multiplication assignment</td><td><code>a *= b</code></td><td><strong>a</strong> becomes equal to the product of <strong>a</strong> and <strong>b</strong></td><td><code>a = a * b</code></td></tr>
+<tr><td><code>/=</code></td><td>division assignment</td><td><code>a /= b</code></td><td><strong>a</strong> becomes equal to the division of <strong>a</strong> by <strong>b</strong></td><td><code>a = a / b</code></td></tr>
+<tr><td><code>%=</code></td><td>modulo assignment</td><td><code>a %= b</code></td><td><strong>a</strong> becomes equal to the remainder of <strong>a</strong> divided by <strong>b</strong></td><td><code>a = a % b</code></td></tr>
+<tr><td><code>&amp;=</code></td><td>bitwise AND assignment</td><td><code>a &amp;= b</code></td><td><strong>a</strong> becomes equal to the bitwise AND of <strong>a</strong> and <strong>b</strong></td><td><code>a = a &amp; b</code></td></tr>
+<tr><td><code>|=</code></td><td>bitwise OR assignment</td><td><code>a |= b</code></td><td><strong>a</strong> becomes equal to the bitwise OR of <strong>a</strong> and <strong>b</strong></td><td><code>a = a | b</code></td></tr>
+<tr><td><code>^=</code></td><td>bitwise XOR assignment</td><td><code>a ^= b</code></td><td><strong>a</strong> becomes equal to the bitwise XOR of <strong>a</strong> and <strong>b</strong></td><td><code>a = a ^ b</code></td></tr>
+<tr><td><code>&lt;&lt;=</code></td><td>bitwise left shift assignment</td><td><code>a &lt;&lt;= b</code></td><td><strong>a</strong> becomes equal to <strong>a</strong> left shifted by <strong>b</strong></td><td><code>a = a &lt;&lt; b</code></td></tr>
+<tr><td><code>&gt;&gt;=</code></td><td>bitwise right shift assignment</td><td><code>a &gt;&gt;= b</code></td><td><strong>a</strong> becomes equal to <strong>a</strong> right shifted by <strong>b</strong></td><td><code>a = a &gt;&gt; b</code></td></tr>
+</table>
+
+<h3 id="Simple_assignment">Simple assignment</h3>
+
+<p>The simple assignment operator expressions have the form</p>
+
+```text
+lhs = rhs
+```
+
+<p>where</p>
+
+<table class="ref-table ref-params">
+<tr><td><em>lhs</em></td><td>-</td><td><a href="/reference/c/language/value_category/">modifiable lvalue</a> expression of any complete object type</td></tr>
+<tr><td><em>rhs</em></td><td>-</td><td>expression of any type <a href="/reference/c/language/conversion/">implicitly convertible</a> to <em>lhs</em> or <a href="/reference/c/language/compatible_type/#Compatible_types">compatible</a> with <em>lhs</em></td></tr>
+</table>
+
+<p>Assignment performs <a href="/reference/c/language/conversion/">implicit conversion</a> from the value of <em>rhs</em> to the type of <em>lhs</em> and then replaces the value in the object designated by <em>lhs</em> with the converted value of <em>rhs</em>.</p>
+
+<p>Assignment also returns the same value as what was stored in <code>lhs</code> (so that expressions such as <code>a = b = c</code> are possible). The <a href="/reference/c/language/value_category/">value category</a> of the assignment operator is non-lvalue (so that expressions such as <code>(a=b)=c</code> are invalid).</p>
+
+<p><em>rhs</em> and <em>lhs</em> must satisfy one of the following:</p>
+
+<ul>
+<li>
+<p>both</p>
+
+<em>lhs</em>
+
+<p>and</p>
+
+<em>rhs</em>
+
+<p>have</p>
+
+<a href="/reference/c/language/compatible_type/#Compatible_types">compatible</a>
+
+<a href="/reference/c/language/struct/">struct</a>
+
+<p>or</p>
+
+<a href="/reference/c/language/union/">union</a>
+
+<p>type, or..</p>
+</li>
+<li>
+<em>rhs</em>
+
+<p>must be</p>
+
+<a href="/reference/c/language/conversion/">implicitly convertible</a>
+
+<p>to</p>
+
+<em>lhs</em>
+
+<p>, which implies</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>both</p>
+
+<em>lhs</em>
+
+<p>and</p>
+
+<em>rhs</em>
+
+<p>have</p>
+
+<a href="/reference/c/language/arithmetic_types/">arithmetic types</a>
+
+<p>, in which case</p>
+
+<em>lhs</em>
+
+<p>may be</p>
+
+<a href="/reference/c/language/volatile/">volatile</a>
+
+<p>-qualified</p>
+
+or <a href="/reference/c/language/atomic/">atomic</a><span class="std std-since std-c11">(since C11)</span>
+</li>
+<li>
+<p>both</p>
+
+<em>lhs</em>
+
+<p>and</p>
+
+<em>rhs</em>
+
+<p>have</p>
+
+<a href="/reference/c/language/pointer/">pointer</a>
+
+<p>to</p>
+
+<a href="/reference/c/language/compatible_type/#Compatible_types">compatible</a>
+
+<p>(ignoring qualifiers) types, or one of the pointers is a pointer to void, and the</p>
+
+<a href="/reference/c/language/conversion/">conversion</a>
+
+<p>would not add qualifiers to the pointed-to type.</p>
+
+<em>lhs</em>
+
+<p>may be</p>
+
+<a href="/reference/c/language/volatile/">volatile</a>
+
+or <a href="/reference/c/language/restrict/">restrict</a><span class="std std-since std-c99">(since C99)</span>
+
+<p>-qualified</p>
+
+or <a href="/reference/c/language/atomic/">atomic</a><span class="std std-since std-c11">(since C11)</span>
+
+<p>.</p>
+</li>
+<li>
+<em>lhs</em>
+
+<p>is a (possibly qualified</p>
+
+or atomic<span class="std std-since std-c11">(since C11)</span>
+
+<p>) pointer and</p>
+
+<em>rhs</em>
+
+<p>is a null pointer constant such as</p>
+
+<a href="/reference/c/types/NULL/">NULL</a>
+
+or a <a href="/reference/c/types/nullptr_t/">nullptr_t</a> value<span class="std std-since std-c23">(since C23)</span>
+</li>
+</ul></dd>
+</dl>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><dl>
+<dd><ul>
+<li>
+<em>lhs</em>
+
+<p>has type (possibly qualified</p>
+
+or atomic<span class="std std-since std-c11">(since C11)</span>
+
+<p>)</p>
+
+<code>_Bool</code>
+
+<p>and</p>
+
+<em>rhs</em>
+
+<p>is a pointer</p>
+
+or a <a href="/reference/c/types/nullptr_t/">nullptr_t</a> value<span class="std std-since std-c23">(since C23)</span>
+</li>
+</ul></dd>
+</dl></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><dl>
+<dd><ul>
+<li>
+<em>lhs</em>
+
+<p>has type (possibly qualified or atomic)</p>
+
+<a href="/reference/c/types/nullptr_t/">nullptr_t</a>
+
+<p>and</p>
+
+<em>rhs</em>
+
+<p>has type</p>
+
+<a href="/reference/c/types/nullptr_t/">nullptr_t</a>
+</li>
+</ul></dd>
+</dl></aside>
+
+<h4 id="Notes">Notes</h4>
+
+<p>If <em>rhs</em> and <em>lhs</em> overlap in memory (e.g. they are members of the same union), the behavior is undefined unless the overlap is exact and the types are <a href="/reference/c/language/compatible_type/#Compatible_types">compatible</a>.</p>
+
+<p>Although arrays are not assignable, an array wrapped in a struct is assignable to another object of the same (or compatible) struct type.</p>
+
+<p>The side effect of updating <em>lhs</em> is <a href="/reference/c/language/eval_order/">sequenced after</a> the value computations, but not the side effects of <em>lhs</em> and <em>rhs</em> themselves and the evaluations of the operands are, as usual, unsequenced relative to each other (so the expressions such as <code>i=++i</code>; are undefined)</p>
+
+<p>Assignment strips extra range and precision from floating-point expressions (see <a href="/reference/c/types/limits/FLT_EVAL_METHOD/">FLT_EVAL_METHOD</a>).</p>
+
+<p>In C++, assignment operators are lvalue expressions, not so in C.</p>
+
+```c
+#include <stdio.h>
+ 
+int main(void)
+{
+    // integers
+    int i = 1, j = 2, k = 3; // initialization, not assignment
+ 
+    i = j = k;   // values of i and j are now 3
+//  (i = j) = k; // Error: lvalue required
+    printf("%d %d %d\n", i, j, k);
+ 
+    // pointers
+    const char c = 'A'; // initialization; not assignment
+    const char *p = &c;  // initialization; not assignment
+    const char **cpp = &p; // initialization; not assignment
+ 
+//  cpp = &p;   // Error: char** is not convertible to const char**
+    *cpp = &c;  // OK, char* is convertible to const char*
+    printf("%c \n", **cpp);
+    cpp = 0;    // OK, null pointer constant is convertible to any pointer
+ 
+    // arrays
+    int arr1[2] = {1,2}, arr2[2] = {3, 4};
+//  arr1 = arr2; // Error: cannot assign to an array
+    printf("arr1[0]=%d arr1[1]=%d arr2[0]=%d arr2[1]=%d\n",
+            arr1[0],   arr1[1],   arr2[0],   arr2[1]);
+ 
+    struct { int arr[2]; } sam1 = { {5, 6} }, sam2 = { {7, 8} };
+    sam1 = sam2; // OK: can assign arrays wrapped in structs
+ 
+    printf("%d %d \n", sam1.arr[0], sam1.arr[1]);
+}
+```
+
+<p>Output:</p>
+
+```text
+3 3 3
+A
+arr1[0]=1 arr1[1]=2 arr2[0]=3 arr2[1]=4
+7 8
+```
+
+<h3 id="Compound_assignment">Compound assignment</h3>
+
+<p>The compound assignment operator expressions have the form</p>
+
+```text
+lhs op rhs
+```
+
+<p>where</p>
+
+<table class="ref-table ref-params">
+<tr><td><em>op</em></td><td>-</td><td>one of <code>*=</code>, <code>/=</code> <code>%=</code>, <code>+=</code> <code>-=</code>, <code>&lt;&lt;=</code>, <code>&gt;&gt;=</code>, <code>&amp;=</code>, <code>^=</code>, <code>|=</code></td></tr>
+<tr><td><em>lhs</em>, <em>rhs</em></td><td>-</td><td>expressions with <a href="/reference/c/language/arithmetic_types/">arithmetic types</a> (where <em>lhs</em> may be qualified or atomic), except when <em>op</em> is <code>+=</code> or <code>-=</code>, which also accept pointer types with the same restrictions as + and -</td></tr>
+</table>
+
+<p>The expression <em>lhs</em> <em>@=</em> <em>rhs</em> is exactly the same as <em>lhs</em> <code>=</code> <em>lhs</em> <em>@</em> <code>(</code> <em>rhs</em> <code>)</code>, except that <em>lhs</em> is evaluated only once.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><p>If <em>lhs</em> has <a href="/reference/c/language/atomic/">atomic</a> type, the operation behaves as a single atomic read-modify-write operation with memory order <a href="/reference/c/atomic/memory_order/">memory_order_seq_cst</a>.</p>
+
+<p>For integer atomic types, the compound assignment <code>@=</code> is equivalent to:</p>
+
+```c
+T1* addr = &lhs;
+T2 val = rhs;
+T1 old = *addr;
+T1 new;
+do { new = old @ val } while (!atomic_compare_exchange_strong(addr, &old, new);
+```</aside>
+
+```c
+#include <stdio.h>
+ 
+int main(void)
+{
+    int x = 10; 
+    int hundred = 100; 
+    int ten = 10; 
+    int fifty = 50; 
+ 
+    printf("%d %d %d %d\n", x, hundred, ten, fifty);
+ 
+    hundred *= x; 
+    ten     /= x; 
+    fifty   %= x; 
+ 
+    printf("%d %d %d %d\n", x, hundred, ten, fifty);
+ 
+    return 0;
+}
+```
+
+<p>Output:</p>
+
+```text
+10 100 10 50
+10 1000 1 0
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.16 Assignment operators (p: 72-73)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.16 Assignment operators (p: 101-104)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.16 Assignment operators (p: 91-93)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.3.16 Assignment operators</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_Also">See Also</h3>
+
+<p><a href="/reference/c/language/operator_precedence/">Operator precedence</a></p>
+
+<table class="ref-table">
+<tr><th colspan="7">Common operators</th></tr>
+<tr><td><strong>assignment</strong></td><td><a href="/reference/c/language/operator_incdec/">increment decrement</a></td><td><a href="/reference/c/language/operator_arithmetic/">arithmetic</a></td><td><a href="/reference/c/language/operator_logical/">logical</a></td><td><a href="/reference/c/language/operator_comparison/">comparison</a></td><td><a href="/reference/c/language/operator_member_access/">member access</a></td><td><a href="/reference/c/language/operator_other/">other</a></td></tr>
+<tr><td><p><code>a = b a += b a -= b a *= b a /= b a %= b a &amp;= b a |= b a ^= b a &lt;&lt;= b a &gt;&gt;= b</code></p></td><td><p><code>++a --a a++ a--</code></p></td><td><p><code>+a -a a + b a - b a * b a / b a % b ~a a &amp; b a | b a ^ b a &lt;&lt; b a &gt;&gt; b</code></p></td><td><p><code>!a a &amp;&amp; b a || b</code></p></td><td><p><code>a == b a != b a &lt; b a &gt; b a &lt;= b a &gt;= b</code></p></td><td><p><code>a[b] *a &amp;a a-&gt;b a.b</code></p></td><td><p><code>a(...) a, b (type) a a ? b : c sizeof</code>   <code>_Alignof</code> <span class="std std-since std-c11">(since C11)</span> <span class="std std-until std-c23">(until C23)</span>   <code>alignof</code> <span class="std std-since std-c23">(since C23)</span></p></td></tr>
+</table>
+
+<h3 id="See_also_2">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/operator_assignment" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Assignment operators</td></tr>
+</table>

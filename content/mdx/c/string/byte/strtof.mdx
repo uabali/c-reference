@@ -1,0 +1,331 @@
+---
+title: "strtof, strtod, strtold"
+slug: "c/string/byte/strtof"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/byte/strtof"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdlib.h&gt;</code></p>
+
+```c
+float       strtof ( const char* restrict str, char** restrict str_end );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="decl-note">(2)</p>
+
+```c
+double      strtod ( const char*          str, char**          str_end );
+```
+
+<p class="decl-note"><span class="std std-until std-c99">(until C99)</span></p>
+
+```c
+double      strtod ( const char* restrict str, char** restrict str_end );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+long double strtold( const char* restrict str, char** restrict str_end );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p>Interprets a floating-point value in a byte string pointed to by <code>str</code>.</p>
+
+<p>Function discards any whitespace characters (as determined by <a href="/reference/c/string/byte/isspace/">isspace</a>) until first non-whitespace character is found. Then it takes as many characters as possible to form a valid floating-point representation and converts them to a floating-point value. The valid floating-point value can be one of the following:</p>
+
+<ul>
+<li>
+<p>decimal floating-point expression. It consists of the following parts:</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<span class="mark-note">(optional)</span>
+
+<p>plus or minus sign</p>
+</li>
+<li>
+<p>nonempty sequence of decimal digits optionally containing decimal-point character (as determined by the current C</p>
+
+<a href="/reference/c/locale/setlocale/">locale</a>
+
+<p>) (defines significand)</p>
+</li>
+<li>
+<span class="mark-note">(optional)</span>
+
+<code>e</code>
+
+<p>or</p>
+
+<code>E</code>
+
+<p>followed with optional minus or plus sign and nonempty sequence of decimal digits (defines exponent to base 10)</p>
+</li>
+</ul></dd>
+</dl>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><ul>
+<li>
+<p>hexadecimal floating-point expression. It consists of the following parts:</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<span class="mark-note">(optional)</span>
+
+<p>plus or minus sign</p>
+</li>
+<li>
+<code>0x</code>
+
+<p>or</p>
+
+<code>0X</code>
+</li>
+<li>
+<p>nonempty sequence of hexadecimal digits optionally containing a decimal-point character (as determined by the current C</p>
+
+<a href="/reference/c/locale/setlocale/">locale</a>
+
+<p>) (defines significand)</p>
+</li>
+<li>
+<span class="mark-note">(optional)</span>
+
+<code>p</code>
+
+<p>or</p>
+
+<code>P</code>
+
+<p>followed with optional minus or plus sign and nonempty sequence of decimal digits (defines exponent to base 2)</p>
+</li>
+</ul></dd>
+</dl>
+
+<ul>
+<li>
+<p>infinity expression. It consists of the following parts:</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<span class="mark-note">(optional)</span>
+
+<p>plus or minus sign</p>
+</li>
+<li>
+<code>INF</code>
+
+<p>or</p>
+
+<code>INFINITY</code>
+
+<p>ignoring case</p>
+</li>
+</ul></dd>
+</dl>
+
+<ul>
+<li>
+<p>not-a-number expression. It consists of the following parts:</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<span class="mark-note">(optional)</span>
+
+<p>plus or minus sign</p>
+</li>
+<li>
+<code>NAN</code>
+
+<p>or</p>
+
+<code>NAN(</code>
+
+<em>char_sequence</em>
+
+<code>)</code>
+
+<p>ignoring case of the</p>
+
+<code>NAN</code>
+
+<p>part.</p>
+
+<em>char_sequence</em>
+
+<p>can only contain digits, Latin letters, and underscores. The result is a quiet NaN floating-point value.</p>
+</li>
+</ul></dd>
+</dl></aside>
+
+<ul>
+<li>
+<p>any other expression that may be accepted by the currently installed C</p>
+
+<a href="/reference/c/locale/setlocale/">locale</a>
+</li>
+</ul>
+
+<p>The functions sets the pointer pointed to by <code>str_end</code> to point to the character past the last character interpreted. If <code>str_end</code> is a null pointer, it is ignored.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>str</td><td>-</td><td>pointer to the null-terminated byte string to be interpreted</td></tr>
+<tr><td>str_end</td><td>-</td><td>pointer to a pointer to character</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Floating-point value corresponding to the contents of <code>str</code> on success. If the converted value falls out of range of corresponding return type, range error occurs (<a href="/reference/c/error/errno/">errno</a> is set to <a href="/reference/c/error/errno_macros/">ERANGE</a>) and <a href="/reference/c/numeric/math/HUGE_VAL/">HUGE_VAL</a>, <a href="/reference/c/numeric/math/HUGE_VAL/">HUGE_VALF</a> or <a href="/reference/c/numeric/math/HUGE_VAL/">HUGE_VALL</a> is returned. If no conversion can be performed, <code>0</code> is returned.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(void)
+{
+    // parsing with error handling
+    const char* p = "111.11 -2.22 Nan nan(2) inF 0X1.BC70A3D70A3D7P+6  1.18973e+4932zzz";
+    printf("Parsing '%s':\n", p);
+    char* end = NULL;
+    for (double f = strtod(p, &end); p != end; f = strtod(p, &end))
+    {
+        printf("'%.*s' -> ", (int)(end - p), p);
+        p = end;
+        if (errno == ERANGE)
+        {
+            printf("range error, got ");
+            errno = 0;
+        }
+        printf("%f\n", f);
+    }
+ 
+    // parsing without error handling
+    printf("\"  -0.0000000123junk\"  -->  %g\n", strtod("  -0.0000000123junk", NULL));
+    printf("\"junk\"                 -->  %g\n", strtod("junk", NULL));
+}
+```
+
+<p>Possible output:</p>
+
+```text
+Parsing '111.11 -2.22 Nan nan(2) inF 0X1.BC70A3D70A3D7P+6  1.18973e+4932zzz':
+'111.11' -> 111.110000
+' -2.22' -> -2.220000
+' Nan' -> nan
+' nan(2)' -> nan
+' inF' -> inf
+' 0X1.BC70A3D70A3D7P+6' -> 111.110000
+'  1.18973e+4932' -> range error, got inf
+"  -0.0000000123junk"  -->  -1.23e-08
+"junk"                 -->  0
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.1.3 The strtod, strtof, and strtold functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.1.3 The strtod, strtof, and strtold functions (p: 249-251)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.1.3 The strtod, strtof, and strtold functions (p: 342-344)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20.1.3 The strtod, strtof, and strtold functions (p: 308-310)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.10.1.4 The strtod function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/byte/atof/">atof</a></td><td>converts a byte string to a floating-point value   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcstof/">wcstof<br />wcstod<br />wcstold</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>converts a wide string to a floating-point value   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/byte/strtof" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+strtof, strtod, strtold</td></tr>
+</table>

@@ -1,0 +1,157 @@
+---
+title: "isgreaterequal"
+slug: "c/numeric/math/isgreaterequal"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/isgreaterequal"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+#define isgreaterequal(x, y) /* implementation defined */
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>Determines if the floating-point number <code>x</code> is greater than or equal to the floating-point number <code>y</code>, without setting floating-point exceptions.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>x</td><td>-</td><td>floating-point value</td></tr>
+<tr><td>y</td><td>-</td><td>floating-point value</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Nonzero integral value if <code>x &gt;= y</code>, <code>0</code> otherwise.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The built-in <code>operator&gt;=</code> for floating-point numbers may raise <a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a> if one or both of the arguments is NaN. This function is a "quiet" version of <code>operator&gt;=</code>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <math.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    printf("isgreaterequal(2.0,1.0)      = %d\n", isgreaterequal(2.0, 1.0));
+    printf("isgreaterequal(1.0,2.0)      = %d\n", isgreaterequal(1.0, 2.0));
+    printf("isgreaterequal(1.0,1.0)      = %d\n", isgreaterequal(1.0, 1.0));
+    printf("isgreaterequal(INFINITY,1.0) = %d\n", isgreaterequal(INFINITY, 1.0));
+    printf("isgreaterequal(1.0,NAN)      = %d\n", isgreaterequal(1.0, NAN));
+ 
+    return 0;
+}
+```
+
+<p>Possible output:</p>
+
+```text
+isgreaterequal(2.0,1.0)      = 1
+isgreaterequal(1.0,2.0)      = 0
+isgreaterequal(1.0,1.0)      = 1
+isgreaterequal(INFINITY,1.0) = 1
+isgreaterequal(1.0,NAN)      = 0
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.14.2 The isgreaterequal macro (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.11 Comparison macros (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.14.2 The isgreaterequal macro (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.11 Comparison macros (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.14.2 The isgreaterequal macro (p: 259-260)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.11 Comparison macros (p: 531)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.14.2 The isgreaterequal macro (p: 240-241)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/islessequal/">islessequal</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if the first floating-point argument is less or equal than the second   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/isgreaterequal" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+isgreaterequal</td></tr>
+</table>

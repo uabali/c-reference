@@ -1,0 +1,91 @@
+---
+title: "C attribute: nodiscard (since C23)"
+slug: "c/language/attributes/nodiscard"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/attributes/nodiscard"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>If a function declared <code>nodiscard</code> or a function returning a struct/union/enum declared <code>nodiscard</code> by value is called from a <a href="/reference/c/language/expressions/">discarded-value expression</a> other than a cast to <code>void</code>, the compiler is encouraged to issue a warning.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+[[ nodiscard ]][[ __nodiscard__ ]]
+[[ nodiscard ( string-literal ) ]][[ __nodiscard__ ( string-literal ) ]]
+```
+
+<table class="ref-table ref-params">
+<tr><td><em>string-literal</em></td><td>-</td><td>text that could be used to explain the rationale for why the result should not be discarded</td></tr>
+</table>
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>Appears in a function declaration, enumeration declaration, or struct/union declaration.</p>
+
+<p>If, from a <a href="/reference/c/language/expressions/">discarded-value expression</a> other than a cast to <code>void</code>,</p>
+
+<ul>
+<li>
+<p>a function declared</p>
+
+<code>nodiscard</code>
+
+<p>is called, or</p>
+</li>
+<li>
+<p>a function returning a struct/union/enum declared</p>
+
+<code>nodiscard</code>
+
+<p>is called,</p>
+</li>
+</ul>
+
+<p>the compiler is encouraged to issue a warning.</p>
+
+<p>The <em>string-literal</em>, if specified, is usually included in the warnings.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+struct [[nodiscard]] error_info { int status; /*...*/ };
+struct error_info enable_missile_safety_mode() { /*...*/ return (struct error_info){0}; }
+void launch_missiles() { /*...*/ }
+void test_missiles() {
+   enable_missile_safety_mode(); // compiler may warn on discarding a nodiscard value
+   launch_missiles();
+}
+struct error_info* foo() { static struct error_info e; /*...*/ return &e; }
+void f1() {
+    foo(); // nodiscard type itself is not returned, no warning
+}
+// nodiscard( string-literal ):
+[[nodiscard("PURE FUN")]] int strategic_value(int x, int y) { return x ^ y; }
+ 
+int main()
+{
+    strategic_value(4,2); // compiler may warn on discarding a nodiscard value
+    int z = strategic_value(0,0); // OK: return value is not discarded
+    return z;
+}
+```
+
+<p>Possible output:</p>
+
+```text
+game.cpp:5:4: warning: ignoring return value of function declared with 'nodiscard' attribute
+game.cpp:17:5: warning: ignoring return value of function declared with 'nodiscard' attribute: PURE FUN
+```
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/attributes/nodiscard" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+nodiscard</td></tr>
+</table>

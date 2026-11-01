@@ -1,0 +1,123 @@
+---
+title: "C compiler support"
+slug: "c/compiler_support"
+category: "overview"
+source: "https://en.cppreference.com/w/c/compiler_support"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<table class="ref-table">
+<tr><td><img src="/media/cppref/8764364f-Imbox_notice.png" alt="" /></td><td>This page is maintained as best-effort and may lag behind most recent compiler releases. If you see something is out-of-date, please help us by updating it!</td></tr>
+</table>
+
+<h2 id="C23_features">C23 features</h2>
+
+<p>Note that this list may change, as the draft C23/2x standard evolves.</p>
+
+<h3 id="C23_core_language_features">C23 core language features</h3>
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: status for Apple Clang and other compilers supporting C2x</td></tr>
+</table>
+
+<table class="ref-table">
+<tr><th>C23 feature</th><th>Paper(s)</th><th><p>GCC</p></th><th><p>Clang</p></th><th><p>MSVC</p></th><th><p>Apple Clang</p></th><th><p>EDG eccp</p></th><th><p>Intel C++</p></th><th>Nvidia HPC C++ (ex PGI)*</th><th><p>Nvidia nvcc</p></th><th><p>Cray</p></th><th></th></tr>
+<tr><td><a href="/reference/c/language/static_assert/"><code>static_assert</code></a> with no message</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2265.pdf" rel="noreferrer" target="_blank">N2265</a></td><td>9</td><td>9</td><td>Yes</td><td>Yes</td><td>6.5</td><td>2021.1.2 (clang based)</td><td></td><td></td><td></td></tr>
+<tr><td><code>[[nodiscard]]</code></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2267.pdf" rel="noreferrer" target="_blank">N2267</a></td><td>10</td><td>9</td><td></td><td>Yes</td><td>6.4</td><td>2021.1.2 (clang based)</td><td></td><td></td><td></td></tr>
+<tr><td><code>[[maybe_unused]]</code></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2270.pdf" rel="noreferrer" target="_blank">N2270</a></td><td>10</td><td>9</td><td></td><td>Yes</td><td>6.4</td><td>2021.1.2 (clang based)</td><td></td><td></td><td></td></tr>
+<tr><td><code>[[deprecated]]</code></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2334.pdf" rel="noreferrer" target="_blank">N2334</a></td><td>10</td><td>9</td><td></td><td>Yes</td><td>6.4</td><td>2021.1.2 (clang based)</td><td></td><td></td><td></td></tr>
+<tr><td><a href="/reference/c/language/attributes/">Attributes</a></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2335.pdf" rel="noreferrer" target="_blank">N2335</a> <a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2554.pdf" rel="noreferrer" target="_blank">N2554</a></td><td>10</td><td>9</td><td></td><td>Yes</td><td>6.4</td><td>2021.1.2 (clang based)</td><td></td><td></td><td></td></tr>
+<tr><td>IEEE 754 decimal floating-point types</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2341.pdf" rel="noreferrer" target="_blank">N2341</a></td><td>4.2 (partial)* 12</td><td></td><td></td><td></td><td></td><td>13.0 (partial)*</td><td></td><td></td><td></td></tr>
+<tr><td><code>[[fallthrough]]</code></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2408.pdf" rel="noreferrer" target="_blank">N2408</a></td><td>10</td><td>9</td><td></td><td>Yes</td><td>6.4</td><td>2021.1.2 (clang based)</td><td></td><td></td><td></td></tr>
+<tr><td><a href="/reference/c/language/character_constant/"><code>u8</code> character constants</a></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2418.pdf" rel="noreferrer" target="_blank">N2418</a></td><td>10</td><td>15</td><td></td><td></td><td>6.5</td><td>2022.2</td><td></td><td></td><td></td></tr>
+<tr><td>Removal of <a href="/reference/c/language/function_definition/">function definitions</a> without prototype</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2432.pdf" rel="noreferrer" target="_blank">N2432</a></td><td>10</td><td>15</td><td></td><td></td><td></td><td>2022.2</td><td></td><td></td><td></td></tr>
+<tr><td><code>[[nodiscard]]</code> with message</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2448.pdf" rel="noreferrer" target="_blank">N2448</a></td><td>11</td><td>10</td><td></td><td>Yes</td><td>6.4</td><td>2021.1.2 (clang based)</td><td></td><td></td><td></td></tr>
+<tr><td>Unnamed parameters in function definitions</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2480.pdf" rel="noreferrer" target="_blank">N2480</a></td><td>11</td><td>11</td><td></td><td>Yes</td><td>6.4</td><td>2021.1.2 (clang based)</td><td></td><td></td><td></td></tr>
+<tr><td><a href="/reference/c/language/statements/#Labels">Labels</a> before declarations and end of blocks</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2508.pdf" rel="noreferrer" target="_blank">N2508</a></td><td>11</td><td>16</td><td>Partial*</td><td></td><td>6.5</td><td>17.0*</td><td></td><td></td><td></td></tr>
+<tr><td><a href="/reference/c/language/integer_constant/">Binary integer constants</a></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2549.pdf" rel="noreferrer" target="_blank">N2549</a></td><td>4.3* 11</td><td>2.9* 9</td><td>19.0 (2015)**</td><td>Yes</td><td>6.5</td><td>11.0*</td><td></td><td></td><td></td></tr>
+<tr><td><a href="/reference/c/language/attributes/#Attribute_testing"><code>__has_c_attribute</code></a> in preprocessor conditionals</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2553.pdf" rel="noreferrer" target="_blank">N2553</a></td><td>11</td><td>9</td><td></td><td>Yes</td><td>6.5</td><td>2021.1.2 (clang based)</td><td></td><td></td><td></td></tr>
+<tr><td>Allow duplicate attributes</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2557.pdf" rel="noreferrer" target="_blank">N2557</a></td><td>11</td><td>13</td><td></td><td>Yes</td><td>6.5</td><td>2021.4 (clang-based</td><td></td><td></td><td></td></tr>
+<tr><td>IEEE 754 interchange and extended types</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2601.pdf" rel="noreferrer" target="_blank">N2601</a></td><td>7 (partial)* 14</td><td>6 (partial)*</td><td></td><td>Partial*</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Digit separators</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2626.pdf" rel="noreferrer" target="_blank">N2626</a></td><td>12</td><td>13</td><td>19.0 (2015)**</td><td>Yes</td><td>6.5</td><td>18.0*</td><td></td><td></td><td></td></tr>
+<tr><td><a href="/reference/c/preprocessor/conditional/"><code>#elifdef</code> and <code>#elifndef</code></a></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2645.pdf" rel="noreferrer" target="_blank">N2645</a></td><td>12</td><td>13</td><td>19.40*</td><td>13.1.6*</td><td>6.5</td><td>2021.4</td><td></td><td></td><td></td></tr>
+<tr><td>Type change of <a href="/reference/c/language/string_literal/"><code>u8</code> string literals</a></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2653.htm" rel="noreferrer" target="_blank">N2653</a></td><td>13</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td><code>[[maybe_unused]]</code> for labels</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2662.pdf" rel="noreferrer" target="_blank">N2662</a></td><td>11</td><td>16</td><td></td><td></td><td>6.5</td><td>2022.2</td><td></td><td></td><td></td></tr>
+<tr><td><a href="/reference/c/preprocessor/error/"><code>#warning</code></a></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2686.pdf" rel="noreferrer" target="_blank">N2686</a></td><td>Yes</td><td>Yes</td><td></td><td>Yes</td><td>6.5</td><td>Yes</td><td></td><td></td><td></td></tr>
+<tr><td>Bit-precise integer types (<code>_BitInt</code>)</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2763.pdf" rel="noreferrer" target="_blank">N2763</a></td><td>14 (partial)*</td><td>15</td><td></td><td></td><td>6.5</td><td>2022.2</td><td></td><td></td><td></td></tr>
+<tr><td><code>[[noreturn]]</code></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2764.pdf" rel="noreferrer" target="_blank">N2764</a></td><td>13</td><td>15</td><td></td><td></td><td>6.5</td><td>2022.2</td><td></td><td></td><td></td></tr>
+<tr><td>Suffixes for bit-precise integer constants</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2775.pdf" rel="noreferrer" target="_blank">N2775</a></td><td>14</td><td>15</td><td></td><td></td><td></td><td>2022.2</td><td></td><td></td><td></td></tr>
+<tr><td><a href="/reference/c/preprocessor/include/"><code>__has_include</code></a> in preprocessor conditionals</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2799.pdf" rel="noreferrer" target="_blank">N2799</a></td><td>5</td><td>Yes</td><td>19.11*</td><td>Yes</td><td>6.5</td><td>18.0</td><td></td><td></td><td></td></tr>
+<tr><td>Identifier Syntax using Unicode Standard Annex 31</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2836.pdf" rel="noreferrer" target="_blank">N2836</a></td><td>13</td><td>15</td><td></td><td></td><td>6.5</td><td>2022.2</td><td></td><td></td><td></td></tr>
+<tr><td>Removal of <a href="/reference/c/language/function_declaration/">function declarations</a> without prototype</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2841.htm" rel="noreferrer" target="_blank">N2841</a></td><td>13</td><td>15</td><td></td><td></td><td></td><td>2022.2</td><td></td><td></td><td></td></tr>
+<tr><td><a href="/reference/c/language/initialization/#Empty_initialization">Empty initializers</a></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2900.htm" rel="noreferrer" target="_blank">N2900</a></td><td>Partial* 13</td><td>Partial*</td><td></td><td>Partial*</td><td>Partial*</td><td>Partial*</td><td></td><td></td><td></td></tr>
+<tr><td><a href="/reference/c/language/typeof_unqual/"><code>typeof</code></a> and <a href="/reference/c/language/typeof_unqual/"><code>typeof_unqual</code></a></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2927.htm" rel="noreferrer" target="_blank">N2927</a> <a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2930.pdf" rel="noreferrer" target="_blank">N2930</a></td><td>Partial* 13</td><td>Partial* 16</td><td>19.39*</td><td>Partial*</td><td>Partial*</td><td>Partial*</td><td></td><td></td><td>Partial*</td></tr>
+<tr><td>New spelling of keywords</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2934.pdf" rel="noreferrer" target="_blank">N2934</a></td><td>13</td><td>16</td><td></td><td></td><td>6.5</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Predefined <a href="/reference/c/language/bool_constant/"><code>true</code> and <code>false</code></a></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2935.pdf" rel="noreferrer" target="_blank">N2935</a></td><td>13</td><td>15</td><td></td><td></td><td></td><td>2022.2</td><td></td><td></td><td></td></tr>
+<tr><td><code>[[unsequenced]]</code> and <code>[[reproducible]]</code></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2956.htm" rel="noreferrer" target="_blank">N2956</a></td><td>15</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Relax requirements for <a href="/reference/c/language/variadic/">variadic parameter list</a></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2975.pdf" rel="noreferrer" target="_blank">N2975</a></td><td>13</td><td>16</td><td></td><td></td><td>6.5</td><td>2023.1</td><td></td><td></td><td></td></tr>
+<tr><td>Type inference in object definitions</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n3007.htm" rel="noreferrer" target="_blank">N3007</a></td><td>13</td><td>18</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td><a href="/reference/c/preprocessor/embed/"><code>#embed</code></a></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n3017.htm" rel="noreferrer" target="_blank">N3017</a></td><td>15</td><td>19</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td><a href="/reference/c/language/constexpr/"><code>constexpr</code></a> objects</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n3018.htm" rel="noreferrer" target="_blank">N3018</a></td><td>13</td><td>19</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Improved Normal Enumerations</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n3029.htm" rel="noreferrer" target="_blank">N3029</a></td><td>13</td><td>20*</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Enumerations with fixed underlying types</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n3030.htm" rel="noreferrer" target="_blank">N3030</a></td><td>13</td><td>20*</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td><a href="/reference/c/preprocessor/replace/#Function-like_macros"><code>__VA_OPT__</code></a></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n3033.htm" rel="noreferrer" target="_blank">N3033</a></td><td>8 13</td><td>12</td><td>19.39*</td><td></td><td>6.5</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Storage-class specifiers for compound literals</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n3038.htm" rel="noreferrer" target="_blank">N3038</a></td><td>13</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td><a href="/reference/c/language/nullptr/"><code>nullptr</code></a></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n3042.htm" rel="noreferrer" target="_blank">N3042</a></td><td>13</td><td>16</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><th>C23 feature</th><th>Paper(s)</th><th><p>GCC</p></th><th><p>Clang</p></th><th><p>MSVC</p></th><th><p>Apple Clang</p></th><th><p>EDG eccp</p></th><th><p>Intel C++</p></th><th>Nvidia HPC C++ (ex PGI)*</th><th><p>Nvidia nvcc</p></th><th><p>Cray</p></th></tr>
+</table>
+
+<h3 id="C23_library_features">C23 library features</h3>
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: a different list for C standard libraries</td></tr>
+</table>
+
+<h2 id="C99_features">C99 features</h2>
+
+<h3 id="C99_core_language_features">C99 core language features</h3>
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: needs to list C compilers, verification</td></tr>
+</table>
+
+<table class="ref-table">
+<tr><th>C99 feature</th><th>Paper(s)</th><th><p>GCC</p></th><th><p>Clang</p></th><th><p>MSVC</p></th><th><p>Apple Clang</p></th><th><p>EDG eccp</p></th><th><p>Intel C++</p></th><th>Nvidia HPC C++ (ex PGI)*</th><th><p>Nvidia nvcc</p></th><th><p>Cray</p></th><th></th></tr>
+<tr><td>Universal-character-names in <a href="/reference/c/language/identifier/">identifiers</a></td><td></td><td>3.1</td><td>Yes</td><td>Yes</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Increased <a href="/reference/c/language/identifier/#Translation_limits">translation limits</a></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n590.pdf" rel="noreferrer" target="_blank">N590</a></td><td>0.9</td><td>N/A</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td><code>//</code> <a href="/reference/c/comment/">comments</a></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n644.htm" rel="noreferrer" target="_blank">N644</a></td><td>2.7</td><td>Yes</td><td>Yes</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td><a href="/reference/c/language/restrict/"><code>restrict</code></a> pointers</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n448.pdf" rel="noreferrer" target="_blank">N448</a></td><td>2.95</td><td>Yes</td><td>partial*</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Enhanced <a href="/reference/c/language/arithmetic_types/">arithmetic types</a></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n815.htm" rel="noreferrer" target="_blank">N815</a> <a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n601.ps" rel="noreferrer" target="_blank">N601</a> <a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n620.ps" rel="noreferrer" target="_blank">N620</a> <a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n638.ps" rel="noreferrer" target="_blank">N638</a> <a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n657.ps" rel="noreferrer" target="_blank">N657</a> <a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n694.ps" rel="noreferrer" target="_blank">N694</a> <a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n809.ps" rel="noreferrer" target="_blank">N809</a></td><td>Yes</td><td>partial</td><td>Maybe</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Flexible array members</td><td></td><td>3.0</td><td>Yes</td><td>Yes</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td><a href="/reference/c/language/array/#Variable-length_arrays">Variable-length array</a> (VLA) types</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n683.htm" rel="noreferrer" target="_blank">N683</a></td><td>0.9</td><td>Yes</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Variably-modified (VM) types</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2778.pdf" rel="noreferrer" target="_blank">N2778</a></td><td>N/A</td><td>Yes</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Designated initializers</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n494.pdf" rel="noreferrer" target="_blank">N494</a></td><td>3.0</td><td>Yes</td><td>Yes</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Non-constant initializers</td><td></td><td>1.21</td><td>N/A</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Idempotent cvr-qualifiers</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n505.pdf" rel="noreferrer" target="_blank">N505</a></td><td>3.0</td><td>N/A</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Trailing comma in <a href="/reference/c/language/enum/"><em>enumerator-list</em></a></td><td></td><td>0.9</td><td>Yes</td><td>Yes</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Hexadecimal <a href="/reference/c/language/floating_constant/">floating constants</a></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n308.pdf" rel="noreferrer" target="_blank">N308</a></td><td>2.8</td><td>Yes</td><td>Yes</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td><a href="/reference/c/language/compound_literal/">Compound literals</a></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n716.htm" rel="noreferrer" target="_blank">N716</a></td><td>3.1</td><td>Yes</td><td>Yes</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Floating-point environment</td><td></td><td>partial</td><td>partial</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Requiring truncation for divisions of signed integer types</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n617.htm" rel="noreferrer" target="_blank">N617</a></td><td>0.9</td><td>N/A</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Implicit <code>return 0;</code> in the <a href="/reference/c/language/main_function/"><code>main()</code> function</a></td><td></td><td>Yes</td><td>Yes</td><td>Yes</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Declarations and statements in mixed order</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n740.htm" rel="noreferrer" target="_blank">N740</a></td><td>3.0</td><td>Yes</td><td>Yes</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td><em>init-statement</em> in <a href="/reference/c/language/for/"><code>for</code></a> loops</td><td></td><td>Yes</td><td>Yes</td><td>Yes</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td><a href="/reference/c/language/inline/"><code>inline</code></a> functions</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n741.htm" rel="noreferrer" target="_blank">N741</a></td><td>4.3</td><td>Yes</td><td>Yes</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Predefined variable <a href="/reference/c/language/function_definition/"><code>__func__</code></a></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n611.ps" rel="noreferrer" target="_blank">N611</a></td><td>2.95</td><td>Yes</td><td>Yes</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Cvr-qualifiers and <code>static</code> in <code>[]</code> within function declarations</td><td></td><td>3.1</td><td>Yes</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td><a href="/reference/c/preprocessor/replace/">Variadic macros</a></td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n707.htm" rel="noreferrer" target="_blank">N707</a></td><td>2.95</td><td>Yes</td><td>Yes</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td><a href="/reference/c/preprocessor/impl/"><code>_Pragma</code></a> preprocessor operator</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n634.ps" rel="noreferrer" target="_blank">N634</a></td><td>3.0</td><td>Yes</td><td>partial*</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Standard pragmas for floating-point evaluation</td><td><a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n631.htm" rel="noreferrer" target="_blank">N631</a> <a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n696.ps" rel="noreferrer" target="_blank">N696</a></td><td>No</td><td>No</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><th>C99 feature</th><th>Paper(s)</th><th><p>GCC</p></th><th><p>Clang</p></th><th><p>MSVC</p></th><th><p>Apple Clang</p></th><th><p>EDG eccp</p></th><th><p>Intel C++</p></th><th>Nvidia HPC C++ (ex PGI)*</th><th><p>Nvidia nvcc</p></th><th><p>Cray</p></th></tr>
+</table>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/compiler_support" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+compiler support</td></tr>
+</table>

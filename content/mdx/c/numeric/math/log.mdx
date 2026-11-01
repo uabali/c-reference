@@ -1,0 +1,293 @@
+---
+title: "log, logf, logl"
+slug: "c/numeric/math/log"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/log"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+float       logf( float arg );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+double      log( double arg );
+```
+
+<p class="decl-note">(2)</p>
+
+```c
+long double logl( long double arg );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;tgmath.h&gt;</code></p>
+
+```c
+#define log( arg )
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="li-note"><span class="li-num">1-3)</span>  Computes the natural (base <em>e</em>) logarithm of <code>arg</code>.</p>
+
+<p class="li-note"><span class="li-num">4)</span>  Type-generic macro: If <code>arg</code> has type <code>long double</code>, <code>logl</code> is called. Otherwise, if <code>arg</code> has integer type or the type <code>double</code>, <code>log</code> is called. Otherwise, <code>logf</code> is called. If <code>arg</code> is complex or imaginary, then the macro invokes the corresponding complex function (<code>clogf</code>, <code>clog</code>, <code>clogl</code>).</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>arg</td><td>-</td><td>floating-point value</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>If no errors occur, the natural (base-<em>e</em>) logarithm of <code>arg</code> (ln(arg) or loge(arg)) is returned.</p>
+
+<p>If a domain error occurs, an implementation-defined value is returned (NaN where supported).</p>
+
+<p>If a pole error occurs, <a href="/reference/c/numeric/math/HUGE_VAL/">-HUGE_VAL</a>, <code>-HUGE_VALF</code>, or <code>-HUGE_VALL</code> is returned.</p>
+
+<h3 id="Error_handling">Error handling</h3>
+
+<p>Errors are reported as specified in <a href="/reference/c/numeric/math/math_errhandling/"><code>math_errhandling</code></a>.</p>
+
+<p>Domain error occurs if <code>arg</code> is less than zero.</p>
+
+<p>Pole error may occur if <code>arg</code> is zero.</p>
+
+<p>If the implementation supports IEEE floating-point arithmetic (IEC 60559),</p>
+
+<ul>
+<li>
+<p>If the argument is ±0, -∞ is returned and</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_DIVBYZERO</a>
+
+<p>is raised.</p>
+</li>
+<li>
+<p>If the argument is 1, +0 is returned</p>
+</li>
+<li>
+<p>If the argument is negative, NaN is returned and</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>is raised.</p>
+</li>
+<li>
+<p>If the argument is +∞, +∞ is returned</p>
+</li>
+<li>
+<p>If the argument is NaN, NaN is returned.</p>
+</li>
+</ul>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <errno.h>
+#include <fenv.h>
+#include <float.h>
+#include <math.h>
+#include <stdio.h>
+// #pragma STDC FENV_ACCESS ON
+ 
+int main(void)
+{
+    printf("log(1) = %f\n", log(1));
+    printf("base-5 logarithm of 125 = %f\n", log(125) / log(5));
+ 
+    // special values
+    printf("log(1) = %f\n", log(1));
+    printf("log(+Inf) = %f\n", log(INFINITY));
+ 
+    // error handling
+    errno = 0; feclearexcept(FE_ALL_EXCEPT);
+    printf("log(0) = %f\n", log(0));
+    if (errno == ERANGE)
+        perror("    errno == ERANGE");
+    if (fetestexcept(FE_DIVBYZERO))
+        puts("    FE_DIVBYZERO raised");
+}
+```
+
+<p>Output:</p>
+
+```text
+log(1) = 0.000000
+base-5 logarithm of 125 = 3.000000
+log(1) = 0.000000
+log(+Inf) = inf
+log(0) = -inf
+    errno == ERANGE: Numerical result out of range
+    FE_DIVBYZERO raised
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.6.7 The log functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.3.7 The log functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.6.7 The log functions (p: 178-179)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 272-273)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.3.7 The log functions (p: 380)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.6.7 The log functions (p: 244-245)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 373-375)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.3.7 The log functions (p: 522)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.6.7 The log functions (p: 225)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 Type-generic math &lt;tgmath.h&gt; (p: 335-337)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.9.3.7 The log functions (p: 459)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.5.4.4 The log function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/log10/">log10<br />log10f<br />log10l</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes common (base-<em>10</em>) logarithm (\({\small \log_{10}{x} }\)log<sub>10</sub>(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/log2/">log2<br />log2f<br />log2l</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes base-2 logarithm (\({\small \log_{2}{x} }\)log<sub>2</sub>(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/log1p/">log1p<br />log1pf<br />log1pl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes natural (base-<em>e</em>) logarithm of 1 plus the given number (\({\small \ln{(1+x)} }\)ln(1+x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/exp/">exp<br />expf<br />expl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes <em>e</em> raised to the given power (\({\small e^x}\)e<sup>x</sup>)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/clog/">clog<br />clogf<br />clogl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex natural logarithm   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/log" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+log</td></tr>
+</table>

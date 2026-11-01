@@ -1,0 +1,153 @@
+---
+title: "Generic selection (since C11)"
+slug: "c/language/generic"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/generic"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Provides a way to choose one of several expressions at compile time, based on a type of a controlling expression</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+_Generic ( controlling-expression , association-list )
+```
+
+<p>where <em>association-list</em> is a comma-separated list of associations, each of which has the syntax</p>
+
+```text
+type-name : expression
+default : expression
+```
+
+<p>where</p>
+
+<table class="ref-table ref-params">
+<tr><td><em>type-name</em></td><td>-</td><td>any complete <a href="/reference/c/language/compatible_type/">object type</a> that isn't variably-modified (that is, not VLA or pointer to VLA).</td></tr>
+<tr><td><em>controlling-expression</em></td><td>-</td><td>any expression (except for the <a href="/reference/c/language/operator_other/#Comma_operator">comma operator</a>) whose type must be compatible with one of the <em>type-name</em>s if the <code>default</code> association is not used</td></tr>
+<tr><td><em>expression</em></td><td>-</td><td>any expression (except for the <a href="/reference/c/language/operator_other/#Comma_operator">comma operator</a>) of any type and value category</td></tr>
+</table>
+
+<p>No two <em>type-name</em>s in the <em>association-list</em> may specify <a href="/reference/c/language/compatible_type/#Compatible_types">compatible types</a>. There may be only one association that uses the keyword <code>default</code>. If <code>default</code> is not used and none of the <em>type-name</em>s are compatible with the type of the controlling expression, the program will not compile.</p>
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>First, the type of <em>controlling-expression</em> undergoes <a href="/reference/c/language/conversion/#Lvalue_conversions">lvalue conversions</a>. The conversion is performed in type domain only: it discards the top-level cvr-qualifiers and atomicity and applies array-to-pointer/function-to-pointer transformations to the type of the controlling expression, without initiating any side-effects or calculating any values.</p>
+
+<p>The type after conversion is compared with <em>type-name</em>s from the list of associations.</p>
+
+<p>If the type is <a href="/reference/c/language/compatible_type/#Compatible_types">compatible</a> with the <em>type-name</em> of one of the associations, then the type, value, and <a href="/reference/c/language/value_category/">value category</a> of the generic selection are the type, value, and value category of the <em>expression</em> that appears after the colon for that <em>type-name</em>.</p>
+
+<p>If none of the <em>type-name</em>s are compatible with the type of the <em>controlling-expression</em>, and the <code>default</code> association is provided, then the type, value, and value category of the generic selection are the type, value, and value category of the expression after the <code>default :</code> label.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The <em>controlling-expression</em> and the <em>expression</em>s of the selections that are not chosen are never evaluated.</p>
+
+<p>Because of the lvalue conversions, <code>&quot;abc&quot;</code> matches <code>char*</code> and not <code>char[4]</code> and <code>(int const){0}</code> matches <code>int</code>, and not <code>const int</code>.</p>
+
+<p>All <a href="/reference/c/language/value_category/">value categories</a>, including function designators and void expressions, are allowed as <em>expression</em>s in a generic selection, and if selected, the generic selection itself has the same value category.</p>
+
+<p>The <a href="/reference/c/numeric/tgmath/">type-generic math macros</a> from <a href="/reference/c/numeric/tgmath/"><code>&lt;tgmath.h&gt;</code></a>, introduced in C99, were implemented in compiler-specific manner. Generic selections, introduced in C11, gave the programmers the ability to write similar type-dependent code.</p>
+
+<p>Generic selection is similar to overloading in C++ (where one of several functions is chosen at compile time based on the types of the arguments), except that it makes the selection between arbitrary expressions.</p>
+
+<h3 id="Keywords">Keywords</h3>
+
+<p><a href="/reference/c/keyword/_Generic/"><code>_Generic</code></a>, <a href="/reference/c/keyword/default/"><code>default</code></a></p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <math.h>
+#include <stdio.h>
+ 
+// Possible implementation of the tgmath.h macro cbrt
+#define cbrt(X) _Generic((X),     \
+              long double: cbrtl, \
+                  default: cbrt,  \
+                    float: cbrtf  \
+              )(X)
+ 
+int main(void)
+{
+    double x = 8.0;
+    const float y = 3.375;
+    printf("cbrt(8.0) = %f\n", cbrt(x));    // selects the default cbrt
+    printf("cbrtf(3.375) = %f\n", cbrt(y)); // converts const float to float,
+                                            // then selects cbrtf
+}
+```
+
+<p>Output:</p>
+
+```text
+cbrt(8.0) = 2.000000
+cbrtf(3.375) = 1.500000
+```
+
+<h3 id="Defect_reports">Defect reports</h3>
+
+<p>The following behavior-changing defect reports were applied retroactively to previously published C standards.</p>
+
+<table class="ref-table">
+<tr><th>DR</th><th>Applied to</th><th>Behavior as published</th><th>Correct behavior</th></tr>
+<tr><td><a href="https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2396.htm#dr_481" rel="noreferrer" target="_blank">DR 481</a></td><td>C11</td><td>it was underspecified if the controlling expression undergoes lvalue conversions</td><td>it undergoes</td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.1.1 Generic selection (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.1.1 Generic selection (p: 56-57)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.1.1 Generic selection (p: 78-79)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/templates" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Templates</td></tr>
+</table>

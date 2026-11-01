@@ -1,0 +1,257 @@
+---
+title: "getenv, getenv_s"
+slug: "c/program/getenv"
+category: "program"
+source: "https://en.cppreference.com/w/c/program/getenv"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdlib.h&gt;</code></p>
+
+```c
+char *getenv( const char *name );
+```
+
+<p class="decl-note">(1)</p>
+
+```c
+errno_t getenv_s( size_t *restrict len, char *restrict value,
+                  rsize_t valuesz, const char *restrict name );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Searches for an environmental variable with name <code>name</code> in the host-specified environment list and returns a pointer to the string that is associated with the matched environment variable. The set of environmental variables and methods of altering it are implementation-defined.</p>
+
+<p class="li-note">This function is not required to be thread-safe. Another call to <code>getenv</code>, as well as a call to the POSIX functions <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/setenv.html" rel="noreferrer" target="_blank"><code>setenv()</code></a>, <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/unsetenv.html" rel="noreferrer" target="_blank"><code>unsetenv()</code></a>, and <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/putenv.html" rel="noreferrer" target="_blank"><code>putenv()</code></a> may invalidate the pointer returned by a previous call or modify the string obtained from a previous call.</p>
+
+<p class="li-note">Modifying the string returned by <code>getenv</code> invokes undefined behavior.</p>
+
+<div class="li-note"><span class="li-num">2)</span>
+
+<p>Same as</p>
+
+(1)
+
+<p>, except that the values of the environment variable is written to the user-provided buffer</p>
+
+<code>value</code>
+
+<p>(unless null) and the number of bytes written is stored in the user-provided location</p>
+
+<code>*len</code>
+
+<p>(unless null). If the environment variable is not set in the environment, zero is written to</p>
+
+<code>*len</code>
+
+<p>(unless null) and</p>
+
+<code>&#x27;\0&#x27;</code>
+
+<p>is written to</p>
+
+<code>value[0]</code>
+
+<p>(unless null). In addition, the following errors are detected at runtime and call the currently installed</p>
+
+<a href="/reference/c/error/set_constraint_handler_s/">constraint handler</a>
+
+<p>function:</p>
+
+<dl>
+<dd><ul>
+<li>
+<code>name</code>
+
+<p>is a null pointer</p>
+</li>
+<li>
+<code>valuesz</code>
+
+<p>is greater than</p>
+
+RSIZE_MAX
+</li>
+<li>
+<code>value</code>
+
+<p>is a null pointer and</p>
+
+<code>valuesz</code>
+
+<p>is not zero</p>
+</li>
+</ul></dd>
+<dd><p>As with all bounds-checked functions,</p>
+
+<code>getenv_s</code>
+
+<p>is only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<a href="/reference/c/program/"><code>&lt;stdlib.h&gt;</code></a>
+
+<p>.</p></dd>
+</dl></div>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>name</td><td>-</td><td>null-terminated character string identifying the name of the environmental variable to look for</td></tr>
+<tr><td>len</td><td>-</td><td>pointer to a user-provided location where <code>getenv_s</code> will store the length of the environment variable</td></tr>
+<tr><td>value</td><td>-</td><td>pointer to a user-provided character array where <code>getenv_s</code> will store the contents of the environment variable</td></tr>
+<tr><td>valuesz</td><td>-</td><td>maximum number of characters that <code>getenv_s</code> is allowed to write to <code>dest</code> (size of the buffer)</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  character string identifying the value of the environmental variable or null pointer if such variable is not found.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  zero if the environment variable was found, non-zero if it was not found or if a runtime constraint violation occurred. On any error, writes zero to <code>*len</code> (unless <code>len</code> is a null pointer).</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>On POSIX systems, the <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html#tag_08" rel="noreferrer" target="_blank">environment variables</a> are also accessible through the global variable <code>environ</code>, declared as <code>extern char **environ;</code> in <code>&lt;unistd.h&gt;</code>, and through the optional third argument, <code>envp</code>, of <a href="/reference/c/language/main_function/">the main function</a>.</p>
+
+<p>The call to <code>getenv_s</code> with a null pointer for <code>value</code> and zero for <code>valuesz</code> is used to determine the size of the buffer required to hold the entire result.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(void)
+{
+    const char *name = "PATH";
+    const char *env_p = getenv(name);
+    if (env_p)
+        printf("Your %s is %s\n", name, env_p);
+}
+```
+
+<p>Possible output:</p>
+
+```text
+Your PATH is /home/gamer/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/share/games
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.4.6 The getenv function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.6.2.1 The getenv_s function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.4.6 The getenv function (p: 256-257)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.6.2.1 The getenv_s function (p: 440-441)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.4.6 The getenv function (p: 352-353)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.6.2.1 The getenv_s function (p: 606-607)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20.4.5 The getenv function (p: 317)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.10.4.4 The getenv function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/utility/program/getenv" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+getenv</td></tr>
+</table>

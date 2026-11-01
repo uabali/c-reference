@@ -1,0 +1,181 @@
+---
+title: "ptrdiff_t"
+slug: "c/types/ptrdiff_t"
+category: "types"
+source: "https://en.cppreference.com/w/c/types/ptrdiff_t"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stddef.h&gt;</code></p>
+
+```c
+typedef /*implementation-defined*/ ptrdiff_t;
+```
+
+<p><code>ptrdiff_t</code> is the signed integer type of the result of <a href="/reference/c/language/operator_arithmetic/#Pointer_arithmetic">subtracting two pointers</a>.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span> <span class="std std-until std-c23">(until C23)</span></p><p>The bit width of <code>ptrdiff_t</code> is not less than 17.</p></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>The bit width of <code>ptrdiff_t</code> is not less than 16.</p></aside>
+
+<h3 id="Notes">Notes</h3>
+
+<p><code>ptrdiff_t</code> is used for pointer arithmetic and array indexing, if negative values are possible. Programs that use other types, such as <code>int</code>, may fail on, e.g. 64-bit systems when the index exceeds <a href="/reference/c/types/limits/">INT_MAX</a> or if it relies on 32-bit modular arithmetic.</p>
+
+<p>Only pointers to elements of the same array (including the pointer one past the end of the array) may be subtracted from each other.</p>
+
+<p>If an array is so large (greater than <a href="/reference/c/types/limits/">PTRDIFF_MAX</a> elements, but equal to or less than <a href="/reference/c/types/limits/">SIZE_MAX</a> bytes), that the difference between two pointers may not be representable as <code>ptrdiff_t</code>, the result of subtracting two such pointers is undefined.</p>
+
+<p>For char arrays shorter than <a href="/reference/c/types/limits/">PTRDIFF_MAX</a>, <code>ptrdiff_t</code> acts as the signed counterpart of <a href="/reference/c/types/size_t/">size_t</a>: it can store the size of the array of any type and is, on most platforms, synonymous with <code>intptr_t</code>).</p>
+
+<h3 id="Possible_implementation">Possible implementation</h3>
+
+<table class="ref-table">
+<tr><td>```c
+typedef typeof((int*)nullptr - (int*)nullptr) ptrdiff_t; // valid since C23
+```</td></tr>
+</table>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    const size_t N = 100;
+    int numbers[N];
+ 
+    printf("PTRDIFF_MAX = %ld\n", PTRDIFF_MAX);
+    int *p1 = &numbers[18], *p2 = &numbers[23];
+    ptrdiff_t diff = p2 - p1;
+    printf("p2-p1 = %td\n", diff);
+}
+```
+
+<p>Possible output:</p>
+
+```text
+PTRDIFF_MAX = 9223372036854775807
+p2-p1 = 5
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19 Common definitions &lt;stddef.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20.3 Limits of other integer types (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19 Common definitions &lt;stddef.h&gt; (p: 211)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20.3 Limits of other integer types (p: 215)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19 Common definitions &lt;stddef.h&gt; (p: 288)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20.3 Limits of other integer types (p: 293)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17 Common definitions &lt;stddef.h&gt; (p: 253)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.18.3 Limits of other integer types (p: 258)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.1.6 Common definitions &lt;stddef.h&gt;</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/types/size_t/">size_t</a></td><td>unsigned integer type returned by the <a href="/reference/c/language/sizeof/"><code>sizeof</code></a> operator   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td><a href="/reference/c/types/offsetof/">offsetof</a></td><td>byte offset from the beginning of a struct type to specified member   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/types/ptrdiff_t" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+ptrdiff_t</td></tr>
+</table>

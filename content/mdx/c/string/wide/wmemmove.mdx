@@ -1,0 +1,235 @@
+---
+title: "wmemmove, wmemmove_s"
+slug: "c/string/wide/wmemmove"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/wide/wmemmove"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;wchar.h&gt;</code></p>
+
+```c
+wchar_t* wmemmove( wchar_t* dest, const wchar_t* src, size_t count );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c95">(since C95)</span></p>
+
+```c
+errno_t wmemmove_s( wchar_t *dest, rsize_t destsz,
+                    const wchar_t *src, rsize_t count);
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Copies exactly <code>count</code> successive wide characters from the wide character array pointed to by <code>src</code> to the wide character array pointed to by <code>dest</code>. If <code>count</code> is zero, the function does nothing. The arrays may overlap: copying takes place as if the wide characters were copied to a temporary wide character array and then copied from the temporary array to <code>dest</code>.</p>
+
+<div class="li-note"><span class="li-num">2)</span>
+
+<p>Same as</p>
+
+(1)
+
+<p>, except that the following errors are detected at runtime and call the currently installed</p>
+
+<a href="/reference/c/error/set_constraint_handler_s/">constraint handler</a>
+
+<p>function:</p>
+
+<dl>
+<dd><ul>
+<li>
+<code>src</code>
+
+<p>or</p>
+
+<code>dest</code>
+
+<p>is a null pointer</p>
+</li>
+<li>
+<code>destsz</code>
+
+<p>or</p>
+
+<code>count</code>
+
+<p>is greater than</p>
+
+<code>RSIZE_MAX / sizeof(wchar_t)</code>
+</li>
+<li>
+<code>count</code>
+
+<p>is greater than</p>
+
+<code>destsz</code>
+
+<p>(overflow would occur)</p>
+</li>
+</ul></dd>
+<dd><p>As with all bounds-checked functions,</p>
+
+<code>wmemcpy_s</code>
+
+<p>is only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<a href="/reference/c/string/wide/"><code>&lt;wchar.h&gt;</code></a>
+
+<p>.</p></dd>
+</dl></div>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>dest</td><td>-</td><td>pointer to the wide character array to copy to</td></tr>
+<tr><td>src</td><td>-</td><td>pointer to the wide character array to copy from</td></tr>
+<tr><td>destsz</td><td>-</td><td>max number of wide characters to write (the size of the destination buffer)</td></tr>
+<tr><td>count</td><td>-</td><td>number of wide characters to copy</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  Returns a copy of <code>dest</code></p>
+
+<p class="li-note"><span class="li-num">2)</span>  Returns zero on success, returns non-zero on error. Also, on error, fills the entire <code>dst</code> up to and not including <code>dst+dstsz</code> with null wide characters, <code>L&#x27;\0&#x27;</code> (unless <code>dest</code> is null or <code>destsz</code> is greater than <code>RSIZE_MAX/sizeof(wchar_t)</code>)</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>This function is not locale-sensitive and pays no attention to the values of the <code>wchar_t</code> objects it copies: nulls as well as invalid characters are copied too.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <locale.h>
+#include <stdio.h>
+#include <wchar.h>
+ 
+int main(void)
+{
+    setlocale(LC_ALL, "en_US.utf8");
+ 
+    wchar_t str[] = L"αβγδεζηθικλμνξοπρστυφχψω";
+    printf("%ls\n", str);
+    wmemmove(str + 4, str + 3, 3); // copy from [δεζ] to [εζη]
+    printf("%ls\n", str);
+}
+```
+
+<p>Output:</p>
+
+```text
+αβγδεζηθικλμνξοπρστυφχψω
+αβγδδεζθικλμνξοπρστυφχψω
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.4.2.4 The wmemmove function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.9.2.1.4 The wmemmove_s function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.4.2.4 The wmemmove function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.9.2.1.4 The wmemmove_s function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.4.2.4 The wmemmove function (p: 432)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.9.2.1.4 The wmemmove_s function (p: 642)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.4.2.4 The wmemmove function (p: 378)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/byte/memmove/">memmove<br />memmove_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>moves one buffer to another   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wmemcpy/">wmemcpy<br />wmemcpy_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>copies a certain amount of wide characters between two non-overlapping arrays   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/wide/wmemmove" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+wmemmove</td></tr>
+</table>

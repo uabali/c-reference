@@ -1,0 +1,163 @@
+---
+title: "strncmp"
+slug: "c/string/byte/strncmp"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/byte/strncmp"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;string.h&gt;</code></p>
+
+```c
+int strncmp( const char* lhs, const char* rhs, size_t count );
+```
+
+<p>Compares at most <code>count</code> characters of two possibly null-terminated arrays. The comparison is done lexicographically. Characters following the null character are not compared.</p>
+
+<p>The sign of the result is the sign of the difference between the values of the first pair of characters (both interpreted as <code>unsigned char</code>) that differ in the arrays being compared.</p>
+
+<p>The behavior is undefined when access occurs past the end of either array <code>lhs</code> or <code>rhs</code>. The behavior is undefined when either <code>lhs</code> or <code>rhs</code> is the null pointer.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>lhs, rhs</td><td>-</td><td>pointers to the possibly null-terminated arrays to compare</td></tr>
+<tr><td>count</td><td>-</td><td>maximum number of characters to compare</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Negative value if <code>lhs</code> appears before <code>rhs</code> in lexicographical order.</p>
+
+<p>Zero if <code>lhs</code> and <code>rhs</code> compare equal, or if count is zero.</p>
+
+<p>Positive value if <code>lhs</code> appears after <code>rhs</code> in lexicographical order.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>This function is not locale-sensitive, unlike <a href="/reference/c/string/byte/strcoll/">strcoll</a> and <a href="/reference/c/string/byte/strxfrm/">strxfrm</a>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <string.h>
+ 
+void demo(const char* lhs, const char* rhs, int sz)
+{
+    const int rc = strncmp(lhs, rhs, sz);
+    if (rc < 0)
+        printf("First %d chars of [%s] precede [%s]\n", sz, lhs, rhs);
+    else if (rc > 0)
+        printf("First %d chars of [%s] follow [%s]\n", sz, lhs, rhs);
+    else
+        printf("First %d chars of [%s] equal [%s]\n", sz, lhs, rhs);
+}
+int main(void)
+{
+    const char* string = "Hello World!";
+    demo(string, "Hello!", 5);
+    demo(string, "Hello", 10);
+    demo(string, "Hello there", 10);
+    demo("Hello, everybody!" + 12, "Hello, somebody!" + 11, 5);
+}
+```
+
+<p>Output:</p>
+
+```text
+First 5 chars of [Hello World!] equal [Hello!]
+First 10 chars of [Hello World!] follow [Hello]
+First 10 chars of [Hello World!] precede [Hello there]
+First 5 chars of [body!] equal [body!]
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.4.4 The strncmp function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.4.4 The strncmp function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.4.4 The strncmp function (p: 366)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.4.4 The strncmp function (p: 329)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.11.4.4 The strncmp function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/byte/strcmp/">strcmp</a></td><td>compares two strings   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcsncmp/">wcsncmp</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>compares a certain amount of characters from two wide strings   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/memcmp/">memcmp</a></td><td>compares two buffers   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strcoll/">strcoll</a></td><td>compares two strings in accordance to the current locale   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/byte/strncmp" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+strncmp</td></tr>
+</table>

@@ -1,0 +1,170 @@
+---
+title: "va_start"
+slug: "c/variadic/va_start"
+category: "variadic"
+source: "https://en.cppreference.com/w/c/variadic/va_start"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdarg.h&gt;</code></p>
+
+```c
+void va_start( va_list ap, parmN );
+```
+
+<p class="decl-note"><span class="std std-until std-c23">(until C23)</span></p>
+
+```c
+void va_start( va_list ap, ... );
+```
+
+<p class="decl-note"><span class="std std-since std-c23">(since C23)</span></p>
+
+<p>The <code>va_start</code> macro enables access to the variable arguments following the named argument <code>parmN</code><span class="std std-until std-c23">(until C23)</span>.</p>
+
+<p><code>va_start</code> shall be invoked with an instance to a valid va_list object <code>ap</code> before any calls to va_arg.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-until std-c23">(until C23)</span></p><p>If <code>parmN</code> is declared with <code>register</code> storage class specifier, with an array type, with a function type, or with a type not compatible with the type that results from default argument promotions, the behavior is undefined.</p></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>Only the first argument passed to <code>va_start</code> is evaluated. Any additional arguments are neither expanded nor used in any way.</p></aside>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>ap</td><td>-</td><td>an instance of the va_list type</td></tr>
+<tr><td>parmN</td><td>-</td><td>the named parameter preceding the first variable parameter</td></tr>
+</table>
+
+<h3 id="Expanded_value">Expanded value</h3>
+
+<p>(none)</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <stdarg.h>
+ 
+int add_nums_C99(int count, ...)
+{
+    int result = 0;
+    va_list args;
+    va_start(args, count); // count can be omitted since C23
+ 
+    for (int i = 0; i < count; ++i) {
+        result += va_arg(args, int);
+    }
+ 
+    va_end(args);
+    return result;
+}
+ 
+#if __STDC_VERSION__ > 201710L
+// Same as above, valid since C23
+int add_nums_C23(...)
+{
+    int result = 0;
+    va_list args;
+    va_start(args);
+ 
+    int count = va_arg(args, int);
+    for (int i = 0; i < count; ++i) {
+        result += va_arg(args, int);
+    }
+ 
+    va_end(args);
+    return result;
+}
+#endif
+ 
+int main(void)
+{
+    printf("%d\n", add_nums_C99(4, 25, 25, 50, 50));
+#if __STDC_VERSION__ > 201710L
+    printf("%d\n", add_nums_C23(4, 25, 25, 50, 50));
+#endif
+}
+```
+
+<p>Possible output:</p>
+
+```text
+150
+150
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.16.1.4 The va_start macro (p: 198-199)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.16.1.4 The va_start macro (p: 271-272)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.15.1.4 The va_start macro (p: 251-252)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.8.1.1 The va_start macro</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/variadic/va_arg/">va_arg</a></td><td>accesses the next variadic function argument   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/variadic/va_copy/">va_copy</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>makes a copy of the variadic function arguments   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/variadic/va_end/">va_end</a></td><td>ends traversal of the variadic function arguments   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/variadic/va_list/">va_list</a></td><td>holds the information needed by va_start, va_arg, va_end, and va_copy   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/utility/variadic/va_start" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+va_start</td></tr>
+</table>

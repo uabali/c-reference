@@ -1,0 +1,352 @@
+---
+title: "ctime, ctime_s"
+slug: "c/chrono/ctime"
+category: "chrono"
+source: "https://en.cppreference.com/w/c/chrono/ctime"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;time.h&gt;</code></p>
+
+<p class="decl-note">(1)</p>
+
+```c
+char*                ctime( const time_t* timer );
+```
+
+<p class="decl-note"><span class="std std-until std-c23">(until C23)</span></p>
+
+```c
+[[deprecated]] char* ctime( const time_t* timer );
+```
+
+<p class="decl-note"><span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+errno_t ctime_s( char *buf, rsize_t bufsz, const time_t* timer );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Converts given time since epoch to a calendar local time and then to a textual representation, as if by calling <code>asctime(localtime(timer))</code> or <code>asctime(localtime_r(timer, &amp;(struct tm){0}))</code><span class="std std-since std-c23">(since C23)</span>. This function is deprecated and should not be used in new code.<span class="std std-since std-c23">(since C23)</span></p>
+
+<div class="li-note"><span class="li-num">2)</span>
+
+<p>Same as</p>
+
+(1)
+
+<p>, except that the function is equivalent to</p>
+
+<code>asctime_s(buf, bufsz, localtime_s(timer, &amp;(struct tm){0}))</code>
+
+<p>, and the following errors are detected at runtime and call the currently installed</p>
+
+<a href="/reference/c/error/set_constraint_handler_s/">constraint handler</a>
+
+<p>function:</p>
+
+<dl>
+<dd><ul>
+<li>
+<code>buf</code>
+
+<p>or</p>
+
+<code>timer</code>
+
+<p>is a null pointer</p>
+</li>
+<li>
+<code>bufsz</code>
+
+<p>is less than</p>
+
+<code>26</code>
+
+<p>or greater than</p>
+
+RSIZE_MAX
+</li>
+</ul></dd>
+<dd><p>As with all bounds-checked functions,</p>
+
+<code>ctime_s</code>
+
+<p>is only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<a href="/reference/c/chrono/"><code>&lt;time.h&gt;</code></a>
+
+<p>.</p></dd>
+</dl></div>
+
+<p>The resulting string has the following format:</p>
+
+```c
+Www Mmm dd hh:mm:ss yyyy\n
+```
+
+<ul>
+<li>
+<code>Www</code>
+
+<p>- the day of the week (one of</p>
+
+<code>Mon</code>
+
+<p>,</p>
+
+<code>Tue</code>
+
+<p>,</p>
+
+<code>Wed</code>
+
+<p>,</p>
+
+<code>Thu</code>
+
+<p>,</p>
+
+<code>Fri</code>
+
+<p>,</p>
+
+<code>Sat</code>
+
+<p>,</p>
+
+<code>Sun</code>
+
+<p>).</p>
+</li>
+<li>
+<code>Mmm</code>
+
+<p>- the month (one of</p>
+
+<code>Jan</code>
+
+<p>,</p>
+
+<code>Feb</code>
+
+<p>,</p>
+
+<code>Mar</code>
+
+<p>,</p>
+
+<code>Apr</code>
+
+<p>,</p>
+
+<code>May</code>
+
+<p>,</p>
+
+<code>Jun</code>
+
+<p>,</p>
+
+<code>Jul</code>
+
+<p>,</p>
+
+<code>Aug</code>
+
+<p>,</p>
+
+<code>Sep</code>
+
+<p>,</p>
+
+<code>Oct</code>
+
+<p>,</p>
+
+<code>Nov</code>
+
+<p>,</p>
+
+<code>Dec</code>
+
+<p>).</p>
+</li>
+<li>
+<code>dd</code>
+
+<p>- the day of the month</p>
+</li>
+<li>
+<code>hh</code>
+
+<p>- hours</p>
+</li>
+<li>
+<code>mm</code>
+
+<p>- minutes</p>
+</li>
+<li>
+<code>ss</code>
+
+<p>- seconds</p>
+</li>
+<li>
+<code>yyyy</code>
+
+<p>- years</p>
+</li>
+</ul>
+
+<p>The function does not support localization.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>timer</td><td>-</td><td>pointer to a <a href="/reference/c/chrono/time_t/">time_t</a> object specifying the time to print</td></tr>
+<tr><td>buf</td><td>-</td><td>pointer to the first element of a char array of size at least <code>bufsz</code></td></tr>
+<tr><td>bufsz</td><td>-</td><td>max number of bytes to output, typically the size of the buffer pointed to by <code>buf</code></td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  pointer to a static null-terminated character string holding the textual representation of date and time. The string may be shared between <a href="/reference/c/chrono/asctime/">asctime</a> and <code>ctime</code>, and may be overwritten on each invocation of any of those functions.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  zero on success (in which case the string representation of time has been written out to the array pointed to by <code>buf</code>), or non-zero on failure (in which case, the terminating null character is always written to <code>buf[0]</code> unless <code>buf</code> is a null pointer or <code>bufsz</code> is zero or greater than RSIZE_MAX.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p><code>ctime</code> returns a pointer to static data and is not thread-safe. In addition, it modifies the static <a href="/reference/c/chrono/tm/">tm</a> object which may be shared with <a href="/reference/c/chrono/gmtime/">gmtime</a> and <a href="/reference/c/chrono/localtime/">localtime</a>. POSIX marks this function obsolete and recommends <a href="/reference/c/chrono/strftime/">strftime</a> instead. The C standard also recommends <a href="/reference/c/chrono/strftime/">strftime</a> instead of <code>ctime</code> and <code>ctime_s</code> because <code>strftime</code> is more flexible and locale-sensitive.</p>
+
+<p>The behavior of <code>ctime</code> is undefined for the values of <a href="/reference/c/chrono/time_t/">time_t</a> that result in the string longer than 25 characters (e.g. year 10000).</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#define __STDC_WANT_LIB_EXT1__ 1
+#include <time.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    time_t result = time(NULL);
+    printf("%s", ctime(&result));
+ 
+#ifdef __STDC_LIB_EXT1__
+    char str[26];
+    ctime_s(str,sizeof str,&result);
+    printf("%s", str);
+#endif
+}
+```
+
+<p>Possible output:</p>
+
+```text
+Tue May 26 21:51:03 2015
+Tue May 26 21:51:03 2015
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.27.3.2 The ctime function (p: 287-288)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.8.2.2 The ctime_s function (p: 454)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.27.3.2 The ctime function (p: 393)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.8.2.2 The ctime_s function (p: 626)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.23.3.2 The ctime function (p: 342)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.12.3.2 The ctime function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/chrono/asctime/">asctime<br />asctime_s</a>
+
+<span class="std std-since std-c23">(deprecated in C23)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>converts a <a href="/reference/c/chrono/tm/">tm</a> object to a textual representation   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/chrono/strftime/">strftime</a></td><td>converts a <a href="/reference/c/chrono/tm/">tm</a> object to custom textual representation   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/chrono/c/ctime" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+ctime</td></tr>
+</table>

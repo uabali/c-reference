@@ -1,0 +1,140 @@
+---
+title: "malloc"
+slug: "c/memory/malloc"
+category: "memory"
+source: "https://en.cppreference.com/w/c/memory/malloc"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdlib.h&gt;</code></p>
+
+```c
+void *malloc( size_t size );
+```
+
+<p>Allocates <code>size</code> bytes of uninitialized storage.</p>
+
+<p>If allocation succeeds, returns a pointer that is suitably aligned for any object type with <a href="/reference/c/language/object/#Alignment">fundamental alignment</a>.</p>
+
+<p>If <code>size</code> is zero, the behavior of <code>malloc</code> is implementation-defined. For example, a null pointer may be returned. Alternatively, a non-null pointer may be returned; but such a pointer should not be <a href="/reference/c/language/operator_member_access/">dereferenced</a>, and should be passed to <a href="/reference/c/memory/free/">free</a> to avoid memory leaks.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><p><code>malloc</code> is thread-safe: it behaves as though only accessing the memory locations visible through its argument, and not any static storage.</p>
+
+<p>A previous call to <a href="/reference/c/memory/free/">free</a>, free_sized, and free_aligned_sized<span class="std std-since std-c23">(since C23)</span> or <a href="/reference/c/memory/realloc/">realloc</a> that deallocates a region of memory <em>synchronizes-with</em> a call to <code>malloc</code> that allocates the same or a part of the same region of memory. This synchronization occurs after any access to the memory by the deallocating function and before any access to the memory by <code>malloc</code>. There is a single total order of all allocation and deallocation functions operating on each particular region of memory.</p></aside>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>size</td><td>-</td><td>number of bytes to allocate</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>On success, returns the pointer to the beginning of newly allocated memory. To avoid a memory leak, the returned pointer must be deallocated with <a href="/reference/c/memory/free/">free()</a> or <a href="/reference/c/memory/realloc/">realloc()</a>.</p>
+
+<p>On failure, returns a null pointer.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>   
+#include <stdlib.h> 
+ 
+int main(void) 
+{
+    int *p1 = malloc(4*sizeof(int));  // allocates enough for an array of 4 int
+    int *p2 = malloc(sizeof(int[4])); // same, naming the type directly
+    int *p3 = malloc(4*sizeof *p3);   // same, without repeating the type name
+ 
+    if(p1) {
+        for(int n=0; n<4; ++n) // populate the array
+            p1[n] = n*n;
+        for(int n=0; n<4; ++n) // print it back out
+            printf("p1[%d] == %d\n", n, p1[n]);
+    }
+ 
+    free(p1);
+    free(p2);
+    free(p3);
+}
+```
+
+<p>Output:</p>
+
+```text
+p1[0] == 0
+p1[1] == 1
+p1[2] == 4
+p1[3] == 9
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.3.4 The malloc function (p: 254)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.3.4 The malloc function (p: 349)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20.3.3 The malloc function (p: 314)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.10.3.3 The malloc function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/memory/free/">free</a></td><td>deallocates previously allocated memory   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/memory/c/malloc" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+malloc</td></tr>
+</table>

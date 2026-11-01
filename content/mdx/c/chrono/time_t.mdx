@@ -1,0 +1,122 @@
+---
+title: "time_t"
+slug: "c/chrono/time_t"
+category: "chrono"
+source: "https://en.cppreference.com/w/c/chrono/time_t"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;time.h&gt;</code></p>
+
+```c
+typedef /* unspecified */ time_t;
+```
+
+<p>Real arithmetic type capable of representing times.</p>
+
+<p>Although not defined by the C standard, this is almost always an integral value holding the number of seconds (not counting leap seconds) since 00:00, Jan 1 1970 UTC, corresponding to <a href="https://en.wikipedia.org/wiki/Unix_time" rel="noreferrer" target="_blank">POSIX time</a>.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The standard uses the term <em>calendar time</em> when referring to a value of type <strong>time_t</strong>.</p>
+
+<h3 id="Example">Example</h3>
+
+<p>Show the start of the epoch.</p>
+
+```c
+#include <stdio.h>
+#include <time.h>
+#include <stdint.h>
+ 
+int main(void)
+{
+    time_t epoch = 0;
+    printf("%jd seconds since the epoch began\n", (intmax_t)epoch);
+    printf("%s", asctime(gmtime(&epoch)));
+}
+```
+
+<p>Possible output:</p>
+
+```text
+0 seconds since the epoch began
+Thu Jan  1 00:00:00 1970
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.27.1/3 Components of time (p: 284)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.27.1/3 Components of time (p: 388)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.23.1/3 Components of time (p: 338)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.12.1 Components of time</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/chrono/time/">time</a></td><td>returns the current calendar time of the system as time since epoch   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/chrono/localtime/">localtime<br />localtime_r<br />localtime_s</a>
+
+<span class="std std-since std-c23">(C23)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>converts time since epoch to calendar time expressed as local time   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/chrono/gmtime/">gmtime<br />gmtime_r<br />gmtime_s</a>
+
+<span class="std std-since std-c23">(C23)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>converts time since epoch to calendar time expressed as Coordinated Universal Time (UTC)   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/chrono/c/time_t" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+time_t</td></tr>
+</table>

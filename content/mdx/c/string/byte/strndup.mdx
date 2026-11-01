@@ -1,0 +1,87 @@
+---
+title: "strndup"
+slug: "c/string/byte/strndup"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/byte/strndup"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;string.h&gt;</code></p>
+
+```c
+char *strndup( const char *src, size_t size );
+```
+
+<p class="decl-note"><span class="std std-since std-c23">(since C23)</span></p>
+
+<p>Returns a pointer to a null-terminated byte string, which contains copies of at most <code>size</code> bytes from the string pointed to by <code>src</code>. The space for the new string is obtained as if <a href="/reference/c/memory/malloc/">malloc</a> was called. If the null terminator is not encountered in the first <code>size</code> bytes, it is appended to the duplicated string.</p>
+
+<p>The returned pointer must be passed to <a href="/reference/c/memory/free/">free</a> to avoid a memory leak.</p>
+
+<p>If an error occurs, a null pointer is returned and <a href="/reference/c/error/errno/">errno</a> might be set.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>src</td><td>-</td><td>pointer to the null-terminated byte string to duplicate</td></tr>
+<tr><td>size</td><td>-</td><td>max number of bytes to copy from <code>src</code></td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>A pointer to the newly allocated string, or a null pointer if an error occurred.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The function is identical to the <a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/strdup.html" rel="noreferrer" target="_blank">POSIX strndup</a> except that it is allowed, but not required to set <a href="/reference/c/error/errno/">errno</a> on error.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(void)
+{
+    const size_t n = 3;
+ 
+    const char *src = "Replica";
+    char *dup = strndup(src, n);
+    printf("strndup(\"%s\", %lu) == \"%s\"\n", src, n, dup);
+    free(dup);
+ 
+    src = "Hi";
+    dup = strndup(src, n);
+    printf("strndup(\"%s\", %lu) == \"%s\"\n", src, n, dup);
+    free(dup);
+ 
+    const char arr[] = {'A','B','C','D'}; // NB: no trailing '\0'
+    dup = strndup(arr, n);
+    printf("strndup({'A','B','C','D'}, %lu) == \"%s\"\n", n, dup);
+    free(dup);
+}
+```
+
+<p>Output:</p>
+
+```text
+strndup("Replica", 3) == "Rep"
+strndup("Hi", 3) == "Hi"
+strndup({'A','B','C','D'}, 3) == "ABC"
+```
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/byte/strdup/">strdup</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>allocates a copy of a string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strcpy/">strcpy<br />strcpy_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>copies one string to another   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/memory/malloc/">malloc</a></td><td>allocates memory   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/memory/free/">free</a></td><td>deallocates previously allocated memory   <span class="mark-note">(function)</span></td></tr>
+</table>

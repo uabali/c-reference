@@ -1,0 +1,72 @@
+---
+title: "C attribute: fallthrough (since C23)"
+slug: "c/language/attributes/fallthrough"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/attributes/fallthrough"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Indicates that the fall through from the previous case label is intentional and should not be diagnosed by a compiler that warns on fallthrough.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+[[ fallthrough ]][[ __fallthrough__ ]]
+```
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>May only be used in an <a href="/reference/c/language/declarations/">attribute declaration</a> to create a <em>fallthrough declaration</em> (<code>[[fallthrough]];</code>).</p>
+
+<p>A fallthrough declaration may only be used in a <a href="/reference/c/language/switch/"><code>switch</code></a> statement, where the next block item (statement, declaration, or label) to be encounted is a statement with a <code>case</code> or <code>default</code> label for that switch statement.</p>
+
+<p>Indicates that the fall through from the previous case label is intentional and should not be diagnosed by a compiler that warns on fallthrough.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdbool.h>
+ 
+void g(void) {}
+void h(void) {}
+void i(void) {}
+ 
+void f(int n) {
+  switch (n) {
+    case 1:
+    case 2:
+      g();
+     [[fallthrough]];
+    case 3: // no warning on fallthrough
+      h();
+    case 4: // compiler may warn on fallthrough
+      if(n < 3) {
+          i();
+          [[fallthrough]]; // OK
+      }
+      else {
+          return;
+      }
+    case 5:
+      while (false) {
+        [[fallthrough]]; // ill-formed: no subsequent case or default label
+      }
+    case 6:
+      [[fallthrough]]; // ill-formed: no subsequent case or default label
+  }
+}
+ 
+int main(void) {}
+```
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/attributes/fallthrough" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+fallthrough</td></tr>
+</table>

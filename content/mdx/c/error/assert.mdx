@@ -1,0 +1,178 @@
+---
+title: "assert"
+slug: "c/error/assert"
+category: "error"
+source: "https://en.cppreference.com/w/c/error/assert"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;assert.h&gt;</code></p>
+
+```c
+#ifdef NDEBUG
+#define assert(condition) ((void)0)
+#else
+#define assert(condition) /*implementation defined*/
+
+#endif
+```
+
+<p class="decl-note"><span class="std std-until std-c23">(until C23)</span></p>
+
+```c
+#ifdef NDEBUG
+#define assert(...) ((void)0)
+#else
+#define assert(...) /*implementation defined*/
+
+#endif
+```
+
+<p class="decl-note"><span class="std std-since std-c23">(since C23)</span></p>
+
+<p>The definition of the macro <code>assert</code> depends on another macro, <code>NDEBUG</code>, which is not defined by the standard library.</p>
+
+<p>If <code>NDEBUG</code> is defined as a macro name at the point in the source code where <a href="/reference/c/error/"><code>&lt;assert.h&gt;</code></a> is included, then <code>assert</code> does nothing.</p>
+
+<p>If <code>NDEBUG</code> is not defined, then <code>assert</code> checks if its argument<span class="std std-until std-c23">(until C23)</span>the expression synthesized from <code>__VA_ARGS__</code><span class="std std-since std-c23">(since C23)</span> (which must have scalar type, otherwise, the behavior is undefined) compares equal to zero. If it does, <code>assert</code> outputs implementation-specific diagnostic information on the standard error output and calls <code>abort()</code>. The diagnostic information is required to include the text of <code>expression</code>, as well as the values of  the <a href="/reference/c/language/function_definition/">predefined variable</a> <code>__func__</code> and of<span class="std std-since std-c99">(since C99)</span> the <a href="/reference/c/preprocessor/replace/">predefined macros</a> <code>__FILE__</code> and <code>__LINE__</code>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>condition</td><td>-</td><td>expression of scalar type</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>(none)</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>There is no standardized interface to add an additional message to <code>assert</code> errors. A portable way to include one is to use a <a href="/reference/c/language/operator_other/#Comma_operator">comma operator</a>, or use <code>&amp;&amp;</code> with a string literal:</p>
+
+```c
+assert(("There are five lights", 2 + 2 == 5));
+assert(2 + 2 == 5 && "There are five lights");
+```
+
+<p>The implementation of <code>assert</code> in <a href="https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/assert-macro-assert-wassert" rel="noreferrer" target="_blank">Microsoft CRT</a> does not conform to C99 and later revisions, because its underlying function (<code>_wassert</code>) takes neither <code>__func__</code> nor an equivalent replacement.</p>
+
+<p>Even though the change of <code>assert</code> in C23 (<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2829.htm" rel="noreferrer" target="_blank">N2829</a>) is not a formal defect report, the C committee <a href="https://www.open-std.org/jtc1/sc22/wg14/www/previous.html" rel="noreferrer" target="_blank">recommends</a> implementations to backport the change to old modes.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+// uncomment to disable assert()
+// #define NDEBUG
+#include <assert.h>
+#include <math.h>
+ 
+#define TEST(...) __VA_ARGS__
+ 
+int main(void)
+{
+    double x = -1.0;
+    assert(x >= 0.0);
+    printf("sqrt(x) = %f\n", sqrt(x));
+ 
+    assert(TEST(x >= 0.0));
+ 
+    return 0;
+}
+```
+
+<p>Possible output:</p>
+
+```text
+--- Output with NDEBUG not defined: ---
+a.out: main.cpp:10: main: Assertion `x >= 0.0' failed.
+ 
+--- Output with NDEBUG defined: ---
+sqrt(x) = -nan
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.2.2.1 The assert macro (p: 196)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.2.1.1 The assert macro (p: 135)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.2.1.1 The assert macro (p: 186-187)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.2.1.1 The assert macro (p: 169)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.2.1.1 The assert macro</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/program/abort/">abort</a></td><td>causes abnormal program termination (without cleaning up)   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/error/assert" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+assert</td></tr>
+</table>

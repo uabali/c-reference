@@ -1,0 +1,116 @@
+---
+title: "char32_t"
+slug: "c/string/multibyte/char32_t"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/multibyte/char32_t"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;uchar.h&gt;</code></p>
+
+```c
+typedef uint_least32_t char32_t;
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p><code>char32_t</code> is an unsigned integer type used for 32-bit wide characters and is the same type as <code>uint_least32_t</code>.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>On any given platform, by the definition of <code>uint_least32_t</code>, the width of type <code>char32_t</code> can be greater than 32 bits, but the actual values stored in an object of type <code>char32_t</code> will always have a width of 32 bits.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <uchar.h>
+ 
+int main(void)
+{
+    const char32_t wc[] = U"zß水🍌"; // or "z\u00df\u6c34\U0001f34c"
+    const size_t wc_sz = sizeof wc / sizeof *wc;
+    printf("%zu UTF-32 code units: [ ", wc_sz);
+    for (size_t n = 0; n < wc_sz; ++n)
+        printf("%#x ", wc[n]);
+    printf("]\n");
+}
+```
+
+<p>Possible output:</p>
+
+```text
+5 UTF-32 code units: [ 0x7a 0xdf 0x6c34 0x1f34c 0 ]
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.28 Unicode utilities &lt;uchar.h&gt; (p: 292)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20.1.2 Minimum-width integer types (p: 212-213)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.28 Unicode utilities &lt;uchar.h&gt; (p: 398)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20.1.2 Minimum-width integer types (p: 290)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.18.1.2 Minimum-width integer types (p: 256)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/types" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Fundamental types</td></tr>
+</table>

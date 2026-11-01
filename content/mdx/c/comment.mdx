@@ -1,0 +1,208 @@
+---
+title: "Comments"
+slug: "c/comment"
+category: "overview"
+source: "https://en.cppreference.com/w/c/comment"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Comments serve as a sort of in-code documentation. When inserted into a program, they are effectively ignored by the compiler; they are solely intended to be used as notes by the humans that read source code.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+/* comment */
+// comment
+```
+
+<p class="li-note"><span class="li-num">1)</span>  Often known as "C-style" or "multi-line" comments.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Often known as "C++-style" or "single-line" comments.</p>
+
+<p>All comments are removed from the program at <a href="/reference/c/language/translation_phases/">translation phase 3</a> by replacing each comment with a single whitespace character.</p>
+
+<h3 id="C-style">C-style</h3>
+
+<p>C-style comments are usually used to comment large blocks of text or small fragments of code; however, they can be used to comment single lines. To insert text as a C-style comment, simply surround the text with <code>/*</code> and <code>*/</code>. C-style comments tell the compiler to ignore all content between <code>/*</code> and <code>*/</code>. Although it is not part of the C standard, <code>/**</code> and <code>**/</code> are often used to indicate documentation blocks; this is legal because the second asterisk is simply treated as part of the comment.</p>
+
+<p>Except within a <a href="/reference/c/language/character_constant/">character constant</a>, a <a href="/reference/c/language/string_literal/">string literal</a>, or a comment, the characters <code>/*</code> introduce a comment. The contents of such a comment are examined only to identify multibyte characters and to find the characters <code>*/</code> that terminate the comment. C-style comments cannot be nested.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><h3 id="C.2B.2B-style">C++-style</h3>
+
+<p>C++-style comments are usually used to comment single lines of text or code; however, they can be placed together to form multi-line comments. To insert text as a C++-style comment, simply precede the text with <code>//</code> and follow the text with the new line character. C++-style comments tell the compiler to ignore all content between <code>//</code> and a new line.</p>
+
+<p>Except within a <a href="/reference/c/language/character_constant/">character constant</a>, a <a href="/reference/c/language/string_literal/">string literal</a>, or a comment, the characters <code>//</code> introduce a comment that includes all multibyte characters up to, but not including, the next new-line character. The contents of such a comment are examined only to identify multibyte characters and to find the new-line character that terminates the comment. C++-style comments can be nested:</p>
+
+```c
+//  y = f(x);   // invoke algorithm
+```
+
+<p>A C-style comment may appear within a C++-style comment:</p>
+
+```c
+//  y = f(x);   /* invoke algorithm */
+```
+
+<p>A C++-style comment may appear within a C-style comment; this is a mechanism for excluding a small block of source code:</p>
+
+```c
+/*
+    y = f(x);   // invoke algorithms
+    z = g(x);
+*/
+```</aside>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Because comments <a href="/reference/c/language/translation_phases/">are removed</a> before the preprocessor stage, a macro cannot be used to form a comment and an unterminated C-style comment doesn't spill over from an #include'd file.</p>
+
+```c
+/* An attempt to use a macro to form a comment. */
+/* But, a space replaces characters "//".       */
+#ifndef DEBUG
+    #define PRINTF //
+#else
+    #define PRINTF printf
+#endif
+...  
+PRINTF("Error in file %s at line %i\n", __FILE__, __LINE__);
+```
+
+<p>Besides commenting out, other mechanisms used for source code exclusion are:</p>
+
+```c
+#if 0
+    puts("this will not be compiled");
+    /* no conflict with C-style comments */
+    // no conflict with C++-style comments
+#endif
+```
+
+<p>and</p>
+
+```c
+if(0) {
+    puts("this will be compiled but not be executed");
+    /* no conflict with C-style comments */
+    // no conflict with C++-style comments
+}
+```
+
+<p>The introduction of // comments in C99 was a breaking change in some rare circumstances:</p>
+
+```c
+a = b //*divisor:*/ c
++ d; /* C89 compiles a = b / c + d;
+        C99 compiles a = b + d; */
+```
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+/*
+C-style comments can contain
+multiple lines.
+*/
+ 
+/* Or, just one line. */
+ 
+// C++-style comments can comment one line.
+ 
+// Or, they can
+// be strung together.
+ 
+int main(void)
+{
+  // The below code won't be run
+  // puts("Hello");
+ 
+  // The below code will be run
+  puts("World");
+ 
+  // A note regarding backslash + newline.
+  // Despite belonging to translation phase 2 (vs phase 3 for comments),
+  // '\' still determines which portion of the source code is considered
+  // as 'comments':
+  // This comment will be promoted to the next line \
+  puts("Won't be run"); // may issue a warning "multi-line comment"
+  puts("Hello, again");
+}
+```
+
+<p>Output:</p>
+
+```text
+World
+Hello, again
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.4.9 Comments (p: 54)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.4.9 Comments (p: 75)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.4.9 Comments (p: 66)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.1.9 Comments</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/comments" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Comments</td></tr>
+</table>

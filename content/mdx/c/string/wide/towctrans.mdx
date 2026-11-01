@@ -1,0 +1,127 @@
+---
+title: "towctrans"
+slug: "c/string/wide/towctrans"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/wide/towctrans"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;wctype.h&gt;</code></p>
+
+```c
+wint_t towctrans( wint_t wc, wctrans_t desc );
+```
+
+<p class="decl-note"><span class="std std-since std-c95">(since C95)</span></p>
+
+<p>Maps the wide character <code>wc</code> using the current C locale's <a href="/reference/c/locale/LC_categories/">LC_CTYPE</a> mapping category identified by <code>desc</code>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>wc</td><td>-</td><td>the wide character to map</td></tr>
+<tr><td>desc</td><td>-</td><td>the <a href="/reference/c/locale/LC_categories/">LC_CTYPE</a> mapping, obtained from a call to <a href="/reference/c/string/wide/wctrans/">wctrans</a></td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>The mapped value of <code>wc</code> using the mapping identified by <code>desc</code> in <a href="/reference/c/locale/LC_categories/">LC_CTYPE</a> facet of the current C locale.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <locale.h>
+#include <wctype.h>
+#include <wchar.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    setlocale(LC_ALL, "ja_JP.UTF-8");
+    const wchar_t kana[] = L"ヒラガナ";
+    size_t sz = sizeof kana / sizeof *kana;
+    wchar_t hira[sz];
+    for (size_t n = 0; n < sz; ++n)
+        hira[n] = towctrans(kana[n], wctrans("tojhira"));
+    printf("katakana characters %ls are %ls in hiragana\n", kana, hira);
+}
+```
+
+<p>Output:</p>
+
+```text
+katakana characters ヒラガナ are ひらがな in hiragana
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.30.3.2.1 The towctrans function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.30.3.2.1 The towctrans function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.30.3.2.1 The towctrans function (p: 454)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25.3.2,1 The towctrans function (p: 400)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/wide/wctrans/">wctrans</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>looks up a character mapping category in the current C locale   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/wide/towctrans" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+towctrans</td></tr>
+</table>

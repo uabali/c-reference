@@ -1,0 +1,179 @@
+---
+title: "casinf, casin, casinl"
+slug: "c/numeric/complex/casin"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/complex/casin"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;complex.h&gt;</code></p>
+
+```c
+float complex       casinf( float complex z );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+double complex      casin( double complex z );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+long double complex casinl( long double complex z );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;tgmath.h&gt;</code></p>
+
+```c
+#define asin( z )
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="li-note"><span class="li-num">1-3)</span>  Computes the complex arc sine of <code>z</code> with branch cuts outside the interval [−1,+1] along the real axis.</p>
+
+<p class="li-note"><span class="li-num">4)</span>  Type-generic macro: If <code>z</code> has type <code>long double complex</code>, <code>casinl</code> is called. if <code>z</code> has type <code>double complex</code>, <code>casin</code> is called, if <code>z</code> has type <code>float complex</code>, <code>casinf</code> is called. If <code>z</code> is real or integer, then the macro invokes the corresponding real function (<code>asinf</code>, <code>asin</code>, <code>asinl</code>). If <code>z</code> is imaginary, then the macro invokes the corresponding real version of the function <a href="/reference/c/numeric/math/asinh/">asinh</a>, implementing the formula \(\small \arcsin({\rm i}y) = {\rm i}{\rm arsinh}(y)\)arcsin(iy) = i arsinh(y), and the return type of the macro is imaginary.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>z</td><td>-</td><td>complex argument</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>If no errors occur, complex arc sine of <code>z</code> is returned, in the range of a strip unbounded along the imaginary axis and in the interval [−π/2; +π/2] along the real axis.</p>
+
+<p>Errors and special cases are handled as if the operation is implemented by <code>-I * casinh(I*z)</code></p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Inverse sine (or arc sine) is a multivalued function and requires a branch cut on the complex plane. The branch cut is conventionally placed at the line segments (-∞,-1) and (1,∞) of the real axis.</p>
+
+<p>The mathematical definition of the principal value of arc sine is \(\small \arcsin z = -{\rm i}\ln({\rm i}z+\sqrt{1-z^2})\)arcsin z = -<em>i</em>ln(<em>i</em>z + √1-z2 )</p>
+
+<p>For any z,</p>
+
+\(\small{ \arcsin(z) = \arccos(-z) - \frac{\pi}{2} }\)
+
+arcsin(z) = acos(-z) - π2
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <math.h>
+#include <complex.h>
+ 
+int main(void)
+{
+    double complex z = casin(-2);
+    printf("casin(-2+0i) = %f%+fi\n", creal(z), cimag(z));
+ 
+    double complex z2 = casin(conj(-2)); // or CMPLX(-2, -0.0)
+    printf("casin(-2-0i) (the other side of the cut) = %f%+fi\n", creal(z2), cimag(z2));
+ 
+    // for any z, asin(z) = acos(-z) - pi/2
+    double pi = acos(-1);
+    double complex z3 = csin(cacos(conj(-2))-pi/2);
+    printf("csin(cacos(-2-0i)-pi/2) = %f%+fi\n", creal(z3), cimag(z3));
+}
+```
+
+<p>Output:</p>
+
+```text
+casin(-2+0i) = -1.570796+1.316958i
+casin(-2-0i) (the other side of the cut) = -1.570796-1.316958i
+csin(cacos(-2-0i)-pi/2) = 2.000000+0.000000i
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3.5.2 The casin functions (p: 190)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 373-375)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>G.7 Type-generic math &lt;tgmath.h&gt; (p: 545)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3.5.2 The casin functions (p: 172)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 Type-generic math &lt;tgmath.h&gt; (p: 335-337)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>G.7 Type-generic math &lt;tgmath.h&gt; (p: 480)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/complex/cacos/">cacos<br />cacosf<br />cacosl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex arc cosine   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/catan/">catan<br />catanf<br />catanl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex arc tangent   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/csin/">csin<br />csinf<br />csinl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex sine   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/asin/">asin<br />asinf<br />asinl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes arc sine (\({\small\arcsin{x} }\)arcsin(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/complex/asin" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+asin</td></tr>
+</table></section>

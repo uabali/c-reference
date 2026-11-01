@@ -1,0 +1,213 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #f3eee4;
+  --elev: #fbf7f0;
+  --ink: #1c1915;
+  --muted: #5f574c;
+  --line: #e3d8c6;
+  --accent: #9a3412;
+  --accent-2: #1f4b3a;
+  --code: #efe6d6;
+  --chip: #efe4d2;
+  --warn: #9a3412;
+  --good: #166534;
+  --shadow: 0 16px 40px rgba(48, 32, 14, 0.08);
+}
+
+.dark {
+  --bg: #12110f;
+  --elev: #1c1916;
+  --ink: #f4eee6;
+  --muted: #b7ab9d;
+  --line: #322c26;
+  --accent: #f0a07a;
+  --accent-2: #8dcead;
+  --code: #241f1b;
+  --chip: #2a241e;
+  --warn: #f0a07a;
+  --good: #86efac;
+  --shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-elev: var(--elev);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent2: var(--accent-2);
+  --color-code: var(--code);
+  --color-chip: var(--chip);
+  --color-warn: var(--warn);
+  --color-good: var(--good);
+  --font-sans: var(--font-source), "Source Sans 3", sans-serif;
+  --font-serif: var(--font-newsreader), Georgia, serif;
+  --font-mono: var(--font-plex), "IBM Plex Mono", ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(1200px 500px at 0% -10%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 50%),
+    var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+
+a { color: inherit; }
+
+::selection { background: color-mix(in srgb, var(--accent) 35%, white); }
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 80;
+  background: var(--ink);
+  color: var(--bg);
+  padding: 0.5rem 0.8rem;
+  border-radius: 0.5rem;
+}
+.skip-link:focus { top: 0.75rem; }
+
+.prose {
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+.prose > * + * { margin-top: 0.9rem; }
+.prose h2, .prose h3, .prose h4 {
+  font-family: var(--font-serif);
+  line-height: 1.25;
+  scroll-margin-top: 5.5rem;
+  margin-top: 1.8rem;
+}
+.prose h2 { font-size: 1.7rem; }
+.prose h3 { font-size: 1.35rem; }
+.prose h4 { font-size: 1.15rem; }
+.prose a { color: var(--accent); text-underline-offset: 3px; }
+.prose a:hover { text-decoration: underline; }
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  background: var(--code);
+  border-radius: 0.3rem;
+  padding: 0.05rem 0.3rem;
+}
+.prose pre.codeblock {
+  position: relative;
+  overflow-x: auto;
+  background: #1c1915;
+  color: #f6f1e8;
+  border-radius: 0.9rem;
+  padding: 1rem 1rem 1rem 1.1rem;
+  margin: 1rem 0;
+  box-shadow: var(--shadow);
+}
+.dark .prose pre.codeblock { background: #0c0b0a; border: 1px solid var(--line); }
+.prose pre.codeblock code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  white-space: pre;
+}
+.prose pre.codeblock::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: 0.55rem;
+  right: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #c8b8a2;
+}
+.prose table.ref-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  display: block;
+  overflow-x: auto;
+}
+.prose table.ref-table td, .prose table.ref-table th {
+  border-bottom: 1px solid var(--line);
+  padding: 0.55rem 0.7rem;
+  vertical-align: top;
+  text-align: left;
+}
+.prose .revision, .prose .std-ref {
+  border-left: 3px solid var(--accent);
+  background: color-mix(in srgb, var(--chip) 70%, transparent);
+  padding: 0.7rem 0.9rem;
+  border-radius: 0 0.8rem 0.8rem 0;
+}
+.prose .decl-header, .prose .decl-note { font-family: var(--font-mono); font-size: 0.86rem; color: var(--muted); }
+.prose .li-num { font-weight: 650; color: var(--accent); margin-right: 0.25rem; }
+.prose img { max-width: min(100%, 280px); height: auto; background: white; border-radius: 0.7rem; border: 1px solid var(--line); }
+.prose ul, .prose ol { padding-left: 1.25rem; }
+.prose li + li { margin-top: 0.35rem; }
+
+.std {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0.15rem;
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  background: var(--chip);
+  color: var(--ink);
+  vertical-align: baseline;
+}
+.std-c23 { background: color-mix(in srgb, var(--accent) 18%, var(--elev)); color: var(--accent); }
+.std-c11, .std-c99, .std-c17 { background: color-mix(in srgb, var(--accent-2) 16%, var(--elev)); color: var(--accent-2); }
+.mark-note { color: var(--muted); font-size: 0.82em; }
+
+.copy-code {
+  position: absolute;
+  top: 0.45rem;
+  right: 4.2rem;
+  border: 0;
+  background: transparent;
+  color: #c8b8a2;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+.copy-code:hover { color: white; }
+
+.attribution {
+  border: 1px solid var(--line);
+  background: var(--elev);
+  border-radius: 0.9rem;
+  padding: 0.75rem 0.9rem;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+.attribution a { color: var(--accent); }
+
+.added-panel {
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line));
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--accent) 8%, var(--elev)), var(--elev));
+  border-radius: 1.1rem;
+  padding: 1rem 1.05rem 1.1rem;
+  box-shadow: var(--shadow);
+}
+.added-kicker {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}

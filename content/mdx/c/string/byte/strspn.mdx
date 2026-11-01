@@ -1,0 +1,141 @@
+---
+title: "strspn"
+slug: "c/string/byte/strspn"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/byte/strspn"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;string.h&gt;</code></p>
+
+```c
+size_t strspn( const char* dest, const char* src );
+```
+
+<p>Returns the length of the maximum initial segment (span) of the null-terminated byte string pointed to by <code>dest</code>, that consists of only the characters found in the null-terminated byte string pointed to by <code>src</code>.</p>
+
+<p>The behavior is undefined if either <code>dest</code> or <code>src</code> is not a pointer to a null-terminated byte string.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>dest</td><td>-</td><td>pointer to the null-terminated byte string to be analyzed</td></tr>
+<tr><td>src</td><td>-</td><td>pointer to the null-terminated byte string that contains the characters to search for</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>The length of the maximum initial segment that contains only characters from the null-terminated byte string pointed to by <code>src</code>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <string.h>
+ 
+int main(void)
+{
+    const char* string = "abcde312$#@";
+    const char* low_alpha = "qwertyuiopasdfghjklzxcvbnm";
+ 
+    size_t spnsz = strspn(string, low_alpha);
+    printf("After skipping initial lowercase letters from '%s'\n"
+           "The remainder is '%s'\n", string, string + spnsz);
+}
+```
+
+<p>Output:</p>
+
+```text
+After skipping initial lowercase letters from 'abcde312$#@'
+The remainder is '312$#@'
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.5.6 The strspn function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.5.6 The strspn function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.5.6 The strspn function (p: 369)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.5.6 The strspn function (p: 332)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.11.5.6 The strspn function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/byte/strcspn/">strcspn</a></td><td>returns the length of the maximum initial segment that consists   of only the characters not found in another byte string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcsspn/">wcsspn</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>returns the length of the maximum initial segment that consists   of only the wide characters found in another wide string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strpbrk/">strpbrk</a></td><td>finds the first location of any character in one string, in another string   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/byte/strspn" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+strspn</td></tr>
+</table>

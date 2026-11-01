@@ -1,0 +1,155 @@
+---
+title: "C attribute: deprecated (since C23)"
+slug: "c/language/attributes/deprecated"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/attributes/deprecated"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Indicates that the name or entity declared with this attribute is <a href="https://en.wikipedia.org/wiki/Deprecation" rel="noreferrer" target="_blank">deprecated</a>, that is, the use is allowed, but discouraged for some reason.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+[[ deprecated ]][[ __deprecated__ ]]
+[[ deprecated ( string-literal ) ]][[ __deprecated__ ( string-literal ) ]]
+```
+
+<table class="ref-table ref-params">
+<tr><td><em>string-literal</em></td><td>-</td><td>text that could be used to explain the rationale for deprecation and/or to suggest a replacing entity</td></tr>
+</table>
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>Indicates that the use of the name or entity declared with this attribute is allowed, but discouraged for some reason. Compilers typically issue warnings on such uses. The <em>string-literal</em>, if specified, is usually included in the warnings.</p>
+
+<p>This attribute is allowed in declarations of the following names or entities:</p>
+
+<ul>
+<li>
+<a href="/reference/c/language/struct/">struct</a>
+
+<p>/</p>
+
+<a href="/reference/c/language/union/">union</a>
+
+<p>:</p>
+
+<code>struct [[deprecated]] S;</code>
+
+<p>,</p>
+</li>
+<li>
+<a href="/reference/c/language/typedef/">typedef-name</a>
+
+<p>:</p>
+
+<code>[[deprecated]] typedef S* PS;</code>
+
+<p>,</p>
+</li>
+<li>
+<p>objects:</p>
+
+<code>[[deprecated]] int x;</code>
+
+<p>,</p>
+</li>
+<li>
+<p>struct/union member:</p>
+
+<code>union U { [[deprecated]] int n; };</code>
+
+<p>,</p>
+</li>
+<li>
+<a href="/reference/c/language/function_definition/">function</a>
+
+<p>:</p>
+
+<code>[[deprecated]] void f(void);</code>
+
+<p>,</p>
+</li>
+<li>
+<a href="/reference/c/language/enum/">enumeration</a>
+
+<p>:</p>
+
+<code>enum [[deprecated]] E {};</code>
+
+<p>,</p>
+</li>
+<li>
+<p>enumerator:</p>
+
+<code>enum { A [[deprecated]], B [[deprecated]] = 42 };</code>
+
+<p>.</p>
+</li>
+</ul>
+
+<p>A name declared non-deprecated may be redeclared deprecated. A name declared deprecated cannot be un-deprecated by redeclaring it without this attribute.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+ 
+[[deprecated]]
+void TriassicPeriod(void)
+{
+    puts("Triassic Period: [251.9 - 208.5] million years ago.");
+}
+ 
+[[deprecated("Use NeogenePeriod() instead.")]]
+void JurassicPeriod(void)
+{
+    puts("Jurassic Period: [201.3 - 152.1] million years ago.");
+}
+ 
+[[deprecated("Use calcSomethingDifferently(int).")]]
+int calcSomething(int x)
+{
+    return x * 2;
+}
+ 
+int main(void)
+{
+    TriassicPeriod();
+    JurassicPeriod();
+}
+```
+
+<p>Possible output:</p>
+
+```text
+Triassic Period: [251.9 - 208.5] million years ago.
+Jurassic Period: [201.3 - 152.1] million years ago.
+ 
+prog.c:23:5: warning: 'TriassicPeriod' is deprecated [-Wdeprecated-declarations]
+    TriassicPeriod();
+    ^
+prog.c:3:3: note: 'TriassicPeriod' has been explicitly marked deprecated here
+[[deprecated]]
+  ^
+prog.c:24:5: warning: 'JurassicPeriod' is deprecated: Use NeogenePeriod() instead. [-Wdeprecated-declarations]
+    JurassicPeriod();
+    ^
+prog.c:9:3: note: 'JurassicPeriod' has been explicitly marked deprecated here
+[[deprecated("Use NeogenePeriod() instead.")]]
+  ^
+2 warnings generated.
+```
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/attributes/deprecated" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+deprecated</td></tr>
+</table>

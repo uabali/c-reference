@@ -1,0 +1,77 @@
+---
+title: "cnd_broadcast"
+slug: "c/thread/cnd_broadcast"
+category: "thread"
+source: "https://en.cppreference.com/w/c/thread/cnd_broadcast"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;threads.h&gt;</code></p>
+
+```c
+int cnd_broadcast( cnd_t *cond );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Unblocks all threads that are blocked on condition variable <code>cond</code> at the time of the call. If no threads are blocked on <code>cond</code>, the function does nothing and returns <code>thrd_success</code>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>cond</td><td>-</td><td>pointer to a condition variable</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p><a href="/reference/c/thread/thrd_errors/">thrd_success</a> if successful, <a href="/reference/c/thread/thrd_errors/">thrd_error</a> otherwise.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.3.1 The cnd_broadcast function (p: 275-276)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.3.1 The cnd_broadcast function (p: 378)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/thread/cnd_signal/">cnd_signal</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>unblocks one thread blocked on a condition variable   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/condition_variable/notify_all" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+condition_variable::notify_all</td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/condition_variable_any/notify_all" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+condition_variable_any::notify_all</td></tr>
+</table>

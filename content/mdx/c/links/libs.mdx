@@ -1,0 +1,374 @@
+---
+title: "A list of open source C libraries"
+slug: "c/links/libs"
+category: "links"
+source: "https://en.cppreference.com/w/c/links/libs"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>The objective of this page is to build a comprehensive list of open-source C libraries, so that when one needs an implementation of particular functionality, one needn’t to waste time searching on web (<a href="https://duckduckgo.com/" rel="noreferrer" target="_blank">DuckDuckGo</a>, <a href="https://www.google.com/?gws_rd=ssl" rel="noreferrer" target="_blank">Google</a>, <a href="https://www.bing.com/" rel="noreferrer" target="_blank">Bing</a>, etc.)</p>
+
+<p>If you know a library that might be useful to others, please add a link to it here. There are no restrictions on what can be included except that the <strong>source</strong> of the library must be readily <strong>available</strong> to download.</p>
+
+<p>The page is provided “as is” - with the hope of being useful, but without any warranties. Outdated, misleading or wrong links might appear here. If you’ve noticed one of these, it would be great if you fixed the error.</p>
+
+Package managers
+
+<table class="ref-table">
+<tr><th rowspan="1">Package manager</th><th rowspan="1">Description</th></tr>
+<tr><th><a href="https://build2.org/" rel="noreferrer" target="_blank">build2</a></th><td>An open-source (MIT), cross-platform build toolchain that aims to approximate Rust Cargo’s convenience for developing and packaging C/C++ projects while providing more depth and flexibility, especially in the build system.</td></tr>
+<tr><th><a href="https://cget.readthedocs.io/en/latest/" rel="noreferrer" target="_blank">cget</a></th><td>Cmake package retrieval. This can be used to download and install cmake packages.</td></tr>
+<tr><th><a href="https://github.com/scapix-com/cmodule" rel="noreferrer" target="_blank">cmodule</a></th><td>Non-intrusive cmake dependency management.</td></tr>
+<tr><th><a href="https://conan.io/" rel="noreferrer" target="_blank">conan</a></th><td>Decentralized, open-source (MIT), C/C++ package manager.</td></tr>
+<tr><th><a href="https://github.com/TheLartians/CPM.cmake" rel="noreferrer" target="_blank">CPM.cmake</a></th><td>A cmake script that adds dependency management capabilities to cmake. It’s built as a thin wrapper around cmake’s FetchContent module that adds version control, caching, a simple API and more.</td></tr>
+<tr><th><a href="https://hunter.readthedocs.io/en/latest/" rel="noreferrer" target="_blank">hunter</a></th><td>A cmake driven cross-platform package manager for C/C++ projects.</td></tr>
+<tr><th><a href="https://spack.io" rel="noreferrer" target="_blank">spack</a></th><td>A package manager for supercomputers, Linux, and macOS. It makes installing scientific software easy. It isn’t tied to a particular language.</td></tr>
+<tr><th><a href="https://bitbucket.org/benman/teaport" rel="noreferrer" target="_blank">teaport</a></th><td>A cocoapods inspired dependency manager.</td></tr>
+<tr><th><a href="https://docs.microsoft.com/en-us/cpp/vcpkg" rel="noreferrer" target="_blank">vcpkg</a></th><td>A C/C++ package manager for Windows, Linux, and macOS.</td></tr>
+<tr><th><a href="https://xmake.io/" rel="noreferrer" target="_blank">xmake</a></th><td>A cross-platform Lua-based C/C++ build tool and package manager.</td></tr>
+</table>
+
+Libraries
+
+<h2 id="Operating_system">Operating system</h2>
+
+<dl>
+<dt><p>Access control</p></dt>
+</dl>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="https://savannah.nongnu.org/projects/acl/" rel="noreferrer" target="_blank">acl</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://apparmor.net/" rel="noreferrer" target="_blank">apparmor</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<dl>
+<dt><p>Extended attributes</p></dt>
+</dl>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="https://savannah.nongnu.org/projects/attr/" rel="noreferrer" target="_blank">attr</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<h2 id="Graphical_user_interface">Graphical user interface</h2>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="http://www.tecgraf.puc-rio.br/iup/" rel="noreferrer" target="_blank">IUP</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://github.com/Immediate-Mode-UI/Nuklear" rel="noreferrer" target="_blank">Nuklear</a></th><td>A single-header ANSI C immediate mode cross-platform GUI library. (<a href="https://immediate-mode-ui.github.io/Nuklear/doc/index.html" rel="noreferrer" target="_blank">Doc</a>)</td><td></td><td></td></tr>
+<tr><th><a href="https://github.com/lvgl/lvgl" rel="noreferrer" target="_blank">lvgl</a></th><td>Powerful and easy-to-use embedded GUI library with many widgets, advanced visual effects (opacity, anti-aliasing, animations) and low memory requirements (16K RAM, 64K Flash). (<a href="https://docs.lvgl.io/master/index.html" rel="noreferrer" target="_blank">Doc</a>)</td><td></td><td></td></tr>
+<tr><th><a href="https://sourceforge.net/projects/tinyfiledialogs/" rel="noreferrer" target="_blank">tiny file dialogs</a></th><td>A single C cross-platform file (no init, no main loop, 6 modal function calls)</td><td></td><td></td></tr>
+</table>
+
+<h2 id="Gtk.2B_widgets">Gtk+ widgets</h2>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="https://launchpad.net/appmenu-gtk" rel="noreferrer" target="_blank">appmenu-gtk</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://wiki.gnome.org/Apps/Ghex" rel="noreferrer" target="_blank">ghex</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://wiki.gnome.org/Projects/GooCanvas" rel="noreferrer" target="_blank">goocanvas</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://launchpad.net/gtkhotkey" rel="noreferrer" target="_blank">gtkhotkey</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://www.gtk.org/" rel="noreferrer" target="_blank">gtk+</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://wiki.gnome.org/Projects/GtkSourceView" rel="noreferrer" target="_blank">gtksourceview</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://gtkspell.sourceforge.net/" rel="noreferrer" target="_blank">gtkspell</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://wiki.gnome.org/Apps/Gucharmap" rel="noreferrer" target="_blank">gucharmap</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://www.webkitgtk.org/" rel="noreferrer" target="_blank">webkitgtk</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<h2 id="Microsoft_Excel">Microsoft Excel</h2>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="https://libxlsxwriter.github.io/" rel="noreferrer" target="_blank">libxlsxwriter</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://github.com/damian-m-g/xlsx_drone" rel="noreferrer" target="_blank">xlsx_drone</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<h2 id="Audio">Audio</h2>
+
+<dl>
+<dt><p>CD</p></dt>
+</dl>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="https://www.xiph.org/paranoia/" rel="noreferrer" target="_blank">cdparanoia</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<dl>
+<dt><p>Codecs</p></dt>
+</dl>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="http://aften.sourceforge.net/" rel="noreferrer" target="_blank">aften</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="http://www.audiocoding.com/" rel="noreferrer" target="_blank">faad2</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="http://www.wavpack.com" rel="noreferrer" target="_blank">wavpack</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<dl>
+<dt><p>Infrastructure</p></dt>
+</dl>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="https://www.alsa-project.org/wiki/Main_Page" rel="noreferrer" target="_blank">alsa-lib</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="http://www.portaudio.com/" rel="noreferrer" target="_blank">portaudio</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<dl>
+<dt><p>Speech synthesis</p></dt>
+</dl>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="http://espeak.sourceforge.net/" rel="noreferrer" target="_blank">espeak</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="http://www.festvox.org/flite/" rel="noreferrer" target="_blank">flite</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<h2 id="Video">Video</h2>
+
+<dl>
+<dt><p>Codecs</p></dt>
+</dl>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="https://slackbuilds.org/repository/14.1/multimedia/schroedinger/" rel="noreferrer" target="_blank">schroedinger</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://linuxtv.org/downloads/v4l-utils/" rel="noreferrer" target="_blank">video4linux</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<h2 id="Files">Files</h2>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="http://spruce.sourceforge.net/gmime/" rel="noreferrer" target="_blank">gmime</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<h2 id="Maths">Maths</h2>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="https://www.gnu.org/software/gsl/" rel="noreferrer" target="_blank">gsl</a></th><td>The GNU Scientific Library (GSL) is a numerical library for C and C++ (<a href="https://ftp.gnu.org/gnu/gsl/" rel="noreferrer" target="_blank">Src</a>)</td><td>GPL</td><td>make</td></tr>
+</table>
+
+<dl>
+<dt><p>Integer Multi-Dimensional Interpolation</p></dt>
+</dl>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="http://www.argyllcms.com/" rel="noreferrer" target="_blank">argyll</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<dl>
+<dt><p>Linear algebra</p></dt>
+</dl>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="http://math-atlas.sourceforge.net/" rel="noreferrer" target="_blank">atlas</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://www.netlib.org/blas/" rel="noreferrer" target="_blank">blas</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="http://eigen.tuxfamily.org/index.php" rel="noreferrer" target="_blank">eigen</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<dl>
+<dt><p>Finance</p></dt>
+</dl>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="https://sourceforge.net/projects/ta-lib/" rel="noreferrer" target="_blank">ta-lib</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<dl>
+<dt><p>FFT</p></dt>
+</dl>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="http://fftw.org" rel="noreferrer" target="_blank">fftw3</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<dl>
+<dt><p>Multiprecision</p></dt>
+</dl>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="https://gmplib.org/" rel="noreferrer" target="_blank">gmp</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<dl>
+<dt><p>Signal Processing</p></dt>
+</dl>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="https://liquidsdr.org/" rel="noreferrer" target="_blank">liquid-dsp</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://www.omg.org/spec/VSIPL" rel="noreferrer" target="_blank">vsipl</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://www.omg.org/spec/VSIPL++" rel="noreferrer" target="_blank">vsipl++</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<h2 id="Graphics">Graphics</h2>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="https://liballeg.org/index.html" rel="noreferrer" target="_blank">allegro</a></th><td>Allegro-5 is a cross-platform multimedia library mainly aimed at video game and multimedia programming.</td><td></td><td></td></tr>
+<tr><th><a href="http://gegl.org/babl/" rel="noreferrer" target="_blank">babl</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://github.com/bkaradzic/bgfx" rel="noreferrer" target="_blank">Bgfx</a></th><td>A cross-platform, graphics API agnostic, "Bring Your Own Engine/Framework" style rendering library.</td><td>BSD 2</td><td></td></tr>
+<tr><th><a href="https://www.cairographics.org/" rel="noreferrer" target="_blank">cairo</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://www.raylib.com/" rel="noreferrer" target="_blank">raylib</a></th><td>A cross-platform C99 gamedev library featuring OpenGL hardware acceleration, full 3D support, skeletal animation, shaders, fonts, audio, math, GUI, etc. (<a href="https://github.com/raysan5/raylib" rel="noreferrer" target="_blank">Src</a>) (<a href="https://github.com/raysan5/raylib/wiki/" rel="noreferrer" target="_blank">Doc</a>)</td><td>Zlib</td><td>cmake, make, vcpkg, zig</td></tr>
+<tr><th><a href="https://sail.software" rel="noreferrer" target="_blank">SAIL</a></th><td><strong>S</strong>quirrel <strong>A</strong>bstract <strong>I</strong>mage <strong>L</strong>ibrary is a small, fast, and cross-platform image decoding library.</td><td></td><td></td></tr>
+<tr><th><a href="https://libsdl.org/" rel="noreferrer" target="_blank">SDL</a></th><td><strong>S</strong>imple <strong>D</strong>irectMedia <strong>L</strong>ayer is a cross-platform library for input, audio, drawing and much more.</td><td></td><td></td></tr>
+<tr><th><a href="http://www.libsigil.com" rel="noreferrer" target="_blank">SIGIL</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://github.com/simple2d/simple2d" rel="noreferrer" target="_blank">Simple2d</a></th><td>A small, simple, cross-platform SDL2/OpenGL wrapper that provides drawing, media, windowing, and input capabilities.</td><td>MIT</td><td></td></tr>
+</table>
+
+<h2 id="Generic">Generic</h2>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="https://www.roberto-mameli.it/software/#libmixf" rel="noreferrer" target="_blank">libmixf</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<h2 id="Interprocess">Interprocess</h2>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="https://www.freedesktop.org/wiki/Software/dbus/" rel="noreferrer" target="_blank">dbus</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://launchpad.net/dee/" rel="noreferrer" target="_blank">dee</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://www.freedesktop.org/wiki/Software/DBusBindings/" rel="noreferrer" target="_blank">gdbus</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<h2 id="Databases">Databases</h2>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="https://www.oracle.com/database/technologies/related/berkeleydb.html" rel="noreferrer" target="_blank">berkeley_db</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://www.roberto-mameli.it/software/#libfmrt" rel="noreferrer" target="_blank">libfmrt</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://github.com/mongodb/mongo-c-driver" rel="noreferrer" target="_blank">libmongoc</a></th><td>Official C driver library for MongoDB (<a href="https://www.mongodb.com/docs/drivers/c" rel="noreferrer" target="_blank">Doc</a>). It offers optimized APIs for CRUD operations, comprehensive feature support (including <a href="https://en.wikipedia.org/wiki/BSON" rel="noreferrer" target="_blank">BSON</a>) and support for different authentication mechanisms enabling efficient integration of MongoDB functionality into C-based applications.</td><td>Apache 2.0</td><td>CMake</td></tr>
+<tr><th><a href="https://symas.com/lmdb/technical/" rel="noreferrer" target="_blank">lmdb</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://sqlite.org/index.html" rel="noreferrer" target="_blank">SQLite</a></th><td>A C library that implements a small, fast, self-contained, high-reliability, full-featured, SQL database engine. SQLite is the most used database engine in the world. (<a href="https://sqlite.org/src" rel="noreferrer" target="_blank">Src</a>) (<a href="https://sqlite.org/docs.html" rel="noreferrer" target="_blank">Doc</a>)</td><td><a href="https://sqlite.org/copyright.html" rel="noreferrer" target="_blank">Public Domain</a></td><td></td></tr>
+</table>
+
+<h2 id="Configuration">Configuration</h2>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="https://hyperrealm.github.io/libconfig" rel="noreferrer" target="_blank">libconfig</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://madmurphy.github.io/libconfini/html/index.html" rel="noreferrer" target="_blank">libconfini</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<h2 id="Environment">Environment</h2>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="https://github.com/Jorengarenar/libXDGdirs" rel="noreferrer" target="_blank">libXDGdirs</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<h2 id="Communications">Communications</h2>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="https://www.genivia.com/dev.html" rel="noreferrer" target="_blank">gsoap</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://github.com/skywind3000/kcp/blob/master/README.en.md" rel="noreferrer" target="_blank">KCP</a></th><td>A fast and reliable ARQ protocol that helps applications to reduce network latency.</td><td>MIT</td><td></td></tr>
+<tr><th><a href="https://curl.haxx.se/libcurl/" rel="noreferrer" target="_blank">libcurl</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://www.gnu.org/software/libmicrohttpd/" rel="noreferrer" target="_blank">libmicrohttpd</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://risoflora.github.io/libsagui/" rel="noreferrer" target="_blank">libsagui</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://liambindle.ca/MQTT-C/" rel="noreferrer" target="_blank">MQTT-C</a></th><td><a href="https://github.com/LiamBindle/MQTT-C" rel="noreferrer" target="_blank">Github URL</a></td><td>MIT</td><td></td></tr>
+<tr><th><a href="https://nanomsg.org/" rel="noreferrer" target="_blank">nanomsg</a></th><td>A socket library that provides common communication patterns; has no dependencies; cross-platform. Superceded by the <a href="https://github.com/nanomsg/nng" rel="noreferrer" target="_blank">nng</a>.</td><td>MIT/X11</td><td></td></tr>
+<tr><th><a href="https://github.com/openucx/ucx" rel="noreferrer" target="_blank">UCX</a></th><td>Unified Communication X (UCX) provides an optimized communication layer for Message Passing (MPI), Shared Memory (PGAS) and RPC/data-centric applications.</td><td>BSD3</td><td></td></tr>
+<tr><th><a href="https://zeromq.org/" rel="noreferrer" target="_blank">zeromq</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://libusb.info/" rel="noreferrer" target="_blank">libusb</a></th><td>A portable C library that provides generic access to USB devices.</td><td></td><td></td></tr>
+</table>
+
+<h2 id="Compression">Compression</h2>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="http://www.bzip.org/" rel="noreferrer" target="_blank">bzip2</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://github.com/lz4/lz4" rel="noreferrer" target="_blank">lz4</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="http://zlib.net/" rel="noreferrer" target="_blank">zlib</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<h2 id="Concurrency">Concurrency</h2>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="http://www.concurrencykit.org/" rel="noreferrer" target="_blank">ck</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://github.com/oleh-derevenko/mutexgear" rel="noreferrer" target="_blank">MutexGear</a></th><td>Mutex-only synchronization (wheel, rwlock, work queues).</td><td>The MutexGear Library</td><td></td></tr>
+</table>
+
+<h2 id="Data_types">Data types</h2>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="http://bstring.sourceforge.net/" rel="noreferrer" target="_blank">bstrlib</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://github.com/delphifeel/datastd" rel="noreferrer" target="_blank">datastd</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://github.com/maxim2266/str" rel="noreferrer" target="_blank">str</a></th><td>Yet another string library for C language.</td><td></td><td></td></tr>
+</table>
+
+<h2 id="PDF">PDF</h2>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="https://github.com/michaelrsweet/pdfio" rel="noreferrer" target="_blank">PDFio</a></th><td>A simple C library for reading and writing PDF files.</td><td>Apache-2.0</td><td>make</td></tr>
+</table>
+
+<h2 id="XML">XML</h2>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="http://expat.sourceforge.net" rel="noreferrer" target="_blank">expat</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="http://gsoap2.sourceforge.net" rel="noreferrer" target="_blank">gsoap</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<h2 id="Metrics">Metrics</h2>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="http://github.com/martinsos/edlib" rel="noreferrer" target="_blank">edlib</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<h2 id="Object_oriented_programming">Object oriented programming</h2>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="http://libcello.org/" rel="noreferrer" target="_blank">Cello</a></th><td></td><td></td><td></td></tr>
+<tr><th><a href="https://docs.gtk.org/gobject/" rel="noreferrer" target="_blank">GObject</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<h2 id="Web_Frontend">Web Frontend</h2>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="http://git.zx2c4.com/cgit/about/" rel="noreferrer" target="_blank">cgit</a></th><td></td><td></td><td></td></tr>
+</table>
+
+<h2 id="Debug">Debug</h2>
+
+<table class="ref-table">
+<tr><th rowspan="1">Library</th><th rowspan="1">Description</th><th rowspan="1">License</th><th colspan="1">Configuration</th></tr>
+<tr><th><a href="https://github.com/eerimoq/dbg-macro" rel="noreferrer" target="_blank">dbg-macro</a></th><td>A few macros that print and return the value of a given expression for quick and dirty debugging, inspired by Rust’s <code>dbg!(...)</code> macro and its C++ variant.</td><td>MIT</td><td></td></tr>
+</table>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/links/libs" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Non-ANSI/ISO Libraries</td></tr>
+</table>
+
+<h3 id="External_links">External links</h3>
+
+<table class="ref-table">
+<tr><td>1.</td><td><a href="https://en.wikipedia.org/wiki/List_of_unit_testing_frameworks#C" rel="noreferrer" target="_blank">A list of C unit testing frameworks</a> — at Wikipedia</td></tr>
+<tr><td>2.</td><td><a href="https://github.com/fffaraz/awesome-cpp" rel="noreferrer" target="_blank">A curated list of (awesome) C and C++ libraries</a> — at GitHub</td></tr>
+<tr><td>3.</td><td><a href="https://trilarion.github.io/opensourcegames/games/languages.html#c" rel="noreferrer" target="_blank">A list of C open-source games and frameworks</a> — at GitHub.io</td></tr>
+</table>

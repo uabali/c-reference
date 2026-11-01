@@ -1,0 +1,105 @@
+---
+title: "asprintf, aswprintf, vasprintf, vaswprintf"
+slug: "c/experimental/dynamic/asprintf"
+category: "experimental"
+source: "https://en.cppreference.com/w/c/experimental/dynamic/asprintf"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+```c
+int asprintf( char **restrict strp, const char *restrict fmt, ... );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-other">(dynamic memory TR)</span></p>
+
+```c
+int aswprintf( wchar_t **restrict strp, const wchar_t *restrict fmt, ... );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-other">(dynamic memory TR)</span></p>
+
+```c
+int vasprintf( char **restrict strp, const char *restrict fmt,
+               va_list arg );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-other">(dynamic memory TR)</span></p>
+
+```c
+int vaswprintf( wchar_t **restrict strp, const wchar_t *restrict fmt,
+                va_list arg );
+```
+
+<p class="decl-note">(4) <span class="std std-since std-other">(dynamic memory TR)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Analog of <a href="/reference/c/io/fprintf/">sprintf</a>, except that it allocates a storage large enough to hold the output including the terminating null character, as if by a call to <a href="/reference/c/memory/malloc/">malloc</a>, and returns a pointer to that storage via the first argument. This pointer should be passed to <a href="/reference/c/memory/free/">free</a> to release the allocated storage when it is no longer needed.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Same as (1), except that it works with wide characters wchar_t (by analogy with <a href="/reference/c/io/fwprintf/">swprintf</a>).</p>
+
+<p class="li-note"><span class="li-num">3)</span>  Same as (1), with the variable argument list replaced by <code>arg</code>, which shall be initialized by the va_start macro (and possibly subsequent va_arg calls).</p>
+
+<p class="li-note"><span class="li-num">4)</span>  Same as (3), except that it works with wide characters wchar_t.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>strp</td><td>-</td><td>A pointer to a <code>char*</code> or <code>wchar_t*</code> which will contain the formatted output</td></tr>
+<tr><td>fmt</td><td>-</td><td>A format string as with <a href="/reference/c/io/fprintf/">printf</a>/<a href="/reference/c/io/fwprintf/">wprintf</a> and related functions</td></tr>
+<tr><td>arg</td><td>-</td><td>Any extra arguments are used as with <a href="/reference/c/io/vfprintf/">vsprintf</a> and <a href="/reference/c/io/vfwprintf/">vswprintf</a></td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>The number of characters written, just like <a href="/reference/c/io/fprintf/">sprintf</a> (1), <a href="/reference/c/io/fwprintf/">swprintf</a> (2), <a href="/reference/c/io/vfprintf/">vsprintf</a> (3), or <a href="/reference/c/io/vfwprintf/">vswprintf</a> (4), respectively. If memory allocation wasn't possible, or some other error occurs, these functions will return <code>-1</code>, and the contents of <code>strp</code> is undefined.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>These functions are GNU extensions, not in C or POSIX. They are also available under *BSD. The FreeBSD implementation sets <code>strp</code> to <code>NULL</code> on error.</p>
+
+<p>The <code>vasprintf</code> and <code>vaswprintf</code> functions do not invoke the va_end macro.</p>
+
+<h3 id="Example">Example</h3>
+
+<p>Can be tested with clang (C11)</p>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdarg.h>
+ 
+void test(const char *fmt, ...)
+{
+    char* dyn_buf;
+ 
+    printf("Demo asprintf:\n");
+    const int written_1 = asprintf(&dyn_buf, "%s", fmt);
+    printf("dyn_buf: \"%s\"; %i chars were written\n", dyn_buf, written_1);
+    free(dyn_buf);
+ 
+    printf("Demo vasprintf:\n");
+    va_list args;
+    va_start(args, fmt);
+    const int written_2 = vasprintf(&dyn_buf, fmt, args);
+    va_end(args);
+    printf("dyn_buf: \"%s\"; %i chars were written\n", dyn_buf, written_2);
+    free(dyn_buf);
+}
+ 
+int main(void)
+{
+    test("Testing... %d, %d, %d", 1, 2, 3);
+}
+```
+
+<p>Output:</p>
+
+```text
+Demo asprintf:
+dyn_buf: "Testing... %d, %d, %d"; 21 chars were written
+Demo vasprintf:
+dyn_buf: "Testing... 1, 2, 3"; 18 chars were written
+```

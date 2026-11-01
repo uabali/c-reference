@@ -1,0 +1,310 @@
+---
+title: "tan, tanf, tanl"
+slug: "c/numeric/math/tan"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/tan"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+float       tanf( float arg );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+double      tan( double arg );
+```
+
+<p class="decl-note">(2)</p>
+
+```c
+long double tanl( long double arg );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+_Decimal32  tand32( _Decimal32 arg );
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+_Decimal64  tand64( _Decimal64 arg );
+```
+
+<p class="decl-note">(5) <span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+_Decimal128 tand128( _Decimal128 arg );
+```
+
+<p class="decl-note">(6) <span class="std std-since std-c23">(since C23)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;tgmath.h&gt;</code></p>
+
+```c
+#define tan( arg )
+```
+
+<p class="decl-note">(7) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="li-note"><span class="li-num">1-6)</span>  Computes the tangent of <code>arg</code> (measured in radians).</p>
+
+<p class="li-note"><span class="li-num">7)</span>  Type-generic macro: If the argument has type <code>long double</code>, (3) (<code>tanl</code>) is called. Otherwise, if the argument has integer type or the type <code>double</code>, (2) (<code>tan</code>) is called. Otherwise, (1) (<code>tanf</code>) is called. If the argument is complex, then the macro invokes the corresponding complex function (<a href="/reference/c/numeric/complex/ctan/">ctanf</a>, <a href="/reference/c/numeric/complex/ctan/">ctan</a>, <a href="/reference/c/numeric/complex/ctan/">ctanl</a>).</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>The functions (4-6) are declared if and only if the implementation predefines <code>__STDC_IEC_60559_DFP__</code> (i.e. the implementation supports decimal floating-point numbers).</p></aside>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>arg</td><td>-</td><td>floating-point value representing angle in radians</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>If no errors occur, the tangent of <code>arg</code> (tan(arg)) is returned.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-until std-c99">(until C99)</span></p><p>The result may have little or no significance if the magnitude of <code>arg</code> is large.</p></aside>
+
+<p>If a domain error occurs, an implementation-defined value is returned (NaN where supported).</p>
+
+<p>If a range error occurs due to underflow, the correct result (after rounding) is returned.</p>
+
+<h3 id="Error_handling">Error handling</h3>
+
+<p>Errors are reported as specified in <a href="/reference/c/numeric/math/math_errhandling/"><code>math_errhandling</code></a>.</p>
+
+<p>If the implementation supports IEEE floating-point arithmetic (IEC 60559):</p>
+
+<ul>
+<li>
+<p>if the argument is ±0, it is returned unmodified;</p>
+</li>
+<li>
+<p>if the argument is ±∞, NaN is returned and</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>is raised;</p>
+</li>
+<li>
+<p>if the argument is NaN, NaN is returned.</p>
+</li>
+</ul>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The case where the argument is infinite is not specified to be a domain error in C, but it is defined as a <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/tan.html" rel="noreferrer" target="_blank">domain error in POSIX</a>.</p>
+
+<p>The function has mathematical poles at π(1/2 + n); however no common floating-point representation is able to represent <code>π/2</code> exactly, thus there is no value of the argument for which a pole error occurs.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <errno.h>
+#include <fenv.h>
+#include <math.h>
+#include <stdio.h>
+ 
+#ifndef __GNUC__
+#pragma STDC FENV_ACCESS ON
+#endif
+ 
+int main(void)
+{
+    const double pi = acos(-1);
+ 
+    // typical usage
+    printf("tan(pi*1/4) = %+f\n", tan(pi * 1 / 4)); //   45 deg
+    printf("tan(pi*3/4) = %+f\n", tan(pi * 3 / 4)); //  135 deg
+    printf("tan(pi*5/4) = %+f\n", tan(pi * 5 / 4)); // -135 deg
+    printf("tan(pi*7/4) = %+f\n", tan(pi * 7 / 4)); //  -45 deg
+ 
+    // special values
+    printf("tan(+0) = %f\n", tan(0.0));
+    printf("tan(-0) = %f\n", tan(-0.0));
+ 
+    // error handling
+    feclearexcept(FE_ALL_EXCEPT);
+    printf("tan(INFINITY) = %f\n", tan(INFINITY));
+    if (fetestexcept(FE_INVALID))
+        puts("    FE_INVALID raised");
+}
+```
+
+<p>Possible output:</p>
+
+```text
+tan(pi*1/4) = +1.000000
+tan(pi*3/4) = -1.000000
+tan(pi*5/4) = +1.000000
+tan(pi*7/4) = -1.000000
+tan(+0) = 0.000000
+tan(-0) = -0.000000
+tan(INFINITY) = -nan
+    FE_INVALID raised
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.4.7 The tan functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.1.7 The tan functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.4.7 The tan functions (p: 175)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 272-273)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.1.7 The tan functions (p: 378)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.4.7 The tan functions (p: 240)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 373-375)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.1.7 The tan functions (p: 519)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.4.7 The tan functions (p: 220)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 Type-generic math &lt;tgmath.h&gt; (p: 335-337)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.9.1.7 The tan functions (p: 457)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.5.2.7 The tan function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/sin/">sin<br />sinf<br />sinl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes sine (\({\small\sin{x} }\)sin(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/cos/">cos<br />cosf<br />cosl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes cosine (\({\small\cos{x} }\)cos(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/atan/">atan<br />atanf<br />atanl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes arc tangent (\({\small\arctan{x} }\)arctan(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/ctan/">ctan<br />ctanf<br />ctanl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex tangent   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/tan" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+tan</td></tr>
+</table>

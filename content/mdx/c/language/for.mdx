@@ -1,0 +1,245 @@
+---
+title: "for loop"
+slug: "c/language/for"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/for"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Executes a loop.</p>
+
+<p>Used as a shorter equivalent of <a href="/reference/c/language/while/">while loop</a>.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+attr-spec-seq(since C23)(optional) for ( init-clause ; cond-expression ; iteration-expression ) loop-statement
+```
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>Behaves as follows:</p>
+
+<ul>
+<li>
+<em>init-clause</em>
+
+<p>may be an expression</p>
+
+or a declaration<span class="std std-since std-c99">(since C99)</span>
+
+<p>.</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>An</p>
+
+<em>init-clause</em>
+
+<p>, which is an expression, is evaluated once, before the first evaluation of</p>
+
+<em>cond-expression</em>
+
+<p>and its result is discarded.</p>
+</li>
+</ul></dd>
+</dl>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><dl>
+<dd><ul>
+<li>
+<p>An</p>
+
+<em>init-clause</em>
+
+<p>, which is a declaration, is in scope in the entire loop body, including the remainder of</p>
+
+<em>init-clause</em>
+
+<p>, the entire</p>
+
+<em>cond-expression</em>
+
+<p>, the entire</p>
+
+<em>iteration-expression</em>
+
+<p>and the entire</p>
+
+<em>loop-statement</em>
+
+<p>. Only</p>
+
+<code>auto</code>
+
+<p>and</p>
+
+<code>register</code>
+
+<a href="/reference/c/language/storage_duration/">storage class specifiers</a>
+
+<p>are allowed for the variables declared in this declaration.</p>
+</li>
+</ul></dd>
+</dl></aside>
+
+<ul>
+<li>
+<em>cond-expression</em>
+
+<p>is evaluated before the loop body. If the result of the expression is zero, the loop statement is exited immediately.</p>
+</li>
+<li>
+<em>iteration-expression</em>
+
+<p>is evaluated after the loop body and its result is discarded. After evaluating</p>
+
+<em>iteration-expression</em>
+
+<p>, control is transferred to</p>
+
+<em>cond-expression</em>
+
+<p>.</p>
+</li>
+</ul>
+
+<p><em>init-clause</em>, <em>cond-expression</em>, and <em>iteration-expression</em> are all optional. If <em>cond-expression</em> is omitted, it is replaced with a non-zero integer constant, which makes the loop endless:</p>
+
+```c
+for(;;) {
+   printf("endless loop!");
+}
+```
+
+<p><em>loop-statement</em> is not optional, but it may be a null statement:</p>
+
+```c
+for(int n = 0; n < 10; ++n, printf("%d\n", n))
+    ; // null statement
+```
+
+<p>If the execution of the loop needs to be terminated at some point, a <a href="/reference/c/language/break/">break statement</a> can be used anywhere within the <em>loop-statement</em>.</p>
+
+<p>The <a href="/reference/c/language/continue/">continue statement</a> used anywhere within the <em>loop-statement</em> transfers control to <em>iteration-expression</em>.</p>
+
+<p>A program with an endless loop has undefined behavior if the loop has no observable behavior (I/O, volatile accesses, atomic or synchronization operation) in any part of its <em>cond-expression</em>, <em>iteration-expression</em> or <em>loop-statement</em>. This allows the compilers to optimize out all unobservable loops without proving that they terminate. The only exceptions are the loops where <em>cond-expression</em> is omitted or is a constant expression; <code>for(;;)</code> is always an endless loop.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><p>As with all other selection and iteration statements, the for statement establishes <a href="/reference/c/language/scope/">block scope</a>: any identifier introduced in the <em>init-clause</em>, <em>cond-expression</em>, or <em>iteration-expression</em> goes out of scope after the <em>loop-statement</em>.</p></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p><em>attr-spec-seq</em> is an optional list of <a href="/reference/c/language/attributes/">attributes</a>, applied to the <code>for</code> statement.</p></aside>
+
+<h3 id="Keywords">Keywords</h3>
+
+<p><a href="/reference/c/keyword/for/"><code>for</code></a></p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The expression statement used as <em>loop-statement</em> establishes its own block scope, distinct from the scope of <em>init-clause</em>, unlike in C++:</p>
+
+```c
+for (int i = 0; ; ) {
+    long i = 1;   // valid C, invalid C++
+    // ...
+}
+```
+
+<p>It is possible to enter the body of a loop using <a href="/reference/c/language/goto/">goto</a>. When entering a loop in this manner, <em>init-clause</em> and <em>cond-expression</em> are not executed. (If control then reaches the end of the loop body, repetition may occur including execution of <em>cond-expression</em>.)</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+enum { SIZE = 8 };
+int main(void)
+{
+    int array[SIZE];
+    for(size_t i = 0 ; i < SIZE; ++i)
+        array [i] = rand() % 2;
+    printf("Array filled!\n");
+    for (size_t i = 0; i < SIZE; ++i)
+        printf("%d ", array[i]);
+    putchar('\n');
+}
+```
+
+<p>Possible output:</p>
+
+```text
+Array filled!
+1 0 1 1 1 1 0 0
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.8.5.3 The for statement (p: 110)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.8.5.3 The for statement (p: 151)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.8.5.3 The for statement (p: 136)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.6.5.3 The for statement</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/for" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+<code>for</code> loop</td></tr>
+</table>

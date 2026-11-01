@@ -1,0 +1,526 @@
+---
+title: "Constant expressions"
+slug: "c/language/constant_expression"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/constant_expression"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Several varieties of expressions are known as <em>constant expressions</em></p>
+
+<h3 id="Preprocessor_constant_expression">Preprocessor constant expression</h3>
+
+<p>The expression following <a href="/reference/c/preprocessor/conditional/"><code>#if</code> or <code>#elif</code></a> must expand to</p>
+
+<ul>
+<li>
+<a href="/reference/c/language/expressions/#Operators">operators</a>
+
+<p>other than</p>
+
+<a href="/reference/c/language/operator_assignment/">assignment</a>
+
+<p>,</p>
+
+<a href="/reference/c/language/operator_incdec/">increment, decrement</a>
+
+<p>,</p>
+
+<a href="/reference/c/language/operator_other/#Function_call">function-call</a>
+
+<p>, or</p>
+
+<a href="/reference/c/language/operator_other/#Comma_operator">comma</a>
+
+<p>whose arguments are preprocessor constant expressions</p>
+</li>
+<li>
+<a href="/reference/c/language/integer_constant/">integer constants</a>
+</li>
+<li>
+<a href="/reference/c/language/character_constant/">character constants</a>
+</li>
+<li>
+<p>the special preprocessor operator</p>
+
+<code>defined</code>
+</li>
+</ul>
+
+<p>Character constants, when evaluated in <code>#if</code>-expressions, may be interpreted in the source character set, the execution character set, or some other implementation-defined character set.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><p>Integer arithmetic in <code>#if</code>-expressions is performed using the semantics of <a href="/reference/c/types/integer/">intmax_t</a> for signed types and <a href="/reference/c/types/integer/">uintmax_t</a> for unsigned types.</p></aside>
+
+<h3 id="Integer_constant_expression">Integer constant expression</h3>
+
+<p>An integer constant expression is an expression that consists only of</p>
+
+<ul>
+<li>
+<a href="/reference/c/language/expressions/#Operators">operators</a>
+
+<p>other than</p>
+
+<a href="/reference/c/language/operator_assignment/">assignment</a>
+
+<p>,</p>
+
+<a href="/reference/c/language/operator_incdec/">increment, decrement</a>
+
+<p>,</p>
+
+<a href="/reference/c/language/operator_other/#Function_call">function-call</a>
+
+<p>, or</p>
+
+<a href="/reference/c/language/operator_other/#Comma_operator">comma</a>
+
+<p>, except that</p>
+
+<a href="/reference/c/language/cast/">cast</a>
+
+<p>operators can only cast arithmetic types to integer types unless they are part of an operand to a sizeof</p>
+
+, _Alignof<span class="std std-since std-c11">(since C11)</span><span class="std std-until std-c23">(until C23)</span>
+
+, alignas<span class="std std-since std-c23">(since C23)</span>
+
+or typeof/typeof_unqual<span class="std std-since std-c23">(since C23)</span>
+
+<p>operator.</p>
+</li>
+<li>
+<a href="/reference/c/language/integer_constant/">integer constants</a>
+</li>
+<li>
+<a href="/reference/c/language/enum/">enumeration constants</a>
+</li>
+<li>
+<a href="/reference/c/language/character_constant/">character constants</a>
+</li>
+<li>
+<a href="/reference/c/language/floating_constant/">floating constants</a>
+
+<p>, but only if they are immediately used as operands of casts to integer type</p>
+</li>
+<li>
+<a href="/reference/c/language/sizeof/"><code>sizeof</code></a>
+
+<p>operators</p>
+
+whose operands are not VLA<span class="std std-since std-c99">(since C99)</span>
+</li>
+</ul>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><ul>
+<li>
+_Alignof<span class="std std-until std-c23">(until C23)</span>
+
+alignas<span class="std std-since std-c23">(since C23)</span>
+
+<p>operators</p>
+</li>
+</ul></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><ul>
+<li>
+<p>named and compound literal constants that are of integer type or that are of arithmetic type and are the immediate operands of casts</p>
+</li>
+</ul></aside>
+
+<p>Integer constant expressions are evaluated at compile time. The following contexts require expressions that are known as <em>integer constant expressions</em>:</p>
+
+<ul>
+<li>
+<p>The size of a</p>
+
+<a href="/reference/c/language/bit_field/">bit-field</a>
+
+<p>.</p>
+</li>
+<li>
+<p>The value of an</p>
+
+<a href="/reference/c/language/enum/">enumeration constant</a>
+</li>
+<li>
+<p>The</p>
+
+<code>case</code>
+
+<p>label of a</p>
+
+<a href="/reference/c/language/switch/">switch statement</a>
+</li>
+<li>
+<p>The size of a</p>
+
+non-VLA<span class="std std-since std-c99">(since C99)</span>
+
+<p>array</p>
+</li>
+<li>
+<p>Integer to pointer implicit</p>
+
+<a href="/reference/c/language/conversion/">conversion</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><ul>
+<li>
+<p>The index in an</p>
+
+<a href="/reference/c/language/array_initialization/">array designator</a>
+</li>
+</ul></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><ul>
+<li>
+<p>The first argument of</p>
+
+<a href="/reference/c/language/static_assert/"><code>_Static_assert</code></a>
+</li>
+<li>
+<p>The integer argument of</p>
+
+<a href="/reference/c/language/alignof/"><code>_Alignof</code></a><span class="std std-until std-c23">(until C23)</span>
+
+<a href="/reference/c/language/alignof/"><code>alignof</code></a><span class="std std-since std-c23">(since C23)</span>
+</li>
+</ul></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><ul>
+<li>
+<p>The number of bits N of a bit-precise integer type (</p>
+
+<code>_BitInt(N)</code>
+
+<p>)</p>
+</li>
+</ul></aside>
+
+<h3 id="Static_initializer">Static initializer</h3>
+
+<p>Expressions that are used in the <a href="/reference/c/language/initialization/">initializers</a> of objects with static and thread_local <a href="/reference/c/language/storage_duration/">storage duration</a> or declared with the constexpr storage-class specifier<span class="std std-since std-c23">(since C23)</span> must be either string literals or expressions that may be one of the following</p>
+
+<div class="li-note"><span class="li-num">1)</span>
+
+<em>arithmetic constant expression</em>
+
+<p>, which is an expression of any arithmetic type that consists of</p>
+
+<dl>
+<dd><ul>
+<li>
+<a href="/reference/c/language/expressions/#Operators">operators</a>
+
+<p>other than</p>
+
+<a href="/reference/c/language/operator_assignment/">assignment</a>
+
+<p>,</p>
+
+<a href="/reference/c/language/operator_incdec/">increment, decrement</a>
+
+<p>,</p>
+
+<a href="/reference/c/language/operator_other/#Function_call">function-call</a>
+
+<p>, or</p>
+
+<a href="/reference/c/language/operator_other/#Comma_operator">comma</a>
+
+<p>, except that</p>
+
+<a href="/reference/c/language/cast/">cast</a>
+
+<p>operators must be converting arithmetic types to other arithmetic types unless they are part of an operand to a sizeof</p>
+
+, _Alignof<span class="std std-since std-c11">(since C11)</span><span class="std std-until std-c23">(until C23)</span>
+
+, alignof<span class="std std-since std-c23">(since C23)</span>
+
+or typeof/typeof_unqual<span class="std std-since std-c23">(since C23)</span>
+
+<p>operator</p>
+</li>
+<li>
+<a href="/reference/c/language/integer_constant/">integer constants</a>
+</li>
+<li>
+<a href="/reference/c/language/floating_constant/">floating constants</a>
+</li>
+<li>
+<a href="/reference/c/language/enum/">enumeration constants</a>
+</li>
+<li>
+<a href="/reference/c/language/character_constant/">character constants</a>
+</li>
+<li>
+<a href="/reference/c/language/sizeof/"><code>sizeof</code></a>
+
+<p>operators</p>
+
+whose operands are not VLA<span class="std std-since std-c99">(since C99)</span>
+</li>
+</ul></dd>
+</dl>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><dl>
+<dd><ul>
+<li>
+<a href="/reference/c/language/alignof/"><code>_Alignof</code></a><span class="std std-until std-c23">(until C23)</span>
+
+<a href="/reference/c/language/alignof/"><code>alignof</code></a><span class="std std-since std-c23">(since C23)</span>
+
+<p>operators</p>
+</li>
+</ul></dd>
+</dl></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><dl>
+<dd><ul>
+<li>
+<p>named or compound literal constants of arithmetic type</p>
+</li>
+</ul></dd>
+</dl></aside></div>
+
+<p class="li-note"><span class="li-num">2)</span>  a null pointer constant (e.g. <a href="/reference/c/types/NULL/">NULL</a>)</p>
+
+<div class="li-note"><span class="li-num">3)</span>
+
+<em>address constant expression</em>
+
+<p>, which is</p>
+
+<dl>
+<dd><ul>
+<li>
+<p>a null pointer</p>
+</li>
+<li>
+<a href="/reference/c/language/value_category/">lvalue</a>
+
+<p>designating an object of static</p>
+
+<a href="/reference/c/language/storage_duration/">storage duration</a>
+
+<p>or a function designator, converted to a pointer either</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>by using the unary address-of operator</p>
+</li>
+<li>
+<p>by casting an integer constant to a pointer</p>
+</li>
+<li>
+<p>by array-to-pointer or function-to-pointer implicit</p>
+
+<a href="/reference/c/language/conversion/">conversion</a>
+</li>
+</ul></dd>
+</dl></dd>
+</dl></div>
+
+<p class="li-note"><span class="li-num">4)</span>  <em>address constant expression</em> of some complete object type, plus or minus an <em>integer constant expression</em></p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><div class="li-note"><span class="li-num">5)</span>
+
+<p>a</p>
+
+<em>named constant</em>
+
+<p>which is, an identifier that is</p>
+
+<dl>
+<dd><ul>
+<li>
+<p>an enumeration constant</p>
+</li>
+<li>
+<p>a predefined constant (one of</p>
+
+true
+
+<p>,</p>
+
+false
+
+<p>or</p>
+
+nullptr
+
+<p>)</p>
+</li>
+<li>
+<p>declared with storage-class specifier</p>
+
+constexpr
+
+<p>and has an object type</p>
+</li>
+</ul></dd>
+</dl>
+
+<p>or a postfix expression that applies the</p>
+
+<code>.</code>
+
+<p>member access operator to a named constant of structure or union type, even recursively.</p></div>
+
+<div class="li-note"><span class="li-num">6)</span>
+
+<p>a</p>
+
+<em>compound literal constant</em>
+
+<p>, which is</p>
+
+<dl>
+<dd><ul>
+<li>
+<p>a</p>
+
+<a href="/reference/c/language/compound_literal/">compound literal</a>
+
+<p>with storage-class specifier</p>
+
+constexpr
+</li>
+<li>
+<p>a postfix expression that applies the</p>
+
+<code>.</code>
+
+<p>member access operator to a compound literal constant of structure or union type, even recursively.</p>
+</li>
+</ul></dd>
+</dl></div>
+
+<p>A <em>structure or union constant</em> is a named constant or compound literal constant with structure or union type, respectively. If the member-access operator <code>.</code> accesses a member of a union constant, the accessed member shall be the same as the member that is initialized by the union constant’s initializer.</p></aside>
+
+<p class="li-note"><span class="li-num">7)</span>  constant expression of one of the other forms accepted by the implementation.</p>
+
+<p>Unlike with integer constant expressions, static initializer expressions are not required to be evaluated at compile time; the compiler is at liberty to turn such initializers into executable code which is invoked prior to program startup.</p>
+
+```c
+static int i = 2 || 1 / 0; // initializes i to value 1
+```
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: other mini-examples</td></tr>
+</table>
+
+<p>The value of a floating-point static initializer is never less accurate than the value of the same expression executed at run time, but it may be better.</p>
+
+<h3 id="Floating-point_constant_expressions">Floating-point constant expressions</h3>
+
+<p>Arithmetic constant expressions of floating-point types that are not used in static initializers are always evaluated as-if during run-time and are affected by the <a href="/reference/c/numeric/fenv/FE_round/">current rounding</a> (if <a href="/reference/c/preprocessor/impl/"><code>FENV_ACCESS</code></a> is on) and report errors as specified in <a href="/reference/c/numeric/math/math_errhandling/"><code>math_errhandling</code></a>.</p>
+
+```c
+void f(void)
+{
+#pragma STDC FENV_ACCESS ON
+    static float x = 0.0 / 0.0; // static initializer: does not raise an exception
+    float w[] = { 0.0 / 0.0 };  // raises an exception
+    float y = 0.0 / 0.0;        // raises an exception
+    double z = 0.0 / 0.0;       // raises an exception
+}
+```
+
+<h3 id="Notes">Notes</h3>
+
+<p>If an expression evaluates to a value that is not representable by its type, it cannot be used as a constant expression.</p>
+
+<p>Implementations may accept other forms of constant expressions. However, these constant expressions are not considered as integer constant expressions, arithmetic constant expressions, or address constant expressions, and thus cannot be used in the contexts requiring these kinds of constant expressions. For example, <code>int arr[(int)+1.0];</code> declares a VLA.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.6 Constant expressions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.6 Constant expressions (p: 76-77)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.6 Constant expressions (p: 106-107)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.6 Constant expressions (p: 95-96)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.4 CONSTANT EXPRESSIONS</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/constant_expression" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Constant expressions</td></tr>
+</table>

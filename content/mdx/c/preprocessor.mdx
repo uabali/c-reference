@@ -1,0 +1,308 @@
+---
+title: "Preprocessor"
+slug: "c/preprocessor"
+category: "overview"
+source: "https://en.cppreference.com/w/c/preprocessor"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>The preprocessor is executed at <a href="/reference/c/language/translation_phases/#Phase_4">translation phase 4</a>, before the compilation. The result of preprocessing is a single file which is then passed to the actual compiler.</p>
+
+<h3 id="Directives">Directives</h3>
+
+<p>The preprocessing directives control the behavior of the preprocessor. Each directive occupies one line and has the following format:</p>
+
+<ul>
+<li>
+<code>#</code>
+
+<p>character</p>
+</li>
+<li>
+<p>preprocessing instruction (one of</p>
+
+<code>define</code>
+
+<p>,</p>
+
+<code>undef</code>
+
+<p>,</p>
+
+<code>include</code>
+
+<p>,</p>
+
+<code>if</code>
+
+<p>,</p>
+
+<code>ifdef</code>
+
+<p>,</p>
+
+<code>ifndef</code>
+
+<p>,</p>
+
+<code>else</code>
+
+<p>,</p>
+
+<code>elif</code>
+
+, <code>elifdef</code>, <code>elifndef</code><span class="std std-since std-c23">(since C23)</span>
+
+<p>,</p>
+
+<code>endif</code>
+
+<p>,</p>
+
+<code>line</code>
+
+, <code>embed</code><span class="std std-since std-c23">(since C23)</span>
+
+<p>,</p>
+
+<code>error</code>
+
+, <code>warning</code><span class="std std-since std-c23">(since C23)</span>
+
+<p>,</p>
+
+<code>pragma</code>
+
+<p>)</p>
+
+<sup><a href="/reference/c/preprocessor/#cite_note-1">[1]</a></sup>
+</li>
+<li>
+<p>arguments (depends on the instruction)</p>
+</li>
+<li>
+<p>line break.</p>
+</li>
+</ul>
+
+<p>The null directive (<code>#</code> followed by a line break) is allowed and has no effect.</p>
+
+<h3 id="Capabilities">Capabilities</h3>
+
+<p>The preprocessor has the source file translation capabilities:</p>
+
+<ul>
+<li>
+<strong><a href="/reference/c/preprocessor/conditional/">conditionally</a></strong>
+
+<p>compile of parts of source file (controlled by directive</p>
+
+<code>#if</code>
+
+<p>,</p>
+
+<code>#ifdef</code>
+
+<p>,</p>
+
+<code>#ifndef</code>
+
+<p>,</p>
+
+<code>#else</code>
+
+<p>,</p>
+
+<code>#elif</code>
+
+, <code>#elifdef</code>, <code>#elifndef</code><span class="std std-since std-c23">(since C23)</span>
+
+<p>and</p>
+
+<code>#endif</code>
+
+<p>).</p>
+</li>
+<li>
+<strong><a href="/reference/c/preprocessor/replace/">replace</a></strong>
+
+<p>text macros while possibly concatenating or quoting identifiers (controlled by directives</p>
+
+<code>#define</code>
+
+<p>and</p>
+
+<code>#undef</code>
+
+<p>, and operators</p>
+
+<code>#</code>
+
+<p>and</p>
+
+<code>##</code>
+
+<p>)</p>
+</li>
+<li>
+<strong><a href="/reference/c/preprocessor/include/">include</a></strong>
+
+<p>other files (controlled by directive</p>
+
+<code>#include</code>
+
+and checked with <code>__has_include</code><span class="std std-since std-c23">(since C23)</span>
+
+<p>)</p>
+</li>
+<li>
+<p>cause an</p>
+
+<strong><a href="/reference/c/preprocessor/error/">error</a></strong>
+
+or <strong><a href="/reference/c/preprocessor/error/">warning</a></strong><span class="std std-since std-c23">(since C23)</span>
+
+<p>(controlled by directive</p>
+
+<code>#error</code>
+
+or <code>#warning</code> respectively<span class="std std-since std-c23">(since C23)</span>
+
+<p>)</p>
+</li>
+</ul>
+
+<p>The following aspects of the preprocessor can be controlled:</p>
+
+<ul>
+<li>
+<strong><a href="/reference/c/preprocessor/impl/">implementation defined</a></strong>
+
+<p>behavior (controlled by directive</p>
+
+<code>#pragma</code>
+
+and operator <code>_Pragma</code><span class="std std-since std-c99">(since C99)</span>
+
+<p>)</p>
+</li>
+<li>
+<strong><a href="/reference/c/preprocessor/line/">file name and line information</a></strong>
+
+<p>available to the preprocessor (controlled by directives</p>
+
+<code>#line</code>
+
+<p>)</p>
+</li>
+</ul>
+
+<h3 id="Footnotes">Footnotes</h3>
+
+<ol>
+<li>
+<a href="/reference/c/preprocessor/#cite_ref-1">↑</a>
+
+These are the directives defined by the standard. The standard does not define behavior for other directives: they might be ignored, have some useful meaning, or make the program ill-formed. Even if otherwise ignored, they are removed from the source code when the preprocessor is done. A common non-standard extension is the directive <a href="/reference/c/preprocessor/error/">#warning</a> which emits a user-defined message during compilation.<span class="std std-until std-c23">(until C23)</span>
+</li>
+</ol>
+
+<h3 id="Example">Example</h3>
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: no example</td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10 Preprocessing directives (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10 Preprocessing directives (p: 117-129)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10 Preprocessing directives (p: 160-178)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10 Preprocessing directives (p: 145-162)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.8 Preprocessing directives</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="/reference/c/preprocessor/replace/#Predefined_macros">C documentation</a>
+
+<p>for</p>
+
+Predefined Macro Symbols</td></tr>
+<tr><td colspan="2"><a href="/reference/c/symbol_index/macro/">C documentation</a>
+
+<p>for</p>
+
+Macro Symbol Index</td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/preprocessor" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Preprocessor</td></tr>
+</table>

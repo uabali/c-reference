@@ -1,0 +1,137 @@
+---
+title: "localeconv"
+slug: "c/locale/localeconv"
+category: "locale"
+source: "https://en.cppreference.com/w/c/locale/localeconv"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;locale.h&gt;</code></p>
+
+```c
+struct lconv* localeconv(void);
+```
+
+<p>The <code>localeconv</code> function obtains a pointer to a static object of type <a href="/reference/c/locale/lconv/">lconv</a>, which represents numeric and monetary formatting rules of the current C locale.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<p>(none)</p>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>pointer to the current <a href="/reference/c/locale/lconv/">lconv</a> object.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Modifying the object references through the returned pointer is undefined behavior.</p>
+
+<p><code>localeconv</code> modifies a static object, calling it from different threads without synchronization is undefined behavior.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <locale.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    setlocale(LC_MONETARY, "en_IN.utf8");
+    struct lconv* lc = localeconv();
+    printf("Local Currency Symbol        : %s\n", lc->currency_symbol);
+    printf("International Currency Symbol: %s\n", lc->int_curr_symbol);
+}
+```
+
+<p>Output:</p>
+
+```text
+Local Currency Symbol        : ₹
+International Currency Symbol: INR
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.11.2.1 The localeconv function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.11.2.1 The localeconv function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.11.2.1 The localeconv function (p: 225-230)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.11.2.1 The localeconv function (p: 206-211)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.4.2.1 The localeconv function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/locale/setlocale/">setlocale</a></td><td>gets and sets the current C locale   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/locale/lconv/">lconv</a></td><td>formatting details, returned by <strong>localeconv</strong> <span class="mark-note">(struct)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/locale/localeconv" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+localeconv</td></tr>
+</table>

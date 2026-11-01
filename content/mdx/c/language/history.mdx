@@ -1,0 +1,965 @@
+---
+title: "History of C"
+slug: "c/language/history"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/history"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<h2 id="Early_C">Early C</h2>
+
+<ul>
+<li>
+<p>1969: B created, based on BCPL, to replace PDP-7 assembler as the system programming language for Unix</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>added operators</p>
+
+<code>++</code>
+
+<p>,</p>
+
+<code>--</code>
+
+<p>, compound assignment, remained a typeless language like BCPL</p>
+</li>
+</ul></dd>
+</dl>
+
+<ul>
+<li>
+<p>1971: NB ("new B") created when porting B to PDP-11</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>types (</p>
+
+<code>int</code>
+
+<p>,</p>
+
+<code>char</code>
+
+<p>, arrays and pointers), array-to-pointer conversion, compilation to machine code</p>
+</li>
+</ul></dd>
+</dl>
+
+<ul>
+<li>
+<p>1972: Language renamed to C</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<code>struct</code>
+
+<p>, operators</p>
+
+<code>&amp;&amp;</code>
+
+<p>and</p>
+
+<code>||</code>
+
+<p>, preprocessor, portable I/O</p>
+</li>
+</ul></dd>
+</dl>
+
+<ul>
+<li>
+<p>1973: Unix re-written in C</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<code>unsigned</code>
+
+<p>,</p>
+
+<code>long</code>
+
+<p>,</p>
+
+<code>union</code>
+
+<p>, enumerations, increased type safety</p>
+</li>
+</ul></dd>
+</dl>
+
+<ul>
+<li>
+<p>1978: The C Programming Language, 1st edition</p>
+</li>
+</ul>
+
+<h2 id="Standard_C">Standard C</h2>
+
+<ul>
+<li>
+<p>1983: ANSI established X3J11 committee</p>
+</li>
+<li>
+<p>1988: The C Programming Language, 2nd edition</p>
+</li>
+<li>
+<p>1989:</p>
+
+<strong>C89</strong>
+
+<p>, the ANSI C standard published</p>
+</li>
+</ul>
+
+<ol>
+<li>
+<p>codified existing practices</p>
+</li>
+<li>
+<p>new features:</p>
+
+<code>volatile</code>
+
+<p>,</p>
+
+<code>enum</code>
+
+<p>,</p>
+
+<code>signed</code>
+
+<p>,</p>
+
+<code>void</code>
+
+<p>, locales</p>
+</li>
+<li>
+<p>From C++:</p>
+
+<code>const</code>
+
+<p>, function prototypes</p>
+</li>
+</ol>
+
+<ul>
+<li>
+<p>1990:</p>
+
+<strong>C90</strong>
+
+<p>, the ANSI C standard accepted as ISO/IEC 9899:1990</p>
+</li>
+<li>
+<p>1994: Technical corrigendum 1 (ISO/IEC 9899:1990/Cor.1:1994)</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/tc1.htm" rel="noreferrer" target="_blank">44 small changes</a>
+</li>
+</ul></dd>
+</dl>
+
+<ul>
+<li>
+<p>1995:</p>
+
+<strong>C95</strong>
+
+<p>(ISO/IEC 9899:1990/Amd.1:1995) (</p>
+
+<a href="https://infostore.saiglobal.com/store/Details.aspx?DocN=isoc000767513" rel="noreferrer" target="_blank">online store</a>
+
+<p>)</p>
+</li>
+</ul>
+
+<ol>
+<li>
+<p>greatly expanded wide and multibyte character support (</p>
+
+<a href="/reference/c/string/wide/"><code>&lt;wctype.h&gt;</code></a>
+
+<p>,</p>
+
+<a href="/reference/c/string/wide/"><code>&lt;wchar.h&gt;</code></a>
+
+<p>, additions and changes to stream I/O, etc)</p>
+</li>
+<li>
+<p>digraphs,</p>
+
+<a href="/reference/c/language/operator_alternative/"><code>&lt;iso646.h&gt;</code></a>
+
+<p>,</p>
+</li>
+</ol>
+
+<ul>
+<li>
+<p>1996: Technical corrigendum 2 (ISO/IEC 9899:1990/Cor.2:1996)</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/tc2.htm" rel="noreferrer" target="_blank">24 small changes</a>
+</li>
+</ul></dd>
+</dl>
+
+<ul>
+<li>
+<p>1999:</p>
+
+<strong>C99</strong>
+
+<p>(ISO/IEC 9899:1999)</p>
+</li>
+</ul>
+
+<ol>
+<li>
+<p>new features:</p>
+
+<code>bool</code>
+
+<p>,</p>
+
+<code>long long</code>
+
+<p>,</p>
+
+<a href="/reference/c/types/integer/"><code>&lt;stdint.h&gt;</code></a>
+
+<p>,</p>
+
+<a href="/reference/c/types/integer/"><code>&lt;inttypes.h&gt;</code></a>
+
+<p>,</p>
+
+<code>restrict</code>
+
+<p>, compound literals, variable length arrays, flexible array members, designated initializers,</p>
+
+<a href="/reference/c/numeric/fenv/"><code>&lt;fenv.h&gt;</code></a>
+
+<p>, variadic macros, complex numbers,</p>
+
+<code>__func__</code>
+
+<p>, hexadecimal floating-point format (</p>
+
+<code>%a</code>
+
+<p>), monetary formatting in</p>
+
+<a href="/reference/c/locale/lconv/">lconv</a>
+
+<p>,</p>
+
+<a href="/reference/c/string/byte/isblank/">isblank</a>
+
+<p>, concatenation of narrow and wide string literals, trailing comma in enumerations, empty arguments in function-like macros,</p>
+
+<code>STDC_*</code>
+
+<p>pragmas,</p>
+
+va_copy
+
+<p>, null return of</p>
+
+<a href="/reference/c/io/tmpnam/">tmpnam</a>
+
+<p>, null pointer in</p>
+
+<a href="/reference/c/io/setvbuf/">setvbuf</a>
+
+<p>,</p>
+
+<code>hh</code>
+
+<p>and</p>
+
+<code>ll</code>
+
+<p>length-specifiers in</p>
+
+<a href="/reference/c/io/fprintf/">printf</a>
+
+<p>,</p>
+
+<a href="/reference/c/io/fprintf/">snprintf</a>
+
+<p>,</p>
+
+<a href="/reference/c/program/_Exit/">_Exit</a>
+
+<p>,</p>
+
+<a href="/reference/c/numeric/tgmath/"><code>&lt;tgmath.h&gt;</code></a>
+
+<p>, POSIX-like</p>
+
+<a href="/reference/c/chrono/strftime/">strftime</a>
+
+<p>specifiers</p>
+</li>
+<li>
+<p>from C++:</p>
+
+<code>inline</code>
+
+<p>, mix declarations and code, declarations in the init-clause of the for loop,</p>
+
+<code>//</code>
+
+<p>comments, universal character names in source code</p>
+</li>
+<li>
+<p>removed implicit functions and implicit</p>
+
+<code>int</code>
+</li>
+</ol>
+
+<ul>
+<li>
+<p>2001: Technical corrigendum 1 (ISO/IEC 9899:1999/Cor.1:2001)</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/9899tc1/." rel="noreferrer" target="_blank">11 defects fixed</a>
+</li>
+</ul></dd>
+</dl>
+
+<ul>
+<li>
+<p>2004: Technical corrigendum 2 (ISO/IEC 9899:1999/Cor.2:2004)</p>
+</li>
+<li>
+<p>2004: Unicode TR (ISO/IEC TR 19769:2004) (</p>
+
+<a href="https://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=33907" rel="noreferrer" target="_blank">ISO store</a>
+
+<p>) (</p>
+
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n1040.pdf" rel="noreferrer" target="_blank">N1040</a>
+
+<p>November 7, 2003 draft)</p>
+</li>
+<li>
+<p>2007: Technical corrigendum 3 (ISO/IEC 9899:1999/Cor.3:2007) (</p>
+
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n1256.pdf" rel="noreferrer" target="_blank">N1256</a>
+
+<p>September 7, 2007 draft)</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>deprecated</p>
+
+<a href="/reference/c/io/gets/">gets</a>
+</li>
+</ul></dd>
+</dl>
+
+<ul>
+<li>
+<p>2007: Bounds-checking interfaces TR (ISO/IEC TR 24731-1:2007) (</p>
+
+<a href="https://www.iso.org/iso/catalogue_detail.htm?csnumber=38841" rel="noreferrer" target="_blank">ISO store</a>
+
+<p>) (</p>
+
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n1225.pdf" rel="noreferrer" target="_blank">N1225</a>
+
+<p>March 28, 2007 draft)</p>
+</li>
+<li>
+<p>2008: Embedded TR (ISO/IEC TR 18037:2008) (</p>
+
+<a href="https://www.iso.org/iso/catalogue_detail.htm?csnumber=51126" rel="noreferrer" target="_blank">ISO store</a>
+
+<p>) (</p>
+
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n1021.pdf" rel="noreferrer" target="_blank">N1021</a>
+
+<p>September 24, 2003 draft)</p>
+</li>
+<li>
+<p>2009: Decimal floating-point TR (ISO/IEC TR 24732:2009) (</p>
+
+<a href="https://www.iso.org/iso/catalogue_detail.htm?csnumber=38842" rel="noreferrer" target="_blank">ISO store</a>
+
+<p>) (</p>
+
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n1241.pdf" rel="noreferrer" target="_blank">N1241</a>
+
+<p>July 5, 2007 draft)</p>
+</li>
+<li>
+<p>2009: Mathematical special functions TR (ISO/IEC TR 24747:2009) (</p>
+
+<a href="https://www.iso.org/iso/catalogue_detail.htm?csnumber=38857" rel="noreferrer" target="_blank">ISO store</a>
+
+<p>) (</p>
+
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n1182.pdf" rel="noreferrer" target="_blank">N1182</a>
+
+<p>August 2, 2006 draft)</p>
+</li>
+<li>
+<p>2010: Dynamic allocations functions TR (ISO/IEC TR 24731-2:2010) (</p>
+
+<a href="https://www.iso.org/iso/catalogue_detail.htm?csnumber=51678" rel="noreferrer" target="_blank">ISO store</a>
+
+<p>) (</p>
+
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n1388.pdf" rel="noreferrer" target="_blank">N1388</a>
+
+<p>June 1, 2009 draft)</p>
+</li>
+<li>
+<p>2011:</p>
+
+<strong>C11</strong>
+
+<p>(ISO/IEC 9899:2011) (</p>
+
+<a href="https://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=57853" rel="noreferrer" target="_blank">ISO store</a>
+
+<p>) (</p>
+
+<a href="https://webstore.ansi.org/RecordDetail.aspx?sku=INCITS%2fISO%2fIEC+9899-2012#.UGCvLIHyaHM" rel="noreferrer" target="_blank">ANSI store</a>
+
+<p>) (</p>
+
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n1570.pdf" rel="noreferrer" target="_blank">N1570</a>
+
+<p>April 12, 2011 draft)</p>
+</li>
+</ul>
+
+<ol>
+<li>
+<p>thread-aware memory model,</p>
+
+<a href="/reference/c/thread/#Atomic_operations"><code>&lt;stdatomic.h&gt;</code></a>
+
+<p>,</p>
+
+<a href="/reference/c/thread/"><code>&lt;threads.h&gt;</code></a>
+
+<p>, type-generic functions,</p>
+
+<code>alignas</code>
+
+<p>/</p>
+
+<code>alignof</code>
+
+<p>,</p>
+
+<code>noreturn</code>
+
+<p>,</p>
+
+<code>static_assert</code>
+
+<p>, analyzability extensions, extensions to complex and imaginary types, anonymous structures and unions, exclusive file open mode,</p>
+
+<a href="/reference/c/program/quick_exit/">quick_exit</a>
+</li>
+<li>
+<p>removed</p>
+
+<a href="/reference/c/io/gets/">gets</a>
+</li>
+<li>
+<p>from Bounds-checking interfaces TR: bounds-checking interfaces,</p>
+</li>
+<li>
+<p>from Unicode TR:</p>
+
+<code>char16_t</code>
+
+<p>,</p>
+
+<code>char32_t</code>
+
+<p>, and</p>
+
+<a href="/reference/c/string/multibyte/"><code>&lt;uchar.h&gt;</code></a>
+</li>
+</ol>
+
+<ul>
+<li>
+<p>2012: Technical corrigendum 1 (ISO/IEC 9899:2011/Cor 1:2012) (</p>
+
+<a href="https://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=61717" rel="noreferrer" target="_blank">ISO store</a>
+
+<p>)</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>Fixes</p>
+
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2244.htm#dr_411" rel="noreferrer" target="_blank">DR 411</a>
+</li>
+</ul></dd>
+</dl>
+
+<ul>
+<li>
+<p>2013: Secure Coding Rules TS (ISO/IEC TS 17961:2013) (</p>
+
+<a href="https://www.iso.org/iso/catalogue_detail.htm?csnumber=61134" rel="noreferrer" target="_blank">ISO store</a>
+
+<p>) (</p>
+
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n1718.pdf" rel="noreferrer" target="_blank">N1718</a>
+
+<p>May 30, 2013)</p>
+</li>
+<li>
+<p>2014: FP TS part 1: Binary floating-point arithmetic (ISO/IEC TS 18661-1:2014) (</p>
+
+<a href="https://www.iso.org/iso/catalogue_detail.htm?csnumber=63146" rel="noreferrer" target="_blank">ISO store</a>
+
+<p>) (</p>
+
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n1778.pdf" rel="noreferrer" target="_blank">N1778</a>
+
+<p>2013 draft)</p>
+</li>
+</ul>
+
+<ol>
+<li>
+<p>provides changes to C11 (mostly to Annex F) that cover all basic requirements and some recommendations of IEC 60559:2011 (C11 was built on IEC 60559:1989)</p>
+</li>
+</ol>
+
+<ul>
+<li>
+<p>2015: FP TS part 2: Decimal floating-point arithmetic (ISO/IEC TS 18661-2:2015) (</p>
+
+<a href="https://www.iso.org/iso/home/store/catalogue_ics/catalogue_detail_ics.htm?csnumber=68882" rel="noreferrer" target="_blank">ISO store</a>
+
+<p>) (</p>
+
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n1912.pdf" rel="noreferrer" target="_blank">N1912</a>
+
+<p>2015 draft)</p>
+</li>
+</ul>
+
+<ol>
+<li>
+<p>provides changes to C11 to support all the requirements, plus some basic recommendations, of IEC 60559:2011 for decimal floating-point arithmetic. This supersedes ISO/IEC TR 24732:2009.</p>
+</li>
+</ol>
+
+<ul>
+<li>
+<p>2015: FP TS part 3: Interchange and extended types (ISO/IEC TS 18661-3:2015) (</p>
+
+<a href="https://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=65615" rel="noreferrer" target="_blank">ISO store</a>
+
+<p>) (</p>
+
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n1945.pdf" rel="noreferrer" target="_blank">N1945</a>
+
+<p>2015 draft)</p>
+</li>
+</ul>
+
+<ol>
+<li>
+<p>provides changes to C11 to support the recommendations of IEC 60559:2011 for extended floating‐point formats and the interchange formats, both arithmetic and non-arithmetic.</p>
+</li>
+</ol>
+
+<ul>
+<li>
+<p>2015: FP TS part 4: Supplementary functions (ISO/IEC TS 18661-4:2015) (</p>
+
+<a href="https://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=65616" rel="noreferrer" target="_blank">ISO store</a>
+
+<p>) (</p>
+
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n1950.pdf" rel="noreferrer" target="_blank">N1950</a>
+
+<p>2015 draft)</p>
+</li>
+</ul>
+
+<ol>
+<li>
+<p>provides changes to C11 to support all mathematical operations recommended by IEC 60559:2011, including trigonometry in π units, inverse square root, compounded interest, etc.</p>
+</li>
+</ol>
+
+<ul>
+<li>
+<p>2016: FP TS part 5: Supplementary attributes (ISO/IEC TS 18661-5:2016) (</p>
+
+<a href="https://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=65617" rel="noreferrer" target="_blank">ISO store</a>
+
+<p>) (</p>
+
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2004.pdf" rel="noreferrer" target="_blank">N2004</a>
+
+<p>2016 draft)</p>
+</li>
+</ul>
+
+<ol>
+<li>
+<p>provides changes to C11 to support all supplementary attributes (evaluation model, exception handling, reproducibility, etc) recommended by IEC 60559:2011</p>
+</li>
+</ol>
+
+<ul>
+<li>
+<p>2018:</p>
+
+<strong>C17</strong>
+
+<p>(ISO/IEC 9899:2018) (</p>
+
+<a href="https://www.iso.org/standard/74528.html" rel="noreferrer" target="_blank">ISO Store</a>
+
+<p>) (</p>
+
+<a href="https://files.lhmouse.com/standards/ISO%20C%20N2176.pdf" rel="noreferrer" target="_blank">Final draft</a>
+
+<p>)</p>
+</li>
+</ul>
+
+<dl>
+<dd><a href="/reference/c/17/">Main Article: C17</a></dd>
+</dl>
+
+<table class="ref-table">
+<tr><th>Defect Reports fixed in C17 (54 defects)</th></tr>
+<tr><td><ul>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_400" rel="noreferrer" target="_blank">DR 400</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_401" rel="noreferrer" target="_blank">DR 401</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_402" rel="noreferrer" target="_blank">DR 402</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_403" rel="noreferrer" target="_blank">DR 403</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_404" rel="noreferrer" target="_blank">DR 404</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_405" rel="noreferrer" target="_blank">DR 405</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_406" rel="noreferrer" target="_blank">DR 406</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_407" rel="noreferrer" target="_blank">DR 407</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_410" rel="noreferrer" target="_blank">DR 410</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_412" rel="noreferrer" target="_blank">DR 412</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_414" rel="noreferrer" target="_blank">DR 414</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_415" rel="noreferrer" target="_blank">DR 415</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_416" rel="noreferrer" target="_blank">DR 416</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_417" rel="noreferrer" target="_blank">DR 417</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_419" rel="noreferrer" target="_blank">DR 419</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_423" rel="noreferrer" target="_blank">DR 423</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_426" rel="noreferrer" target="_blank">DR 426</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_428" rel="noreferrer" target="_blank">DR 428</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_429" rel="noreferrer" target="_blank">DR 429</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_430" rel="noreferrer" target="_blank">DR 430</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_431" rel="noreferrer" target="_blank">DR 431</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_433" rel="noreferrer" target="_blank">DR 433</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_434" rel="noreferrer" target="_blank">DR 434</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_436" rel="noreferrer" target="_blank">DR 436</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_437" rel="noreferrer" target="_blank">DR 437</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_438" rel="noreferrer" target="_blank">DR 438</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_439" rel="noreferrer" target="_blank">DR 439</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_441" rel="noreferrer" target="_blank">DR 441</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_444" rel="noreferrer" target="_blank">DR 444</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_445" rel="noreferrer" target="_blank">DR 445</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_447" rel="noreferrer" target="_blank">DR 447</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_448" rel="noreferrer" target="_blank">DR 448</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_450" rel="noreferrer" target="_blank">DR 450</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_452" rel="noreferrer" target="_blank">DR 452</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_453" rel="noreferrer" target="_blank">DR 453</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_457" rel="noreferrer" target="_blank">DR 457</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_458" rel="noreferrer" target="_blank">DR 458</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_459" rel="noreferrer" target="_blank">DR 459</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_460" rel="noreferrer" target="_blank">DR 460</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_462" rel="noreferrer" target="_blank">DR 462</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_464" rel="noreferrer" target="_blank">DR 464</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_465" rel="noreferrer" target="_blank">DR 465</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_468" rel="noreferrer" target="_blank">DR 468</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_470" rel="noreferrer" target="_blank">DR 470</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_471" rel="noreferrer" target="_blank">DR 471</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_472" rel="noreferrer" target="_blank">DR 472</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_473" rel="noreferrer" target="_blank">DR 473</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_475" rel="noreferrer" target="_blank">DR 475</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_477" rel="noreferrer" target="_blank">DR 477</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_480" rel="noreferrer" target="_blank">DR 480</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_481" rel="noreferrer" target="_blank">DR 481</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_485" rel="noreferrer" target="_blank">DR 485</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_487" rel="noreferrer" target="_blank">DR 487</a>
+</li>
+<li>
+<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2244.htm#dr_491" rel="noreferrer" target="_blank">DR 491</a>
+</li>
+</ul></td></tr>
+</table>
+
+<ul>
+<li>
+<p>2023</p>
+
+<strong>C23</strong>
+
+<p>(ISO/IEC 9899:2024). C23 is the current revision of the C standard.</p>
+</li>
+</ul>
+
+<dl>
+<dd><a href="/reference/c/23/">Main Article: C23</a></dd>
+</dl>
+
+<table class="ref-table">
+<tr><th>Defect Reports fixed in C23 (? defects)</th></tr>
+<tr><td><ul>
+<li>
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2379.htm" rel="noreferrer" target="_blank">DR 440</a>
+</li>
+<li>
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2326.htm" rel="noreferrer" target="_blank">DR 432</a>
+</li>
+<li>
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2326.htm" rel="noreferrer" target="_blank">DR 467</a>
+</li>
+<li>
+<a href="https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2396.htm#dr_476" rel="noreferrer" target="_blank">DR 476</a>
+</li>
+<li>
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2324.htm" rel="noreferrer" target="_blank">DR 482</a>
+</li>
+<li>
+<a href="https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2396.htm#dr_488" rel="noreferrer" target="_blank">DR 488</a>
+</li>
+<li>
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2713.htm" rel="noreferrer" target="_blank">DR 489</a>
+</li>
+<li>
+<a href="https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2396.htm#dr_494" rel="noreferrer" target="_blank">DR 494</a>
+</li>
+<li>
+<a href="https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2396.htm#dr_496" rel="noreferrer" target="_blank">DR 496</a>
+</li>
+<li>
+<a href="https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2396.htm#dr_497" rel="noreferrer" target="_blank">DR 497</a>
+</li>
+<li>
+<a href="https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2396.htm#dr_499" rel="noreferrer" target="_blank">DR 499</a>
+</li>
+<li>
+<a href="https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2396.htm#dr_500" rel="noreferrer" target="_blank">DR 500</a>
+</li>
+<li>
+<a href="https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2396.htm#dr_501" rel="noreferrer" target="_blank">DR 501</a>
+</li>
+</ul></td></tr>
+</table>
+
+<h3 id="Future_development">Future development</h3>
+
+<ul>
+<li>
+<p>Parallelism TS (Draft</p>
+
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2017.pdf" rel="noreferrer" target="_blank">N2017</a>
+
+<p>2016-03-10)</p>
+</li>
+<li>
+<p>Transactional Memory TS (Draft</p>
+
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n1961.pdf" rel="noreferrer" target="_blank">N1961</a>
+
+<p>2015-09-23)</p>
+</li>
+<li>
+<strong>C</strong>
+
+<p>(Latest draft</p>
+
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n3435.pdf" rel="noreferrer" target="_blank">n3435</a>
+
+<p>2025-01-03)</p>
+</li>
+</ul>
+
+<ol>
+<li>
+<p>List of issues that were not granted DR status: (</p>
+
+<a href="https://open-std.org/JTC1/SC22/WG14/www/docs/n2556.pdf" rel="noreferrer" target="_blank">N2556</a>
+
+<p>2020-08-02)</p>
+</li>
+</ol>
+
+<dl>
+<dd><a href="https://en.cppreference.com/mwiki/index.php?title=c/29&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">Main Article: C29</a>
+
+<p>?</p></dd>
+<dd><p>Next major C language standard revision</p></dd>
+</dl>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/history" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+History of C++</td></tr>
+</table>
+
+<h3 id="External_links">External links</h3>
+
+<table class="ref-table">
+<tr><td>1.</td><td><a href="https://www.bell-labs.com/usr/dmr/www/chist.html" rel="noreferrer" target="_blank">The Development of the C Language</a> by Dennis M. Ritchie</td></tr>
+<tr><td>2.</td><td><a href="https://www.open-std.org/jtc1/sc22/wg14/www/C99RationaleV5.10.pdf" rel="noreferrer" target="_blank">Rationale for the C99 standard</a></td></tr>
+</table>

@@ -1,0 +1,123 @@
+---
+title: "fflush"
+slug: "c/io/fflush"
+category: "io"
+source: "https://en.cppreference.com/w/c/io/fflush"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+```c
+int fflush( FILE* stream );
+```
+
+<p>For output streams (and for update streams on which the last operation was output), writes any unwritten data from the <code>stream</code>'s buffer to the associated output device.</p>
+
+<p>For input streams (and for update streams on which the last operation was input), the behavior is undefined.</p>
+
+<p>If <code>stream</code> is a null pointer, all open output streams are flushed, including the ones manipulated within library packages or otherwise not directly accessible to the program.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>stream</td><td>-</td><td>the file stream to write out</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Returns zero on success. Otherwise <a href="/reference/c/io/">EOF</a> is returned and the error indicator of the file stream is set.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>POSIX <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/fflush.html" rel="noreferrer" target="_blank">extends the specification of fflush</a> by defining its effects on an input stream, as long as that stream represents a file or another seekable device: in that case the POSIX file pointer is repositioned to match the C stream pointer (which effectively undoes any read buffering) and the effects of any <a href="/reference/c/io/ungetc/">ungetc</a> or <a href="/reference/c/io/ungetwc/">ungetwc</a> that weren't yet read back from the stream are discarded.</p>
+
+<p>Microsoft also extends the specification of fflush by defining its effects on an input stream: in Visual Studio 2013 and prior, it <a href="https://docs.microsoft.com/en-us/previous-versions/visualstudio/visual-studio-2013/9yky46tz(v=vs.120)" rel="noreferrer" target="_blank">discarded the input buffer</a>, in Visual Studio 2015 and newer, it <a href="https://msdn.microsoft.com/en-us/library/9yky46tz.aspx" rel="noreferrer" target="_blank">has no effect, buffers are retained</a>.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.5.2 The fflush function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.5.2 The fflush function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.5.2 The fflush function (p: 305)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.5.2 The fflush function (p: 270-271)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9.5.2 The fflush function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/fopen/">fopen<br />fopen_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>opens a file   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fclose/">fclose</a></td><td>closes a file   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c/fflush" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+fflush</td></tr>
+</table>

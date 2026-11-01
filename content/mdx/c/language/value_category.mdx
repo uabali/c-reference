@@ -1,0 +1,248 @@
+---
+title: "Value categories"
+slug: "c/language/value_category"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/value_category"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Each <a href="/reference/c/language/expressions/">expression</a> in C (an operator with its arguments, a function call, a constant, a variable name, etc) is characterized by two independent properties: a <a href="/reference/c/language/compatible_type/#Type">type</a> and a <a href="/reference/c/language/expressions/#General">value category</a>.</p>
+
+<p>Every expression belongs to one of three value categories: lvalue, non-lvalue object (rvalue), and function designator.</p>
+
+<h3 id="Lvalue_expressions">Lvalue expressions</h3>
+
+<p>Lvalue expression is any expression with <a href="/reference/c/language/compatible_type/#Type_groups">object type</a> other than the type <code>void</code>, which potentially designates an <a href="/reference/c/language/object/">object</a> (the behavior is undefined if an lvalue does not actually designate an object when it is evaluated). In other words, lvalue expression evaluates to the <em>object identity</em>. The name of this value category ("left value") is historic and reflects the use of lvalue expressions as the left-hand operand of the assignment operator in the CPL programming language.</p>
+
+<p>Lvalue expressions can be used in the following <em>lvalue contexts</em>:</p>
+
+<ul>
+<li>
+<p>as the operand of the</p>
+
+<a href="/reference/c/language/operator_member_access/">address-of operator</a>
+
+<p>(except if the lvalue designates a</p>
+
+<a href="/reference/c/language/bit_field/">bit-field</a>
+
+<p>or was declared</p>
+
+<a href="/reference/c/language/storage_duration/">register</a>
+
+<p>).</p>
+</li>
+<li>
+<p>as the operand of the pre/post</p>
+
+<a href="/reference/c/language/operator_incdec/">increment and decrement operators</a>
+
+<p>.</p>
+</li>
+<li>
+<p>as the left-hand operand of the</p>
+
+<a href="/reference/c/language/operator_member_access/">member access</a>
+
+<p>(dot) operator.</p>
+</li>
+<li>
+<p>as the left-hand operand of the</p>
+
+<a href="/reference/c/language/operator_assignment/">assignment and compound assignment</a>
+
+<p>operators.</p>
+</li>
+</ul>
+
+<p>If an lvalue expression is used in any context other than <a href="/reference/c/language/sizeof/"><code>sizeof</code></a>, <a href="/reference/c/language/alignof/"><code>_Alignof</code></a>, or the operators listed above, non-array lvalues of any complete type undergo <a href="/reference/c/language/conversion/">lvalue conversion</a>, which models the memory load of the value of the object from its location. Similarly, array lvalues undergo <a href="/reference/c/language/conversion/">array-to-pointer conversion</a> when used in any context other than <code>sizeof</code>, <code>_Alignof</code>, address-of operator, or array initialization from a string literal.</p>
+
+<p>The semantics of <a href="/reference/c/language/const/"><code>const</code></a>/<a href="/reference/c/language/volatile/"><code>volatile</code></a>/<a href="/reference/c/language/restrict/"><code>restrict</code></a>-qualifiers and <a href="/reference/c/language/atomic/">atomic</a> types apply to lvalues only (lvalue conversion strips the qualifiers and removes atomicity).</p>
+
+<p>The following expressions are lvalues:</p>
+
+<ul>
+<li>
+<p>identifiers, including function named parameters, provided they were declared as designating objects (not functions or enumeration constants)</p>
+</li>
+<li>
+<a href="/reference/c/language/string_literal/">string literals</a>
+</li>
+<li>
+<span class="std std-since std-c99">(C99)</span>
+
+<a href="/reference/c/language/compound_literal/">compound literals</a>
+</li>
+<li>
+<p>parenthesized expression if the unparenthesized expression is an lvalue</p>
+</li>
+<li>
+<p>the result of a member access (dot) operator if its left-hand argument is lvalue</p>
+</li>
+<li>
+<p>the result of a member access through pointer</p>
+
+<code>-&gt;</code>
+
+<p>operator</p>
+</li>
+<li>
+<p>the result of the indirection (unary</p>
+
+<code>*</code>
+
+<p>) operator applied to a pointer to object</p>
+</li>
+<li>
+<p>the result of the subscription operator (</p>
+
+<code>[]</code>
+
+<p>)</p>
+</li>
+</ul>
+
+<h4 id="Modifiable_lvalue_expressions">Modifiable lvalue expressions</h4>
+
+<p>A <em>modifiable lvalue</em> is any lvalue expression of complete, non-array type which is not <a href="/reference/c/language/const/">const</a>-qualified, and, if it's a struct/union, has no members that are <a href="/reference/c/language/const/">const</a>-qualified, recursively.</p>
+
+<p>Only modifiable lvalue expressions may be used as arguments to increment/decrement, and as left-hand arguments of assignment and compound assignment operators.</p>
+
+<h3 id="Non-lvalue_object_expressions">Non-lvalue object expressions</h3>
+
+<p>Known as <em>rvalues</em>, non-lvalue object expressions are the expressions of object types that do not designate objects, but rather values that have no object identity or storage location. The address of a non-lvalue object expression cannot be taken.</p>
+
+<p>The following expressions are non-lvalue object expressions:</p>
+
+<ul>
+<li>
+<p>integer, character, and floating constants</p>
+</li>
+<li>
+<p>all operators not specified to return lvalues, including</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>any function call expression</p>
+</li>
+<li>
+<p>any cast expression (note that compound literals, which look similar, are lvalues)</p>
+</li>
+<li>
+<p>member access operator (dot) applied to a non-lvalue structure/union,</p>
+
+<code>f().x</code>
+
+<p>,</p>
+
+<code>(x,s1).a</code>
+
+<p>,</p>
+
+<code>(s1=s2).m</code>
+</li>
+<li>
+<p>results of all arithmetic, relational, logical, and bitwise operators</p>
+</li>
+<li>
+<p>results of increment and decrement operators (note: pre-forms are lvalues in C++)</p>
+</li>
+<li>
+<p>results of assignment operators (note: also lvalues in C++)</p>
+</li>
+<li>
+<p>the conditional operator (note: is lvalue in C++ if both the second and third operands are lvalues of the same type)</p>
+</li>
+<li>
+<p>the comma operator (note: is lvalue in C++ if the second operand is)</p>
+</li>
+<li>
+<p>the address-of operator, even if neutralized by application to the result of unary</p>
+
+<code>*</code>
+
+<p>operator</p>
+</li>
+</ul></dd>
+</dl>
+
+<p>As a special case, expressions of type <code>void</code> are assumed to be non-lvalue object expressions that yield a value which has no representation and requires no storage.</p>
+
+<p>Note that a struct/union rvalue that has a member (possibly nested) of array type does in fact designate an object with <a href="/reference/c/language/lifetime/">temporary lifetime</a>. This object can be accessed through lvalue expressions that form by indexing the array member or by indirection through the pointer obtained by array-to-pointer conversion of the array member.</p>
+
+<h3 id="Function_designator_expression">Function designator expression</h3>
+
+<p>A function designator (the identifier introduced by a <a href="/reference/c/language/function_declaration/">function declaration</a>) is an expression of function type. When used in any context other than the address-of operator, <a href="/reference/c/language/sizeof/"><code>sizeof</code></a>, and <a href="/reference/c/language/alignof/"><code>_Alignof</code></a> (the last two generate compile errors when applied to functions), the function designator is always converted to a non-lvalue pointer to function. Note that the function-call operator is defined for pointers to functions and not for function designators themselves.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.3.2.1 Lvalues, arrays, and function designators (p: 40)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.3.2.1 Lvalues, arrays, and function designators (p: 54-55)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.3.2.1 Lvalues, arrays, and function designators (p: 46)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.2.2.1 Lvalues and function designators</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/value_category" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Value categories</td></tr>
+</table>

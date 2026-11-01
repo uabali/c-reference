@@ -1,0 +1,172 @@
+---
+title: "Variadic functions"
+slug: "c/variadic"
+category: "overview"
+source: "https://en.cppreference.com/w/c/variadic"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Variadic functions are functions (e.g. <a href="/reference/c/io/fprintf/">printf</a>) which take a variable number of arguments.</p>
+
+<p>The declaration of a variadic function uses an ellipsis as the last parameter, e.g. <code>int printf(const char* format, ...);</code>. See <a href="/reference/c/language/variadic/">variadic arguments</a> for additional detail on the syntax and automatic argument conversions.</p>
+
+<p>Accessing the variadic arguments from the function body uses the following library facilities:</p>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2">Types</td></tr>
+<tr><td><a href="/reference/c/variadic/va_list/">va_list</a></td><td>holds the information needed by va_start, va_arg, va_end, and va_copy   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td colspan="2">Macros</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdarg.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/variadic/va_start/">va_start</a></td><td>enables access to variadic function arguments   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/variadic/va_arg/">va_arg</a></td><td>accesses the next variadic function argument   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/variadic/va_copy/">va_copy</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>makes a copy of the variadic function arguments   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/variadic/va_end/">va_end</a></td><td>ends traversal of the variadic function arguments   <span class="mark-note">(function macro)</span></td></tr>
+</table>
+
+<h3 id="Example">Example</h3>
+
+<p>Print values of different types.</p>
+
+```c
+#include <stdarg.h>
+#include <stdio.h>
+ 
+void simple_printf(const char* fmt, ...)
+{
+    va_list args;
+ 
+    for (va_start(args, fmt); *fmt != '\0'; ++fmt)
+    {
+        switch(*fmt)
+        {
+            case 'd':
+            {
+                int i = va_arg(args, int);
+                printf("%d\n", i);
+                break;
+            }
+            case 'c':
+            {
+                // A 'char' variable will be promoted to 'int'
+                // A character literal in C is already 'int' by itself
+                int c = va_arg(args, int);
+                printf("%c\n", c);
+                break;
+            }
+            case 'f':
+            {
+                double d = va_arg(args, double);
+                printf("%f\n", d);
+                break;
+            }
+            default:
+                puts("Unknown formatter!");
+                goto END;
+        }
+    }
+END:
+    va_end(args);
+}
+ 
+int main(void)
+{
+    simple_printf("dcff", 3, 'a', 1.969, 42.5);
+}
+```
+
+<p>Output:</p>
+
+```text
+3
+a
+1.969000
+42.50000
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.16 Variable arguments &lt;stdarg.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.16 Variable arguments &lt;stdarg.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.16 Variable arguments &lt;stdarg.h&gt; (p: 269-272)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.15 Variable arguments &lt;stdarg.h&gt; (p: 249-252)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.8 VARIABLE ARGUMENTS &lt;stdarg.h&gt;</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/utility/variadic" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Variadic functions</td></tr>
+</table>

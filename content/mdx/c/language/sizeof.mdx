@@ -1,0 +1,172 @@
+---
+title: "sizeof operator"
+slug: "c/language/sizeof"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/sizeof"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Queries size of the object or type.</p>
+
+<p>Used when actual size of the object must be known.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+sizeof( type )
+sizeof expression
+```
+
+<p>Both versions return a value of type <a href="/reference/c/types/size_t/">size_t</a>.</p>
+
+<h3 id="Explanation">Explanation</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  Returns the size, in bytes, of the <a href="/reference/c/language/object/#Object_representation">object representation</a> of <em>type</em></p>
+
+<p class="li-note"><span class="li-num">2)</span>  Returns the size, in bytes, of the object representation of the type of <em>expression</em>. No implicit conversions are applied to <em>expression</em>.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Depending on the computer architecture, a <a href="https://en.wikipedia.org/wiki/byte" rel="noreferrer" target="_blank">byte</a> may consist of 8 or more bits, the exact number provided as <a href="/reference/c/types/limits/">CHAR_BIT</a>.</p>
+
+<p><code>sizeof(char)</code>, <code>sizeof(signed char)</code>, and <code>sizeof(unsigned char)</code> always return <code>1</code>.</p>
+
+<p>sizeof cannot be used with function types, incomplete types (including <code>void</code>), or <a href="/reference/c/language/bit_field/">bit-field</a> lvalues.</p>
+
+<p>When applied to an operand that has <a href="/reference/c/language/struct/">structure</a> or <a href="/reference/c/language/union/">union</a> type, the result is the total number of bytes in such an object, including internal and trailing padding. The trailing padding is such that if the object were an element of an array, the alignment requirement of the next element of this array would be satisfied, in other words, <code>sizeof(T)</code> returns the size of an element of a <code>T[]</code> array.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><p>If <em>type</em> is a <a href="/reference/c/language/array/">VLA</a> type and changing the value of its size expression would not affect the result of <code>sizeof</code>, it is unspecified whether or not the size expression is evaluated.</p></aside>
+
+<p>Except if the type of <em>expression</em> is a <a href="/reference/c/language/array/">VLA</a>,<span class="std std-since std-c99">(since C99)</span><em>expression</em> is not evaluated and the <code>sizeof</code> operator may be used in an integer <a href="/reference/c/language/constant_expression/">constant expression</a>.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><p>If the type of <em>expression</em> is a <a href="/reference/c/language/array/">variable-length array</a> type, <em>expression</em> is evaluated and the size of the array it evaluates to is calculated at run time.</p></aside>
+
+<p>Number of elements in any <a href="/reference/c/language/array/">array</a> <code>a</code> including VLA<span class="std std-since std-c99">(since C99)</span> may be determined with the expression <code>sizeof a / sizeof a[0]</code>. Note that if <code>a</code> has pointer type (such as after array-to-pointer conversion of function parameter type adjustment), this expression would simply divide the number of bytes in a pointer type by the number of bytes in the pointed type.</p>
+
+<h3 id="Keywords">Keywords</h3>
+
+<p><a href="/reference/c/keyword/sizeof/"><code>sizeof</code></a></p>
+
+<h3 id="Example">Example</h3>
+
+<p>Sample output corresponds to a platform with 64-bit pointers and 32-bit int</p>
+
+```c
+#include <stdio.h>
+ 
+int main(void)
+{
+    short x;
+    // type argument:
+    printf("sizeof(float)          = %zu\n", sizeof(float));
+    printf("sizeof(void(*)(void))  = %zu\n", sizeof(void(*)(void)));
+    printf("sizeof(char[10])       = %zu\n", sizeof(char[10]));
+//  printf("sizeof(void(void))     = %zu\n", sizeof(void(void))); // Error: function type
+//  printf("sizeof(char[])         = %zu\n", sizeof(char[])); // Error: incomplete type
+ 
+    // expression argument:
+    printf("sizeof 'a'             = %zu\n", sizeof 'a'); // type of 'a' is int
+//  printf("sizeof main            = %zu\n", sizeof main); // Error: Function type
+    printf("sizeof &main           = %zu\n", sizeof &main);
+    printf("sizeof \"hello\"         = %zu\n", sizeof "hello"); // type is char[6]
+    printf("sizeof x               = %zu\n", sizeof x); // type of x is short
+    printf("sizeof (x+1)           = %zu\n", sizeof(x + 1)); // type of x+1 is int
+}
+```
+
+<p>Possible output:</p>
+
+```text
+sizeof(float)          = 4
+sizeof(void(*)(void))  = 8
+sizeof(char[10])       = 10
+sizeof 'a'             = 4
+sizeof &main           = 8
+sizeof "hello"         = 6
+sizeof x               = 2
+sizeof (x+1)           = 4
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.3.4 The sizeof and alignof operators (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.3.4 The sizeof and _Alignof operators (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.3.4 The sizeof and _Alignof operators (p: 90-91)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.3.4 The sizeof operator (p: 80-81)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.3.3.4 The sizeof operator</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/sizeof" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+<code>sizeof</code> operator</td></tr>
+</table>

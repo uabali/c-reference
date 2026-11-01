@@ -1,0 +1,525 @@
+---
+title: "Common mathematical functions"
+slug: "c/numeric/math"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<h3 id="Types">Types</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdlib.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/numeric/math/div/">div_t</a></td><td>structure type, return of the <a href="/reference/c/numeric/math/div/">div</a> function   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/div/">ldiv_t</a></td><td>structure type, return of the <a href="/reference/c/numeric/math/div/">ldiv</a> function   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/div/">lldiv_t</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>structure type, return of the lldiv function   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;inttypes.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/numeric/math/div/">imaxdiv_t</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>structure type, return of the imaxdiv function   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;math.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/numeric/math/float_t/">float_t</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>most efficient floating-point type at least as wide as <code>float</code>   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/float_t/">double_t</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>most efficient floating-point type at least as wide as <code>double</code>   <span class="mark-note">(typedef)</span></td></tr>
+</table>
+
+<h3 id="Constants">Constants</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;math.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/numeric/math/HUGE_VAL/">HUGE_VALF<br />HUGE_VAL<br />HUGE_VALL</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>indicates value too big to be representable (infinity) by <code>float</code>, <code>double</code> and <code>long double</code> respectively   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/INFINITY/">INFINITY</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>evaluates to positive infinity or the value guaranteed to overflow a <code>float</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/NAN/">NAN</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>evaluates to a quiet NaN of type <code>float</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/fma/">FP_FAST_FMAF<br />FP_FAST_FMA<br />FP_FAST_FMAL</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>indicates that the fma function generally executes about as fast as, or faster than, a multiply and an add of double operands   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/ilogb/">FP_ILOGB0<br />FP_ILOGBNAN</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>evaluates to <code>ilogb(x)</code> if x is zero or NaN, respectively   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/math_errhandling/">math_errhandling<br />MATH_ERRNO<br />MATH_ERREXCEPT</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>defines the error handling mechanism used by the common mathematical functions   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2">Classification</td></tr>
+<tr><td><a href="/reference/c/numeric/math/FP_categories/">FP_NORMAL<br />FP_SUBNORMAL<br />FP_ZERO<br />FP_INFINITE<br />FP_NAN</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>indicates a floating-point category   <span class="mark-note">(macro constant)</span></td></tr>
+</table>
+
+<h3 id="Functions">Functions</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdlib.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/numeric/math/abs/">abs<br />labs<br />llabs</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>computes absolute value of an integral value (\(\small{|x|}\)|x|)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/div/">div<br />ldiv<br />lldiv</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>computes quotient and remainder of integer division   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;inttypes.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/numeric/math/abs/">imaxabs</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>computes absolute value of an integral value (\(\small{|x|}\)|x|)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/div/">imaxdiv</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>computes quotient and remainder of integer division   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;math.h&gt;</code></td></tr>
+<tr><td colspan="2">Basic operations</td></tr>
+<tr><td><a href="/reference/c/numeric/math/fabs/">fabs<br />fabsf<br />fabsl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes absolute value of a floating-point value (\(\small{|x|}\)|x|)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/fmod/">fmod<br />fmodf<br />fmodl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes remainder of the floating-point division operation   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/remainder/">remainder<br />remainderf<br />remainderl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes signed remainder of the floating-point division operation   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/remquo/">remquo<br />remquof<br />remquol</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes signed remainder as well as the three last bits of the division operation   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/fma/">fma<br />fmaf<br />fmal</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes fused multiply-add operation   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/fmax/">fmax<br />fmaxf<br />fmaxl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>determines larger of two floating-point values   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/fmin/">fmin<br />fminf<br />fminl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>determines smaller of two floating-point values   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/fdim/">fdim<br />fdimf<br />fdiml</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>determines positive difference of two floating-point values (\({\small\max{(0, x-y)} }\)max(0, x-y))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/nan.2/">nan<br />nanf<br />nanl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>returns a NaN (not-a-number)   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Exponential functions</td></tr>
+<tr><td><a href="/reference/c/numeric/math/exp/">exp<br />expf<br />expl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes <em>e</em> raised to the given power (\({\small e^x}\)e<sup>x</sup>)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/exp2/">exp2<br />exp2f<br />exp2l</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes <em>2</em> raised to the given power (\({\small 2^x}\)2<sup>x</sup>)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/expm1/">expm1<br />expm1f<br />expm1l</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes <em>e</em> raised to the given power, minus one (\({\small e^x-1}\)e<sup>x</sup>-1)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/log/">log<br />logf<br />logl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes natural (base-<em>e</em>) logarithm (\({\small \ln{x} }\)ln(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/log10/">log10<br />log10f<br />log10l</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes common (base-<em>10</em>) logarithm (\({\small \log_{10}{x} }\)log<sub>10</sub>(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/log2/">log2<br />log2f<br />log2l</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes base-2 logarithm (\({\small \log_{2}{x} }\)log<sub>2</sub>(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/log1p/">log1p<br />log1pf<br />log1pl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes natural (base-<em>e</em>) logarithm of 1 plus the given number (\({\small \ln{(1+x)} }\)ln(1+x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Power functions</td></tr>
+<tr><td><a href="/reference/c/numeric/math/pow/">pow<br />powf<br />powl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes a number raised to the given power (\(\small{x^y}\)x<sup>y</sup>)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/sqrt/">sqrt<br />sqrtf<br />sqrtl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes square root (\(\small{\sqrt{x} }\)√x)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/cbrt/">cbrt<br />cbrtf<br />cbrtl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes cube root (\(\small{\sqrt[3]{x} }\)3√x)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/hypot/">hypot<br />hypotf<br />hypotl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes square root of the sum of the squares of two given numbers (\(\scriptsize{\sqrt{x^2+y^2} }\)√x2 +y2 )   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Trigonometric functions</td></tr>
+<tr><td><a href="/reference/c/numeric/math/sin/">sin<br />sinf<br />sinl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes sine (\({\small\sin{x} }\)sin(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/cos/">cos<br />cosf<br />cosl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes cosine (\({\small\cos{x} }\)cos(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/tan/">tan<br />tanf<br />tanl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes tangent (\({\small\tan{x} }\)tan(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/asin/">asin<br />asinf<br />asinl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes arc sine (\({\small\arcsin{x} }\)arcsin(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/acos/">acos<br />acosf<br />acosl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes arc cosine (\({\small\arccos{x} }\)arccos(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/atan/">atan<br />atanf<br />atanl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes arc tangent (\({\small\arctan{x} }\)arctan(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/atan2/">atan2<br />atan2f<br />atan2l</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes arc tangent, using signs to determine quadrants   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Hyperbolic functions</td></tr>
+<tr><td><a href="/reference/c/numeric/math/sinh/">sinh<br />sinhf<br />sinhl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes hyperbolic sine (\({\small\sinh{x} }\)sinh(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/cosh/">cosh<br />coshf<br />coshl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes hyperbolic cosine (\({\small\cosh{x} }\)cosh(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/tanh/">tanh<br />tanhf<br />tanhl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes hyperbolic tangent (\({\small\tanh{x} }\)tanh(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/asinh/">asinh<br />asinhf<br />asinhl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes inverse hyperbolic sine (\({\small\operatorname{arsinh}{x} }\)arsinh(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/acosh/">acosh<br />acoshf<br />acoshl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes inverse hyperbolic cosine (\({\small\operatorname{arcosh}{x} }\)arcosh(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/atanh/">atanh<br />atanhf<br />atanhl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes inverse hyperbolic tangent (\({\small\operatorname{artanh}{x} }\)artanh(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Error and gamma functions</td></tr>
+<tr><td><a href="/reference/c/numeric/math/erf/">erf<br />erff<br />erfl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes error function   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/erfc/">erfc<br />erfcf<br />erfcl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes complementary error function   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/tgamma/">tgamma<br />tgammaf<br />tgammal</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes gamma function   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/lgamma/">lgamma<br />lgammaf<br />lgammal</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes natural (base-<em>e</em>) logarithm of the gamma function   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Nearest integer floating-point operations</td></tr>
+<tr><td><a href="/reference/c/numeric/math/ceil/">ceil<br />ceilf<br />ceill</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes smallest integer not less than the given value   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/floor/">floor<br />floorf<br />floorl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes largest integer not greater than the given value   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/trunc/">trunc<br />truncf<br />truncl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>rounds to nearest integer not greater in magnitude than the given value   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/round/">round<br />roundf<br />roundl<br />lround<br />lroundf<br />lroundl<br />llround<br />llroundf<br />llroundl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>rounds to nearest integer, rounding away from zero in halfway cases   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/nearbyint/">nearbyint<br />nearbyintf<br />nearbyintl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>rounds to an integer using current rounding mode   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/rint/">rint<br />rintf<br />rintl<br />lrint<br />lrintf<br />lrintl<br />llrint<br />llrintf<br />llrintl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>rounds to an integer using current rounding mode with   exception if the result differs   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Floating-point manipulation functions</td></tr>
+<tr><td><a href="/reference/c/numeric/math/frexp/">frexp<br />frexpf<br />frexpl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>breaks a number into significand and a power of 2   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/ldexp/">ldexp<br />ldexpf<br />ldexpl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>multiplies a number by 2 raised to a power   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/modf/">modf<br />modff<br />modfl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>breaks a number into integer and fractional parts   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/scalbn/">scalbn<br />scalbnf<br />scalbnl<br />scalbln<br />scalblnf<br />scalblnl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes efficiently a number times <a href="/reference/c/types/limits/">FLT_RADIX</a> raised to a power   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/ilogb/">ilogb<br />ilogbf<br />ilogbl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>extracts exponent of the given number   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/logb/">logb<br />logbf<br />logbl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>extracts exponent of the given number   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/nexttoward/">nextafter<br />nextafterf<br />nextafterl<br />nexttoward<br />nexttowardf<br />nexttowardl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>determines next representable floating-point value towards the given value   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/copysign/">copysign<br />copysignf<br />copysignl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>produces a value with the magnitude of a given value and the sign of another given value   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Classification and comparison</td></tr>
+<tr><td><a href="/reference/c/numeric/math/fpclassify/">fpclassify</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>classifies the given floating-point value   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/isfinite/">isfinite</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if the given number has finite value   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/isinf/">isinf</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if the given number is infinite   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/isnan/">isnan</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if the given number is NaN   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/isnormal/">isnormal</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if the given number is normal   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/signbit/">signbit</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if the given number is negative   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/isgreater/">isgreater</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if the first floating-point argument is greater than the second   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/isgreaterequal/">isgreaterequal</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if the first floating-point argument is greater or equal than the second   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/isless/">isless</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if the first floating-point argument is less than the second   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/islessequal/">islessequal</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if the first floating-point argument is less or equal than the second   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/islessgreater/">islessgreater</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if the first floating-point argument is less or greater than the second   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/isunordered/">isunordered</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if two floating-point values are unordered   <span class="mark-note">(function macro)</span></td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.8 Format conversion of integer types &lt;inttypes.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12 Mathematics &lt;math.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 General utilities &lt;stdlib.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.5 Format conversion of integer types &lt;inttypes.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.12 General utilities &lt;stdlib.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.8 Format conversion of integer types &lt;inttypes.h&gt; (p: 158-160)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12 Mathematics &lt;math.h&gt; (p: 169-190)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 General utilities &lt;stdlib.h&gt; (p: 248-262)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.5 Format conversion of integer types &lt;inttypes.h&gt; (p: 332)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.12 General utilities &lt;stdlib.h&gt; (p: 333)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.8 Format conversion of integer types &lt;inttypes.h&gt; (p: 217-220)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12 Mathematics &lt;math.h&gt; (p: 231-261)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 General utilities &lt;stdlib.h&gt; (p: 340-360)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.5 Format conversion of integer types &lt;inttypes.h&gt; (p: 455)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.12 General utilities &lt;stdlib.h&gt; (p: 456)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.8 Format conversion of integer types &lt;inttypes.h&gt; (p: 198-201)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12 Mathematics &lt;math.h&gt; (p: 212-242)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20 General utilities &lt;stdlib.h&gt; (p: 306-324)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.4 Format conversion of integer types &lt;inttypes.h&gt; (p: 401)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.10 General utilities &lt;stdlib.h&gt; (p: 402)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.5 MATHEMATICS &lt;math.h&gt;</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.10 GENERAL UTILITIES &lt;stdlib.h&gt;</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.13.4 Mathematics &lt;math.h&gt;</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.13.7 General utilities &lt;stdlib.h&gt;</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Common mathematical functions</td></tr>
+</table>

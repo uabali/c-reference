@@ -1,0 +1,307 @@
+---
+title: "remainder, remainderf, remainderl"
+slug: "c/numeric/math/remainder"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/remainder"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+float       remainderf( float x, float y );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+double      remainder( double x, double y );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+long double remainderl( long double x, long double y );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;tgmath.h&gt;</code></p>
+
+```c
+#define remainder( x, y )
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="li-note"><span class="li-num">1-3)</span>  Computes the IEEE remainder of the floating-point division operation <code>x/y</code>.</p>
+
+<p class="li-note"><span class="li-num">4)</span>  Type-generic macro: If any argument has type <code>long double</code>, <code>remainderl</code> is called. Otherwise, if any argument has integer type or has type <code>double</code>, <code>remainder</code> is called. Otherwise, <code>remainderf</code> is called.</p>
+
+<p>The IEEE floating-point remainder of the division operation <code>x/y</code> calculated by this function is exactly the value <code>x - n * y</code>, where the value <code>n</code> is the integral value nearest the exact value <code>x/y</code>. When |n-x/y| = ½, the value <code>n</code> is chosen to be even.</p>
+
+<p>In contrast to <a href="/reference/c/numeric/math/fmod/">fmod()</a>, the returned value is not guaranteed to have the same sign as <code>x</code>.</p>
+
+<p>If the returned value is <code>0</code>, it will have the same sign as <code>x</code>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>x, y</td><td>-</td><td>floating-point values</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>If successful, returns the IEEE floating-point remainder of the division <code>x/y</code> as defined above.</p>
+
+<p>If a domain error occurs, an implementation-defined value is returned (NaN where supported).</p>
+
+<p>If a range error occurs due to underflow, the correct result is returned.</p>
+
+<p>If <code>y</code> is zero, but the domain error does not occur, zero is returned.</p>
+
+<h3 id="Error_handling">Error handling</h3>
+
+<p>Errors are reported as specified in <a href="/reference/c/numeric/math/math_errhandling/"><code>math_errhandling</code></a>.</p>
+
+<p>Domain error may occur if <code>y</code> is zero.</p>
+
+<p>If the implementation supports IEEE floating-point arithmetic (IEC 60559),</p>
+
+<ul>
+<li>
+<p>The current</p>
+
+<a href="/reference/c/numeric/fenv/FE_round/">rounding mode</a>
+
+<p>has no effect.</p>
+</li>
+<li>
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INEXACT</a>
+
+<p>is never raised, the result is always exact.</p>
+</li>
+<li>
+<p>If</p>
+
+<code>x</code>
+
+<p>is ±∞ and</p>
+
+<code>y</code>
+
+<p>is not NaN, NaN is returned and</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>is raised.</p>
+</li>
+<li>
+<p>If</p>
+
+<code>y</code>
+
+<p>is ±0 and</p>
+
+<code>x</code>
+
+<p>is not NaN, NaN is returned and</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>is raised.</p>
+</li>
+<li>
+<p>If either argument is NaN, NaN is returned.</p>
+</li>
+</ul>
+
+<h3 id="Notes">Notes</h3>
+
+<p><a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/remainder.html" rel="noreferrer" target="_blank">POSIX requires</a> that a domain error occurs if <code>x</code> is infinite or <code>y</code> is zero.</p>
+
+<p><a href="/reference/c/numeric/math/fmod/">fmod</a>, but not <code>remainder</code> is useful for doing silent wrapping of floating-point types to unsigned integer types: <code>(0.0 &lt;= (y = fmod(rint(x), 65536.0)) ? y : 65536.0 + y)</code> is in the range <code>[</code><code>-0.0</code><code>,</code><code>65535.0</code><code>]</code>, which corresponds to <code>unsigned short</code>, but <code>remainder(rint(x), 65536.0)</code> is in the range <code>[</code><code>-32767.0</code><code>,</code><code>+32768.0</code><code>]</code>, which is outside of the range of <code>signed short</code>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <fenv.h>
+#include <math.h>
+#include <stdio.h>
+// #pragma STDC FENV_ACCESS ON
+ 
+int main(void)
+{
+    printf("remainder(+5.1, +3.0) = %.1f\n", remainder(5.1, 3));
+    printf("remainder(-5.1, +3.0) = %.1f\n", remainder(-5.1, 3));
+    printf("remainder(+5.1, -3.0) = %.1f\n", remainder(5.1, -3));
+    printf("remainder(-5.1, -3.0) = %.1f\n", remainder(-5.1, -3));
+ 
+    // special values
+    printf("remainder(-0.0, 1.0) = %.1f\n", remainder(-0.0, 1));
+    printf("remainder(+5.1, Inf) = %.1f\n", remainder(5.1, INFINITY));
+ 
+    // error handling
+    feclearexcept(FE_ALL_EXCEPT);
+    printf("remainder(+5.1, 0) = %.1f\n", remainder(5.1, 0));
+    if (fetestexcept(FE_INVALID))
+        puts("    FE_INVALID raised");
+}
+```
+
+<p>Output:</p>
+
+```text
+remainder(+5.1, +3.0) = -0.9
+remainder(-5.1, +3.0) = 0.9
+remainder(+5.1, -3.0) = -0.9
+remainder(-5.1, -3.0) = 0.9
+remainder(+0.0, 1.0) = 0.0
+remainder(-0.0, 1.0) = -0.0
+remainder(+5.1, Inf) = 5.1
+remainder(+5.1, 0) = -nan
+    FE_INVALID raised
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.10.2 The remainder functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.7.2 The remainder functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.10.2 The remainder functions (p: 185-186)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 272-273)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.7.2 The remainder functions (p: 385)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.10.2 The remainder functions (p: 254-255)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 373-375)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.7.2 The remainder functions (p: 529)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.10.2 The remainder functions (p: 235)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 Type-generic math &lt;tgmath.h&gt; (p: 335-337)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.9.7.2 The remainder functions (p: 465)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/div/">div<br />ldiv<br />lldiv</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>computes quotient and remainder of integer division   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/fmod/">fmod<br />fmodf<br />fmodl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes remainder of the floating-point division operation   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/remquo/">remquo<br />remquof<br />remquol</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes signed remainder as well as the three last bits of the division operation   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/remainder" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+remainder</td></tr>
+</table>

@@ -1,0 +1,201 @@
+---
+title: "mbrlen"
+slug: "c/string/multibyte/mbrlen"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/multibyte/mbrlen"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;wchar.h&gt;</code></p>
+
+```c
+size_t mbrlen( const char* s, size_t n, mbstate_t* ps );
+```
+
+<p class="decl-note"><span class="std std-since std-c95">(since C95)</span>  <span class="std std-until std-c99">(until C99)</span></p>
+
+```c
+size_t mbrlen( const char* restrict s, size_t n, mbstate_t* restrict ps );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>Determines the size, in bytes, of the representation of a multibyte character.</p>
+
+<p>This function is equivalent to the call <code>mbrtowc(NULL, s, n, ps ? ps : &amp;internal)</code> for some hidden object <code>internal</code> of type <a href="/reference/c/string/multibyte/mbstate_t/">mbstate_t</a>, except that the expression <code>ps</code> is evaluated only once.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>s</td><td>-</td><td>pointer to an element of a multibyte character string</td></tr>
+<tr><td>n</td><td>-</td><td>limit on the number of bytes in s that can be examined</td></tr>
+<tr><td>ps</td><td>-</td><td>pointer to the variable holding the conversion state</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>The first of the following that applies:</p>
+
+<ul>
+<li>
+<code>0</code>
+
+<p>if the next</p>
+
+<code>n</code>
+
+<p>or fewer bytes complete the null character or if</p>
+
+<code>s</code>
+
+<p>is a null pointer. Both cases reset the conversion state.</p>
+</li>
+<li>
+<p>the number of bytes</p>
+
+<code>[1...n]</code>
+
+<p>that complete a valid multibyte character</p>
+</li>
+<li>
+<code>(size_t)-2</code>
+
+<p>if the next</p>
+
+<code>n</code>
+
+<p>bytes are part of a possibly valid multibyte character, which is still incomplete after examining all</p>
+
+<code>n</code>
+
+<p>bytes</p>
+</li>
+<li>
+<code>(size_t)-1</code>
+
+<p>if encoding error occurs. The value of</p>
+
+<a href="/reference/c/error/errno/">errno</a>
+
+<p>is</p>
+
+<a href="/reference/c/error/errno_macros/">EILSEQ</a>
+
+<p>; the conversion state is unspecified.</p>
+</li>
+</ul>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <locale.h>
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+ 
+int main(void)
+{
+    // allow mbrlen() to work with UTF-8 multibyte encoding
+    setlocale(LC_ALL, "en_US.utf8");
+ 
+    // UTF-8 narrow multibyte encoding
+    const char* str = "水";
+    size_t sz = strlen(str);
+ 
+    mbstate_t mb;
+    memset(&mb, 0, sizeof mb);
+    int len1 = mbrlen(str, 1, &mb);
+    if (len1 == -2)
+        printf("The first 1 byte of %s is an incomplete multibyte char"
+               " (mbrlen returns -2)\n", str);
+ 
+    int len2 = mbrlen(str + 1, sz - 1, &mb);
+    printf("The remaining %zu  bytes of %s hold %d bytes of the multibyte"
+           " character\n", sz - 1, str, len2);
+ 
+    printf("Attempting to call mbrlen() in the middle of %s while in initial"
+           " shift state returns %zd\n", str, mbrlen(str + 1, sz - 1, &mb));
+}
+```
+
+<p>Output:</p>
+
+```text
+The first 1 byte of 水 is an incomplete multibyte char (mbrlen returns -2)
+The remaining 2  bytes of 水 hold 2 bytes of the multibyte character
+Attempting to call mbrlen() in the middle of 水 while in initial shift state returns -1
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.6.3.1 The mbrlen function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.6.3.1 The mbrlen function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.6.3.1 The mbrlen function (p: 442)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.6.3.1 The mbrlen function (p: 388)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/multibyte/mbrtowc/">mbrtowc</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>converts the next multibyte character to wide character, given state   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/mblen/">mblen</a></td><td>returns the number of bytes in the next multibyte character   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/multibyte/mbrlen" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+mbrlen</td></tr>
+</table>

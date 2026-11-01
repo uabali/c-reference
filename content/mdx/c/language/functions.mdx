@@ -1,0 +1,173 @@
+---
+title: "Functions"
+slug: "c/language/functions"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/functions"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>A function is a C language construct that associates a <a href="/reference/c/language/statements/#Compound_statements">compound statement</a> (the function body) with an <a href="/reference/c/language/identifier/">identifier</a> (the function name). Every C program begins execution from the <a href="/reference/c/language/main_function/">main function</a>, which either terminates, or invokes other, user-defined or library functions.</p>
+
+```c
+// function definition.
+// defines a function with the name "sum" and with the body "{ return x+y; }"
+int sum(int x, int y) 
+{
+    return x + y;
+}
+```
+
+<p>A function is introduced by a <a href="/reference/c/language/function_declaration/">function declaration</a> or a <a href="/reference/c/language/function_definition/">function definition</a>.</p>
+
+<p>Functions may accept zero or more <em>parameters</em>, which are initialized from the <em>arguments</em> of a <a href="/reference/c/language/operator_other/#Function_call">function call operator</a>, and may return a value to its caller by means of the <a href="/reference/c/language/return/">return statement</a>.</p>
+
+```c
+int n = sum(1, 2); // parameters x and y are initialized with the arguments 1 and 2
+```
+
+<p>The body of a function is provided in a <a href="/reference/c/language/function_definition/">function definition</a>. Each non-<a href="/reference/c/language/inline/">inline</a><span class="std std-since std-c99">(since C99)</span> function that is used in an expression (unless <a href="/reference/c/language/expressions/#Unevaluated_expressions">unevaluated</a>) must be <a href="/reference/c/language/extern/#One_definition_rule">defined only once</a> in a program.</p>
+
+<p>There are no nested functions (except where allowed through non-standard compiler extensions): each function definition must appear at file scope, and functions have no access to the local variables from the caller:</p>
+
+```c
+int main(void) // the main function definition
+{
+    int sum(int, int); // function declaration (may appear at any scope)
+    int x = 1;  // local variable in main
+    sum(1, 2); // function call
+ 
+//    int sum(int a, int b) // error: no nested functions
+//    {
+//        return  a + b; 
+//    }
+}
+int sum(int a, int b) // function definition
+{
+//    return x + a + b; //  error: main's x is not accessible within sum
+    return a + b;
+}
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.7.4 Function declarators (including prototypes) (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.9.2 Function definitions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.6.3 Function declarators (including prototypes) (p: 96-98)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.9.1 Function definitions (p: 113-115)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.6.3 Function declarators (including prototypes) (p: 133-136)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.9.1 Function definitions (p: 156-158)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.5.3 Function declarators (including prototypes) (p: 118-121)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.9.1 Function definitions (p: 141-143)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.5.4.3 Function declarators (including prototypes)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.7.1 Function definitions</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/function" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Declaring functions</td></tr>
+</table>

@@ -1,0 +1,168 @@
+---
+title: "Inline assembly"
+slug: "c/language/asm"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/asm"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Inline assembly (typically introduced by the <code>asm</code> keyword) gives the ability to embed assembly language source code within a C program.</p>
+
+<p>Unlike in C++, inline assembly is treated as an extension in C. It is conditionally supported and implementation defined, meaning that it may not be present and, even when provided by the implementation, it does not have a fixed meaning.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+asm ( string_literal ) ;
+```
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: write a note on GCC extended assembly syntax, since it is now supported by Intel, IBM, Sun (as of v12), etc</td></tr>
+</table>
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>This kind of inline assembly syntax is accepted by the C++ standard and called <em>asm-declaration</em> in C++. The <em>string_literal</em> is typically a short program written in assembly language, which is executed whenever this declaration is executed. Different C compilers have wildly varying rules for asm-declarations, and different conventions for the interaction with the surrounding C code.</p>
+
+<p>asm-declaration can appear inside a block (a function body or another compound statement), and, as all other declarations, this declaration can also appear outside a block.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>MSVC does not support inline assembly on the ARM and x64 processors, and only support the form introduced by <code>__asm</code> on x86 processors.</p>
+
+<p>When compiling in ISO C mode by GCC or Clang (e.g. with option <code>-std=c11</code>), <code>__asm__</code> must be used instead of <code>asm</code>.</p>
+
+<h3 id="Examples">Examples</h3>
+
+<p>Demonstrates two kinds of inline assembly syntax offered by the GCC compiler. This program will only work correctly on x86-64 platform under Linux. Note that the "standard inline assembly" is also treated as an extension in the C standard.</p>
+
+```c
+#include <stdio.h>
+ 
+extern int func(void);
+// the definition of func is written in assembly language
+__asm__(".globl func\n\t"
+        ".type func, @function\n\t"
+        "func:\n\t"
+        ".cfi_startproc\n\t"
+        "movl $7, %eax\n\t"
+        "ret\n\t"
+        ".cfi_endproc");
+ 
+int main(void)
+{
+    int n = func();
+    // gcc's extended inline assembly
+    __asm__ ("leal (%0,%0,4),%0"
+           : "=r" (n)
+           : "0" (n));
+    printf("7*5 = %d\n", n);
+    fflush(stdout); // flush is intentional
+ 
+    // standard inline assembly in C++
+    __asm__ ("movq $60, %rax\n\t" // the exit syscall number on Linux
+             "movq $2,  %rdi\n\t" // this program returns 2
+             "syscall");
+}
+```
+
+<p>Output:</p>
+
+```text
+7*5 = 35
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>J.5.10 The asm keyword (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>J.5.10 The asm keyword (p: 422)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>J.5.10 The asm keyword (p: 580)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>J.5.10 The asm keyword (p: 512)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>G.5.10 The asm keyword</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/asm" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+<code>asm</code> declaration</td></tr>
+</table>
+
+<h3 id="External_links">External links</h3>
+
+<table class="ref-table">
+<tr><td>1.</td><td><a href="https://www.ibiblio.org/gferg/ldp/GCC-Inline-Assembly-HOWTO.html" rel="noreferrer" target="_blank">GCC Inline Assembly HOWTO</a></td></tr>
+<tr><td>2.</td><td><a href="https://pic.dhe.ibm.com/infocenter/comphelp/v121v141/topic/com.ibm.xlcpp121.aix.doc/language_ref/asm.html" rel="noreferrer" target="_blank">IBM XL C/C++ Inline Assembly</a></td></tr>
+<tr><td>3.</td><td><a href="https://software.intel.com/en-us/cpp-compiler-developer-guide-and-reference-inline-assembly" rel="noreferrer" target="_blank">Intel C++ Inline Assembly</a></td></tr>
+<tr><td>4.</td><td><a href="https://learn.microsoft.com/en-us/cpp/assembler/inline/inline-assembler.aspx" rel="noreferrer" target="_blank">Visual Studio Inline Assembler</a></td></tr>
+<tr><td>5.</td><td><a href="https://blogs.oracle.com/x86be/entry/gcc_style_asm_inlining_support" rel="noreferrer" target="_blank">Sun Studio 12 Asm Statements</a></td></tr>
+<tr><td>6.</td><td><a href="https://h21007.www2.hp.com/portal/site/dspp/menuitem.863c3e4cbcdc3f3515b49c108973a801?ciid=4308e2f5bde02110e2f5bde02110275d6e10RCRD" rel="noreferrer" target="_blank">Inline assembly for Itanium-based HP-UX</a></td></tr>
+</table>

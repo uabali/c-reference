@@ -1,0 +1,387 @@
+---
+title: "Numeric limits"
+slug: "c/types/limits"
+category: "types"
+source: "https://en.cppreference.com/w/c/types/limits"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<h3 id="Limits_of_integer_types">Limits of integer types</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2">Limits of core language integer types</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;limits.h&gt;</code></td></tr>
+<tr><td>BOOL_WIDTH
+
+<span class="std std-since std-c23">(C23)</span></td><td>bit width of <code>_Bool</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>CHAR_BIT</td><td>bit width of byte   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>MB_LEN_MAX</td><td>maximum number of bytes in a multibyte character   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>CHAR_WIDTH
+
+<span class="std std-since std-c23">(C23)</span></td><td>bit width of <code>char</code>, same as <code>CHAR_BIT</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>CHAR_MIN</td><td>minimum value of <code>char</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>CHAR_MAX</td><td>maximum value of <code>char</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>SCHAR_WIDTH<br />SHRT_WIDTH<br />INT_WIDTH<br />LONG_WIDTH<br />LLONG_WIDTH
+
+<span class="std std-since std-c23">(C23)</span><br /><span class="std std-since std-c23">(C23)</span><br /><span class="std std-since std-c23">(C23)</span><br /><span class="std std-since std-c23">(C23)</span><br /><span class="std std-since std-c23">(C23)</span></td><td>bit width of <code>signed char</code>, <code>short</code>, <code>int</code>, <code>long</code>, and <code>long long</code> respectively   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>SCHAR_MIN<br />SHRT_MIN<br />INT_MIN<br />LONG_MIN<br />LLONG_MIN
+
+<span class="std std-since std-c99">(C99)</span></td><td>minimum value of <code>signed char</code>, <code>short</code>, <code>int</code>, <code>long</code> and <code>long long</code> respectively   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>SCHAR_MAX<br />SHRT_MAX<br />INT_MAX<br />LONG_MAX<br />LLONG_MAX
+
+<span class="std std-since std-c99">(C99)</span></td><td>maximum value of <code>signed char</code>, <code>short</code>, <code>int</code>, <code>long</code> and <code>long long</code> respectively   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>UCHAR_WIDTH<br />USHRT_WIDTH<br />UINT_WIDTH<br />ULONG_WIDTH<br />ULLONG_WIDTH
+
+<span class="std std-since std-c23">(C23)</span><br /><span class="std std-since std-c23">(C23)</span><br /><span class="std std-since std-c23">(C23)</span><br /><span class="std std-since std-c23">(C23)</span><br /><span class="std std-since std-c23">(C23)</span></td><td>bit width of <code>unsigned char</code>, <code>unsigned short</code>, <code>unsigned int</code>, <code>unsigned long</code>, and <code>unsigned long long</code> respectively   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>UCHAR_MAX<br />USHRT_MAX<br />UINT_MAX<br />ULONG_MAX<br />ULLONG_MAX
+
+<span class="std std-since std-c99">(C99)</span></td><td>maximum value of <code>unsigned char</code>, <code>unsigned short</code>, <code>unsigned int</code>, <code>unsigned long</code> and <code>unsigned long long</code> respectively   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>BITINT_MAXWIDTH
+
+<span class="std std-since std-c23">(C23)</span></td><td>maximum width <code>N</code> supported by the declaration of a bit-precise integer in the type specifier <code>_BitInt(N)</code>, greater than or equal to <code>ULLONG_WIDTH</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2">Limits of library type aliases</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdint.h&gt;</code></td></tr>
+<tr><td>PTRDIFF_WIDTH
+
+<span class="std std-since std-c23">(C23)</span></td><td>bit width of object of <a href="/reference/c/types/ptrdiff_t/">ptrdiff_t</a> type   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>PTRDIFF_MIN
+
+<span class="std std-since std-c99">(C99)</span></td><td>minimum value of <a href="/reference/c/types/ptrdiff_t/">ptrdiff_t</a>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>PTRDIFF_MAX
+
+<span class="std std-since std-c99">(C99)</span></td><td>maximum value of <a href="/reference/c/types/ptrdiff_t/">ptrdiff_t</a>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>SIZE_WIDTH
+
+<span class="std std-since std-c23">(C23)</span></td><td>bit width of object of <a href="/reference/c/types/size_t/">size_t</a> type   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>SIZE_MAX
+
+<span class="std std-since std-c99">(C99)</span></td><td>maximum value of <a href="/reference/c/types/size_t/">size_t</a>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>SIG_ATOMIC_WIDTH
+
+<span class="std std-since std-c23">(C23)</span></td><td>bit width of object of <a href="/reference/c/program/sig_atomic_t/">sig_atomic_t</a> type   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>SIG_ATOMIC_MIN
+
+<span class="std std-since std-c99">(C99)</span></td><td>minimum value of <a href="/reference/c/program/sig_atomic_t/">sig_atomic_t</a>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>SIG_ATOMIC_MAX
+
+<span class="std std-since std-c99">(C99)</span></td><td>maximum value of <a href="/reference/c/program/sig_atomic_t/">sig_atomic_t</a>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>WINT_WIDTH
+
+<span class="std std-since std-c23">(C23)</span></td><td>bit width of object of <code>wint_t</code> type   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>WINT_MIN
+
+<span class="std std-since std-c99">(C99)</span></td><td>minimum value of <code>wint_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>WINT_MAX
+
+<span class="std std-since std-c99">(C99)</span></td><td>maximum value of <code>wint_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;wchar.h&gt;</code></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdint.h&gt;</code></td></tr>
+<tr><td>WCHAR_WIDTH
+
+<span class="std std-since std-c23">(C23)</span></td><td>bit width of object of <code>wchar_t</code> type   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>WCHAR_MIN
+
+<span class="std std-since std-c99">(C99)</span></td><td>minimum value of <code>wchar_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>WCHAR_MAX
+
+<span class="std std-since std-c99">(C99)</span></td><td>maximum value of <code>wchar_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+</table>
+
+<h4 id="Notes">Notes</h4>
+
+<p>The types of these constants, other than <code>CHAR_BIT</code> and <code>MB_LEN_MAX</code>, are required to match the results of the <a href="/reference/c/language/conversion/#Integer_promotions">integral promotions</a> as applied to objects of the types they describe: <code>CHAR_MAX</code> may have type <code>int</code> or <code>unsigned int</code>, but never <code>char</code>. Similarly <code>USHRT_MAX</code> may not be of an unsigned type: its type may be <code>int</code>.</p>
+
+<p>A freestanding implementation may lack <a href="/reference/c/program/sig_atomic_t/">sig_atomic_t</a> and/or <code>wint_t</code> typedef names, in which case the <code>SIG_ATOMIC_*</code> and/or <code>WINT_*</code> macros are correspondingly absent.</p>
+
+<h4 id="Example">Example</h4>
+
+```c
+#include <limits.h>
+#include <stdint.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    printf("CHAR_BIT       = %d\n", CHAR_BIT);
+    printf("MB_LEN_MAX     = %d\n\n", MB_LEN_MAX);
+ 
+    printf("CHAR_MIN       = %+d\n", CHAR_MIN);
+    printf("CHAR_MAX       = %+d\n", CHAR_MAX);
+    printf("SCHAR_MIN      = %+d\n", SCHAR_MIN);
+    printf("SCHAR_MAX      = %+d\n", SCHAR_MAX);
+    printf("UCHAR_MAX      = %u\n\n", UCHAR_MAX);
+ 
+    printf("SHRT_MIN       = %+d\n", SHRT_MIN);
+    printf("SHRT_MAX       = %+d\n", SHRT_MAX);
+    printf("USHRT_MAX      = %u\n\n", USHRT_MAX);
+ 
+    printf("INT_MIN        = %+d\n", INT_MIN);
+    printf("INT_MAX        = %+d\n", INT_MAX);
+    printf("UINT_MAX       = %u\n\n", UINT_MAX);
+ 
+    printf("LONG_MIN       = %+ld\n", LONG_MIN);
+    printf("LONG_MAX       = %+ld\n", LONG_MAX);
+    printf("ULONG_MAX      = %lu\n\n", ULONG_MAX);
+ 
+    printf("LLONG_MIN      = %+lld\n", LLONG_MIN);
+    printf("LLONG_MAX      = %+lld\n", LLONG_MAX);
+    printf("ULLONG_MAX     = %llu\n\n", ULLONG_MAX);
+ 
+    printf("PTRDIFF_MIN    = %td\n", PTRDIFF_MIN);
+    printf("PTRDIFF_MAX    = %+td\n", PTRDIFF_MAX);
+    printf("SIZE_MAX       = %zu\n", SIZE_MAX);
+    printf("SIG_ATOMIC_MIN = %+jd\n",(intmax_t)SIG_ATOMIC_MIN);
+    printf("SIG_ATOMIC_MAX = %+jd\n",(intmax_t)SIG_ATOMIC_MAX);
+    printf("WCHAR_MIN      = %+jd\n",(intmax_t)WCHAR_MIN);
+    printf("WCHAR_MAX      = %+jd\n",(intmax_t)WCHAR_MAX);
+    printf("WINT_MIN       = %jd\n", (intmax_t)WINT_MIN);
+    printf("WINT_MAX       = %jd\n", (intmax_t)WINT_MAX);
+}
+```
+
+<p>Possible output:</p>
+
+```text
+CHAR_BIT       = 8
+MB_LEN_MAX     = 16
+ 
+CHAR_MIN       = -128
+CHAR_MAX       = +127
+SCHAR_MIN      = -128
+SCHAR_MAX      = +127
+UCHAR_MAX      = 255
+ 
+SHRT_MIN       = -32768
+SHRT_MAX       = +32767
+USHRT_MAX      = 65535
+ 
+INT_MIN        = -2147483648
+INT_MAX        = +2147483647
+UINT_MAX       = 4294967295
+ 
+LONG_MIN       = -9223372036854775808
+LONG_MAX       = +9223372036854775807
+ULONG_MAX      = 18446744073709551615
+ 
+LLONG_MIN      = -9223372036854775808
+LLONG_MAX      = +9223372036854775807
+ULLONG_MAX     = 18446744073709551615
+ 
+PTRDIFF_MIN    = -9223372036854775808
+PTRDIFF_MAX    = +9223372036854775807
+SIZE_MAX       = 18446744073709551615
+SIG_ATOMIC_MIN = -2147483648
+SIG_ATOMIC_MAX = +2147483647
+WCHAR_MIN      = -2147483648
+WCHAR_MAX      = +2147483647
+WINT_MIN       = 0
+WINT_MAX       = 4294967295
+```
+
+<h3 id="Limits_of_floating-point_types">Limits of floating-point types</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;float.h&gt;</code></td></tr>
+<tr><td>FLT_RADIX</td><td>the radix (integer base) used by the representation of all three floating-point types   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>DECIMAL_DIG
+
+<span class="std std-since std-c99">(C99)</span></td><td>conversion from <code>long double</code> to decimal with at least <code>DECIMAL_DIG</code> digits and back to <code>long double</code> is the identity conversion: this is the decimal precision required to serialize/deserialize a <code>long double</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>FLT_DECIMAL_DIG<br />DBL_DECIMAL_DIG<br />LDBL_DECIMAL_DIG
+
+<span class="std std-since std-c11">(C11)</span></td><td>conversion from <code>float</code>/<code>double</code>/<code>long double</code> to decimal with at least <code>FLT_DECIMAL_DIG</code>/<code>DBL_DECIMAL_DIG</code>/<code>LDBL_DECIMAL_DIG</code> digits and back is the identity conversion: this is the decimal precision required to serialize/deserialize a floating-point value. Defined to at least <code>6</code>, <code>10</code>, and <code>10</code> respectively, or <code>9</code> for IEEE float and <code>17</code> for IEEE double (see also the C++ analog: <a href="https://en.cppreference.com/w/cpp/types/numeric_limits/max_digits10" rel="noreferrer" target="_blank"><code>max_digits10</code></a>)   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>FLT_MIN<br />DBL_MIN<br />LDBL_MIN</td><td>minimum, normalized, positive value of <code>float</code>, <code>double</code> and <code>long double</code> respectively   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>FLT_TRUE_MIN<br />DBL_TRUE_MIN<br />LDBL_TRUE_MIN
+
+<span class="std std-since std-c11">(C11)</span></td><td>minimum positive value of <code>float</code>, <code>double</code> and <code>long double</code> respectively   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>FLT_MAX<br />DBL_MAX<br />LDBL_MAX</td><td>maximum finite value of <code>float</code>, <code>double</code> and <code>long double</code> respectively   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>FLT_EPSILON<br />DBL_EPSILON<br />LDBL_EPSILON</td><td>absolute value difference between <code>1.0</code> and the next representable value for <code>float</code>, <code>double</code> and <code>long double</code> respectively   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>FLT_DIG<br />DBL_DIG<br />LDBL_DIG</td><td>number of decimal digits that are guaranteed to be preserved in text → <code>float</code>/<code>double</code>/<code>long double</code> → text roundtrip without change due to rounding or overflow (see the C++ analog <a href="https://en.cppreference.com/w/cpp/types/numeric_limits/digits10" rel="noreferrer" target="_blank"><code>digits10</code></a> for detail)   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>FLT_MANT_DIG<br />DBL_MANT_DIG<br />LDBL_MANT_DIG</td><td>number of base-<code>FLT_RADIX</code> digits that are in the floating-point mantissa and that can be represented without losing precision for <code>float</code>, <code>double</code> and <code>long double</code> respectively   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>FLT_MIN_EXP<br />DBL_MIN_EXP<br />LDBL_MIN_EXP</td><td>minimum negative integer such that <code>FLT_RADIX</code> raised by power one less than that integer is a normalized <code>float</code>, <code>double</code> and <code>long double</code> respectively   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>FLT_MIN_10_EXP<br />DBL_MIN_10_EXP<br />LDBL_MIN_10_EXP</td><td>minimum negative integer such that 10 raised to that power is a normalized <code>float</code>, <code>double</code> and <code>long double</code> respectively   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>FLT_MAX_EXP<br />DBL_MAX_EXP<br />LDBL_MAX_EXP</td><td>maximum positive integer such that <code>FLT_RADIX</code> raised by power one less than that integer is a representable finite <code>float</code>, <code>double</code> and <code>long double</code> respectively   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>FLT_MAX_10_EXP<br />DBL_MAX_10_EXP<br />LDBL_MAX_10_EXP</td><td>maximum positive integer such that 10 raised to that power is a representable finite <code>float</code>, <code>double</code> and <code>long double</code> respectively   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td><a href="/reference/c/types/limits/FLT_ROUNDS/">FLT_ROUNDS</a></td><td>rounding mode of floating-point arithmetic   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td><a href="/reference/c/types/limits/FLT_EVAL_METHOD/">FLT_EVAL_METHOD</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>specifies in what precision all arithmetic operations are done   <span class="mark-note">(macro constant)</span></td></tr>
+</table>
+
+<table class="ref-table ref-dsc">
+<tr><td>FLT_HAS_SUBNORM<br />DBL_HAS_SUBNORM<br />LDBL_HAS_SUBNORM
+
+<span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c23">(deprecated in C23)</span></td><td>whether the type supports subnormal (<a href="https://en.wikipedia.org/wiki/Denormal_number" rel="noreferrer" target="_blank">denormal</a>) numbers: <code>-1</code> – indeterminable, <code>0</code> – absent, <code>1</code> – present   <span class="mark-note">(macro constant)</span></td></tr>
+</table>
+
+<h4 id="Example_2">Example</h4>
+
+```c
+#include <float.h>
+#include <math.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    printf("DECIMAL_DIG     = %d\n", DECIMAL_DIG);
+    printf("FLT_DECIMAL_DIG = %d\n", FLT_DECIMAL_DIG);
+    printf("FLT_RADIX       = %d\n", FLT_RADIX);
+    printf("FLT_MIN         = %e\n", FLT_MIN);
+    printf("FLT_MAX         = %e\n", FLT_MAX);
+    printf("FLT_EPSILON     = %e\n", FLT_EPSILON);
+    printf("FLT_DIG         = %d\n", FLT_DIG);
+    printf("FLT_MANT_DIG    = %d\n", FLT_MANT_DIG);
+    printf("FLT_MIN_EXP     = %d\n", FLT_MIN_EXP);
+    printf("FLT_MIN_10_EXP  = %d\n", FLT_MIN_10_EXP);
+    printf("FLT_MAX_EXP     = %d\n", FLT_MAX_EXP);
+    printf("FLT_MAX_10_EXP  = %d\n", FLT_MAX_10_EXP);
+    printf("FLT_ROUNDS      = %d\n", FLT_ROUNDS);
+    printf("FLT_EVAL_METHOD = %d\n", FLT_EVAL_METHOD);
+    printf("FLT_HAS_SUBNORM = %d\n", FLT_HAS_SUBNORM);
+}
+```
+
+<p>Possible output:</p>
+
+```text
+DECIMAL_DIG     = 37
+FLT_DECIMAL_DIG = 9
+FLT_RADIX       = 2
+FLT_MIN         = 1.175494e-38
+FLT_MAX         = 3.402823e+38
+FLT_EPSILON     = 1.192093e-07
+FLT_DIG         = 6
+FLT_MANT_DIG    = 24
+FLT_MIN_EXP     = -125
+FLT_MIN_10_EXP  = -37
+FLT_MAX_EXP     = 128
+FLT_MAX_10_EXP  = 38
+FLT_ROUNDS      = 1
+FLT_EVAL_METHOD = 1
+FLT_HAS_SUBNORM = 1
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>5.2.4.2 Numerical limits (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.3 Limits of other integer types (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>5.2.4.2 Numerical limits (p: 20-27)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20.3 Limits of other integer types (p: 215-216)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>5.2.4.2 Numerical limits (p: 26-34)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20.3 Limits of other integer types (p: 293-294)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>5.2.4.2 Numerical limits (p: 21-28)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.18.3 Limits of other integer types (p: 259-260)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>2.2.4.2 Numerical limits</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/types/climits" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+C numeric limits interface</td></tr>
+</table>

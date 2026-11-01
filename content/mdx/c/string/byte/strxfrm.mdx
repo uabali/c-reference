@@ -1,0 +1,166 @@
+---
+title: "strxfrm"
+slug: "c/string/byte/strxfrm"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/byte/strxfrm"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;string.h&gt;</code></p>
+
+```c
+size_t strxfrm( char          *dest, const char          *src, size_t count );
+```
+
+<p class="decl-note"><span class="std std-until std-c99">(until C99)</span></p>
+
+```c
+size_t strxfrm( char *restrict dest, const char *restrict src, size_t count );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>Transforms the null-terminated byte string pointed to by <code>src</code> into the implementation-defined form such that comparing two transformed strings with <a href="/reference/c/string/byte/strcmp/">strcmp</a> gives the same result as comparing the original strings with <a href="/reference/c/string/byte/strcoll/">strcoll</a>, in the current C locale.</p>
+
+<p>The first <code>count</code> characters of the transformed string are written to destination, including the terminating null character, and the length of the full transformed string is returned, excluding the terminating null character.</p>
+
+<p>The behavior is undefined if the <code>dest</code> array is not large enough. The behavior is undefined if <code>dest</code> and <code>src</code> overlap.</p>
+
+<p>If <code>count</code> is <code>0</code>, then <code>dest</code> is allowed to be a null pointer.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The correct length of the buffer that can receive the entire transformed string is <code>1+strxfrm(NULL, src, 0)</code></p>
+
+<p>This function is used when making multiple locale-dependent comparisons using the same string or set of strings, because it is more efficient to use <code>strxfrm</code> to transform all the strings just once, and subsequently compare the transformed strings with <a href="/reference/c/string/byte/strcmp/">strcmp</a>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>dest</td><td>-</td><td>pointer to the first element of the array where the transformed string will be written</td></tr>
+<tr><td>src</td><td>-</td><td>pointer to the first character of a null-terminated byte string to transform</td></tr>
+<tr><td>count</td><td>-</td><td>maximum number of characters to be written</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>The length of the transformed string, not including the terminating null-character.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <string.h>
+#include <locale.h>
+ 
+int main(void)
+{
+    setlocale(LC_COLLATE, "cs_CZ.iso88592");
+ 
+    const char *in1 = "hrnec";
+    char out1[1+strxfrm(NULL, in1, 0)];
+    strxfrm(out1, in1, sizeof out1);
+ 
+    const char *in2 = "chrt";
+    char out2[1+strxfrm(NULL, in2, 0)];
+    strxfrm(out2, in2, sizeof out2);
+ 
+    printf("In the Czech locale: ");
+    if(strcmp(out1, out2) < 0)
+         printf("%s before %s\n",in1, in2);
+    else
+         printf("%s before %s\n",in2, in1);
+ 
+    printf("In lexicographical comparison: ");
+    if(strcmp(in1, in2)<0)
+         printf("%s before %s\n",in1, in2);
+    else
+         printf("%s before %s\n",in2, in1);
+ 
+}
+```
+
+<p>Possible output:</p>
+
+```text
+In the Czech locale: hrnec before chrt
+In lexicographical comparison: chrt before hrnec
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.4.5 The strxfrm function (p: 267)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.4.5 The strxfrm function (p: 366-367)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.4.5 The strxfrm function (p: 329-330)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.11.4.5 The strxfrm function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/byte/strcoll/">strcoll</a></td><td>compares two strings in accordance to the current locale   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcscoll/">wcscoll</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>compares two wide strings in accordance to the current locale   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strcmp/">strcmp</a></td><td>compares two strings   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcsxfrm/">wcsxfrm</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>transform a wide string so that wcscmp would produce the same result as wcscoll   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/byte/strxfrm" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+strxfrm</td></tr>
+</table>

@@ -1,0 +1,127 @@
+---
+title: "SIG_ERR"
+slug: "c/program/SIG_ERR"
+category: "program"
+source: "https://en.cppreference.com/w/c/program/SIG_ERR"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;signal.h&gt;</code></p>
+
+```c
+#define SIG_ERR /* implementation defined */
+```
+
+<p>A value of type <code>void (*)(int)</code>. When returned by <a href="/reference/c/program/signal/">signal</a>, indicates that an error has occurred.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
+ 
+void signal_handler(int sig)
+{
+    printf("Received signal: %d\n", sig);
+}
+ 
+int main(void)
+{
+    /* Install a signal handler. */
+    if (signal(SIGTERM, signal_handler) == SIG_ERR)
+    {
+        printf("Error while installing a signal handler.\n");
+        exit(EXIT_FAILURE);
+    }
+ 
+    printf("Sending signal: %d\n", SIGTERM);
+    if (raise(SIGTERM) != 0)
+    {
+        printf("Error while raising the SIGTERM signal.\n");
+        exit(EXIT_FAILURE);
+    }
+ 
+    printf("Exit main()\n");
+    return EXIT_SUCCESS;
+}
+```
+
+<p>Output:</p>
+
+```text
+Sending signal: 15
+Received signal: 15
+Exit main()
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.14/3 Signal handling &lt;signal.h&gt; (p: 194)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.14/3 Signal handling &lt;signal.h&gt; (p: 265)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.14/3 Signal handling &lt;signal.h&gt; (p: 246)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.7 SIGNAL HANDLING &lt;signal.h&gt;</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/program/signal/">signal</a></td><td>sets a signal handler for particular signal   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/utility/program/SIG_ERR" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+SIG_ERR</td></tr>
+</table>

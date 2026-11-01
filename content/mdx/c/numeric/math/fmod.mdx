@@ -1,0 +1,346 @@
+---
+title: "fmod, fmodf, fmodl"
+slug: "c/numeric/math/fmod"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/fmod"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+float       fmodf( float x, float y );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+double      fmod( double x, double y );
+```
+
+<p class="decl-note">(2)</p>
+
+```c
+long double fmodl( long double x, long double y );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;tgmath.h&gt;</code></p>
+
+```c
+#define fmod( x, y )
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="li-note"><span class="li-num">1-3)</span>  Computes the floating-point remainder of the division operation <code>x / y</code>.</p>
+
+<p class="li-note"><span class="li-num">4)</span>  Type-generic macro: If any argument has type <code>long double</code>, <code>fmodl</code> is called. Otherwise, if any argument has integer type or has type <code>double</code>, <code>fmod</code> is called. Otherwise, <code>fmodf</code> is called.</p>
+
+<p>The floating-point remainder of the division operation <code>x / y</code> calculated by this function is exactly the value <code>x - n * y</code>, where <code>n</code> is <code>x / y</code> with its fractional part truncated.</p>
+
+<p>The returned value has the same sign as <code>x</code> and is less or equal to <code>y</code> in magnitude.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>x, y</td><td>-</td><td>floating-point values</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>If successful, returns the floating-point remainder of the division <code>x / y</code> as defined above.</p>
+
+<p>If a domain error occurs, an implementation-defined value is returned (NaN where supported).</p>
+
+<p>If a range error occurs due to underflow, the correct result (after rounding) is returned.</p>
+
+<h3 id="Error_handling">Error handling</h3>
+
+<p>Errors are reported as specified in <a href="/reference/c/numeric/math/math_errhandling/"><code>math_errhandling</code></a>.</p>
+
+<p>Domain error may occur if <code>y</code> is zero.</p>
+
+<p>If the implementation supports IEEE floating-point arithmetic (IEC 60559):</p>
+
+<ul>
+<li>
+<p>If</p>
+
+<code>x</code>
+
+<p>is ±0 and</p>
+
+<code>y</code>
+
+<p>is not zero, ±0 is returned.</p>
+</li>
+<li>
+<p>If</p>
+
+<code>x</code>
+
+<p>is ±∞ and</p>
+
+<code>y</code>
+
+<p>is not NaN, NaN is returned and</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>is raised.</p>
+</li>
+<li>
+<p>If</p>
+
+<code>y</code>
+
+<p>is ±0 and</p>
+
+<code>x</code>
+
+<p>is not NaN, NaN is returned and</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>is raised.</p>
+</li>
+<li>
+<p>If</p>
+
+<code>y</code>
+
+<p>is ±∞ and</p>
+
+<code>x</code>
+
+<p>is finite,</p>
+
+<code>x</code>
+
+<p>is returned.</p>
+</li>
+<li>
+<p>If either argument is NaN, NaN is returned.</p>
+</li>
+</ul>
+
+<h3 id="Notes">Notes</h3>
+
+<p><a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/fmod.html" rel="noreferrer" target="_blank">POSIX requires</a> that a domain error occurs if <code>x</code> is infinite or <code>y</code> is zero.</p>
+
+<p><code>fmod</code>, but not <a href="/reference/c/numeric/math/remainder/">remainder</a> is useful for doing silent wrapping of floating-point types to unsigned integer types: <code>(0.0 &lt;= (y = fmod(rint(x), 65536.0 )) ? y : 65536.0 + y)</code> is in the range <code>[</code><code>-0.0</code><code>,</code><code>65535.0</code><code>]</code>, which corresponds to <code>unsigned short</code>, but <code>remainder(rint(x), 65536.0)</code> is in the range <code>[</code><code>-32767.0</code><code>,</code><code>+32768.0</code><code>]</code>, which is outside of the range of <code>signed short</code>.</p>
+
+<p>The <code>double</code> version of <code>fmod</code> behaves as if implemented as follows:</p>
+
+```c
+double fmod(double x, double y)
+{
+#pragma STDC FENV_ACCESS ON
+    double result = remainder(fabs(x), (y = fabs(y)));
+    if (signbit(result))
+        result += y;
+    return copysign(result, x);
+}
+```
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <fenv.h>
+#include <math.h>
+#include <stdio.h>
+ 
+// #pragma STDC FENV_ACCESS ON
+ 
+int main(void)
+{
+    printf("fmod(+5.1, +3.0) = %.1f\n", fmod(5.1, 3));
+    printf("fmod(-5.1, +3.0) = %.1f\n", fmod(-5.1, 3));
+    printf("fmod(+5.1, -3.0) = %.1f\n", fmod(5.1, -3));
+    printf("fmod(-5.1, -3.0) = %.1f\n", fmod(-5.1, -3));
+ 
+    // special values
+    printf("fmod(+0.0, 1.0) = %.1f\n", fmod(0, 1));
+    printf("fmod(-0.0, 1.0) = %.1f\n", fmod(-0.0, 1));
+    printf("fmod(+5.1, Inf) = %.1f\n", fmod(5.1, INFINITY));
+ 
+    // error handling
+    feclearexcept(FE_ALL_EXCEPT);
+    printf("fmod(+5.1, 0) = %.1f\n", fmod(5.1, 0));
+    if (fetestexcept(FE_INVALID))
+        puts("    FE_INVALID raised");
+}
+```
+
+<p>Possible output:</p>
+
+```text
+fmod(+5.1, +3.0) = 2.1
+fmod(-5.1, +3.0) = -2.1
+fmod(+5.1, -3.0) = 2.1
+fmod(-5.1, -3.0) = -2.1
+fmod(+0.0, 1.0) = 0.0
+fmod(-0.0, 1.0) = -0.0
+fmod(+5.1, Inf) = 5.1
+fmod(+5.1, 0) = nan
+    FE_INVALID raised
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.10.1 The fmod functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.7.1 The fmod functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.10.1 The fmod functions (p: 185)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 274-275)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.7.1 The fmod functions (p: 385)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.10.1 The fmod functions (p: 254)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 373-375)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.7.1 The fmod functions (p: 528)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.10.1 The fmod functions (p: 235)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 Type-generic math &lt;tgmath.h&gt; (p: 335-337)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.9.7.1 The fmod functions (p: 465)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.5.6.4 The fmod function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/div/">div<br />ldiv<br />lldiv</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>computes quotient and remainder of integer division   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/remainder/">remainder<br />remainderf<br />remainderl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes signed remainder of the floating-point division operation   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/remquo/">remquo<br />remquof<br />remquol</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes signed remainder as well as the three last bits of the division operation   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/fmod" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+fmod</td></tr>
+</table>

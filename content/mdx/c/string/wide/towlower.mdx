@@ -1,0 +1,131 @@
+---
+title: "towlower"
+slug: "c/string/wide/towlower"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/wide/towlower"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;wctype.h&gt;</code></p>
+
+```c
+wint_t towlower( wint_t wc );
+```
+
+<p class="decl-note"><span class="std std-since std-c95">(since C95)</span></p>
+
+<p>Converts the given wide character to lowercase, if possible.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>wc</td><td>-</td><td>wide character to be converted</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Lowercase version of <code>wc</code> or unmodified <code>wc</code> if no lowercase version is listed in the current C locale.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Only 1:1 character mapping can be performed by this function, e.g. the Greek uppercase letter <code>&#x27;Σ&#x27;</code> has two lowercase forms, depending on the position in a word: <code>&#x27;σ&#x27;</code> and <code>&#x27;ς&#x27;</code>. A call to <code>towlower</code> cannot be used to obtain the correct lowercase form in this case.</p>
+
+<p><a href="http://www.open-std.org/JTC1/SC35/WG5/docs/30112d10.pdf" rel="noreferrer" target="_blank">ISO 30112</a> specifies which pairs of Unicode characters are included in this mapping.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <locale.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <wctype.h>
+ 
+int main(void)
+{
+    wchar_t wc = L'\u0190'; // Latin capital open E ('Ɛ')
+    printf("in the default locale, towlower(%#x) = %#x\n", wc, towlower(wc));
+    setlocale(LC_ALL, "en_US.utf8");
+    printf("in Unicode locale, towlower(%#x) = %#x\n", wc, towlower(wc));
+}
+```
+
+<p>Output:</p>
+
+```text
+in the default locale, towlower(0x190) = 0x190
+in Unicode locale, towlower(0x190) = 0x25b
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.30.3.1.1 The towlower function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.30.3.1.1 The towlower function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.30.3.1.1 The towlower function (p: 453)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25.3.1.1 The towlower function (p: 399)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/wide/towupper/">towupper</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>converts a wide character to uppercase   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/tolower/">tolower</a></td><td>converts a character to lowercase   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/wide/towlower" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+towlower</td></tr>
+</table>

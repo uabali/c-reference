@@ -1,0 +1,117 @@
+---
+title: "strcspn"
+slug: "c/string/byte/strcspn"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/byte/strcspn"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;string.h&gt;</code></p>
+
+```c
+size_t strcspn( const char *dest, const char *src );
+```
+
+<p>Returns the length of the maximum initial segment of the null-terminated byte string pointed to by <code>dest</code>, that consists of only the characters <em>not</em> found in the null-terminated byte string pointed to by <code>src</code>.</p>
+
+<p>The behavior is undefined if either <code>dest</code> or <code>src</code> is not a pointer to a null-terminated byte string.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>dest</td><td>-</td><td>pointer to the null-terminated byte string to be analyzed</td></tr>
+<tr><td>src</td><td>-</td><td>pointer to the null-terminated byte string that contains the characters to search for</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>The length of the maximum initial segment that contains only characters not found in the null-terminated byte string pointed to by <code>src</code></p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The function name stands for "complementary span" because the function searches for characters not found in <code>src</code>, that is the complement of <code>src</code>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <string.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    const char *string = "abcde312$#@";
+    const char *invalid = "*$#";
+ 
+    size_t valid_len = strcspn(string, invalid);
+    if(valid_len != strlen(string))
+       printf("'%s' contains invalid chars starting at position %zu\n",
+               string, valid_len);
+}
+```
+
+<p>Output:</p>
+
+```text
+'abcde312$#@' contains invalid chars starting at position 8
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.5.3 The strcspn function (p: 368)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.5.3 The strcspn function (p: 331)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.11.5.3 The strcspn function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/byte/strspn/">strspn</a></td><td>returns the length of the maximum initial segment that consists   of only the characters found in another byte string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcscspn/">wcscspn</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>returns the length of the maximum initial segment that consists   of only the wide chars <em>not</em> found in another wide string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strpbrk/">strpbrk</a></td><td>finds the first location of any character in one string, in another string   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/byte/strcspn" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+strcspn</td></tr>
+</table></section></section>

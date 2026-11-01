@@ -1,0 +1,133 @@
+---
+title: "difftime"
+slug: "c/chrono/difftime"
+category: "chrono"
+source: "https://en.cppreference.com/w/c/chrono/difftime"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;time.h&gt;</code></p>
+
+```c
+double difftime( time_t time_end, time_t time_beg );
+```
+
+<p>Computes difference between two calendar times as <a href="/reference/c/chrono/time_t/">time_t</a> objects (<code>time_end - time_beg</code>) in seconds. If <code>time_end</code> refers to time point before <code>time_beg</code> then the result is negative.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>time_beg, time_end</td><td>-</td><td>times to compare</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Difference between two times in seconds.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>On POSIX systems, <a href="/reference/c/chrono/time_t/">time_t</a> is measured in seconds, and <code>difftime</code> is equivalent to arithmetic subtraction, but C and C++ allow fractional units for <a href="/reference/c/chrono/time_t/">time_t</a>.</p>
+
+<h3 id="Example">Example</h3>
+
+<p>The following program computes the number of seconds that have passed since the beginning of the month.</p>
+
+```c
+#include <stdio.h>
+#include <time.h>
+ 
+int main(void)
+{
+    time_t now = time(0);
+ 
+    struct tm beg = *localtime(&now);
+ 
+    // set beg to the beginning of the month
+    beg.tm_hour = 0,
+    beg.tm_min = 0,
+    beg.tm_sec = 0,
+    beg.tm_mday = 1;
+ 
+    double seconds = difftime(now, mktime(&beg));
+ 
+    printf("%.f seconds have passed since the beginning of the month.\n", seconds);
+ 
+    return 0;
+}
+```
+
+<p>Output:</p>
+
+```text
+1937968 seconds have passed since the beginning of the month.
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.27.2.2 The difftime function (p: 285)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.27.2.2 The difftime function (p: 390)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.23.2.2 The difftime function (p: 338)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.2.2 The difftime function (p: 171)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/chrono/c/difftime" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+difftime</td></tr>
+</table>

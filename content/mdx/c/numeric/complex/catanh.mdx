@@ -1,0 +1,376 @@
+---
+title: "catanhf, catanh, catanhl"
+slug: "c/numeric/complex/catanh"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/complex/catanh"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;complex.h&gt;</code></p>
+
+```c
+float complex       catanhf( float complex z );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+double complex      catanh( double complex z );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+long double complex catanhl( long double complex z );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;tgmath.h&gt;</code></p>
+
+```c
+#define atanh( z )
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="li-note"><span class="li-num">1-3)</span>  Computes the complex arc hyperbolic tangent of <code>z</code> with branch cuts outside the interval [−1; +1] along the real axis.</p>
+
+<p class="li-note"><span class="li-num">4)</span>  Type-generic macro: If <code>z</code> has type <code>long double complex</code>, <code>catanhl</code> is called. if <code>z</code> has type <code>double complex</code>, <code>catanh</code> is called, if <code>z</code> has type <code>float complex</code>, <code>catanhf</code> is called. If <code>z</code> is real or integer, then the macro invokes the corresponding real function (<code>atanhf</code>, <code>atanh</code>, <code>atanhl</code>). If <code>z</code> is imaginary, then the macro invokes the corresponding real version of <code>atan</code>, implementing the formula atanh(iy) = i atan(y), and the return type is imaginary.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>z</td><td>-</td><td>complex argument</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>If no errors occur, the complex arc hyperbolic tangent of <code>z</code> is returned, in the range of a half-strip mathematically unbounded along the real axis and in the interval [−iπ/2; +iπ/2] along the imaginary axis.</p>
+
+<h3 id="Error_handling_and_special_values">Error handling and special values</h3>
+
+<p>Errors are reported consistent with <a href="/reference/c/numeric/math/math_errhandling/">math_errhandling</a></p>
+
+<p>If the implementation supports IEEE floating-point arithmetic,</p>
+
+<ul>
+<li>
+<code>catanh(conj(z)) == conj(catanh(z))</code>
+</li>
+<li>
+<code>catanh(-z) == -catanh(z)</code>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>+0+0i</code>
+
+<p>, the result is</p>
+
+<code>+0+0i</code>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>+0+NaNi</code>
+
+<p>, the result is</p>
+
+<code>+0+NaNi</code>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>+1+0i</code>
+
+<p>, the result is</p>
+
+<code>+∞+0i</code>
+
+<p>and</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_DIVBYZERO</a>
+
+<p>is raised</p>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>x+∞i</code>
+
+<p>(for any finite positive x), the result is</p>
+
+<code>+0+iπ/2</code>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>x+NaNi</code>
+
+<p>(for any finite nonzero x), the result is</p>
+
+<code>NaN+NaNi</code>
+
+<p>and</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>may be raised</p>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>+∞+yi</code>
+
+<p>(for any finite positive y), the result is</p>
+
+<code>+0+iπ/2</code>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>+∞+∞i</code>
+
+<p>, the result is</p>
+
+<code>+0+iπ/2</code>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>+∞+NaNi</code>
+
+<p>, the result is</p>
+
+<code>+0+NaNi</code>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>NaN+yi</code>
+
+<p>(for any finite y), the result is</p>
+
+<code>NaN+NaNi</code>
+
+<p>and</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>may be raised</p>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>NaN+∞i</code>
+
+<p>, the result is</p>
+
+<code>±0+iπ/2</code>
+
+<p>(the sign of the real part is unspecified)</p>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>NaN+NaNi</code>
+
+<p>, the result is</p>
+
+<code>NaN+NaNi</code>
+</li>
+</ul>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Although the C standard names this function "complex arc hyperbolic tangent", the inverse functions of the hyperbolic functions are the area functions. Their argument is the area of a hyperbolic sector, not an arc. The correct name is "complex inverse hyperbolic tangent", and, less common, "complex area hyperbolic tangent".</p>
+
+<p>Inverse hyperbolic tangent is a multivalued function and requires a branch cut on the complex plane. The branch cut is conventionally placed at the line segmentd (-∞,-1] and [+1,+∞) of the real axis.</p>
+
+<p>The mathematical definition of the principal value of the inverse hyperbolic tangent is</p>
+
+atanh z = ln(1+z)-ln(z-1)2
+
+<p>.</p>
+
+<p>For any z,</p>
+
+atanh(z) = atan(iz)i
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <complex.h>
+ 
+int main(void)
+{
+    double complex z = catanh(2);
+    printf("catanh(+2+0i) = %f%+fi\n", creal(z), cimag(z));
+ 
+    double complex z2 = catanh(conj(2)); // or catanh(CMPLX(2, -0.0)) in C11
+    printf("catanh(+2-0i) (the other side of the cut) = %f%+fi\n", creal(z2), cimag(z2));
+ 
+    // for any z, atanh(z) = atan(iz)/i
+    double complex z3 = catanh(1+2*I);
+    printf("catanh(1+2i) = %f%+fi\n", creal(z3), cimag(z3));
+    double complex z4 = catan((1+2*I)*I)/I;
+    printf("catan(i * (1+2i))/i = %f%+fi\n", creal(z4), cimag(z4));
+}
+```
+
+<p>Output:</p>
+
+```text
+catanh(+2+0i) = 0.549306+1.570796i
+catanh(+2-0i) (the other side of the cut) = 0.549306-1.570796i
+catanh(1+2i) = 0.173287+1.178097i
+catan(i * (1+2i))/i = 0.173287+1.178097i
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3.6.3 The catanh functions (p: 193)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 373-375)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>G.6.2.3 The catanh functions (p: 540-541)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>G.7 Type-generic math &lt;tgmath.h&gt; (p: 545)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3.6.3 The catanh functions (p: 175)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 Type-generic math &lt;tgmath.h&gt; (p: 335-337)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>G.6.2.3 The catanh functions (p: 475-476)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>G.7 Type-generic math &lt;tgmath.h&gt; (p: 480)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/complex/casinh/">casinh<br />casinhf<br />casinhl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex arc hyperbolic sine   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/cacosh/">cacosh<br />cacoshf<br />cacoshl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex arc hyperbolic cosine   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/ctanh/">ctanh<br />ctanhf<br />ctanhl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex hyperbolic tangent   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/atanh/">atanh<br />atanhf<br />atanhl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes inverse hyperbolic tangent (\({\small\operatorname{artanh}{x} }\)artanh(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/complex/atanh" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+atanh</td></tr>
+</table></section>

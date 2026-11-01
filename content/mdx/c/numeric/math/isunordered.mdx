@@ -1,0 +1,154 @@
+---
+title: "isunordered"
+slug: "c/numeric/math/isunordered"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/isunordered"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+#define isunordered(x, y) /* implementation defined */
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>Determines if the floating point numbers <code>x</code> and <code>y</code> are unordered, that is, one or both are NaN and thus cannot be meaningfully compared with each other.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>x</td><td>-</td><td>floating point value</td></tr>
+<tr><td>y</td><td>-</td><td>floating point value</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Nonzero integral value if either <code>x</code> or <code>y</code> is NaN, <code>0</code> otherwise.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <math.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    printf("isunordered(NAN,1.0) = %d\n", isunordered(NAN, 1.0));
+    printf("isunordered(1.0,NAN) = %d\n", isunordered(1.0, NAN));
+    printf("isunordered(NAN,NAN) = %d\n", isunordered(NAN, NAN));
+    printf("isunordered(1.0,0.0) = %d\n", isunordered(1.0, 0.0));
+ 
+    return 0;
+}
+```
+
+<p>Possible output:</p>
+
+```text
+isunordered(NAN,1.0) = 1
+isunordered(1.0,NAN) = 1
+isunordered(NAN,NAN) = 1
+isunordered(1.0,0.0) = 0
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.14.6 The isunordered macro (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.11 Comparison macros (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.14.6 The isunordered macro (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.11 Comparison macros (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.14.6 The isunordered macro (p: 261)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.11 Comparison macros (p: 531)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.14.6 The isunordered macro (p: 242)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/fpclassify/">fpclassify</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>classifies the given floating-point value   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/isnan/">isnan</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if the given number is NaN   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/isunordered" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+isunordered</td></tr>
+</table>

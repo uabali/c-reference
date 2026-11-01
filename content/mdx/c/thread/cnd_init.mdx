@@ -1,0 +1,74 @@
+---
+title: "cnd_init"
+slug: "c/thread/cnd_init"
+category: "thread"
+source: "https://en.cppreference.com/w/c/thread/cnd_init"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;threads.h&gt;</code></p>
+
+```c
+int cnd_init( cnd_t* cond );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Initializes new condition variable. The object pointed to by <code>cond</code> will be set to value that identifies the condition variable.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>cond</td><td>-</td><td>pointer to a variable to store identifier of the condition variable to</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p><a href="/reference/c/thread/thrd_errors/">thrd_success</a> if the condition variable was successfully created. Otherwise returns <a href="/reference/c/thread/thrd_errors/">thrd_nomem</a> if there was insufficient amount of memory or <code>thrd_error</code> if another error occurred.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.3.3 The cnd_init function (p: 276)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.3.3 The cnd_init function (p: 379)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/condition_variable/condition_variable" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+condition_variable</td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/condition_variable_any/condition_variable_any" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+condition_variable_any</td></tr>
+</table>

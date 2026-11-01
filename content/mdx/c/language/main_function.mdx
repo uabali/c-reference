@@ -1,0 +1,164 @@
+---
+title: "Main function"
+slug: "c/language/main_function"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/main_function"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Every C program coded to run in a hosted execution environment contains the definition (not the prototype) of a function named <code>main</code>, which is the designated start of the program.</p>
+
+```text
+int main (void) { body }
+int main (int argc, char *argv[]) { body }
+/* another implementation-defined signature */ (since C99)
+```
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>argc</td><td>-</td><td>Non-negative value representing the number of arguments passed to the program from the environment in which the program is run.</td></tr>
+<tr><td>argv</td><td>-</td><td>Pointer to the first element of an array of <code>argc + 1</code> pointers, of which the last one is null and the previous ones, if any, point to strings that represent the arguments passed to the program from the host environment. If <code>argv[0]</code> is not a null pointer (or, equivalently, if <code>argc</code> &gt; 0), it points to a string that represents the program name, which is empty if the program name is not available from the host environment.</td></tr>
+</table>
+
+<p>The names <code>argc</code> and <code>argv</code> stand for "argument count" and "argument vector", and are traditionally used, but other names may be chosen for the parameters, as well as different but equivalent declarations of their type: <code>int main(int ac, char** av)</code> is equally valid.</p>
+
+<p>A common implementation-defined form of main is <code>int main(int argc, char *argv[], char *envp[])</code>, where a third argument, of type <code>char**</code>, pointing at <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/exec.html" rel="noreferrer" target="_blank">an array of pointers to the <em>execution environment variables</em></a>, is added.</p>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>If the return statement is used, the return value is used as the argument to the implicit call to <a href="/reference/c/program/exit/">exit()</a> (see below for details). The values zero and <a href="/reference/c/program/EXIT_status/">EXIT_SUCCESS</a> indicate successful termination, the value <a href="/reference/c/program/EXIT_status/">EXIT_FAILURE</a> indicates unsuccessful termination.</p>
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>The <code>main</code> function is called at program startup, after all objects with static storage duration are initialized. It is the designated entry point to a program that is executed in a <em>hosted</em> environment (that is, with an operating system). The name and type of the entry point to any <em>freestanding</em> program (boot loaders, OS kernels, etc) are implementation-defined.</p>
+
+<p>The parameters of the two-parameter form of the main function allow arbitrary multibyte character strings to be passed from the execution environment (these are typically known as <em>command line arguments</em>). The pointers <code>argv[1] .. argv[argc-1]</code> point at the first characters in each of these strings. <code>argv[0]</code> (if non-null) is the pointer to the initial character of a null-terminated multibyte string that represents the name used to invoke the program itself (or, if this is not supported by the host environment, <code>argv[0][0]</code> is guaranteed to be zero).</p>
+
+<p>If the host environment cannot supply both lowercase and uppercase letters, the command line arguments are converted to lowercase.</p>
+
+<p>The strings are modifiable, and any modifications made persist until program termination, although these modifications do not propagate back to the host environment: they can be used, for example, with <a href="/reference/c/string/byte/strtok/">strtok</a>.</p>
+
+<p>The size of the array pointed to by <code>argv</code> is at least <code>argc+1</code>, and the last element, <code>argv[argc]</code>, is guaranteed to be a null pointer.</p>
+
+<p>The <code>main</code> function has several special properties:</p>
+
+<p class="li-note"><span class="li-num">1)</span>  A prototype for this function cannot be supplied by the program.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  If the return type of the main function is <a href="/reference/c/language/compatible_type/#Compatible_types">compatible</a> with <code>int</code>, then the return from the initial call to main (but not the return from any subsequent, recursive, call) is equivalent to executing the <a href="/reference/c/program/exit/">exit</a> function, with the value that the main function is returning passed as the argument (which then calls the functions registered with <a href="/reference/c/program/atexit/">atexit</a>, flushes and closes all streams, and deletes the files created with <a href="/reference/c/io/tmpfile/">tmpfile</a>, and returns control to the execution environment).</p>
+
+<div class="li-note"><span class="li-num">3)</span>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-until std-c99">(until C99)</span></p><p>If the main function executes a <code>return</code> that specifies no value or, which is the same, reaches the terminating <code>}</code> without executing a <code>return</code>, the termination status returned to the host environment is undefined.</p></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><p>If the return type of the main function is not <a href="/reference/c/language/compatible_type/#Compatible_types">compatible</a> with <code>int</code> (e.g. <code>void main(void)</code>), the value returned to the host environment is unspecified. If the return type is compatible with <code>int</code> and control reaches the terminating <code>}</code>, the value returned to the environment is the same as if executing <code>return 0;</code>.</p></aside></div>
+
+<h3 id="Example">Example</h3>
+
+<p>Demonstrates how to inform a program about where to find its input and where to write its results. Invocation: ./a.out indatafile outdatafile</p>
+
+```c
+#include <stdio.h>
+ 
+int main(int argc, char *argv[])
+{
+    printf("argc = %d\n", argc);
+    for (int ndx = 0; ndx != argc; ++ndx)
+        printf("argv[%d] --> %s\n", ndx, argv[ndx]);
+    printf("argv[argc] = %p\n", (void*)argv[argc]);
+}
+```
+
+<p>Possible output:</p>
+
+```text
+argc = 3
+argv[0] --> ./a.out
+argv[1] --> indatafile
+argv[2] --> outdatafile
+argv[argc] = (nil)
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>5.1.2.2.1 Program startup (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>5.1.2.2.1 Program startup (p: 10-11)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>5.1.2.2.1 Program startup (p: 13)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>5.1.2.2.1 Program startup (p: 12)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>5.1.2.2 Hosted environment</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/main_function" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+<code>main</code> function</td></tr>
+</table>

@@ -1,0 +1,267 @@
+---
+title: "expm1, expm1f, expm1l"
+slug: "c/numeric/math/expm1"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/expm1"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+float       expm1f( float arg );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+double      expm1( double arg );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+long double expm1l( long double arg );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;tgmath.h&gt;</code></p>
+
+```c
+#define expm1( arg )
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="li-note"><span class="li-num">1-3)</span>  Computes the <em>e</em> (Euler's number, <code>2.7182818</code>) raised to the given power <code>arg</code>, minus <code>1.0</code>. This function is more accurate than the expression <code>exp(arg)-1.0</code> if <code>arg</code> is close to zero.</p>
+
+<p class="li-note"><span class="li-num">4)</span>  Type-generic macro: If <code>arg</code> has type <code>long double</code>, <code>expm1l</code> is called. Otherwise, if <code>arg</code> has integer type or the type <code>double</code>, <code>expm1</code> is called. Otherwise, <code>expm1f</code> is called.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>arg</td><td>-</td><td>floating-point value</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>If no errors occur earg -1 is returned.</p>
+
+<p>If a range error due to overflow occurs, <a href="/reference/c/numeric/math/HUGE_VAL/">+HUGE_VAL</a>, <code>+HUGE_VALF</code>, or <code>+HUGE_VALL</code> is returned.</p>
+
+<p>If a range error occurs due to underflow, the correct result (after rounding) is returned.</p>
+
+<h3 id="Error_handling">Error handling</h3>
+
+<p>Errors are reported as specified in math_errhandling.</p>
+
+<p>If the implementation supports IEEE floating-point arithmetic (IEC 60559),</p>
+
+<ul>
+<li>
+<p>If the argument is ±0, it is returned, unmodified</p>
+</li>
+<li>
+<p>If the argument is -∞, -1 is returned</p>
+</li>
+<li>
+<p>If the argument is +∞, +∞ is returned</p>
+</li>
+<li>
+<p>If the argument is NaN, NaN is returned</p>
+</li>
+</ul>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The functions <code>expm1</code> and <a href="/reference/c/numeric/math/log1p/">log1p</a> are useful for financial calculations, for example, when calculating small daily interest rates: (1+x)n -1 can be expressed as <code>expm1(n * log1p(x))</code>. These functions also simplify writing accurate inverse hyperbolic functions.</p>
+
+<p>For IEEE-compatible type <code>double</code>, overflow is guaranteed if 709.8 &lt; arg.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <errno.h>
+#include <fenv.h>
+#include <float.h>
+#include <math.h>
+#include <stdio.h>
+// #pragma STDC FENV_ACCESS ON
+int main(void)
+{
+    printf("expm1(1) = %f\n", expm1(1));
+    printf("Interest earned in 2 days on $100, compounded daily at 1%%\n"
+           " on a 30/360 calendar = %f\n",
+           100*expm1(2*log1p(0.01/360)));
+    printf("exp(1e-16)-1 = %g, but expm1(1e-16) = %g\n",
+           exp(1e-16)-1, expm1(1e-16));
+    // special values
+    printf("expm1(-0) = %f\n", expm1(-0.0));
+    printf("expm1(-Inf) = %f\n", expm1(-INFINITY));
+    //error handling
+    errno = 0; feclearexcept(FE_ALL_EXCEPT);
+    printf("expm1(710) = %f\n", expm1(710));
+    if (errno == ERANGE)
+        perror("    errno == ERANGE");
+    if (fetestexcept(FE_OVERFLOW))
+        puts("    FE_OVERFLOW raised");
+}
+```
+
+<p>Possible output:</p>
+
+```text
+expm1(1) = 1.718282
+Interest earned in 2 days on $100, compounded daily at 1%
+ on a 30/360 calendar = 0.005556
+exp(1e-16)-1 = 0, but expm1(1e-16) = 1e-16
+expm1(-0) = -0.000000
+expm1(-Inf) = -1.000000
+expm1(710) = inf
+    errno == ERANGE: Result too large
+    FE_OVERFLOW raised
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.6.3 The expm1 functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.3.3 The expm1 functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.6.3 The expm1 functions (p: 177)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 272-273)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.3.3 The expm1 functions (p: 379)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.6.3 The expm1 functions (p: 243)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 373-375)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.3.3 The expm1 functions (p: 521)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.6.3 The expm1 functions (p: 223-224)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 Type-generic math &lt;tgmath.h&gt; (p: 335-337)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.9.3.3 The expm1 functions (p: 458)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/exp/">exp<br />expf<br />expl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes <em>e</em> raised to the given power (\({\small e^x}\)e<sup>x</sup>)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/exp2/">exp2<br />exp2f<br />exp2l</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes <em>2</em> raised to the given power (\({\small 2^x}\)2<sup>x</sup>)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/log1p/">log1p<br />log1pf<br />log1pl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes natural (base-<em>e</em>) logarithm of 1 plus the given number (\({\small \ln{(1+x)} }\)ln(1+x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/expm1" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+expm1</td></tr>
+</table>

@@ -1,0 +1,5 @@
+beautifulsoup4>=4.12
+lxml>=5
+Markdown>=3.5
+PyYAML>=6
+pytest>=8

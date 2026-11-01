@@ -1,0 +1,94 @@
+---
+title: "INFINITY"
+slug: "c/numeric/math/INFINITY"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/INFINITY"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+#define INFINITY /*implementation defined*/
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>If the implementation supports floating-point infinities, the macro <code>INFINITY</code> expands to constant expression of type <code>float</code> which evaluates to positive or unsigned infinity.</p>
+
+<p>If the implementation does not support floating-point infinities, the macro <code>INFINITY</code> expands to a positive value that is guaranteed to overflow a <code>float</code> at compile time, and the use of this macro generates a compiler warning.</p>
+
+<p>The style used to print an infinity is implementation defined.</p>
+
+<h3 id="Example">Example</h3>
+
+<p>Show style used to print an infinity and IEEE format.</p>
+
+```c
+#include <stdio.h>
+#include <math.h>
+#include <stdint.h>
+#include <inttypes.h>
+#include <string.h>
+ 
+int main(void)
+{
+    double f = INFINITY;
+    uint64_t fn; memcpy(&fn, &f, sizeof f);
+    printf("INFINITY:   %f %" PRIx64 "\n", f, fn);
+}
+```
+
+<p>Possible output:</p>
+
+```text
+INFINITY:   inf 7ff0000000000000
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12/4 INFINITY (p: 231-232)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12/4 INFINITY (p: 212-213)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/isinf/">isinf</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if the given number is infinite   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/HUGE_VAL/">HUGE_VALF<br />HUGE_VAL<br />HUGE_VALL</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>indicates value too big to be representable (infinity) by <code>float</code>, <code>double</code> and <code>long double</code> respectively   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/INFINITY" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+INFINITY</td></tr>
+</table></section>

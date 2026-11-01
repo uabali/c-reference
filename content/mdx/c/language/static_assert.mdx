@@ -1,0 +1,134 @@
+---
+title: "Static assertion (since C11)"
+slug: "c/language/static_assert"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/static_assert"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+_Static_assert ( expression , message )
+static_assert ( expression , message )
+_Static_assert ( expression )
+static_assert ( expression )
+```
+
+<table class="ref-table ref-params">
+<tr><td><em>expression</em></td><td>-</td><td>any <a href="/reference/c/language/constant_expression/">integer constant expression</a></td></tr>
+<tr><td><em>message</em></td><td>-</td><td>any <a href="/reference/c/language/string_literal/">string literal</a></td></tr>
+</table>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-until std-c23">(until C23)</span></p><p>This keyword is also available as convenience macro <a href="/reference/c/error/static_assert/"><code>static_assert</code></a>, available in the header <a href="/reference/c/error/"><code>&lt;assert.h&gt;</code></a>.</p></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>Both of <code>static_assert</code> and <code>_Static_assert</code> have the same effects. <code>_Static_assert</code> is a deprecated spelling that is kept for compatibility.</p>
+
+<p>An implementation may also define <code>static_assert</code> and/or <code>_Static_assert</code> as predefined macros, and <code>static_assert</code> is no longer provided by <a href="/reference/c/error/"><code>&lt;assert.h&gt;</code></a>.</p></aside>
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>The constant expression is evaluated at compile time and compared to zero. If it compares equal to zero, a compile-time error occurs and the compiler must display <em>message</em> as part of the error message (except that characters not in <a href="/reference/c/language/charset/">basic character set</a> are not required to be displayed)<span class="std std-until std-c23">(until C23)</span>should display <em>message</em> (if provided) as part of the error message<span class="std std-since std-c23">(since C23)</span>.</p>
+
+<p>Otherwise, if <em>expression</em> does not equal zero, nothing happens; no code is emitted.</p>
+
+<h3 id="Keywords">Keywords</h3>
+
+<p><a href="/reference/c/keyword/_Static_assert/"><code>_Static_assert</code></a>, <a href="/reference/c/keyword/static_assert/"><code>static_assert</code></a></p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <assert.h> // no longer needed since C23
+ 
+int main(void)
+{
+    // Test if math works, C23:
+    static_assert((2 + 2) % 3 == 1, "Whoa dude, you knew!");
+    // Pre-C23 alternative:
+    _Static_assert(2 + 2 * 2 == 6, "Lucky guess!?");
+ 
+    // This will produce an error at compile time.
+    // static_assert(sizeof(int) < sizeof(char), "Unmet condition!");
+ 
+    constexpr int _42 = 2 * 3 * 2 * 3 + 2 * 3;
+    static_assert(_42 == 42); // the message string can be omitted.
+ 
+    // const int _13 = 13;
+    // Compile time error - not an integer constant expression:
+    // static_assert(_13 == 13);
+}
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.11 Static assertions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.10 Static assertions (p: 105)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.2 Diagnostics &lt;assert.h&gt; (p: 135)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.10 Static assertions (p: 145)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.2 Diagnostics &lt;assert.h&gt; (p: 186-187)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/error/assert/">assert</a></td><td>aborts the program if the user-specified condition is not <code>true</code>. May be disabled for release builds   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/static_assert" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+<code>static_assert</code> declaration</td></tr>
+</table>

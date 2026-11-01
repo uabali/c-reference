@@ -1,0 +1,419 @@
+---
+title: "Null-terminated multibyte strings"
+slug: "c/string/multibyte"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/multibyte"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>A null-terminated multibyte string (NTMBS), or "multibyte string", is a sequence of nonzero bytes followed by a byte with value zero (the terminating null character).</p>
+
+<p>Each character stored in the string may occupy more than one byte. The encoding used to represent characters in a multibyte character string is locale-specific: it may be UTF-8, GB18030, EUC-JP, Shift-JIS, etc. For example, the char array <code>{&#x27;\xe4&#x27;,&#x27;\xbd&#x27;,&#x27;\xa0&#x27;,&#x27;\xe5&#x27;,&#x27;\xa5&#x27;,&#x27;\xbd&#x27;,&#x27;\0&#x27;}</code> is an NTMBS holding the string <code>&quot;你好&quot;</code> in UTF-8 multibyte encoding: the first three bytes encode the character 你, the next three bytes encode the character 好. The same string encoded in GB18030 is the char array <code>{&#x27;\xc4&#x27;, &#x27;\xe3&#x27;, &#x27;\xba&#x27;, &#x27;\xc3&#x27;, &#x27;\0&#x27;}</code>, where each of the two characters is encoded as a two-byte sequence.</p>
+
+<p>In some multibyte encodings, any given multibyte character sequence may represent different characters depending on the previous byte sequences, known as "shift sequences". Such encodings are known as state-dependent: knowledge of the current shift state is required to interpret each character. An NTMBS is only valid if it begins and ends in the initial shift state: if a shift sequence was used, the corresponding unshift sequence has to be present before the terminating null character. Examples of such encodings are BOCU-1 and <a href="https://www.unicode.org/reports/tr6" rel="noreferrer" target="_blank">SCSU</a>.</p>
+
+<p>A multibyte character string is layout-compatible with <a href="/reference/c/string/byte/">null-terminated byte string</a> (NTBS), that is, can be stored, copied, and examined using the same facilities, except for calculating the number of characters. If the correct locale is in effect, I/O functions also handle multibyte strings. Multibyte strings can be converted to and from wide strings using the following locale-dependent conversion functions:</p>
+
+<h3 id="Functions">Functions</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2">Multibyte/wide character conversions</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdlib.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/mblen/">mblen</a></td><td>returns the number of bytes in the next multibyte character   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/mbtowc/">mbtowc</a></td><td>converts the next multibyte character to wide character   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/wctomb/">wctomb<br />wctomb_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>converts a wide character to its multibyte representation   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/mbstowcs/">mbstowcs<br />mbstowcs_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>converts a narrow multibyte character string to wide string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/wcstombs/">wcstombs<br />wcstombs_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>converts a wide string to narrow multibyte character string   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;wchar.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/mbsinit/">mbsinit</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>checks if the mbstate_t object represents initial shift state   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/btowc/">btowc</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>widens a single-byte narrow character to wide character, if possible   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/wctob/">wctob</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>narrows a wide character to a single-byte narrow character, if possible   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/mbrlen/">mbrlen</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>returns the number of bytes in the next multibyte character, given state   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/mbrtowc/">mbrtowc</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>converts the next multibyte character to wide character, given state   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/wcrtomb/">wcrtomb<br />wcrtomb_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>converts a wide character to its multibyte representation, given state   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/mbsrtowcs/">mbsrtowcs<br />mbsrtowcs_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>converts a narrow multibyte character string to wide string, given state   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/wcsrtombs/">wcsrtombs<br />wcsrtombs_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>converts a wide string to narrow multibyte character string, given state   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;uchar.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/mbrtoc8/">mbrtoc8</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>converts a narrow multibyte character to UTF-8 encoding   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/c8rtomb/">c8rtomb</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>converts UTF-8 string to narrow multibyte encoding   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/mbrtoc16/">mbrtoc16</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>converts a narrow multibyte character to UTF-16 encoding   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/c16rtomb/">c16rtomb</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>converts a UTF-16 character to narrow multibyte encoding   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/mbrtoc32/">mbrtoc32</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>converts a narrow multibyte character to UTF-32 encoding   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/c32rtomb/">c32rtomb</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>converts a UTF-32 character to narrow multibyte encoding   <span class="mark-note">(function)</span></td></tr>
+</table>
+
+<h3 id="Types">Types</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;wchar.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/mbstate_t/">mbstate_t</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>conversion state information necessary to iterate multibyte character strings   <span class="mark-note">(class)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;uchar.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/char8_t/">char8_t</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>8-bit character type   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/char16_t/">char16_t</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>16-bit character type   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/char32_t/">char32_t</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>32-bit character type   <span class="mark-note">(typedef)</span></td></tr>
+</table>
+
+<h3 id="Macros">Macros</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;limits.h&gt;</code></td></tr>
+<tr><td>MB_LEN_MAX</td><td>maximum number of bytes in a multibyte character, for any supported locale   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdlib.h&gt;</code></td></tr>
+<tr><td>MB_CUR_MAX</td><td>maximum number of bytes in a multibyte character, in the current locale <span class="mark-note">(macro variable)</span></td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.10 Sizes of integer types &lt;limits.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 General utilities &lt;stdlib.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.28 Unicode utilities &lt;uchar.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.12 General utilities &lt;stdlib.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.16 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.6 General utilities &lt;stdlib.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.9 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.10 Sizes of integer types &lt;limits.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 General utilities &lt;stdlib.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.28 Unicode utilities &lt;uchar.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.12 General utilities &lt;stdlib.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.16 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.6 General utilities &lt;stdlib.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.9 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.10 Sizes of integer types &lt;limits.h&gt; (p: 222)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 General utilities &lt;stdlib.h&gt; (p: 340-360)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.28 Unicode utilities &lt;uchar.h&gt; (p: 398-401)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: 402-446)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.12 General utilities &lt;stdlib.h&gt; (p: 456)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.16 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: 456)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.6 General utilities &lt;stdlib.h&gt; (p: 604-614)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.9 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: 627-651)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.10 Sizes of integer types &lt;limits.h&gt; (p: 203)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20 General utilities &lt;stdlib.h&gt; (p: 306-324)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: 348-392)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.10 General utilities &lt;stdlib.h&gt; (p: 402)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.12 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: 402)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.1.4 Limits &lt;float.h&gt; and &lt;limits.h&gt;</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.10 GENERAL UTILITIES &lt;stdlib.h&gt;</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.13.7 General utilities &lt;stdlib.h&gt;</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/multibyte" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Null-terminated multibyte strings</td></tr>
+</table>

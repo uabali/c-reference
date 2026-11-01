@@ -1,0 +1,108 @@
+---
+title: "wctrans"
+slug: "c/string/wide/wctrans"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/wide/wctrans"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;wctype.h&gt;</code></p>
+
+```c
+wctrans_t wctrans( const char* str );
+```
+
+<p class="decl-note"><span class="std std-since std-c95">(since C95)</span></p>
+
+<p>Constructs a value of type wctrans_t that describes a <a href="/reference/c/locale/LC_categories/">LC_CTYPE</a> category of wide character mapping. It may be one of the standard mappings, or a locale-specific mapping, such as <code>&quot;tojhira&quot;</code> or <code>&quot;tojkata&quot;</code>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>str</td><td>-</td><td><p>C string holding the name of the desired mapping.</p>
+
+<p>The following values of <code>str</code> are supported in all C locales:</p>
+
+<table class="ref-table ref-dsc">
+<tr><td>Value of <code>str</code></td><td>Effect</td></tr>
+<tr><td><code>&quot;toupper&quot;</code></td><td>identifies the mapping used by <a href="/reference/c/string/wide/towupper/">towupper</a></td></tr>
+<tr><td><code>&quot;tolower&quot;</code></td><td>identifies the mapping used by <a href="/reference/c/string/wide/towlower/">towlower</a></td></tr>
+</table></td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>wctrans_t object suitable for use with <a href="/reference/c/string/wide/towctrans/">towctrans</a> to map wide characters according to the named mapping of the current C locale or zero if <code>str</code> does not name a mapping supported by the current C locale.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.30.3.2.2 The wctrans function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.30.3.2.2 The wctrans function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.30.3.2.2 The wctrans function (p: 454)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25.3.2,2 The wctrans function (p: 400)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/wide/towctrans/">towctrans</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>performs character mapping according to the specified LC_CTYPE mapping category   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/wide/wctrans" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+wctrans</td></tr>
+</table>

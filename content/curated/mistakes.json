@@ -1,0 +1,86 @@
+[
+  {
+    "title": "Returning the address of a local",
+    "why": "The local dies when the function returns. The caller holds a pointer to storage that is gone.",
+    "page": "c/language/storage_duration",
+    "wrong": "int *bad(void) {\n    int n = 1;\n    return &n;\n}\n",
+    "right": "\n#include <stdlib.h>\nint *good(void) {\n    int *n = malloc(sizeof *n);\n    if (n) *n = 1;\n    return n;\n}\nint main(void) {\n    int *p = good();\n    if (!p || *p != 1) return 1;\n    free(p);\n    return 0;\n}\n"
+  },
+  {
+    "title": "sizeof on a decayed parameter",
+    "why": "The parameter is a pointer. sizeof reports the pointer width, so a loop that trusts it walks the wrong number of bytes.",
+    "page": "c/language/array",
+    "wrong": "void fill(int a[8]) {\n    for (size_t i = 0; i < sizeof a / sizeof a[0]; i++) a[i] = 0;\n}\n",
+    "right": "\n#include <stdio.h>\nvoid fill(size_t n, int *a) {\n    for (size_t i = 0; i < n; i++) a[i] = 0;\n}\nint main(void) {\n    int a[4] = {1, 2, 3, 4};\n    fill(sizeof a / sizeof a[0], a);\n    return a[3] == 0 ? 0 : 1;\n}\n"
+  },
+  {
+    "title": "strcpy into a short buffer",
+    "why": "strcpy writes until the source zero, including that zero. A short destination overflows.",
+    "page": "c/string/byte/strcpy",
+    "wrong": "char buf[4];\nstrcpy(buf, \"hello\");\n",
+    "right": "\n#include <stdio.h>\nint main(void) {\n    char buf[4];\n    int n = snprintf(buf, sizeof buf, \"%s\", \"hello\");\n    return n == 5 && buf[0] == 'h' && buf[3] == '\\0' ? 0 : 1;\n}\n"
+  },
+  {
+    "title": "strcmp used as a boolean equality test",
+    "why": "strcmp returns 0 when the strings match. A bare if (strcmp(a, b)) is true when they differ.",
+    "page": "c/string/byte/strcmp",
+    "wrong": "if (strcmp(name, \"ok\")) {\n    /* runs when they are NOT equal */\n}\n",
+    "right": "\n#include <stdio.h>\n#include <string.h>\nint main(void) {\n    const char *name = \"ok\";\n    if (strcmp(name, \"ok\") == 0) {\n        puts(\"match\");\n        return 0;\n    }\n    return 1;\n}\n"
+  },
+  {
+    "title": "Overwriting the only realloc pointer",
+    "why": "If realloc fails it returns null and leaves the old block allocated. Assigning through the same variable loses it.",
+    "page": "c/memory/realloc",
+    "wrong": "p = realloc(p, bigger);\nif (!p) {\n    /* the old block is leaked */\n}\n",
+    "right": "\n#include <stdlib.h>\n#include <string.h>\nint main(void) {\n    char *p = malloc(4);\n    if (!p) return 1;\n    memcpy(p, \"ab\", 3);\n    char *next = realloc(p, 8);\n    if (!next) {\n        free(p);\n        return 1;\n    }\n    p = next;\n    int ok = p[0] == 'a';\n    free(p);\n    return ok ? 0 : 1;\n}\n"
+  },
+  {
+    "title": "Signed overflow as a wrap",
+    "why": "Signed overflow is undefined. The compiler may delete a check that would only be true if overflow had happened.",
+    "page": "c/numeric/ckd_add",
+    "wrong": "int saturating_add(int a, int b) {\n    int sum = a + b;\n    if (sum < a) return 2147483647;\n    return sum;\n}\n",
+    "right": "\n#include <stdckdint.h>\nint saturating_add(int a, int b, int *out) {\n    int sum = 0;\n    if (ckd_add(&sum, a, b)) return -1;\n    *out = sum;\n    return 0;\n}\nint main(void) {\n    int out = 0;\n    return saturating_add(2, 3, &out) == 0 && out == 5 ? 0 : 1;\n}\n"
+  },
+  {
+    "title": "Reading errno after success",
+    "why": "A successful library call is not required to clear errno. The value may belong to an earlier failure.",
+    "page": "c/error/errno",
+    "wrong": "FILE *fp = fopen(\"/\", \"r\");\n/* then, even if some later call succeeded */\nif (errno) perror(\"maybe unrelated\");\n",
+    "right": "\n#include <errno.h>\n#include <stdio.h>\nint main(void) {\n    FILE *fp = fopen(\"/no/such/file-c-ref\", \"r\");\n    if (!fp) {\n        return errno != 0 ? 0 : 1;\n    }\n    fclose(fp);\n    return 1;\n}\n"
+  },
+  {
+    "title": "A format string from the user",
+    "why": "printf interprets % in the format. User text belongs in an argument, not in the format.",
+    "page": "c/io/fprintf",
+    "wrong": "void show(const char *user) {\n    printf(user);\n}\n",
+    "right": "\n#include <stdio.h>\nvoid show(const char *user) {\n    printf(\"%s\\n\", user);\n}\nint main(void) {\n    show(\"100% done\");\n    return 0;\n}\n"
+  },
+  {
+    "title": "qsort comparator that subtracts",
+    "why": "INT_MAX - (-1) does not fit in int. The subtraction is signed overflow, which is undefined, and the sort becomes nonsense.",
+    "page": "c/algorithm/qsort",
+    "wrong": "int cmp(const void *x, const void *y) {\n    return *(const int *)x - *(const int *)y;\n}\n",
+    "right": "\n#include <stdlib.h>\nint cmp(const void *x, const void *y) {\n    int a = *(const int *)x;\n    int b = *(const int *)y;\n    return (a > b) - (a < b);\n}\nint main(void) {\n    int a[] = {3, 1, 2};\n    qsort(a, 3, sizeof *a, cmp);\n    return a[0] == 1 && a[2] == 3 ? 0 : 1;\n}\n"
+  },
+  {
+    "title": "free, then touch",
+    "why": "After free the pointer value is indeterminate. Comparing it or writing through it is undefined. Null your copy if you keep the variable.",
+    "page": "c/memory/free",
+    "wrong": "free(p);\nif (p) p->n = 0;\n",
+    "right": "\n#include <stdlib.h>\nstruct Node { int n; };\nint main(void) {\n    struct Node *p = malloc(sizeof *p);\n    if (!p) return 1;\n    p->n = 1;\n    free(p);\n    p = nullptr;\n    free(p);\n    return 0;\n}\n"
+  },
+  {
+    "title": "Missing void in an empty parameter list, the old way",
+    "why": "Before C23, int f(); meant unspecified parameters. A call with the wrong arguments was not a constraint violation.",
+    "page": "c/language/function_declaration",
+    "wrong": "int f();\nint main(void) { return f(1, 2); }\n",
+    "right": "\nint f(void) { return 1; }\nint main(void) { return f() == 1 ? 0 : 1; }\n"
+  },
+  {
+    "title": "Unsigned loop that never ends",
+    "why": "A size_t countdown of the form i >= 0 is always true, because an unsigned value cannot be negative.",
+    "page": "c/language/for",
+    "wrong": "for (size_t i = n; i >= 0; i--) {\n    use(i);\n}\n",
+    "right": "\n#include <stdio.h>\nint main(void) {\n    size_t n = 3;\n    size_t sum = 0;\n    for (size_t i = n; i-- > 0; ) sum += i;\n    printf(\"%zu\\n\", sum);\n    return sum == 3 ? 0 : 1;\n}\n"
+  }
+]

@@ -1,0 +1,47 @@
+---
+title: "Dynamic memory extensions"
+slug: "c/experimental/dynamic"
+category: "experimental"
+source: "https://en.cppreference.com/w/c/experimental/dynamic"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Extensions to the C Library Part II: Dynamic Allocation Functions, ISO/IEC TR 24731-2:2010, defines the following new components for the C standard library:</p>
+
+<table class="ref-table ref-dsc">
+<tr><td>__STDC_ALLOC_LIB__</td><td>integer constant of type <code>long</code> indicating conformance level   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdio.h&gt;</code></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/dynamic/fmemopen&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">fmemopen</a>
+
+<span class="std std-since std-other">(dynamic memory TR)</span></td><td>opens a fixed-size memory buffer as an I/O stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/dynamic/open_memstream&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">open_memstream<br />open_wmemstream</a>
+
+<span class="std std-since std-other">(dynamic memory TR)</span></td><td>opens a dynamically resized memory buffer as an I/O stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/experimental/dynamic/asprintf/">asprintf<br />aswprintf<br />vasprintf<br />vaswprintf</a>
+
+<span class="std std-since std-other">(dynamic memory TR)</span></td><td>variants of <a href="/reference/c/io/fprintf/">sprintf</a> etc that write to automatically-allocated buffer and return a pointer to it   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/experimental/dynamic/getline/">getline<br />getwline<br />getdelim<br />getwdelim</a>
+
+<span class="std std-since std-other">(dynamic memory TR)</span></td><td>read from a stream into an automatically resized buffer until delimiter/end of line   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;string.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/experimental/dynamic/strdup/">strdup</a>
+
+<span class="std std-since std-other">(dynamic memory TR)</span></td><td>allocate a copy of a string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/experimental/dynamic/strndup/">strndup</a>
+
+<span class="std std-since std-other">(dynamic memory TR)</span></td><td>allocate a copy of a string up to specified size   <span class="mark-note">(function)</span></td></tr>
+</table>
+
+<p>This library extension also introduces assignment-allocation character <code>m</code> for use with <code>%s</code>, <code>%[</code>, and <code>%c</code> conversion specifiers in <a href="/reference/c/io/fscanf/">fscanf</a> and <a href="/reference/c/io/fwscanf/">fwscanf</a> family of functions.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The functions <code>fmemopen</code>, <code>open_memstream</code>, <code>open_wmemstream</code>, <code>getdelim</code>, <code>getline</code>, <code>strdup</code>, <code>strndup</code>, and the extensions to <code>fscanf</code> are available in <a href="http://pubs.opengroup.org/onlinepubs/9699919799/" rel="noreferrer" target="_blank">POSIX (ISO/IEC 9945:2003)</a>.</p>
+
+<p>The functions <code>asprintf</code> and <code>vasprintf</code> are available in Linux Standard Base (ISO/IEC IS 23360:2006)</p>

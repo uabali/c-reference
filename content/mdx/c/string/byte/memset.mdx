@@ -1,0 +1,282 @@
+---
+title: "memset, memset_explicit, memset_s"
+slug: "c/string/byte/memset"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/byte/memset"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;string.h&gt;</code></p>
+
+```c
+void *memset( void *dest, int ch, size_t count );
+```
+
+<p class="decl-note">(1)</p>
+
+```c
+void *memset_explicit( void *dest, int ch, size_t count );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+errno_t memset_s( void *dest, rsize_t destsz, int ch, rsize_t count );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Copies the value <code>(unsigned char)ch</code> into each of the first <code>count</code> characters of the object pointed to by <code>dest</code>.</p>
+
+<p class="li-note">The behavior is undefined if access occurs beyond the end of the dest array. The behavior is undefined if <code>dest</code> is a null pointer.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Same as (1), except that is safe for sensitive information.</p>
+
+<div class="li-note"><span class="li-num">3)</span>
+
+<p>Same as</p>
+
+(1)
+
+<p>, except that the following errors are detected at runtime and call the currently installed</p>
+
+<a href="/reference/c/error/set_constraint_handler_s/">constraint handler</a>
+
+<p>function after storing</p>
+
+<code>ch</code>
+
+<p>in every location of the destination range</p>
+
+<code>[dest, dest+destsz)</code>
+
+<p>if</p>
+
+<code>dest</code>
+
+<p>and</p>
+
+<code>destsz</code>
+
+<p>are themselves valid:</p>
+
+<dl>
+<dd><ul>
+<li>
+<code>dest</code>
+
+<p>is a null pointer</p>
+</li>
+<li>
+<code>destsz</code>
+
+<p>or</p>
+
+<code>count</code>
+
+<p>is greater than</p>
+
+RSIZE_MAX
+</li>
+<li>
+<code>count</code>
+
+<p>is greater than</p>
+
+<code>destsz</code>
+
+<p>(buffer overflow would occur)</p>
+</li>
+</ul></dd>
+</dl></div>
+
+<div class="li-note"><p>The behavior is undefined if the size of the character array pointed to by</p>
+
+<code>dest</code>
+
+<p>&lt;</p>
+
+<code>count</code>
+
+<p>&lt;=</p>
+
+<code>destsz</code>
+
+<p>; in other words, an erroneous value of</p>
+
+<code>destsz</code>
+
+<p>does not expose the impending buffer overflow.</p>
+
+<dl>
+<dd><p>As with all bounds-checked functions,</p>
+
+<code>memset_s</code>
+
+<p>is only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<a href="/reference/c/string/byte/"><code>&lt;string.h&gt;</code></a>
+
+<p>.</p></dd>
+</dl></div>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>dest</td><td>-</td><td>pointer to the object to fill</td></tr>
+<tr><td>ch</td><td>-</td><td>fill byte</td></tr>
+<tr><td>count</td><td>-</td><td>number of bytes to fill</td></tr>
+<tr><td>destsz</td><td>-</td><td>size of the destination array</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p class="li-note"><span class="li-num">1,2)</span>  A copy of <code>dest</code></p>
+
+<p class="li-note"><span class="li-num">3)</span>  zero on success, non-zero on error. Also on error, if <code>dest</code> is not a null pointer and <code>destsz</code> is valid, writes <code>destsz</code> fill bytes <code>ch</code> to the destination array.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p><code>memset</code> may be optimized away (under the <a href="/reference/c/language/as_if/">as-if</a> rules) if the object modified by this function is not accessed again for the rest of its lifetime (e.g., <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=8537" rel="noreferrer" target="_blank">gcc bug 8537</a>). For that reason, this function cannot be used to scrub memory (e.g., to fill an array that stored a password with zeroes).</p>
+
+<p>This optimization is prohibited for <code>memset_explicit</code> and <code>memset_s</code>: they are guaranteed to perform the memory write.</p>
+
+<p>Third-party solutions for that include FreeBSD <a href="https://www.freebsd.org/cgi/man.cgi?query=explicit_bzero" rel="noreferrer" target="_blank"><code>explicit_bzero</code></a> or Microsoft <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa366877.aspx" rel="noreferrer" target="_blank"><code>SecureZeroMemory</code></a>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#define __STDC_WANT_LIB_EXT1__ 1
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+ 
+int main(void)
+{
+    char str[] = "ghghghghghghghghghghgh";
+    puts(str);
+    memset(str,'a',5);
+    puts(str);
+ 
+#ifdef __STDC_LIB_EXT1__
+    set_constraint_handler_s(ignore_handler_s);
+    int r = memset_s(str, sizeof str, 'b', 5);
+    printf("str = \"%s\", r = %d\n", str, r);
+    r = memset_s(str, 5, 'c', 10);   // count is greater than destsz  
+    printf("str = \"%s\", r = %d\n", str, r);
+#endif
+}
+```
+
+<p>Possible output:</p>
+
+```text
+ghghghghghghghghghghgh
+aaaaahghghghghghghghgh
+str = "bbbbbhghghghghghghghgh", r = 0
+str = "ccccchghghghghghghghgh", r = 22
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.6.1 The memset function (p: 270)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.7.4.1 The memset_s function (p: 451)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.6.1 The memset function (p: 371)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.7.4.1 The memset_s function (p: 621-622)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.6.1 The memset function (p: 333)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.11.6.1 The memset function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/byte/memcpy/">memcpy<br />memcpy_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>copies one buffer to another   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wmemset/">wmemset</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>copies the given wide character to every position in a wide character array   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/byte/memset" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+memset</td></tr>
+</table>

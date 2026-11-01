@@ -1,0 +1,68 @@
+---
+title: "char8_t"
+slug: "c/string/multibyte/char8_t"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/multibyte/char8_t"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;uchar.h&gt;</code></p>
+
+```c
+typedef unsigned char char8_t;
+```
+
+<p class="decl-note"><span class="std std-since std-c23">(since C23)</span></p>
+
+<p><code>char8_t</code> is an unsigned integer type used for UTF-8 and is the same type as <code>unsigned char</code>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <uchar.h>
+ 
+int main(void)
+{
+    char8_t str[] = u8"zß水🍌"; // or "z\u00df\u6c34\U0001f34c"
+    size_t str_sz = sizeof str; // sizeof *str == 1 by definition
+    printf("%zu UTF-8 code units: [ ", str_sz);
+    for (size_t n = 0; n < str_sz; ++n)
+        printf("%02X ", str[n]);
+    printf("]\n");
+}
+```
+
+<p>Possible output:</p>
+
+```text
+11 UTF-8 code units: [ 7A C3 9F E6 B0 B4 F0 9F 8D 8C 00 ]
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.30 Unicode utilities &lt;uchar.h&gt; (p: 410)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/types" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Fundamental types</td></tr>
+</table>

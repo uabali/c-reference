@@ -1,0 +1,352 @@
+---
+title: "Expressions"
+slug: "c/language/expressions"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/expressions"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>An expression is a sequence of <em>operators</em> and their <em>operands</em>, that specifies a computation.</p>
+
+<p>Expression evaluation may produce a result (e.g., evaluation of <code>2 + 2</code> produces the result <code>4</code>), may generate side-effects (e.g. evaluation of <code>printf(&quot;%d&quot;, 4)</code> sends the character <code>&#x27;4&#x27;</code> to the standard output stream), and may designate objects or functions.</p>
+
+<h4 id="General">General</h4>
+
+<ul>
+<li>
+<a href="/reference/c/language/value_category/">value categories</a>
+
+<p>(lvalue, non-lvalue object, function designator) classify expressions by their values</p>
+</li>
+<li>
+<a href="/reference/c/language/eval_order/">order of evaluation</a>
+
+<p>of arguments and subexpressions specifies the order in which intermediate results are obtained</p>
+</li>
+</ul>
+
+<h3 id="Operators">Operators</h3>
+
+<table class="ref-table">
+<tr><th colspan="7">Common operators</th></tr>
+<tr><td><a href="/reference/c/language/operator_assignment/">assignment</a></td><td><a href="/reference/c/language/operator_incdec/">increment decrement</a></td><td><a href="/reference/c/language/operator_arithmetic/">arithmetic</a></td><td><a href="/reference/c/language/operator_logical/">logical</a></td><td><a href="/reference/c/language/operator_comparison/">comparison</a></td><td><a href="/reference/c/language/operator_member_access/">member access</a></td><td><a href="/reference/c/language/operator_other/">other</a></td></tr>
+<tr><td><p><code>a = b a += b a -= b a *= b a /= b a %= b a &amp;= b a |= b a ^= b a &lt;&lt;= b a &gt;&gt;= b</code></p></td><td><p><code>++a --a a++ a--</code></p></td><td><p><code>+a -a a + b a - b a * b a / b a % b ~a a &amp; b a | b a ^ b a &lt;&lt; b a &gt;&gt; b</code></p></td><td><p><code>!a a &amp;&amp; b a || b</code></p></td><td><p><code>a == b a != b a &lt; b a &gt; b a &lt;= b a &gt;= b</code></p></td><td><p><code>a[b] *a &amp;a a-&gt;b a.b</code></p></td><td><p><code>a(...) a, b (type) a a ? b : c sizeof</code>   <code>_Alignof</code> <span class="std std-since std-c11">(since C11)</span> <span class="std std-until std-c23">(until C23)</span>   <code>alignof</code> <span class="std std-since std-c23">(since C23)</span></p></td></tr>
+</table>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_precedence/">operator precedence</a>
+
+<p>defines the order in which operators are bound to their arguments</p>
+</li>
+<li>
+<a href="/reference/c/language/operator_alternative/">alternative representations</a>
+
+<p>are alternative spellings for some operators</p>
+</li>
+</ul>
+
+<h4 id="Conversions">Conversions</h4>
+
+<ul>
+<li>
+<a href="/reference/c/language/conversion/">Implicit conversions</a>
+
+<p>take place when types of operands do not match the expectations of operators</p>
+</li>
+<li>
+<a href="/reference/c/language/cast/">Casts</a>
+
+<p>may be used to explicitly convert values from one type to another.</p>
+</li>
+</ul>
+
+<h4 id="Other">Other</h4>
+
+<ul>
+<li>
+<a href="/reference/c/language/constant_expression/">constant expressions</a>
+
+<p>can be evaluated at compile time and used in compile-time context (</p>
+
+non-VLA<span class="std std-since std-c99">(since C99)</span>
+
+<p>array sizes, static initializers, etc)</p>
+</li>
+</ul>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><ul>
+<li>
+<a href="/reference/c/language/generic/">generic selections</a>
+
+<p>can execute different expressions depending on the types of the arguments</p>
+</li>
+</ul></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><ul>
+<li>
+<p>Floating-point arithmetic may raise exceptions and report errors as specified in</p>
+
+<a href="/reference/c/numeric/math/math_errhandling/"><code>math_errhandling</code></a>
+</li>
+<li>
+<p>The standard</p>
+
+<a href="/reference/c/preprocessor/impl/">#pragmas</a>
+
+<code>FENV_ACCESS</code>
+
+<p>,</p>
+
+<code>FP_CONTRACT</code>
+
+<p>, and</p>
+
+<code>CX_LIMITED_RANGE</code>
+
+<p>as well as the</p>
+
+<a href="/reference/c/types/limits/FLT_EVAL_METHOD/">floating-point evaluation precision</a>
+
+<p>and</p>
+
+<a href="/reference/c/numeric/fenv/FE_round/">rounding direction</a>
+
+<p>control the way floating-point arithmetic are executed.</p>
+</li>
+</ul></aside>
+
+<h3 id="Primary_expressions">Primary expressions</h3>
+
+<p>The operands of any operator may be other expressions or they may be <em>primary expressions</em> (e.g. in <code>1 + 2 * 3</code>, the operands of operator+ are the subexpression <code>2 * 3</code> and the primary expression <code>1</code>).</p>
+
+<p>Primary expressions are any of the following:</p>
+
+<p class="li-note"><span class="li-num">1)</span>  Constants and literals (e.g. <code>2</code> or <code>&quot;Hello, world&quot;</code>)</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Suitably declared <a href="/reference/c/language/identifier/">identifiers</a> (e.g. <code>n</code> or <code>printf</code>)</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><p class="li-note"><span class="li-num">3)</span>  <a href="/reference/c/language/generic/">Generic selections</a></p></aside>
+
+<p>Any expression in parentheses is also classified as a primary expression: this guarantees that the parentheses have higher precedence than any operator.</p>
+
+<h4 id="Constants_and_literals">Constants and literals</h4>
+
+<p>Constant values of certain types may be embedded in the source code of a C program using specialized expressions known as literals (for lvalue expressions) and constants (for non-lvalue expressions)</p>
+
+<ul>
+<li>
+<a href="/reference/c/language/integer_constant/">integer constants</a>
+
+<p>are decimal, octal, or hexadecimal numbers of integer type.</p>
+</li>
+<li>
+<a href="/reference/c/language/character_constant/">character constants</a>
+
+<p>are individual characters of type</p>
+
+<code>int</code>
+
+<p>suitable for conversion to a character type or of type</p>
+
+<code>char8_t</code>,<span class="std std-since std-c23">(since C23)</span>
+
+<code>char16_t</code>, <code>char32_t</code>, or<span class="std std-since std-c11">(since C11)</span>
+
+<code>wchar_t</code>
+</li>
+<li>
+<a href="/reference/c/language/floating_constant/">floating constants</a>
+
+<p>are values of type</p>
+
+<code>float</code>
+
+<p>,</p>
+
+<code>double</code>
+
+<p>, or</p>
+
+<code>long double</code>
+</li>
+</ul>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><ul>
+<li>
+<p>predefined constants</p>
+
+<a href="/reference/c/language/bool_constant/"><code>true</code>/<code>false</code></a>
+
+<p>are values of type</p>
+
+<code>bool</code>
+</li>
+<li>
+<p>predefined constant</p>
+
+<a href="/reference/c/language/nullptr/"><code>nullptr</code></a>
+
+<p>is a value of type</p>
+
+<a href="/reference/c/types/nullptr_t/">nullptr_t</a>
+</li>
+</ul></aside>
+
+<ul>
+<li>
+<a href="/reference/c/language/string_literal/">string literals</a>
+
+<p>are sequences of characters of type</p>
+
+<code>char[]</code>
+
+, <code>char8_t[]</code><span class="std std-since std-c23">(since C23)</span>
+
+, <code>char16_t[]</code>, <code>char32_t[]</code>,<span class="std std-since std-c11">(since C11)</span>
+
+<p>or</p>
+
+<code>wchar_t[]</code>
+
+<p>that represent null-terminated strings</p>
+</li>
+</ul>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><ul>
+<li>
+<a href="/reference/c/language/compound_literal/">compound literals</a>
+
+<p>are values of struct, union, or array type directly embedded in program code</p>
+</li>
+</ul></aside>
+
+<h3 id="Unevaluated_expressions">Unevaluated expressions</h3>
+
+<p>The operands of the <a href="/reference/c/language/sizeof/"><code>sizeof</code> operator</a> are expressions that are not evaluated (unless they are VLAs)<span class="std std-since std-c99">(since C99)</span>. Thus, <code>size_t n = sizeof(printf(&quot;%d&quot;, 4));</code> does not perform console output.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><p>The operands of the <a href="/reference/c/language/alignof/"><code>_Alignof</code></a><span class="std std-until std-c23">(until C23)</span><a href="/reference/c/language/alignof/"><code>alignof</code></a><span class="std std-since std-c23">(since C23)</span> operator, the controlling expression of a <a href="/reference/c/language/generic/">generic selection</a>, and size expressions of VLAs that are operands of <code>_Alignof</code><span class="std std-until std-c23">(until C23)</span><code>alignof</code><span class="std std-since std-c23">(since C23)</span> are also expressions that are not evaluated.</p></aside>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5 Expressions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.6 Constant expressions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5 Expressions (p: 55-75)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.6 Constant expressions (p: 76-77)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5 Expressions (p: 76-105)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.6 Constant expressions (p: 106-107)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5 Expressions (p: 67-94)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.6 Constant expressions (p: 95-96)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.3 EXPRESSIONS</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.4 CONSTANT EXPRESSIONS</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/expressions" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Expressions</td></tr>
+</table>

@@ -1,0 +1,316 @@
+---
+title: "ldexp, ldexpf, ldexpl"
+slug: "c/numeric/math/ldexp"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/ldexp"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+float       ldexpf( float arg, int exp );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+double      ldexp( double arg, int exp );
+```
+
+<p class="decl-note">(2)</p>
+
+```c
+long double ldexpl( long double arg, int exp );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;tgmath.h&gt;</code></p>
+
+```c
+#define ldexp( arg, exp )
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="li-note"><span class="li-num">1-3)</span>  Multiplies a floating-point value <code>arg</code> by the number <code>2</code> raised to the <code>exp</code> power.</p>
+
+<p class="li-note"><span class="li-num">4)</span>  Type-generic macro: If <code>arg</code> has type <code>long double</code>, <code>ldexpl</code> is called. Otherwise, if <code>arg</code> has integer type or the type <code>double</code>, <code>ldexp</code> is called. Otherwise, <code>ldexpf</code> is called, respectively.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>arg</td><td>-</td><td>floating-point value</td></tr>
+<tr><td>exp</td><td>-</td><td>integer value</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>If no errors occur, <code>arg</code> multiplied by 2 to the power of <code>exp</code> (arg×2exp ) is returned.</p>
+
+<p>If a range error due to overflow occurs, <a href="/reference/c/numeric/math/HUGE_VAL/">±HUGE_VAL</a>, <code>±HUGE_VALF</code>, or <code>±HUGE_VALL</code> is returned.</p>
+
+<p>If a range error due to underflow occurs, the correct result (after rounding) is returned.</p>
+
+<h3 id="Error_handling">Error handling</h3>
+
+<p>Errors are reported as specified in <a href="/reference/c/numeric/math/math_errhandling/"><code>math_errhandling</code></a>.</p>
+
+<p>If the implementation supports IEEE floating-point arithmetic (IEC 60559),</p>
+
+<ul>
+<li>
+<p>Unless a range error occurs,</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INEXACT</a>
+
+<p>is never raised (the result is exact)</p>
+</li>
+<li>
+<p>Unless a range error occurs, the</p>
+
+<a href="/reference/c/numeric/fenv/FE_round/">current rounding mode</a>
+
+<p>is ignored</p>
+</li>
+<li>
+<p>If</p>
+
+<code>arg</code>
+
+<p>is ±0, it is returned, unmodified</p>
+</li>
+<li>
+<p>If</p>
+
+<code>arg</code>
+
+<p>is ±∞, it is returned, unmodified</p>
+</li>
+<li>
+<p>If</p>
+
+<code>exp</code>
+
+<p>is 0, then</p>
+
+<code>arg</code>
+
+<p>is returned, unmodified</p>
+</li>
+<li>
+<p>If</p>
+
+<code>arg</code>
+
+<p>is NaN, NaN is returned.</p>
+</li>
+</ul>
+
+<h3 id="Notes">Notes</h3>
+
+<p>On binary systems (where <a href="/reference/c/types/limits/">FLT_RADIX</a> is <code>2</code>), <code>ldexp</code> is equivalent to <a href="/reference/c/numeric/math/scalbn/">scalbn</a>.</p>
+
+<p>The function <code>ldexp</code> ("load exponent"), together with its dual, <a href="/reference/c/numeric/math/frexp/">frexp</a>, can be used to manipulate the representation of a floating-point number without direct bit manipulations.</p>
+
+<p>On many implementations, <code>ldexp</code> is less efficient than multiplication or division by a power of two using arithmetic operators.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <errno.h>
+#include <fenv.h>
+#include <float.h>
+#include <math.h>
+#include <stdio.h>
+// #pragma STDC FENV_ACCESS ON
+ 
+int main(void)
+{
+    printf("ldexp(7, -4) = %f\n", ldexp(7, -4));
+    printf("ldexp(1, -1074) = %g (minimum positive subnormal double)\n",
+            ldexp(1, -1074));
+    printf("ldexp(nextafter(1,0), 1024) = %g (largest finite double)\n",
+            ldexp(nextafter(1,0), 1024));
+ 
+    // special values
+    printf("ldexp(-0, 10) = %f\n", ldexp(-0.0, 10));
+    printf("ldexp(-Inf, -1) = %f\n", ldexp(-INFINITY, -1));
+ 
+    // error handling
+    errno = 0; feclearexcept(FE_ALL_EXCEPT);
+    printf("ldexp(1, 1024) = %f\n", ldexp(1, 1024));
+    if (errno == ERANGE)
+        perror("    errno == ERANGE");
+    if (fetestexcept(FE_OVERFLOW))
+        puts("    FE_OVERFLOW raised");
+}
+```
+
+<p>Possible output:</p>
+
+```text
+ldexp(7, -4) = 0.437500
+ldexp(1, -1074) = 4.94066e-324 (minimum positive subnormal double)
+ldexp(nextafter(1,0), 1024) = 1.79769e+308 (largest finite double)
+ldexp(-0, 10) = -0.000000
+ldexp(-Inf, -1) = -inf
+ldexp(1, 1024) = inf
+    errno == ERANGE: Numerical result out of range
+    FE_OVERFLOW raised
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.6.6 The ldexp functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.3.6 The ldexp functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.6.6 The ldexp functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.3.6 The ldexp functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.6.6 The ldexp functions (p: 244)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 373-375)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.3.6 The ldexp functions (p: 522)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.6.6 The ldexp functions (p: 225)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 Type-generic math &lt;tgmath.h&gt; (p: 335-337)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.9.3.6 The ldexp functions (p: 459)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.5.4.3 The ldexp function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/frexp/">frexp<br />frexpf<br />frexpl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>breaks a number into significand and a power of 2   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/scalbn/">scalbn<br />scalbnf<br />scalbnl<br />scalbln<br />scalblnf<br />scalblnl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes efficiently a number times <a href="/reference/c/types/limits/">FLT_RADIX</a> raised to a power   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/ldexp" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+ldexp</td></tr>
+</table>

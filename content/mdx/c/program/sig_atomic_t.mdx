@@ -1,0 +1,119 @@
+---
+title: "sig_atomic_t"
+slug: "c/program/sig_atomic_t"
+category: "program"
+source: "https://en.cppreference.com/w/c/program/sig_atomic_t"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;signal.h&gt;</code></p>
+
+```c
+typedef /* unspecified */ sig_atomic_t;
+```
+
+<p>An integer type which can be accessed as an atomic entity even in the presence of asynchronous interrupts made by signals.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <signal.h>
+#include <stdio.h>
+ 
+volatile sig_atomic_t gSignalStatus = 0;
+ 
+void signal_handler(int status)
+{
+    gSignalStatus = status;
+}
+ 
+int main(void)
+{
+    /* Install a signal handler. */
+    signal(SIGINT, signal_handler);
+ 
+    printf("SignalValue:    %d\n", gSignalStatus);
+    printf("Sending signal: %d\n", SIGINT);
+    raise(SIGINT);
+    printf("SignalValue:    %d\n", gSignalStatus);
+}
+```
+
+<p>Possible output:</p>
+
+```text
+SignalValue:    0
+Sending signal: 2
+SignalValue:    2
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.14/2 Signal handling &lt;signal.h&gt; (p: 194-195)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.14/2 Signal handling &lt;signal.h&gt; (p: 265)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.14/2 Signal handling &lt;signal.h&gt; (p: 246)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.7 SIGNAL HANDLING &lt;signal.h&gt;</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/program/signal/">signal</a></td><td>sets a signal handler for particular signal   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/utility/program/sig_atomic_t" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+sig_atomic_t</td></tr>
+</table>

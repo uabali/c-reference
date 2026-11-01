@@ -1,0 +1,177 @@
+---
+title: "HUGE_VALF, HUGE_VAL, HUGE_VALL"
+slug: "c/numeric/math/HUGE_VAL"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/HUGE_VAL"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+#define HUGE_VALF /*implementation defined*/
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+#define HUGE_VAL  /*implementation defined*/
+```
+
+```c
+#define HUGE_VALL /*implementation defined*/
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>The <code>HUGE_VALF</code>, <code>HUGE_VAL</code> and <code>HUGE_VALL</code> macros expand to positive floating-point constant expressions which compare equal to the values returned by floating-point functions and operators in case of overflow (see <a href="/reference/c/numeric/math/math_errhandling/"><code>math_errhandling</code></a>).</p>
+
+<table class="ref-table ref-dsc">
+<tr><td>Constant</td><td>Explanation</td></tr>
+<tr><td><code>HUGE_VALF</code></td><td>Expands to positive <code>float</code> expression that indicates overflow</td></tr>
+<tr><td><code>HUGE_VAL</code></td><td>Expands to positive <code>double</code> expression that indicates overflow, not necessarily representable as a <code>float</code></td></tr>
+<tr><td><code>HUGE_VALL</code></td><td>Expands to positive <code>long double</code> expression that indicates overflow, not necessarily representable as a <code>float</code> or <code>double</code></td></tr>
+</table>
+
+<p>On implementations that support floating-point infinities, these macros always expand to the positive infinities of <code>float</code>, <code>double</code>, and <code>long double</code>, respectively.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <math.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    const double result = 1.0 / 0.0;
+    printf("1.0/0.0 == %f\n", result);
+    if (result == HUGE_VAL)
+        puts("1.0/0.0 == HUGE_VAL");
+}
+```
+
+<p>Possible output:</p>
+
+```text
+1.0/0.0 == inf
+1.0/0.0 == HUGE_VAL
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12/3 HUGE_VAL, HUGE_VALF, HUGE_VALL (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10/2 HUGE_VAL, HUGE_VALF, HUGE_VALL (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12/3 HUGE_VAL, HUGE_VALF, HUGE_VALL (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10/2 HUGE_VAL, HUGE_VALF, HUGE_VALL (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12/3 HUGE_VAL, HUGE_VALF, HUGE_VALL (p: 231)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10/2 HUGE_VAL, HUGE_VALF, HUGE_VALL (p: 517)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12/3 HUGE_VAL, HUGE_VALF, HUGE_VALL (p: 212)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.9/2 HUGE_VAL, HUGE_VALF, HUGE_VALL (p: 454)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.5 HUGE_VAL</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/INFINITY/">INFINITY</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>evaluates to positive infinity or the value guaranteed to overflow a <code>float</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/HUGE_VAL" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+HUGE_VAL</td></tr>
+</table>

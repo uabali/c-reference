@@ -1,0 +1,154 @@
+---
+title: "isnan"
+slug: "c/numeric/math/isnan"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/isnan"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+#define isnan(arg) /* implementation defined */
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>Determines if the given floating-point number <code>arg</code> is a not-a-number (NaN) value. The macro returns an integral value.</p>
+
+<p><a href="/reference/c/types/limits/FLT_EVAL_METHOD/">FLT_EVAL_METHOD</a> is ignored: even if the argument is evaluated with more range and precision than its type, it is first converted to its semantic type, and the classification is based on that (this matters if the evaluation type supports NaNs, while the semantic type does not).</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>arg</td><td>-</td><td>floating-point value</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Nonzero integral value if <code>arg</code> is a NaN, <code>0</code> otherwise.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>There are many different NaN values with different sign bits and payloads, see <a href="/reference/c/numeric/math/nan.2/">nan</a>.</p>
+
+<p>NaN values never compare equal to themselves or to other NaN values. Copying a NaN may change its bit pattern.</p>
+
+<p>Another way to test if a floating-point value is NaN is to compare it with itself: <code>bool is_nan(double x) { return x != x; }</code></p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <float.h>
+#include <math.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    printf("isnan(NAN)         = %d\n", isnan(NAN));
+    printf("isnan(INFINITY)    = %d\n", isnan(INFINITY));
+    printf("isnan(0.0)         = %d\n", isnan(0.0));
+    printf("isnan(DBL_MIN/2.0) = %d\n", isnan(DBL_MIN / 2.0));
+    printf("isnan(0.0 / 0.0)   = %d\n", isnan(0.0 / 0.0));
+    printf("isnan(Inf - Inf)   = %d\n", isnan(INFINITY - INFINITY));
+}
+```
+
+<p>Possible output:</p>
+
+```text
+isnan(NAN)         = 1
+isnan(INFINITY)    = 0
+isnan(0.0)         = 0
+isnan(DBL_MIN/2.0) = 0
+isnan(0.0 / 0.0)   = 1
+isnan(Inf - Inf)   = 1
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.3.4 The isnan macro (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.3.4 The isnan macro (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.3.4 The isnan macro (p: 236-237)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.3.4 The isnan macro (p: 217)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/nan.2/">nan<br />nanf<br />nanl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>returns a NaN (not-a-number)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/fpclassify/">fpclassify</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>classifies the given floating-point value   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/isfinite/">isfinite</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if the given number has finite value   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/isinf/">isinf</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if the given number is infinite   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/isnormal/">isnormal</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if the given number is normal   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/isunordered/">isunordered</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if two floating-point values are unordered   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/isnan" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+isnan</td></tr>
+</table>

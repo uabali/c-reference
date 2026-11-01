@@ -1,0 +1,337 @@
+---
+title: "Program support utilities"
+slug: "c/program"
+category: "overview"
+source: "https://en.cppreference.com/w/c/program"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<h3 id="Program_termination">Program termination</h3>
+
+<p>The following functions manage program termination and resources cleanup.</p>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdlib.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/program/abort/">abort</a></td><td>causes abnormal program termination (without cleaning up)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/program/exit/">exit</a></td><td>causes normal program termination with cleaning up   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/program/quick_exit/">quick_exit</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>causes normal program termination without completely cleaning up   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/program/_Exit/">_Exit</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>causes normal program termination without cleaning up   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/program/atexit/">atexit</a></td><td>registers a function to be called on <a href="/reference/c/program/exit/">exit()</a> invocation   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/program/at_quick_exit/">at_quick_exit</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>registers a function to be called on <a href="/reference/c/program/quick_exit/"><code>quick_exit</code></a> invocation   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/program/EXIT_status/">EXIT_SUCCESS<br />EXIT_FAILURE</a></td><td>indicates program execution execution status   <span class="mark-note">(macro constant)</span></td></tr>
+</table>
+
+<h3 id="Unreachable_control_flow">Unreachable control flow</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stddef.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/program/unreachable/">unreachable</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>marks unreachable point of execution   <span class="mark-note">(function macro)</span></td></tr>
+</table>
+
+<h3 id="Communicating_with_the_environment">Communicating with the environment</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdlib.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/program/system/">system</a></td><td>calls the host environment's command processor   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/program/getenv/">getenv<br />getenv_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>access to the list of environment variables   <span class="mark-note">(function)</span></td></tr>
+</table>
+
+<h3 id="Memory_alignment_query">Memory alignment query</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdlib.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/program/memalignment/">memalignment</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>queries the alignment of a pointer value   <span class="mark-note">(function)</span></td></tr>
+</table>
+
+<h3 id="Signals">Signals</h3>
+
+<p>Several functions and macro constants for signal management are provided.</p>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;signal.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/program/signal/">signal</a></td><td>sets a signal handler for particular signal   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/program/raise/">raise</a></td><td>runs the signal handler for particular signal   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/program/sig_atomic_t/">sig_atomic_t</a></td><td>the integer type that can be accessed as an atomic entity from an asynchronous signal handler   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td><a href="/reference/c/program/SIG_strategies/">SIG_DFL<br />SIG_IGN</a></td><td>defines signal handling strategies   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td><a href="/reference/c/program/SIG_ERR/">SIG_ERR</a></td><td>error was encountered   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2">Signal types</td></tr>
+<tr><td><a href="/reference/c/program/SIG_types/">SIGABRT<br />SIGFPE<br />SIGILL<br />SIGINT<br />SIGSEGV<br />SIGTERM</a></td><td>defines signal types   <span class="mark-note">(macro constant)</span></td></tr>
+</table>
+
+<h3 id="Non-local_jumps">Non-local jumps</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;setjmp.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/program/setjmp/">setjmp</a></td><td>saves the context   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/program/longjmp/">longjmp</a></td><td>jumps to specified location   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Types</td></tr>
+<tr><td><a href="/reference/c/program/jmp_buf/">jmp_buf</a></td><td>execution context type   <span class="mark-note">(typedef)</span></td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.13 Non-local jumps &lt;setjmp.h&gt; (p: 283-284)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.14 Signal handling &lt;signal.h&gt; (p: 285-287)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24 General utilities &lt;stdlib.h&gt; (p: 356-374)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.33.9 Signal handling &lt;signal.h&gt; (p: 458)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.33.16 General utilities &lt;stdlib.h&gt; (p: 458)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.13 Nonlocal jumps &lt;setjmp.h&gt; (p: 191-192)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.14 Signal handling &lt;signal.h&gt; (p: 193-195)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 General utilities &lt;stdlib.h&gt; (p: 248-262)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.7 Signal handling &lt;signal.h&gt; (p: 332)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.12 General utilities &lt;stdlib.h&gt; (p: 333)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.13 Nonlocal jumps &lt;setjmp.h&gt; (p: 262-264)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.14 Signal handling &lt;signal.h&gt; (p: 265-267)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 General utilities &lt;stdlib.h&gt; (p: 340-360)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.7 Signal handling &lt;signal.h&gt; (p: 455)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.12 General utilities &lt;stdlib.h&gt; (p: 456)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.13 Nonlocal jumps &lt;setjmp.h&gt; (p: 243-245)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.14 Signal handling &lt;signal.h&gt; (p: 246-248)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20 General utilities &lt;stdlib.h&gt; (p: 306-324)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.6 Signal handling &lt;signal.h&gt; (p: 401)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.10 General utilities &lt;stdlib.h&gt; (p: 402)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.6 NON-LOCAL JUMPS &lt;setjmp.h&gt;</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.7 SIGNAL HANDLING &lt;signal.h&gt;</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.10 GENERAL UTILITIES &lt;stdlib.h&gt;</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.13.5 Signal handling &lt;signal.h&gt;</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.13.7 General utilities &lt;stdlib.h&gt;</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/utility/program" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Program support utilities</td></tr>
+</table>

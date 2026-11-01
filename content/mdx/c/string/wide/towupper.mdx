@@ -1,0 +1,103 @@
+---
+title: "towupper"
+slug: "c/string/wide/towupper"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/wide/towupper"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;wctype.h&gt;</code></p>
+
+```c
+wint_t towupper( wint_t wc );
+```
+
+<p class="decl-note"><span class="std std-since std-c95">(since C95)</span></p>
+
+<p>Converts the given wide character to uppercase, if possible.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>wc</td><td>-</td><td>wide character to be converted</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Uppercase version of <code>wc</code> or unmodified <code>wc</code> if no uppercase version is listed in the current C locale.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Only 1:1 character mapping can be performed by this function, e.g. the uppercase form of 'ß' is (with some exceptions) the two-character string "SS", which cannot be obtained by <code>towupper</code>.</p>
+
+<p><a href="http://www.open-std.org/JTC1/SC35/WG5/docs/30112d10.pdf" rel="noreferrer" target="_blank">ISO 30112</a> specifies which pairs of Unicode characters are included in this mapping.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <wchar.h>
+#include <wctype.h>
+#include <locale.h>
+ 
+int main(void)
+{
+    wchar_t wc =  L'\u017f'; // Latin small letter Long S ('ſ')
+    printf("in the default locale, towupper(%#x) = %#x\n", wc, towupper(wc));
+    setlocale(LC_ALL, "en_US.utf8");
+    printf("in Unicode locale, towupper(%#x) = %#x\n", wc, towupper(wc));
+}
+```
+
+<p>Output:</p>
+
+```text
+in the default locale, towupper(0x17f) = 0x17f
+in Unicode locale, towupper(0x17f) = 0x53
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.30.3.1.2 The towupper function (p: 453)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25.3.1.2 The towupper function (p: 399)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/wide/towlower/">towlower</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>converts a wide character to lowercase   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/toupper/">toupper</a></td><td>converts a character to uppercase   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/wide/towupper" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+towupper</td></tr>
+</table></section>

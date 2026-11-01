@@ -1,0 +1,296 @@
+---
+title: "fabs, fabsf, fabsl, fabsd32, fabsd64, fabsd128"
+slug: "c/numeric/math/fabs"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/fabs"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+float       fabsf( float arg );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+double      fabs( double arg );
+```
+
+<p class="decl-note">(2)</p>
+
+```c
+long double fabsl( long double arg );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+_Decimal32  fabsd32( _Decimal32 arg );
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+_Decimal64  fabsd64( _Decimal64 arg );
+```
+
+<p class="decl-note">(5) <span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+_Decimal128 fabsd128( _Decimal128 arg );
+```
+
+<p class="decl-note">(6) <span class="std std-since std-c23">(since C23)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;tgmath.h&gt;</code></p>
+
+```c
+#define fabs( arith )
+```
+
+<p class="decl-note">(7) <span class="std std-since std-c99">(since C99)</span></p>
+
+<div class="li-note"><span class="li-num">1-6)</span>
+
+<p>Computes the absolute value of a floating-point value</p>
+
+<code>arg</code>
+
+<p>.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>The functions with decimal floating-point parameters are declared if and only if the implementation predefines <code>__STDC_IEC_60559_DFP__</code> (i.e. the implementation supports decimal floating-point numbers).</p></aside></div>
+
+<p class="li-note"><span class="li-num">7)</span>  Type-generic macro: If the argument has type <code>_Decimal128</code>, <code>_Decimal64</code>, <code>_Decimal32</code>,<span class="std std-since std-c23">(since C23)</span><code>long double</code>, <code>double</code>, or <code>float</code>, <code>fabsd128</code>, <code>fabsd64</code>, <code>fabsd32</code>,<span class="std std-since std-c23">(since C23)</span><code>fabsl</code>, <code>fabs</code>, or <code>fabsf</code> is called, respectively. Otherwise, if the argument has integer type, <code>fabs</code> is called. Otherwise, if the argument is complex, then the macro invokes the corresponding complex function (<a href="/reference/c/numeric/complex/cabs/">cabsf</a>, <a href="/reference/c/numeric/complex/cabs/">cabs</a>, <a href="/reference/c/numeric/complex/cabs/">cabsl</a>). Otherwise, the behavior is undefined.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>arg</td><td>-</td><td>floating-point value</td></tr>
+<tr><td>arith</td><td>-</td><td>floating-point or integer value</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>If successful, returns the absolute value of <code>arg</code> (\(\small |arg| \)|arg|). The value returned is exact and does not depend on any rounding modes.</p>
+
+<h3 id="Error_handling">Error handling</h3>
+
+<p>This function is not subject to any of the error conditions specified in <a href="/reference/c/numeric/math/math_errhandling/"><code>math_errhandling</code></a>.</p>
+
+<p>If the implementation supports IEEE floating-point arithmetic (IEC 60559),</p>
+
+<ul>
+<li>
+<p>If the argument is ±0, +0 is returned.</p>
+</li>
+<li>
+<p>If the argument is ±∞, +∞ is returned.</p>
+</li>
+<li>
+<p>If the argument is NaN, NaN is returned.</p>
+</li>
+</ul>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <math.h>
+#include <stdio.h>
+ 
+#define PI 3.14159
+ 
+// This numerical integration assumes all area is positive.
+double integrate(double f(double),
+                 double a, double b, // assume a < b
+                 unsigned steps) // assume steps > 0
+{
+    const double dx = (b - a) / steps;
+    double sum = 0.0;
+    for (double x = a; x < b; x += dx)
+        sum += fabs(f(x));
+    return dx * sum;
+}
+ 
+int main(void)
+{
+    printf("fabs(+3) = %f\n", fabs(+3.0));
+    printf("fabs(-3) = %f\n", fabs(-3.0));
+    // special values
+    printf("fabs(-0) = %f\n", fabs(-0.0));
+    printf("fabs(-Inf) = %f\n", fabs(-INFINITY));
+ 
+    printf("Area under sin(x) in [-PI, PI] = %f\n", integrate(sin, -PI, PI, 5101));
+}
+```
+
+<p>Output:</p>
+
+```text
+fabs(+3) = 3.000000
+fabs(-3) = 3.000000
+fabs(-0) = 0.000000
+fabs(-Inf) = inf
+Area under sin(x) in [-PI, PI] = 4.000000
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.7.2 The fabs functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.4.2 The fabs functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.7.2 The fabs functions (p: 181)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 272-273)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.4.2 The fabs functions (p: 382)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.7.2 The fabs functions (p: 248)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 373-375)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.4.2 The fabs functions (p: 524)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.7.2 The fabs functions (p: 228-229)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 Type-generic math &lt;tgmath.h&gt; (p: 335-337)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.9.4.2 The fabs functions (p: 460)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.5.6.2 The fabs function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/abs/">abs<br />labs<br />llabs</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>computes absolute value of an integral value (\(\small{|x|}\)|x|)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/copysign/">copysign<br />copysignf<br />copysignl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>produces a value with the magnitude of a given value and the sign of another given value   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/signbit/">signbit</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if the given number is negative   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/cabs/">cabs<br />cabsf<br />cabsl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the magnitude of a complex number   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/fabs" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+fabs</td></tr>
+</table>

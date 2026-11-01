@@ -1,0 +1,254 @@
+---
+title: "signal"
+slug: "c/program/signal"
+category: "program"
+source: "https://en.cppreference.com/w/c/program/signal"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;signal.h&gt;</code></p>
+
+```c
+void (*signal( int sig, void (*handler) (int))) (int);
+```
+
+<p>Sets the error handler for signal <code>sig</code>. The signal handler can be set so that default handling will occur, signal is ignored, or a user-defined function is called.</p>
+
+<p>When signal handler is set to a function and a signal occurs, it is implementation defined whether <code>signal(sig, SIG_DFL)</code> will be executed immediately before the start of signal handler. Also, the implementation can prevent some implementation-defined set of signals from occurring while the signal handler runs.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>sig</td><td>-</td><td><p>the signal to set the signal handler to. It can be an implementation-defined value or one of the following values:</p>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/program/SIG_types/">SIGABRT<br />SIGFPE<br />SIGILL<br />SIGINT<br />SIGSEGV<br />SIGTERM</a></td><td>defines signal types   <span class="mark-note">(macro constant)</span></td></tr>
+</table></td></tr>
+<tr><td>handler</td><td>-</td><td><p>the signal handler. This must be one of the following:</p>
+
+<ul>
+<li>
+<a href="/reference/c/program/SIG_strategies/">SIG_DFL</a>
+
+<p>macro. The signal handler is set to default signal handler.</p>
+</li>
+<li>
+<a href="/reference/c/program/SIG_strategies/">SIG_IGN</a>
+
+<p>macro. The signal is ignored.</p>
+</li>
+<li>
+<p>pointer to a function. The signature of the function must be equivalent to the following:</p>
+</li>
+</ul>
+
+```c
+void fun(int sig);
+```</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Previous signal handler on success or <a href="/reference/c/program/SIG_ERR/">SIG_ERR</a> on failure (setting a signal handler can be disabled on some implementations).</p>
+
+<h3 id="Signal_handler">Signal handler</h3>
+
+<p>The following limitations are imposed on the user-defined function that is installed as a signal handler.</p>
+
+<p>If the user defined function returns when handling <a href="/reference/c/program/SIG_types/">SIGFPE</a>, <a href="/reference/c/program/SIG_types/">SIGILL</a> or <a href="/reference/c/program/SIG_types/">SIGSEGV</a>, the behavior is undefined.</p>
+
+<p>If the signal handler is called as a result of <a href="/reference/c/program/abort/">abort</a> or <a href="/reference/c/program/raise/">raise</a>, the behavior is undefined if the signal handler calls <a href="/reference/c/program/raise/">raise</a>.</p>
+
+<p>If the signal handler is called NOT as a result of <a href="/reference/c/program/abort/">abort</a> or <a href="/reference/c/program/raise/">raise</a> (in other words, the signal handler is <em>asynchronous</em>), the behavior is undefined if</p>
+
+<ul>
+<li>
+<p>the signal handler calls any function within the standard library, except</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<a href="/reference/c/program/abort/">abort</a>
+</li>
+<li>
+<a href="/reference/c/program/_Exit/">_Exit</a>
+</li>
+<li>
+<a href="/reference/c/program/quick_exit/">quick_exit</a>
+</li>
+<li>
+<code>signal</code>
+
+<p>with the first argument being the number of the signal currently handled (async handler can re-register itself, but not other signals).</p>
+</li>
+<li>
+<p>atomic functions from</p>
+
+<a href="/reference/c/thread/#Atomic_operations"><code>&lt;stdatomic.h&gt;</code></a>
+
+<p>if the atomic arguments are lock-free</p>
+</li>
+<li>
+<a href="/reference/c/atomic/atomic_is_lock_free/">atomic_is_lock_free</a>
+
+<p>(with any kind of atomic arguments)</p>
+</li>
+</ul></dd>
+</dl>
+
+<ul>
+<li>
+<p>the signal handler refers to any object with static</p>
+
+or thread-local<span class="std std-since std-c11">(since C11)</span>
+
+<a href="/reference/c/language/storage_duration/">storage duration</a>
+
+that is not a lock-free <a href="/reference/c/language/atomic/">atomic</a><span class="std std-since std-c11">(since C11)</span>
+
+<p>other than by assigning to a static</p>
+
+<code>volatile sig_atomic_t</code>
+
+<p>.</p>
+</li>
+</ul>
+
+<p>On entry to the signal handler, the state of the floating-point environment and the values of all objects is unspecified, except for</p>
+
+<ul>
+<li>
+<p>objects of type</p>
+
+<code>volatile sig_atomic_t</code>
+</li>
+<li>
+<p>objects of lock-free atomic types</p>
+
+<span class="std std-since std-c11">(since C11)</span>
+</li>
+<li>
+<p>side effects made visible through</p>
+
+<a href="/reference/c/atomic/atomic_signal_fence/">atomic_signal_fence</a>
+
+<span class="std std-since std-c11">(since C11)</span>
+</li>
+</ul>
+
+<p>On return from a signal handler, the value of any object modified by the signal handler that is not <code>volatile sig_atomic_t</code> or lock-free atomic<span class="std std-since std-c11">(since C11)</span> is undefined.</p>
+
+<p>The behavior is undefined if <code>signal</code> is used in a multithreaded program. It is not required to be thread-safe.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>POSIX requires that <code>signal</code> is thread-safe, and <a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/V2_chap02.html#tag_15_04" rel="noreferrer" target="_blank">specifies a list of async-signal-safe library functions</a> that may be called from any signal handler.</p>
+
+<p>Besides <code>abort</code> and <code>raise</code>, POSIX specifies that <code>kill</code>, <code>pthread_kill</code>, and <code>sigqueue</code> generate synchronous signals.</p>
+
+<p>POSIX recommends <a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/sigaction.html" rel="noreferrer" target="_blank"><code>sigaction</code></a> instead of <code>signal</code>, due to its underspecified behavior and significant implementation variations, regarding signal delivery while a signal handler is executed.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <signal.h>
+#include <stdio.h>
+ 
+volatile sig_atomic_t gSignalStatus;
+ 
+void signal_handler(int signal)
+{
+  gSignalStatus = signal;
+}
+ 
+int main(void)
+{
+  signal(SIGINT, signal_handler);
+ 
+  printf("SignalValue: %d\n", gSignalStatus);
+  printf("Sending signal: %d\n", SIGINT);
+  raise(SIGINT);
+  printf("SignalValue: %d\n", gSignalStatus);
+}
+```
+
+<p>Output:</p>
+
+```text
+SignalValue: 0
+Sending signal: 2
+SignalValue: 2
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.14.1.1 The signal function (p: 193-194)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.14.1.1 The signal function (p: 266-267)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.14.1.1 The signal function (p: 247-248)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.7.1.1 The signal function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/program/raise/">raise</a></td><td>runs the signal handler for particular signal   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/utility/program/signal" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+signal</td></tr>
+</table>

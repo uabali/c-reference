@@ -1,0 +1,191 @@
+---
+title: "ungetc"
+slug: "c/io/ungetc"
+category: "io"
+source: "https://en.cppreference.com/w/c/io/ungetc"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+```c
+int ungetc( int ch, FILE* stream );
+```
+
+<p>If <code>ch</code> does not equal <a href="/reference/c/io/">EOF</a>, pushes the character <code>ch</code> (reinterpreted as <code>unsigned char</code>) into the input buffer associated with the stream <code>stream</code> in such a manner that subsequent read operation from <code>stream</code> will retrieve that character. The external device associated with the stream is not modified.</p>
+
+<p>Stream repositioning operations <a href="/reference/c/io/fseek/">fseek</a>, <a href="/reference/c/io/fsetpos/">fsetpos</a>, and <a href="/reference/c/io/rewind/">rewind</a> discard the effects of <code>ungetc</code>.</p>
+
+<p>If <code>ungetc</code> is called more than once without an intervening read or repositioning, it may fail (in other words, a pushback buffer of size 1 is guaranteed, but any larger buffer is implementation-defined). If multiple successful <code>ungetc</code> were performed, read operations retrieve the pushed-back characters in reverse order of <code>ungetc</code>.</p>
+
+<p>If <code>ch</code> equals <a href="/reference/c/io/">EOF</a>, the operation fails and the stream is not affected.</p>
+
+<p>A successful call to <code>ungetc</code> clears the end of file status flag <a href="/reference/c/io/feof/">feof</a>.</p>
+
+<p>A successful call to <code>ungetc</code> on a binary stream decrements the stream position indicator by one (the behavior is indeterminate if the stream position indicator was zero).</p>
+
+<p>A successful call to <code>ungetc</code> on a text stream modifies the stream position indicator in unspecified manner but guarantees that after all pushed-back characters are retrieved with a read operation, the stream position indicator is equal to its value before <code>ungetc</code>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>ch</td><td>-</td><td>character to be pushed into the input stream buffer</td></tr>
+<tr><td>stream</td><td>-</td><td>file stream to put the character back to</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>On success <code>ch</code> is returned.</p>
+
+<p>On failure <a href="/reference/c/io/">EOF</a> is returned and the given stream remains unchanged.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The size of the pushback buffer varies in practice from 4k (Linux, MacOS) to as little as 4 (Solaris) or the guaranteed minimum 1 (HPUX, AIX).</p>
+
+<p>The apparent size of the pushback buffer may be larger if the character that is pushed back equals the character existing at that location in the external character sequence (the implementation may simply decrement the read file position indicator and avoid maintaining a pushback buffer).</p>
+
+<h3 id="Example">Example</h3>
+
+<p>Demonstrates the original purpose of <code>ungetc</code>: implementation of <a href="/reference/c/io/fscanf/">scanf</a></p>
+
+```c
+#include <ctype.h>
+#include <stdio.h>
+ 
+void demo_scanf(const char* fmt, FILE* s)
+{
+    while (*fmt != '\0')
+    {
+        if (*fmt == '%')
+        {
+            int c;
+            switch (*++fmt)
+            {
+                case 'u':
+                    while (isspace(c=getc(s))) {}
+                    unsigned int num = 0;
+                    while (isdigit(c))
+                    {
+                        num = num*10 + c-'0';
+                        c = getc(s);
+                    }
+                    printf("%%u scanned %u\n", num);
+                    ungetc(c, s);
+                    break;
+                case 'c':
+                    c = getc(s);
+                    printf("%%c scanned '%c'\n", c);
+                    break;
+            }
+        }
+        else
+            ++fmt;
+    }
+}
+ 
+int main(void)
+{
+    FILE* f = fopen("input.txt", "w+");
+    if (f != NULL)
+    {
+        fputs("123x", f);
+        rewind(f);
+        demo_scanf("%u%c", f);
+        fclose(f);
+    }
+    return 0;
+}
+```
+
+<p>Output:</p>
+
+```text
+%u scanned 123
+%c scanned 'x'
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.7.10 The ungetc function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.7.10 The ungetc function (p: 243)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.7.10 The ungetc function (p: 334)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.7.11 The ungetc function (p: 300)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9.7.11 The ungetc function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/fgetc/">fgetc<br />getc</a></td><td>gets a character from a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c/ungetc" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+ungetc</td></tr>
+</table>

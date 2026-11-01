@@ -1,0 +1,103 @@
+---
+title: "CMPLXF, CMPLX, CMPLXL"
+slug: "c/numeric/complex/CMPLX"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/complex/CMPLX"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;complex.h&gt;</code></p>
+
+```c
+float complex       CMPLXF( float real, float imag );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+```c
+double complex      CMPLX( double real, double imag );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+```c
+long double complex CMPLXL( long double real, long double imag );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Each of these macros expands to an expression that evaluates to the value of the specified complex type, with the real part having the value of <code>real</code> (converted to the specified argument type) and the imaginary part having the value of <code>imag</code> (converted to the specified argument type)</p>
+
+<p>The expressions are suitable for use as initializers for objects with static or thread storage duration, as long as the expressions <code>real</code> and <code>imag</code> are also suitable.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>real</td><td>-</td><td>the real part of the complex number to return</td></tr>
+<tr><td>imag</td><td>-</td><td>the imaginary part of the complex number to return</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>A complex number composed of <code>real</code> and <code>imag</code> as the real and imaginary parts.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>These macros are implemented as if the imaginary types are supported (even if they are otherwise not supported and <a href="/reference/c/numeric/complex/Imaginary_I/">_Imaginary_I</a> is actually undefined) and as if defined as follows:</p>
+
+```c
+#define CMPLX(x, y) ((double complex)((double)(x) + _Imaginary_I * (double)(y)))
+#define CMPLXF(x, y) ((float complex)((float)(x) + _Imaginary_I * (float)(y)))
+#define CMPLXL(x, y) ((long double complex)((long double)(x) + \
+                      _Imaginary_I * (long double)(y)))
+```
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <complex.h>
+ 
+int main(void)
+{
+    double complex z = CMPLX(0.0, -0.0);
+    printf("z = %.1f%+.1fi\n", creal(z), cimag(z));
+}
+```
+
+<p>Output:</p>
+
+```text
+z = 0.0-0.0i
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3.9.3 The CMPLX macros (p: 197)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/complex/Imaginary_I/">_Imaginary_I</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>the imaginary unit constant i   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/complex/complex" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+complex</td></tr>
+</table>

@@ -1,0 +1,102 @@
+---
+title: "wcsspn"
+slug: "c/string/wide/wcsspn"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/wide/wcsspn"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;wchar.h&gt;</code></p>
+
+```c
+size_t wcsspn( const wchar_t* dest, const wchar_t* src );
+```
+
+<p class="decl-note"><span class="std std-since std-c95">(since C95)</span></p>
+
+<p>Returns the length of the maximum initial segment of the wide string pointed to by <code>dest</code>, that consists of only the characters found in wide string pointed to by <code>src</code>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>dest</td><td>-</td><td>pointer to the null-terminated wide string to be analyzed</td></tr>
+<tr><td>src</td><td>-</td><td>pointer to the null-terminated wide string that contains the characters to search for</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>The length of the maximum initial segment that contains only characters from wide string pointed to by <code>src</code></p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <locale.h>
+#include <wchar.h>
+ 
+int main(void)
+{
+    wchar_t dest[] = L"白猫 黑狗 甲虫";
+    const wchar_t src[] = L" 狗猫 白黑 ";
+    const size_t len = wcsspn(dest, src);
+    dest[len] = L'\0'; /* terminates the segment to print it out */
+ 
+    setlocale(LC_ALL, "en_US.utf8");
+    wprintf(L"The length of maximum initial segment is %td.\n"
+            L"The segment is \"%ls\".\n", len, dest);
+}
+```
+
+<p>Output:</p>
+
+```text
+The length of maximum initial segment is 6.
+The segment is "白猫 黑狗 ".
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.4.5.5 The wcsspn function (p: 436)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.4.5.5 The wcsspn function (p: 382)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/wide/wcscspn/">wcscspn</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>returns the length of the maximum initial segment that consists   of only the wide chars <em>not</em> found in another wide string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcspbrk/">wcspbrk</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>finds the first location of any wide character in one wide string, in another wide string   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/wide/wcsspn" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+wcsspn</td></tr>
+</table></section>

@@ -1,0 +1,207 @@
+[
+  {
+    "slug": "memory",
+    "title": "Pointers through dynamic memory",
+    "minutes": 45,
+    "summary": "The path most C programmers actually need: addresses, arrays, strings, the heap, structs, and calling a function by pointer.",
+    "steps": [
+      {
+        "slug": "c/language/pointer",
+        "title": "Pointer declaration",
+        "blurb": "An address you can store and follow. Initialize it, and know who owns the object."
+      },
+      {
+        "slug": "c/language/array",
+        "title": "Array declaration",
+        "blurb": "Contiguous objects. In a function parameter the array is already a pointer."
+      },
+      {
+        "slug": "c/language/string_literal",
+        "title": "String literals",
+        "blurb": "A static array with a hidden zero. Copy it before you edit it."
+      },
+      {
+        "slug": "c/string/byte",
+        "title": "Null-terminated byte strings",
+        "blurb": "strlen, strcmp, and memcpy assume you know where the buffer ends."
+      },
+      {
+        "slug": "c/memory/malloc",
+        "title": "malloc",
+        "blurb": "Allocated storage outlives the function and starts uninitialized."
+      },
+      {
+        "slug": "c/language/struct",
+        "title": "Struct declaration",
+        "blurb": "A layout of fields, with padding you do not get to interpret."
+      },
+      {
+        "slug": "c/algorithm/qsort",
+        "title": "qsort, qsort_s",
+        "blurb": "A function pointer is how the library calls back into your comparator."
+      }
+    ]
+  },
+  {
+    "slug": "control",
+    "title": "Control flow without surprises",
+    "minutes": 25,
+    "summary": "Branches, loops, and the places C lets execution jump farther than the next line.",
+    "steps": [
+      {
+        "slug": "c/language/if",
+        "title": "if statement",
+        "blurb": "A scalar compared with zero. Brace both sides."
+      },
+      {
+        "slug": "c/language/for",
+        "title": "for loop",
+        "blurb": "An index lives in the loop. Unsigned countdown is a trap."
+      },
+      {
+        "slug": "c/language/switch",
+        "title": "switch statement",
+        "blurb": "Cases fall through until you stop them."
+      },
+      {
+        "slug": "c/language/scope",
+        "title": "Scope",
+        "blurb": "A name's visibility is not the same as its lifetime."
+      },
+      {
+        "slug": "c/program/setjmp",
+        "title": "setjmp",
+        "blurb": "A non-local jump. Prefer it rarely, and mark the locals volatile."
+      }
+    ]
+  },
+  {
+    "slug": "types",
+    "title": "Types, qualifiers, and names",
+    "minutes": 35,
+    "summary": "What the bytes mean, what const actually promises, and how to name a function pointer.",
+    "steps": [
+      {
+        "slug": "c/language/arithmetic_types",
+        "title": "Arithmetic types",
+        "blurb": "Widths are minimums unless you ask stdint.h or _BitInt."
+      },
+      {
+        "slug": "c/language/const",
+        "title": "const type qualifier",
+        "blurb": "A contract on one view of an object, not a lock."
+      },
+      {
+        "slug": "c/language/volatile",
+        "title": "volatile type qualifier",
+        "blurb": "Every access is observable. It is not a lock either."
+      },
+      {
+        "slug": "c/language/restrict",
+        "title": "restrict type qualifier (since C99)",
+        "blurb": "A promise of no aliasing, which the compiler believes."
+      },
+      {
+        "slug": "c/language/typedef",
+        "title": "Typedef declaration",
+        "blurb": "An alias, not a new type. Watch what const does to a hidden pointer."
+      },
+      {
+        "slug": "c/language/enum",
+        "title": "Enumerations",
+        "blurb": "Names for integers. C23 can fix the width."
+      },
+      {
+        "slug": "c/language/union",
+        "title": "Union declaration",
+        "blurb": "One active member, ideally with a tag beside it."
+      }
+    ]
+  },
+  {
+    "slug": "c23",
+    "title": "What C23 changed in daily code",
+    "minutes": 40,
+    "summary": "The features worth using as soon as the compiler on the project actually has them.",
+    "steps": [
+      {
+        "slug": "c/language/nullptr",
+        "title": "Predefined null pointer constant (since C23)",
+        "blurb": "A null pointer that is not the integer zero."
+      },
+      {
+        "slug": "c/language/attributes",
+        "title": "Attribute specifier sequence (since C23)",
+        "blurb": "[[nodiscard]], [[fallthrough]], and the rest of the standard attributes."
+      },
+      {
+        "slug": "c/language/attributes/nodiscard",
+        "title": "C attribute: nodiscard (since C23)",
+        "blurb": "Make a dropped error code a warning."
+      },
+      {
+        "slug": "c/language/constexpr",
+        "title": "constexpr specifier (since C23)",
+        "blurb": "A typed constant the compiler must fold."
+      },
+      {
+        "slug": "c/language/typeof",
+        "title": "typeof operators (since C23)",
+        "blurb": "Name the type of an expression inside a macro."
+      },
+      {
+        "slug": "c/language/arithmetic_types",
+        "title": "Arithmetic types",
+        "blurb": "_BitInt(N) for a width the typedefs do not offer."
+      },
+      {
+        "slug": "c/preprocessor/embed",
+        "title": "Binary resource inclusion (since C23)",
+        "blurb": "Include a file's bytes without a generated source file."
+      },
+      {
+        "slug": "c/numeric/ckd_add",
+        "title": "ckd_add",
+        "blurb": "Ask whether an addition fits, instead of hoping."
+      }
+    ]
+  },
+  {
+    "slug": "text-io",
+    "title": "Text and files",
+    "minutes": 30,
+    "summary": "From a literal, through formatting, to a stream you actually close.",
+    "steps": [
+      {
+        "slug": "c/language/string_literal",
+        "title": "String literals",
+        "blurb": "Where the characters come from."
+      },
+      {
+        "slug": "c/string/byte/strlen",
+        "title": "strlen, strnlen_s",
+        "blurb": "A count of bytes before the zero, not a capacity."
+      },
+      {
+        "slug": "c/string/byte/strcpy",
+        "title": "strcpy, strcpy_s",
+        "blurb": "A copy that trusts the destination."
+      },
+      {
+        "slug": "c/io/fprintf",
+        "title": "printf, fprintf, sprintf, snprintf, printf_s, fprintf_s, sprintf_s, snprintf_s",
+        "blurb": "A format string that must match the arguments."
+      },
+      {
+        "slug": "c/io/fopen",
+        "title": "fopen, fopen_s",
+        "blurb": "A FILE you check, and a close you do not skip."
+      },
+      {
+        "slug": "c/error/errno",
+        "title": "errno",
+        "blurb": "Read it only after a call has already failed."
+      }
+    ]
+  }
+]

@@ -1,0 +1,135 @@
+---
+title: "feof"
+slug: "c/io/feof"
+category: "io"
+source: "https://en.cppreference.com/w/c/io/feof"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+```c
+int feof( FILE *stream );
+```
+
+<p>Checks if the end of the given file stream has been reached.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>stream</td><td>-</td><td>the file stream to check</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>nonzero value if the end of the stream has been reached, otherwise <code>0</code></p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>This function only reports the stream state as reported by the most recent I/O operation, it does not examine the associated data source. For example, if the most recent I/O was a <a href="/reference/c/io/fgetc/">fgetc</a>, which returned the last byte of a file, <code>feof</code> returns zero. The next <a href="/reference/c/io/fgetc/">fgetc</a> fails and changes the stream state to <em>end-of-file</em>. Only then <code>feof</code> returns non-zero.</p>
+
+<p>In typical usage, input stream processing stops on any error; <code>feof</code> and <a href="/reference/c/io/ferror/">ferror</a> are then used to distinguish between different error conditions.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(void)
+{
+    const char* fname = "/tmp/unique_name.txt"; // or tmpnam(NULL);
+    int is_ok = EXIT_FAILURE;
+ 
+    FILE* fp = fopen(fname, "w+");
+    if (!fp)
+    {
+        perror("File opening failed");
+        return is_ok;
+    }
+    fputs("Hello, world!\n", fp);
+    rewind(fp);
+ 
+    int c; // note: int, not char, required to handle EOF
+    while ((c = fgetc(fp)) != EOF) // standard C I/O file reading loop
+        putchar(c);
+ 
+    if (ferror(fp))
+        puts("I/O error when reading");
+    else if (feof(fp))
+    {
+        puts("End of file is reached successfully");
+        is_ok = EXIT_SUCCESS;
+    }
+ 
+    fclose(fp);
+    remove(fname);
+    return is_ok;
+}
+```
+
+<p>Possible output:</p>
+
+```text
+Hello, world!
+End of file is reached successfully
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.10.2 The feof function (p: 339)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.10.2 The feof function (p: 305)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9.10.2 The feof function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/clearerr/">clearerr</a></td><td>clears errors   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/perror/">perror</a></td><td>displays a character string corresponding of the current error to <a href="/reference/c/io/std_streams/">stderr</a>   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/ferror/">ferror</a></td><td>checks for a file error   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c/feof" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+feof</td></tr>
+</table></section></section>

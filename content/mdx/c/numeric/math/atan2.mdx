@@ -1,0 +1,572 @@
+---
+title: "atan2, atan2f, atan2l"
+slug: "c/numeric/math/atan2"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/atan2"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+float       atan2f( float y, float x );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+double      atan2( double y, double x );
+```
+
+<p class="decl-note">(2)</p>
+
+```c
+long double atan2l( long double y, long double x );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+_Decimal32  atan2d32( _Decimal32 y, _Decimal32 x );
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+_Decimal64  atan2d64( _Decimal64 y, _Decimal64 x );
+```
+
+<p class="decl-note">(5) <span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+_Decimal128 atan2d128( _Decimal128 y, _Decimal128 x );
+```
+
+<p class="decl-note">(6) <span class="std std-since std-c23">(since C23)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;tgmath.h&gt;</code></p>
+
+```c
+#define atan2( y, x )
+```
+
+<p class="decl-note">(7) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="li-note"><span class="li-num">1-6)</span>  Computes the arc tangent of <code>y / x</code> using the signs of arguments to determine the correct quadrant.</p>
+
+<p class="li-note"><span class="li-num">7)</span>  Type-generic macro: If any argument has type <code>long double</code>, (3) (<code>atan2l</code>) is called. Otherwise, if any argument has integer type or has type <code>double</code>, (2) (<code>atan2</code>) is called. Otherwise, (1) (<code>atan2f</code>) is called.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>The functions (4-6) are declared if and only if the implementation predefines <code>__STDC_IEC_60559_DFP__</code> (i.e. the implementation supports decimal floating-point numbers).</p></aside>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>x, y</td><td>-</td><td>floating-point value</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>If no errors occur, the arc tangent of</p>
+
+<code>y / x</code>
+
+<p>(</p>
+
+arctan(yx)
+
+<p>) in the range</p>
+
+[-π ; +π]
+
+<p>radians, is returned.</p>
+
+<p>Y argument</p>
+
+<p>Return value</p>
+
+<p>X argument</p>
+
+<p>If a domain error occurs, an implementation-defined value is returned.</p>
+
+<p>If a range error occurs due to underflow, the correct result (after rounding) is returned.</p>
+
+<h3 id="Error_handling">Error handling</h3>
+
+<p>Errors are reported as specified in <a href="/reference/c/numeric/math/math_errhandling/"><code>math_errhandling</code></a>.</p>
+
+<p>Domain error may occur if <code>x</code> and <code>y</code> are both zero.</p>
+
+<p>If the implementation supports IEEE floating-point arithmetic (IEC 60559):</p>
+
+<ul>
+<li>
+<p>If</p>
+
+<code>x</code>
+
+<p>and</p>
+
+<code>y</code>
+
+<p>are both zero, domain error</p>
+
+<em>does not</em>
+
+<p>occur;</p>
+</li>
+<li>
+<p>If</p>
+
+<code>x</code>
+
+<p>and</p>
+
+<code>y</code>
+
+<p>are both zero, range error does not occur either;</p>
+</li>
+<li>
+<p>If</p>
+
+<code>y</code>
+
+<p>is zero, pole error does not occur;</p>
+</li>
+<li>
+<p>If</p>
+
+<code>y</code>
+
+<p>is</p>
+
+<code>±0</code>
+
+<p>and</p>
+
+<code>x</code>
+
+<p>is negative or</p>
+
+<code>-0</code>
+
+<p>,</p>
+
+<code>±π</code>
+
+<p>is returned;</p>
+</li>
+<li>
+<p>If</p>
+
+<code>y</code>
+
+<p>is</p>
+
+<code>±0</code>
+
+<p>and</p>
+
+<code>x</code>
+
+<p>is positive or</p>
+
+<code>+0</code>
+
+<p>,</p>
+
+<code>±0</code>
+
+<p>is returned;</p>
+</li>
+<li>
+<p>If</p>
+
+<code>y</code>
+
+<p>is</p>
+
+<code>±∞</code>
+
+<p>and</p>
+
+<code>x</code>
+
+<p>is finite,</p>
+
+<code>±π/2</code>
+
+<p>is returned;</p>
+</li>
+<li>
+<p>If</p>
+
+<code>y</code>
+
+<p>is</p>
+
+<code>±∞</code>
+
+<p>and</p>
+
+<code>x</code>
+
+<p>is</p>
+
+<code>-∞</code>
+
+<p>,</p>
+
+<code>±3π/4</code>
+
+<p>is returned;</p>
+</li>
+<li>
+<p>If</p>
+
+<code>y</code>
+
+<p>is</p>
+
+<code>±∞</code>
+
+<p>and</p>
+
+<code>x</code>
+
+<p>is</p>
+
+<code>+∞</code>
+
+<p>,</p>
+
+<code>±π/4</code>
+
+<p>is returned;</p>
+</li>
+<li>
+<p>If</p>
+
+<code>x</code>
+
+<p>is</p>
+
+<code>±0</code>
+
+<p>and</p>
+
+<code>y</code>
+
+<p>is negative,</p>
+
+<code>-π/2</code>
+
+<p>is returned;</p>
+</li>
+<li>
+<p>If</p>
+
+<code>x</code>
+
+<p>is</p>
+
+<code>±0</code>
+
+<p>and</p>
+
+<code>y</code>
+
+<p>is positive,</p>
+
+<code>+π/2</code>
+
+<p>is returned;</p>
+</li>
+<li>
+<p>If</p>
+
+<code>x</code>
+
+<p>is</p>
+
+<code>-∞</code>
+
+<p>and</p>
+
+<code>y</code>
+
+<p>is finite and positive,</p>
+
+<code>+π</code>
+
+<p>is returned;</p>
+</li>
+<li>
+<p>If</p>
+
+<code>x</code>
+
+<p>is</p>
+
+<code>-∞</code>
+
+<p>and</p>
+
+<code>y</code>
+
+<p>is finite and negative,</p>
+
+<code>-π</code>
+
+<p>is returned;</p>
+</li>
+<li>
+<p>If</p>
+
+<code>x</code>
+
+<p>is</p>
+
+<code>+∞</code>
+
+<p>and</p>
+
+<code>y</code>
+
+<p>is finite and positive,</p>
+
+<code>+0</code>
+
+<p>is returned;</p>
+</li>
+<li>
+<p>If</p>
+
+<code>x</code>
+
+<p>is</p>
+
+<code>+∞</code>
+
+<p>and</p>
+
+<code>y</code>
+
+<p>is finite and negative,</p>
+
+<code>-0</code>
+
+<p>is returned;</p>
+</li>
+<li>
+<p>If either</p>
+
+<code>x</code>
+
+<p>is NaN or</p>
+
+<code>y</code>
+
+<p>is NaN, NaN is returned.</p>
+</li>
+</ul>
+
+<h3 id="Notes">Notes</h3>
+
+<p><code>atan2(y, x)</code> is equivalent to <code>carg(x + I*y)</code>.</p>
+
+<p><a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/atan2.html" rel="noreferrer" target="_blank">POSIX specifies</a> that in case of underflow, <code>y / x</code> is the value returned, and if that is not supported, an implementation-defined value no greater than <a href="/reference/c/types/limits/">DBL_MIN</a>, <a href="/reference/c/types/limits/">FLT_MIN</a>, and <a href="/reference/c/types/limits/">LDBL_MIN</a> is returned.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <math.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    // normal usage: the signs of the two arguments determine the quadrant
+    // atan2(1,1) = +pi/4, Quad I
+    printf("(+1,+1) cartesian is (%f,%f) polar\n", hypot( 1, 1), atan2( 1, 1));
+    // atan2(1, -1) = +3pi/4, Quad II
+    printf("(+1,-1) cartesian is (%f,%f) polar\n", hypot( 1,-1), atan2( 1,-1));
+    // atan2(-1,-1) = -3pi/4, Quad III
+    printf("(-1,-1) cartesian is (%f,%f) polar\n", hypot(-1,-1), atan2(-1,-1));
+    // atan2(-1,-1) = -pi/4, Quad IV
+    printf("(-1,+1) cartesian is (%f,%f) polar\n", hypot(-1, 1), atan2(-1, 1));
+ 
+    // special values
+    printf("atan2(0, 0) = %f atan2(0, -0)=%f\n", atan2(0,0), atan2(0,-0.0));
+    printf("atan2(7, 0) = %f atan2(7, -0)=%f\n", atan2(7,0), atan2(7,-0.0));
+}
+```
+
+<p>Output:</p>
+
+```text
+(+1,+1) cartesian is (1.414214,0.785398) polar
+(+1,-1) cartesian is (1.414214,2.356194) polar
+(-1,-1) cartesian is (1.414214,-2.356194) polar
+(-1,+1) cartesian is (1.414214,-0.785398) polar
+atan2(0, 0) = 0.000000 atan2(0, -0)=3.141593
+atan2(7, 0) = 1.570796 atan2(7, -0)=1.570796
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.4.4 The atan2 functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.1.4 The atan2 functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.4.4 The atan2 functions (p: 174)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 272-273)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.1.4 The atan2 functions (p: 378)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.4.4 The atan2 functions (p: 239)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 373-375)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.1.4 The atan2 functions (p: 519)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.4.4 The atan2 functions (p: 219)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 Type-generic math &lt;tgmath.h&gt; (p: 335-337)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.9.1.4 The atan2 functions (p: 456)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.5.2.4 The atan2 function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/asin/">asin<br />asinf<br />asinl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes arc sine (\({\small\arcsin{x} }\)arcsin(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/acos/">acos<br />acosf<br />acosl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes arc cosine (\({\small\arccos{x} }\)arccos(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/atan/">atan<br />atanf<br />atanl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes arc tangent (\({\small\arctan{x} }\)arctan(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/carg/">carg<br />cargf<br />cargl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the phase angle of a complex number   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/atan2" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+atan2</td></tr>
+</table>

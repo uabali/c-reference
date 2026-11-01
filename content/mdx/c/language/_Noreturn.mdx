@@ -1,0 +1,166 @@
+---
+title: "_Noreturn function specifier (since C11) (deprecated in C23)"
+slug: "c/language/_Noreturn"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/_Noreturn"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Specifies that the function does not return to its point of invocation.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+_Noreturn function_declaration
+```
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>The <code>_Noreturn</code> keyword appears in a function declaration and specifies that the function does not return by executing the return statement or by reaching the end of the function body (it may return by executing <a href="/reference/c/program/longjmp/">longjmp</a>). If the function declared <code>_Noreturn</code> returns, the behavior is undefined. A compiler diagnostic is recommended if this can be detected.</p>
+
+<p>The <code>_Noreturn</code> specifier may appear more than once in the same function declaration, the behavior is the same as if it appeared once.</p>
+
+<p>This specifier is typically used through the convenience macro <a href="/reference/c/types/"><code>noreturn</code></a>, which is provided in the header <code>&lt;stdnoreturn.h&gt;</code>.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p><code>_Noreturn</code> function specifier is deprecated. <code>[[noreturn]]</code> attribute should be used instead.</p>
+
+<p>The macro <code>noreturn</code> is also deprecated.</p></aside>
+
+<h3 id="Keywords">Keywords</h3>
+
+<p><a href="/reference/c/keyword/_Noreturn/"><code>_Noreturn</code></a></p>
+
+<h3 id="Standard_library">Standard library</h3>
+
+<p>The following functions are <code>noreturn</code> in the standard library:</p>
+
+<ul>
+<li>
+<a href="/reference/c/program/abort/">abort()</a>
+</li>
+<li>
+<a href="/reference/c/program/exit/">exit()</a>
+</li>
+<li>
+<a href="/reference/c/program/_Exit/">_Exit()</a>
+</li>
+<li>
+<a href="/reference/c/program/quick_exit/">quick_exit()</a>
+</li>
+<li>
+<a href="/reference/c/thread/thrd_exit/">thrd_exit()</a>
+</li>
+<li>
+<a href="/reference/c/program/longjmp/">longjmp()</a>
+</li>
+</ul>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdnoreturn.h>
+ 
+// causes undefined behavior if i <= 0
+// exits if i > 0
+noreturn void exit_now(int i) // or _Noreturn void exit_now(int i)
+{
+    if (i > 0)
+        exit(i);
+}
+ 
+int main(void)
+{
+    puts("Preparing to exit...");
+    exit_now(2);
+    puts("This code is never executed.");
+}
+```
+
+<p>Output:</p>
+
+```text
+Preparing to exit...
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.4 Function specifiers (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.23 _Noreturn &lt;stdnoreturn.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.4 Function specifiers (p: 90-91)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.23 _Noreturn &lt;stdnoreturn.h&gt; (p: 263)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.4 Function specifiers (p: 125-127)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.23 _Noreturn &lt;stdnoreturn.h&gt; (p: 361)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><code>[[noreturn]]</code><span class="std std-since std-c23">(C23)</span> <code>[[_Noreturn]]</code><span class="std std-since std-c23">(C23)</span><span class="mark-note">(deprecated)</span></td><td>indicates that the function does not return <span class="mark-note">(attribute specifier)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/attributes/noreturn" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+<code>[[noreturn]]</code></td></tr>
+</table>

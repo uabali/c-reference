@@ -1,0 +1,242 @@
+---
+title: "Memory model"
+slug: "c/language/memory_model"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/memory_model"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Defines the semantics of computer memory storage for the purpose of the C abstract machine.</p>
+
+<p>The data storage (memory) available to a C program is one or more contiguous sequences of <em>bytes</em>. Each byte in memory has a unique <em>address</em>.</p>
+
+<h3 id="Byte">Byte</h3>
+
+<p>A <em>byte</em> is the smallest addressable unit of memory. It is defined as a contiguous sequence of bits, large enough to hold any member of the <em>basic execution character set</em> (<a href="/reference/c/language/translation_phases/">the 96 characters</a> that are required to be single-byte). C supports bytes of sizes 8 bits and greater.</p>
+
+<p>The <a href="/reference/c/language/types/">types</a> <code>char</code>, <code>unsigned char</code>, and <code>signed char</code> use one byte for both storage and <a href="/reference/c/language/object/">value representation</a>. The number of bits in a byte is accessible as <a href="/reference/c/types/limits/">CHAR_BIT</a>.</p>
+
+<p>For use of bytes to representation values of other fundamental types (including big-endian and little-endian memory layouts), see <a href="/reference/c/language/object/#Object_representation">object representation</a></p>
+
+<h3 id="Memory_location">Memory location</h3>
+
+<p>A <em>memory location</em> is</p>
+
+<ul>
+<li>
+<p>an object of</p>
+
+<a href="/reference/c/language/compatible_type/#Type_groups">scalar type</a>
+
+<p>(arithmetic type, pointer type, enumeration type)</p>
+</li>
+<li>
+<p>or the largest contiguous sequence of</p>
+
+<a href="/reference/c/language/bit_field/">bit-fields</a>
+
+<p>of non-zero length</p>
+</li>
+</ul>
+
+```c
+struct S
+{
+    char a;     // memory location #1
+    int b : 5;  // memory location #2
+    int c : 11, // memory location #2 (continued)
+          : 0,
+        d : 8;  // memory location #3
+    struct
+    {
+        int ee : 8; // memory location #4
+    } e;
+} obj; // The object 'obj' consists of 4 separate memory locations
+```
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><h3 id="Threads_and_data_races">Threads and data races</h3>
+
+<p>A thread of execution is a flow of control within a program that begins with the invocation of a top-level function by <a href="/reference/c/thread/thrd_create/">thrd_create</a> or other means.</p>
+
+<p>Any thread can potentially access any object in the program (objects with automatic and thread-local <a href="/reference/c/language/storage_duration/">storage duration</a> may still be accessed by another thread through a pointer).</p>
+
+<p>Different threads of execution are always allowed to access (read and modify) different <em>memory locations</em> concurrently, with no interference and no synchronization requirements. (note that it is not safe to concurrently update two non-atomic bit-fields in the same structure if all members declared between them are also (non-zero-length) bit-fields, no matter what the sizes of those intervening bit-fields happen to be)</p>
+
+<p>When an <a href="/reference/c/language/eval_order/">evaluation</a> of an expression writes to a memory location and another evaluation reads or modifies the same memory location, the expressions are said to <em>conflict</em>. A program that has two conflicting evaluations has a <em>data race</em> unless either</p>
+
+<ul>
+<li>
+<p>both conflicting evaluations are</p>
+
+<a href="/reference/c/language/atomic/">atomic operations</a>
+</li>
+<li>
+<p>one of the conflicting evaluations</p>
+
+<em>happens-before</em>
+
+<p>another (see</p>
+
+<a href="/reference/c/atomic/memory_order/">memory_order</a>
+
+<p>)</p>
+</li>
+</ul>
+
+<p>If a data race occurs, the behavior of the program is undefined.</p>
+
+<p>(in particular,</p>
+
+<a href="/reference/c/thread/mtx_unlock/">mtx_unlock</a>
+
+<p>is</p>
+
+<em>synchronized-with</em>
+
+<p>, and therefore,</p>
+
+<em>happens-before</em>
+
+<a href="/reference/c/thread/mtx_lock/">mtx_lock</a>
+
+<p>of the same mutex by another thread, which makes it possible to use mutex locks to guard against data races)</p>
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: small example or two</td></tr>
+</table>
+
+<h3 id="Memory_order">Memory order</h3>
+
+<p>When a thread reads a value from a memory location, it may see the initial value, the value written in the same thread, or the value written in another thread. See <a href="/reference/c/atomic/memory_order/">memory_order</a> for details on the order in which writes made from threads become visible to other threads.</p></aside>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.6 byte (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.14 memory location (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>5.1.2.4 Multi-threaded executions and data races (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.6 byte (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.14 memory location (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>5.1.2.4 Multi-threaded executions and data races (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.6 byte (p: 4)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.14 memory location (p: 5)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>5.1.2.4 Multi-threaded executions and data races (p: 17-21)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.6 byte (p: 4)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>1.6 DEFINITIONS OF TERMS</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/memory_model" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Memory model</td></tr>
+</table>

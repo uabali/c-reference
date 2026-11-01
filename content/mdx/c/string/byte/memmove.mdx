@@ -1,0 +1,319 @@
+---
+title: "memmove, memmove_s"
+slug: "c/string/byte/memmove"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/byte/memmove"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;string.h&gt;</code></p>
+
+```c
+void* memmove( void* dest, const void* src, size_t count );
+```
+
+<p class="decl-note">(1)</p>
+
+```c
+errno_t memmove_s(void* dest, rsize_t destsz, const void* src, rsize_t count);
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Copies <code>count</code> characters from the object pointed to by <code>src</code> to the object pointed to by <code>dest</code>. Both objects are interpreted as arrays of <code>unsigned char</code>. The objects may overlap: copying takes place as if the characters were copied to a temporary character array and then the characters were copied from the array to <code>dest</code>.</p>
+
+<p class="li-note">The behavior is undefined if access occurs beyond the end of the dest array. The behavior is undefined if either <code>dest</code> or <code>src</code> is an invalid or null pointer.</p>
+
+<div class="li-note"><span class="li-num">2)</span>
+
+<p>Same as</p>
+
+(1)
+
+<p>, except when detecting the following errors at runtime, it zeroes out the entire destination range</p>
+
+<code>[dest, dest + destsz)</code>
+
+<p>(if both</p>
+
+<code>dest</code>
+
+<p>and</p>
+
+<code>destsz</code>
+
+<p>are valid) and calls the currently installed</p>
+
+<a href="/reference/c/error/set_constraint_handler_s/">constraint handler</a>
+
+<p>function:</p>
+
+<dl>
+<dd><ul>
+<li>
+<code>dest</code>
+
+<p>or</p>
+
+<code>src</code>
+
+<p>is a null pointer</p>
+</li>
+<li>
+<code>destsz</code>
+
+<p>or</p>
+
+<code>count</code>
+
+<p>is greater than</p>
+
+RSIZE_MAX
+</li>
+<li>
+<code>count</code>
+
+<p>is greater than</p>
+
+<code>destsz</code>
+
+<p>(buffer overflow would occur)</p>
+</li>
+</ul></dd>
+</dl></div>
+
+<div class="li-note"><p>The behavior is undefined if the size of the character array pointed to by</p>
+
+<code>dest</code>
+
+<p>&lt;</p>
+
+<code>count</code>
+
+<p>&lt;=</p>
+
+<code>destsz</code>
+
+<p>; in other words, an erroneous value of</p>
+
+<code>destsz</code>
+
+<p>does not expose the impending buffer overflow.</p>
+
+<dl>
+<dd><p>As with all bounds-checked functions,</p>
+
+<code>memmove_s</code>
+
+<p>is only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<a href="/reference/c/string/byte/"><code>&lt;string.h&gt;</code></a>
+
+<p>.</p></dd>
+</dl></div>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>dest</td><td>-</td><td>pointer to the object to copy to</td></tr>
+<tr><td>destsz</td><td>-</td><td>max number of bytes to modify in the destination (typically the size of the destination object)</td></tr>
+<tr><td>src</td><td>-</td><td>pointer to the object to copy from</td></tr>
+<tr><td>count</td><td>-</td><td>number of bytes to copy</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  Returns a copy of <code>dest</code></p>
+
+<p class="li-note"><span class="li-num">2)</span>  Returns zero on success and non-zero value on error. Also on error, if <code>dest</code> is not a null pointer and <code>destsz</code> is valid, writes <code>destsz</code> zero bytes in to the destination array.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p><code>memmove</code> may be used to set the <a href="/reference/c/language/object/#Effective_type">effective type</a> of an object obtained by an allocation function.</p>
+
+<p>Despite being specified "as if" a temporary buffer is used, actual implementations of this function do not incur the overhead or double copying or extra memory. A common approach (glibc and bsd libc) is to copy bytes forwards from the beginning of the buffer if the destination starts before the source, and backwards from the end otherwise, with a fall back to the more efficient <a href="/reference/c/string/byte/memcpy/">memcpy</a> when there is no overlap at all.</p>
+
+<p>Where <a href="/reference/c/language/object/#Strict_aliasing">strict aliasing</a> prohibits examining the same memory as values of two different types, <code>memmove</code> may be used to convert the values.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#define __STDC_WANT_LIB_EXT1__ 1
+#include <inttypes.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+ 
+int main(void)
+{
+    char str[] = "1234567890";
+    puts(str);
+    memmove(str + 4, str + 3, 3); // copy from [4,5,6] to [5,6,7]
+    puts(str);
+ 
+    // setting effective type of allocated memory to be int
+    int* p = malloc(3 * sizeof(int)); // allocated memory has no effective type
+    int arr[3] = {1, 2, 3};
+    memmove(p, arr, 3 * sizeof(int)); // allocated memory now has an effective type
+ 
+    // reinterpreting data
+    double d = 0.1;
+    // int64_t n = *(int64_t*)(&d); // strict aliasing violation
+    int64_t n;
+    memmove(&n, &d, sizeof d); // OK
+    printf("%a is %" PRIx64 " as an int64_t\n", d, n);
+ 
+#ifdef __STDC_LIB_EXT1__
+    set_constraint_handler_s(ignore_handler_s);
+    char src[] = "aaaaaaaaaa";
+    char dst[] = "xyxyxyxyxy";
+    int r = memmove_s(dst, sizeof dst, src, 5);
+    printf("dst = \"%s\", r = %d\n", dst, r);
+    r = memmove_s(dst, 5, src, 10); // count is greater than destsz
+    printf("dst = \"");
+    for (size_t ndx = 0; ndx < sizeof dst; ++ndx)
+    {
+        char c = dst[ndx];
+        c ? printf("%c", c) : printf("\\0");
+    }
+    printf("\", r = %d\n", r);
+#endif
+}
+```
+
+<p>Possible output:</p>
+
+```text
+1234567890
+1234456890
+0x1.999999999999ap-4 is 3fb999999999999a as an int64_t
+dst = "aaaaayxyxy", r = 0
+dst = "\0\0\0\0\0yxyxy", r = 22
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.2.2 The memmove function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.7.1.2 The memmove_s function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.2.2 The memmove function (p: 264)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.7.1.2 The memmove_s function (p: 446)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.2.2 The memmove function (p: 363)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.7.1.2 The memmove_s function (p: 615)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.2.2 The memmove function (p: 326)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.11.2.2 The memmove function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/byte/memcpy/">memcpy<br />memcpy_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>copies one buffer to another   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wmemmove/">wmemmove<br />wmemmove_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>copies a certain amount of wide characters between two, possibly overlapping, arrays   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/byte/memmove" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+memmove</td></tr>
+</table>

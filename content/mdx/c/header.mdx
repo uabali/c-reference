@@ -1,0 +1,167 @@
+---
+title: "C Standard Library headers"
+slug: "c/header"
+category: "overview"
+source: "https://en.cppreference.com/w/c/header"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>The interface of C standard library is defined by the following collection of headers.</p>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/error/"><code>&lt;assert.h&gt;</code></a></td><td><a href="/reference/c/error/">Conditionally compiled macro that compares its argument to zero</a></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/"><code>&lt;complex.h&gt;</code></a> <span class="std std-since std-c99">(since C99)</span></td><td><a href="/reference/c/numeric/complex/">Complex number arithmetic</a></td></tr>
+<tr><td><a href="/reference/c/string/byte/"><code>&lt;ctype.h&gt;</code></a></td><td><a href="/reference/c/string/byte/">Functions to determine the type contained in character data</a></td></tr>
+<tr><td><a href="/reference/c/error/"><code>&lt;errno.h&gt;</code></a></td><td><a href="/reference/c/error/">Macros reporting error conditions</a></td></tr>
+<tr><td><a href="/reference/c/numeric/fenv/"><code>&lt;fenv.h&gt;</code></a> <span class="std std-since std-c99">(since C99)</span></td><td><a href="/reference/c/numeric/fenv/">Floating-point environment</a></td></tr>
+<tr><td><a href="/reference/c/types/limits/#Limits_of_floating-point_types"><code>&lt;float.h&gt;</code></a></td><td><a href="/reference/c/types/limits/#Limits_of_floating-point_types">Limits of floating-point types</a></td></tr>
+<tr><td><a href="/reference/c/types/integer/"><code>&lt;inttypes.h&gt;</code></a> <span class="std std-since std-c99">(since C99)</span></td><td><a href="/reference/c/types/integer/">Format conversion of integer types</a></td></tr>
+<tr><td><a href="/reference/c/language/operator_alternative/"><code>&lt;iso646.h&gt;</code></a> <span class="std std-since std-c95">(since C95)</span></td><td><a href="/reference/c/language/operator_alternative/">Alternative operator spellings</a></td></tr>
+<tr><td><a href="/reference/c/types/limits/"><code>&lt;limits.h&gt;</code></a></td><td><a href="/reference/c/types/limits/">Ranges of integer types</a></td></tr>
+<tr><td><a href="/reference/c/locale/"><code>&lt;locale.h&gt;</code></a></td><td><a href="/reference/c/locale/">Localization utilities</a></td></tr>
+<tr><td><a href="/reference/c/numeric/math/"><code>&lt;math.h&gt;</code></a></td><td><a href="/reference/c/numeric/math/">Common mathematics functions</a></td></tr>
+<tr><td><a href="/reference/c/program/"><code>&lt;setjmp.h&gt;</code></a></td><td><a href="/reference/c/program/">Nonlocal jumps</a></td></tr>
+<tr><td><a href="/reference/c/program/"><code>&lt;signal.h&gt;</code></a></td><td><a href="/reference/c/program/">Signal handling</a></td></tr>
+<tr><td><a href="/reference/c/types/"><code>&lt;stdalign.h&gt;</code></a> <span class="std std-since std-c11">(since C11)</span><span class="std std-since std-c23">(deprecated in C23)</span></td><td><a href="/reference/c/types/"><code>alignas</code> and <code>alignof</code></a> convenience macros</td></tr>
+<tr><td><a href="/reference/c/variadic/"><code>&lt;stdarg.h&gt;</code></a></td><td><a href="/reference/c/variadic/">Variable arguments</a></td></tr>
+<tr><td><a href="/reference/c/thread/#Atomic_operations"><code>&lt;stdatomic.h&gt;</code></a> <span class="std std-since std-c11">(since C11)</span></td><td><a href="/reference/c/thread/#Atomic_operations">Atomic operations</a></td></tr>
+<tr><td><a href="/reference/c/numeric/#Bit_manipulation"><code>&lt;stdbit.h&gt;</code></a> <span class="std std-since std-c23">(since C23)</span></td><td><a href="/reference/c/numeric/#Bit_manipulation">Macros to work with the byte and bit representations of types</a></td></tr>
+<tr><td><a href="/reference/c/types/"><code>&lt;stdbool.h&gt;</code></a> <span class="std std-since std-c99">(since C99)</span><span class="std std-since std-c23">(deprecated in C23)</span></td><td><a href="/reference/c/types/">Macros for boolean type</a></td></tr>
+<tr><td><a href="/reference/c/numeric/#Checked_integer_arithmetic"><code>&lt;stdckdint.h&gt;</code></a> <span class="std std-since std-c23">(since C23)</span></td><td><a href="/reference/c/numeric/#Checked_integer_arithmetic">Macros for performing checked integer arithmetic</a></td></tr>
+<tr><td><a href="/reference/c/types/"><code>&lt;stddef.h&gt;</code></a></td><td><a href="/reference/c/types/">Common macro definitions</a></td></tr>
+<tr><td><a href="/reference/c/types/integer/"><code>&lt;stdint.h&gt;</code></a> <span class="std std-since std-c99">(since C99)</span></td><td><a href="/reference/c/types/integer/">Fixed-width integer types</a></td></tr>
+<tr><td><a href="/reference/c/io/"><code>&lt;stdio.h&gt;</code></a></td><td><a href="/reference/c/io/">Input/output</a></td></tr>
+<tr><td><a href="/reference/c/program/"><code>&lt;stdlib.h&gt;</code></a></td><td>General utilities: <a href="/reference/c/memory/">memory management</a>, <a href="/reference/c/program/">program utilities</a>, <a href="/reference/c/string/">string conversions</a>, <a href="/reference/c/numeric/random/">random numbers</a>, <a href="/reference/c/algorithm/">algorithms</a></td></tr>
+<tr><td><code>&lt;stdmchar.h&gt;</code> <span class="mark-note">(since C29)</span></td><td>Text transcode</td></tr>
+<tr><td><a href="/reference/c/language/_Noreturn/"><code>&lt;stdnoreturn.h&gt;</code></a> <span class="std std-since std-c11">(since C11)</span><span class="std std-since std-c23">(deprecated in C23)</span></td><td><a href="/reference/c/language/_Noreturn/"><code>noreturn</code></a> convenience macro</td></tr>
+<tr><td><a href="/reference/c/string/byte/"><code>&lt;string.h&gt;</code></a></td><td><a href="/reference/c/string/byte/">String handling</a></td></tr>
+<tr><td><a href="/reference/c/numeric/tgmath/"><code>&lt;tgmath.h&gt;</code></a> <span class="std std-since std-c99">(since C99)</span></td><td><a href="/reference/c/numeric/tgmath/">Type-generic math</a> (macros wrapping math.h and complex.h)</td></tr>
+<tr><td><a href="/reference/c/thread/"><code>&lt;threads.h&gt;</code></a> <span class="std std-since std-c11">(since C11)</span></td><td><a href="/reference/c/thread/">Thread library</a></td></tr>
+<tr><td><a href="/reference/c/chrono/"><code>&lt;time.h&gt;</code></a></td><td><a href="/reference/c/chrono/">Time/date utilities</a></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/"><code>&lt;uchar.h&gt;</code></a> <span class="std std-since std-c11">(since C11)</span></td><td><a href="/reference/c/string/multibyte/">UTF-16 and UTF-32 character utilities</a></td></tr>
+<tr><td><a href="/reference/c/string/wide/"><code>&lt;wchar.h&gt;</code></a> <span class="std std-since std-c95">(since C95)</span></td><td><a href="/reference/c/string/wide/">Extended multibyte and wide character utilities</a></td></tr>
+<tr><td><a href="/reference/c/string/wide/"><code>&lt;wctype.h&gt;</code></a> <span class="std std-since std-c95">(since C95)</span></td><td><a href="/reference/c/string/wide/">Functions to determine the type contained in wide character data</a></td></tr>
+</table>
+
+<h3 id="Feature_test_macros_.28since_C23.29">Feature test macros <span class="std std-since std-c23">(since C23)</span></h3>
+
+<p>Feature test macros are defined in corresponding headers respectively since C23. Note that not all headers contain such a macro.</p>
+
+<table class="ref-table">
+<tr><th>#</th><th>Header</th><th>Macro name</th><th>Value</th></tr>
+<tr><td>1</td><td><a href="/reference/c/error/"><code>&lt;assert.h&gt;</code></a></td><td><code>__STDC_VERSION_ASSERT_H__</code></td><td><code>202311L</code></td></tr>
+<tr><td>2</td><td><a href="/reference/c/numeric/complex/"><code>&lt;complex.h&gt;</code></a></td><td><code>__STDC_VERSION_COMPLEX_H__</code></td><td><code>202311L</code></td></tr>
+<tr><td>3</td><td><a href="/reference/c/string/byte/"><code>&lt;ctype.h&gt;</code></a></td><td colspan="2">N/A</td></tr>
+<tr><td>4</td><td><a href="/reference/c/error/"><code>&lt;errno.h&gt;</code></a></td><td colspan="2">N/A</td></tr>
+<tr><td>5</td><td><a href="/reference/c/numeric/fenv/"><code>&lt;fenv.h&gt;</code></a></td><td><code>__STDC_VERSION_FENV_H__</code></td><td><code>202311L</code></td></tr>
+<tr><td>6</td><td><a href="/reference/c/types/limits/#Limits_of_floating-point_types"><code>&lt;float.h&gt;</code></a></td><td><code>__STDC_VERSION_FLOAT_H__</code></td><td><code>202311L</code></td></tr>
+<tr><td>7</td><td><a href="/reference/c/types/integer/"><code>&lt;inttypes.h&gt;</code></a></td><td><code>__STDC_VERSION_INTTYPES_H__</code></td><td><code>202311L</code></td></tr>
+<tr><td>8</td><td><a href="/reference/c/language/operator_alternative/"><code>&lt;iso646.h&gt;</code></a></td><td colspan="2">N/A</td></tr>
+<tr><td>9</td><td><a href="/reference/c/types/limits/"><code>&lt;limits.h&gt;</code></a></td><td><code>__STDC_VERSION_LIMITS_H__</code></td><td><code>202311L</code></td></tr>
+<tr><td>10</td><td><a href="/reference/c/locale/"><code>&lt;locale.h&gt;</code></a></td><td colspan="2">N/A</td></tr>
+<tr><td>11</td><td><a href="/reference/c/numeric/math/"><code>&lt;math.h&gt;</code></a></td><td><code>__STDC_VERSION_MATH_H__</code></td><td><code>202311L</code></td></tr>
+<tr><td>12</td><td><a href="/reference/c/program/"><code>&lt;setjmp.h&gt;</code></a></td><td><code>__STDC_VERSION_SETJMP_H__</code></td><td><code>202311L</code></td></tr>
+<tr><td>13</td><td><a href="/reference/c/program/"><code>&lt;signal.h&gt;</code></a></td><td colspan="2">N/A</td></tr>
+<tr><td>14</td><td><a href="/reference/c/types/"><code>&lt;stdalign.h&gt;</code></a></td><td colspan="2">N/A</td></tr>
+<tr><td>15</td><td><a href="/reference/c/variadic/"><code>&lt;stdarg.h&gt;</code></a></td><td><code>__STDC_VERSION_STDARG_H__</code></td><td><code>202311L</code></td></tr>
+<tr><td>16</td><td><a href="/reference/c/thread/#Atomic_operations"><code>&lt;stdatomic.h&gt;</code></a></td><td><code>__STDC_VERSION_STDATOMIC_H__</code></td><td><code>202311L</code></td></tr>
+<tr><td>17</td><td><a href="/reference/c/numeric/#Bit_manipulation"><code>&lt;stdbit.h&gt;</code></a></td><td><code>__STDC_VERSION_STDBIT_H__</code></td><td><code>202311L</code></td></tr>
+<tr><td>18</td><td><a href="/reference/c/types/"><code>&lt;stdbool.h&gt;</code></a></td><td colspan="2">N/A</td></tr>
+<tr><td>19</td><td><a href="/reference/c/numeric/#Checked_integer_arithmetic"><code>&lt;stdckdint.h&gt;</code></a></td><td><code>__STDC_VERSION_STDCKDINT_H__</code></td><td><code>202311L</code></td></tr>
+<tr><td>20</td><td><a href="/reference/c/types/"><code>&lt;stddef.h&gt;</code></a></td><td><code>__STDC_VERSION_STDDEF_H__</code></td><td><code>202311L</code></td></tr>
+<tr><td>21</td><td><a href="/reference/c/types/integer/"><code>&lt;stdint.h&gt;</code></a></td><td><code>__STDC_VERSION_STDINT_H__</code></td><td><code>202311L</code></td></tr>
+<tr><td>22</td><td><a href="/reference/c/io/"><code>&lt;stdio.h&gt;</code></a></td><td><code>__STDC_VERSION_STDIO_H__</code></td><td><code>202311L</code></td></tr>
+<tr><td>23</td><td><a href="/reference/c/program/"><code>&lt;stdlib.h&gt;</code></a></td><td><code>__STDC_VERSION_STDLIB_H__</code></td><td><code>202311L</code></td></tr>
+<tr><td>24</td><td><a href="/reference/c/language/_Noreturn/"><code>&lt;stdnoreturn.h&gt;</code></a></td><td colspan="2">N/A</td></tr>
+<tr><td>25</td><td><a href="/reference/c/string/byte/"><code>&lt;string.h&gt;</code></a></td><td><code>__STDC_VERSION_STRING_H__</code></td><td><code>202311L</code></td></tr>
+<tr><td>26</td><td><a href="/reference/c/numeric/tgmath/"><code>&lt;tgmath.h&gt;</code></a></td><td><code>__STDC_VERSION_TGMATH_H__</code></td><td><code>202311L</code></td></tr>
+<tr><td>27</td><td><a href="/reference/c/thread/"><code>&lt;threads.h&gt;</code></a></td><td colspan="2">N/A</td></tr>
+<tr><td>28</td><td><a href="/reference/c/chrono/"><code>&lt;time.h&gt;</code></a></td><td><code>__STDC_VERSION_TIME_H__</code></td><td><code>202311L</code></td></tr>
+<tr><td>29</td><td><a href="/reference/c/string/multibyte/"><code>&lt;uchar.h&gt;</code></a></td><td><code>__STDC_VERSION_UCHAR_H__</code></td><td><code>202311L</code></td></tr>
+<tr><td>30</td><td><a href="/reference/c/string/wide/"><code>&lt;wchar.h&gt;</code></a></td><td><code>__STDC_VERSION_WCHAR_H__</code></td><td><code>202311L</code></td></tr>
+<tr><td>31</td><td><a href="/reference/c/string/wide/"><code>&lt;wctype.h&gt;</code></a></td><td colspan="2">N/A</td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.1.2 Standard headers</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.1.2 Standard headers (p: 131-132)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.1.2 Standard headers (p: 181-182)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.1.2 Standard headers (p: 165)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.1.2 Standard headers</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/headers" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+C++ Standard Library headers</td></tr>
+</table>

@@ -1,0 +1,123 @@
+---
+title: "btowc"
+slug: "c/string/multibyte/btowc"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/multibyte/btowc"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;wchar.h&gt;</code></p>
+
+```c
+wint_t btowc( int c );
+```
+
+<p class="decl-note"><span class="std std-since std-c95">(since C95)</span></p>
+
+<p>Widens a single-byte character <code>c</code> (reinterpreted as <code>unsigned char</code>) to its wide character equivalent.</p>
+
+<p>Most multibyte character encodings use single-byte codes to represent the characters from the ASCII character set. This function may be used to convert such characters to <code>wchar_t</code>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>c</td><td>-</td><td>single-byte character to widen</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p><code>WEOF</code> if <code>c</code> is <a href="/reference/c/io/">EOF</a></p>
+
+<p>wide character representation of <code>c</code> if <code>(unsigned char)c</code> is a valid single-byte character in the initial shift state, <code>WEOF</code> otherwise.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <wchar.h>
+#include <locale.h>
+#include <assert.h>
+ 
+void try_widen(unsigned char c)
+{
+    wint_t w = btowc(c);
+    if(w != WEOF)
+        printf("The single-byte character %#x widens to %#x\n", c, w);
+    else
+        printf("The single-byte character %#x failed to widen\n", c);
+}
+ 
+int main(void)
+{
+    char *loc = setlocale(LC_ALL, "lt_LT.iso88594");
+    assert(loc);
+    printf("In Lithuanian ISO-8859-4 locale:\n");
+    try_widen('A');
+    try_widen('\xdf'); // German letter ß (U+00df) in ISO-8859-4
+    try_widen('\xf9'); // Lithuanian letter ų (U+0173) in ISO-8859-4
+ 
+    setlocale(LC_ALL, "lt_LT.utf8");
+    printf("In Lithuanian UTF-8 locale:\n");
+    try_widen('A');
+    try_widen('\xdf');
+    try_widen('\xf9');
+}
+```
+
+<p>Possible output:</p>
+
+```text
+In Lithuanian ISO-8859-4 locale:
+The single-byte character 0x41 widens to 0x41
+The single-byte character 0xdf widens to 0xdf
+The single-byte character 0xf9 widens to 0x173
+In Lithuanian UTF-8 locale:
+The single-byte character 0x41 widens to 0x41
+The single-byte character 0xdf failed to widen
+The single-byte character 0xf9 failed to widen
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.6.1.1 The btowc function (p: 441)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.6.1.1 The btowc function (p: 387)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/multibyte/wctob/">wctob</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>narrows a wide character to a single-byte narrow character, if possible   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/multibyte/btowc" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+btowc</td></tr>
+</table></section>

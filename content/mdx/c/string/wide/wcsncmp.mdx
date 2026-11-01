@@ -1,0 +1,129 @@
+---
+title: "wcsncmp"
+slug: "c/string/wide/wcsncmp"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/wide/wcsncmp"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;wchar.h&gt;</code></p>
+
+```c
+int wcsncmp( const wchar_t* lhs, const wchar_t* rhs, size_t count );
+```
+
+<p class="decl-note"><span class="std std-since std-c95">(since C95)</span></p>
+
+<p>Compares at most <code>count</code> wide characters of two null-terminated wide strings. The comparison is done lexicographically.</p>
+
+<p>The sign of the result is the sign of the difference between the values of the first pair of wide characters that differ in the strings being compared.</p>
+
+<p>The behavior is undefined if <code>lhs</code> or <code>rhs</code> are not pointers to null-terminated strings.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>lhs, rhs</td><td>-</td><td>pointers to the null-terminated wide strings to compare</td></tr>
+<tr><td>count</td><td>-</td><td>maximum number of characters to compare</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Negative value if <code>lhs</code> appears before <code>rhs</code> in lexicographical order.</p>
+
+<p>Zero if <code>lhs</code> and <code>rhs</code> compare equal.</p>
+
+<p>Positive value if <code>lhs</code> appears after <code>rhs</code> in lexicographical order.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>This function is not locale-sensitive, unlike <a href="/reference/c/string/wide/wcscoll/">wcscoll</a> and <a href="/reference/c/string/wide/wcsxfrm/">wcsxfrm</a>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <wchar.h>
+#include <locale.h>
+ 
+void demo(const wchar_t *lhs, const wchar_t *rhs, int sz)
+{
+    int rc = wcsncmp(lhs, rhs, sz);
+    if(rc == 0)
+        printf("First %d characters of [%ls] equal [%ls]\n", sz, lhs, rhs);
+    else if(rc < 0)
+        printf("First %d characters of [%ls] precede [%ls]\n", sz, lhs, rhs);
+    else if(rc > 0)
+        printf("First %d characters of [%ls] follow [%ls]\n", sz, lhs, rhs);
+}
+ 
+int main(void)
+{
+    const wchar_t *str1 = L"안녕하세요";
+    const wchar_t *str2 = L"안녕히 가십시오";
+ 
+    setlocale(LC_ALL, "en_US.utf8");
+    demo(str1, str2, 5);
+    demo(str2, str1, 8);
+    demo(str1, str2, 2);
+}
+```
+
+<p>Output:</p>
+
+```text
+First 5 characters of [안녕하세요] precede [안녕히 가십시오]
+First 8 characters of [안녕히 가십시오] follow [안녕하세요]
+First 2 characters of [안녕하세요] equal [안녕히 가십시오]
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.4.4.3 The wcsncmp function (p: 434)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.4.4.3 The wcsncmp function (p: 380)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/wide/wcscmp/">wcscmp</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>compares two wide strings   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wmemcmp/">wmemcmp</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>compares a certain amount of wide characters from two arrays   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcscoll/">wcscoll</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>compares two wide strings in accordance to the current locale   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/wide/wcsncmp" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+wcsncmp</td></tr>
+</table></section>

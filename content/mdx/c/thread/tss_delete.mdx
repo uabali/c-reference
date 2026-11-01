@@ -1,0 +1,77 @@
+---
+title: "tss_delete"
+slug: "c/thread/tss_delete"
+category: "thread"
+source: "https://en.cppreference.com/w/c/thread/tss_delete"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;threads.h&gt;</code></p>
+
+```c
+void tss_delete( tss_t tss_id );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Destroys the thread-specific storage identified by <code>tss_id</code>.</p>
+
+<p>The destructor, if one was registered by <a href="/reference/c/thread/tss_create/">tss_create</a>, is not called (they are only called at thread exit, either by <a href="/reference/c/thread/thrd_exit/">thrd_exit</a> or by returning from the thread function), it is the responsibility of the programmer to ensure that every thread that is aware of <code>tss_id</code> performed all necessary cleanup, before the call to <code>tss_delete</code> is made.</p>
+
+<p>If <code>tss_delete</code> is called while another thread is executing destructors for <code>tss_id</code>, it's unspecified whether this changes the number of invocations to the associated destructor.</p>
+
+<p>If <code>tss_delete</code> is called while the calling thread is executing destructors, then the destructor associated with <code>tss_id</code> will not be executed again on this thread.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>tss_id</td><td>-</td><td>thread-specific storage key previously returned by <a href="/reference/c/thread/tss_create/">tss_create</a> and not yet deleted by <strong>tss_delete</strong></td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>(none)</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The POSIX equivalent of this function is <a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_key_delete.html" rel="noreferrer" target="_blank"><code>pthread_key_delete</code></a>.</p>
+
+<p>The reason <code>tss_delete</code> never calls destructors is that the destructors (called at thread exit) are normally intended to be executed by the same thread that originally set the value (via <a href="/reference/c/thread/tss_set/">tss_set</a>) that the destructor will be dealing with, and may even rely on the values of that or other thread-specific data as seen by that thread. The thread executing <code>tss_delete</code> has no access to other threads' TSS. Even if it were possible to call the destructor for each thread's own value associated with <code>tss_id</code>, <code>tss_delete</code> would have to synchronize with every thread if only to examine whether the value of this TSS in that thread is null (destructors are only called against non-null values).</p>
+
+<h3 id="Example">Example</h3>
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: no example</td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.6.2 The tss_delete function (p: 282)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.6.2 The tss_delete function (p: 386)</p>
+</li>
+</ul></dd>
+</dl></section>

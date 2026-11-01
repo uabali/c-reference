@@ -1,0 +1,242 @@
+---
+title: "fdim, fdimf, fdiml"
+slug: "c/numeric/math/fdim"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/fdim"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+float       fdimf( float x, float y );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+double      fdim( double x, double y );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+long double fdiml( long double x, long double y );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;tgmath.h&gt;</code></p>
+
+```c
+#define fdim( x, y )
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="li-note"><span class="li-num">1-3)</span>  Returns the positive difference between <code>x</code> and <code>y</code>, that is, if <code>x&gt;y</code>, returns <code>x-y</code>, otherwise (if <code>x≤y</code>), returns +0.</p>
+
+<p class="li-note"><span class="li-num">4)</span>  Type-generic macro: If any argument has type <code>long double</code>, <code>fdiml</code> is called. Otherwise, if any argument has integer type or has type <code>double</code>, <code>fdim</code> is called. Otherwise, <code>fdimf</code> is called.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>x, y</td><td>-</td><td>floating-point value</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>If successful, returns the positive difference between <code>x</code> and <code>y</code>.</p>
+
+<p>If a range error due to overflow occurs, <a href="/reference/c/numeric/math/HUGE_VAL/">+HUGE_VAL</a>, <code>+HUGE_VALF</code>, or <code>+HUGE_VALL</code> is returned.</p>
+
+<p>If a range error due to underflow occurs, the correct value (after rounding) is returned.</p>
+
+<h3 id="Error_handling">Error handling</h3>
+
+<p>Errors are reported as specified in <a href="https://en.cppreference.com/mwiki/index.php?title=Template:rllpt&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">Template:rllpt</a>.</p>
+
+<p>If the implementation supports IEEE floating-point arithmetic (IEC 60559),</p>
+
+<ul>
+<li>
+<p>If either argument is NaN, NaN is returned.</p>
+</li>
+</ul>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Equivalent to <code>fmax(x-y, 0)</code> except for the NaN handling requirements.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <errno.h>
+#include <fenv.h>
+#include <math.h>
+#include <stdio.h>
+// #pragma STDC FENV_ACCESS ON
+ 
+int main(void)
+{
+    printf("fdim(4, 1) = %f, fdim(1, 4)=%f\n", fdim(4,1), fdim(1,4));
+    printf("fdim(4,-1) = %f, fdim(1,-4)=%f\n", fdim(4,-1), fdim(1,-4));
+    //error handling
+    errno = 0; feclearexcept(FE_ALL_EXCEPT);
+    printf("fdim(1e308, -1e308) = %f\n", fdim(1e308, -1e308));
+    if (errno == ERANGE)
+        perror("    errno == ERANGE");
+    if (fetestexcept(FE_OVERFLOW))
+        puts("    FE_OVERFLOW raised");
+}
+```
+
+<p>Possible output:</p>
+
+```text
+fdim(4, 1) = 3.000000, fdim(1, 4)=0.000000
+fdim(4,-1) = 5.000000, fdim(1,-4)=5.000000
+fdim(1e308, -1e308) = inf
+    errno == ERANGE: Numerical result out of range
+    FE_OVERFLOW raised
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.12.1 The fdim functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.9.1 The fdim functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.12.1 The fdim functions (p: 187-188)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 272-273)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.9.1 The fdim functions (p: 386)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.12.1 The fdim functions (p: 257)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 373-375)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.9.1 The fdim functions (p: 530)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.12.1 The fdim functions (p: 238)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 Type-generic math &lt;tgmath.h&gt; (p: 335-337)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.9.9.1 The fdim functions (p: 466)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/abs/">abs<br />labs<br />llabs</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>computes absolute value of an integral value (\(\small{|x|}\)|x|)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/fmax/">fmax<br />fmaxf<br />fmaxl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>determines larger of two floating-point values   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/fdim" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+fdim</td></tr>
+</table>

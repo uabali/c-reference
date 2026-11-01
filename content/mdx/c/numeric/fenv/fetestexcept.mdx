@@ -1,0 +1,124 @@
+---
+title: "fetestexcept"
+slug: "c/numeric/fenv/fetestexcept"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/fenv/fetestexcept"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;fenv.h&gt;</code></p>
+
+```c
+int fetestexcept( int excepts );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>Determines which of the specified subset of the floating-point exceptions are currently set. The argument <code>excepts</code> is a bitwise OR of the <a href="/reference/c/numeric/fenv/FE_exceptions/">floating-point exception macros</a>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>excepts</td><td>-</td><td>bitmask listing the exception flags to test</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Bitwise OR of the floating-point exception macros that are both included in <code>excepts</code> and correspond to floating-point exceptions currently set.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <math.h>
+#include <fenv.h>
+#include <float.h>
+ 
+#pragma STDC FENV_ACCESS ON
+ 
+void show_fe_exceptions(void)
+{
+    printf("current exceptions raised: ");
+    if(fetestexcept(FE_DIVBYZERO))     printf(" FE_DIVBYZERO");
+    if(fetestexcept(FE_INEXACT))       printf(" FE_INEXACT");
+    if(fetestexcept(FE_INVALID))       printf(" FE_INVALID");
+    if(fetestexcept(FE_OVERFLOW))      printf(" FE_OVERFLOW");
+    if(fetestexcept(FE_UNDERFLOW))     printf(" FE_UNDERFLOW");
+    if(fetestexcept(FE_ALL_EXCEPT)==0) printf(" none");
+    printf("\n");
+}
+ 
+int main(void)
+{
+    /* Show default set of exception flags. */
+    show_fe_exceptions();
+ 
+    /* Perform some computations which raise exceptions. */
+    printf("1.0/0.0     = %f\n", 1.0/0.0);        /* FE_DIVBYZERO            */
+    printf("1.0/10.0    = %f\n", 1.0/10.0);       /* FE_INEXACT              */
+    printf("sqrt(-1)    = %f\n", sqrt(-1));       /* FE_INVALID              */
+    printf("DBL_MAX*2.0 = %f\n", DBL_MAX*2.0);    /* FE_INEXACT FE_OVERFLOW  */
+    printf("nextafter(DBL_MIN/pow(2.0,52),0.0) = %.1f\n",
+           nextafter(DBL_MIN/pow(2.0,52),0.0));   /* FE_INEXACT FE_UNDERFLOW */
+    show_fe_exceptions();
+ 
+    return 0;
+}
+```
+
+<p>Output:</p>
+
+```text
+current exceptions raised:  none
+1.0/0.0     = inf
+1.0/10.0    = 0.100000
+sqrt(-1)    = -nan
+DBL_MAX*2.0 = inf
+nextafter(DBL_MIN/pow(2.0,52),0.0) = 0.0
+current exceptions raised:  FE_DIVBYZERO FE_INEXACT FE_INVALID FE_OVERFLOW FE_UNDERFLOW
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.6.2.5 The fetestexcept function (p: 211-212)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.6.2.5 The fetestexcept function (p: 192-193)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/fenv/feclearexcept/">feclearexcept</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>clears the specified floating-point status flags   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/fenv/fetestexcept" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+fetestexcept</td></tr>
+</table></section>

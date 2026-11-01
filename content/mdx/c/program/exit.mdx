@@ -1,0 +1,191 @@
+---
+title: "exit"
+slug: "c/program/exit"
+category: "program"
+source: "https://en.cppreference.com/w/c/program/exit"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdlib.h&gt;</code></p>
+
+```c
+void exit( int exit_code );
+```
+
+<p class="decl-note"><span class="std std-until std-c11">(until C11)</span></p>
+
+```c
+_Noreturn void exit( int exit_code );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span>  <span class="std std-until std-c23">(until C23)</span></p>
+
+```c
+[[noreturn]] void exit( int exit_code );
+```
+
+<p class="decl-note"><span class="std std-since std-c23">(since C23)</span></p>
+
+<p>Causes normal program termination to occur.</p>
+
+<p>Several cleanup steps are performed:</p>
+
+<ul>
+<li>
+<p>functions passed to</p>
+
+<a href="/reference/c/program/atexit/">atexit</a>
+
+<p>are called, in reverse order of registration</p>
+</li>
+<li>
+<p>all C streams are flushed and closed</p>
+</li>
+<li>
+<p>files created by</p>
+
+<a href="/reference/c/io/tmpfile/">tmpfile</a>
+
+<p>are removed</p>
+</li>
+<li>
+<p>control is returned to the host environment. If</p>
+
+<code>exit_code</code>
+
+<p>is zero or</p>
+
+<a href="/reference/c/program/EXIT_status/">EXIT_SUCCESS</a>
+
+<p>, an implementation-defined status indicating successful termination is returned. If</p>
+
+<code>exit_code</code>
+
+<p>is</p>
+
+<a href="/reference/c/program/EXIT_status/">EXIT_FAILURE</a>
+
+<p>, an implementation-defined status indicating unsuccessful termination is returned. In other cases implementation-defined status value is returned.</p>
+</li>
+</ul>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The functions registered with <a href="/reference/c/program/at_quick_exit/">at_quick_exit</a> are not called.</p>
+
+<p>The behavior is undefined if a program calls <code>exit</code> more than once, or if it calls <code>exit</code> and <a href="/reference/c/program/quick_exit/">quick_exit</a></p>
+
+<p>The behavior is undefined if during a call to a function registered with <a href="/reference/c/program/atexit/">atexit</a>, the function exits with <a href="/reference/c/program/longjmp/">longjmp</a>.</p>
+
+<p>Returning from the <a href="/reference/c/language/main_function/">the main function</a>, either by a <code>return</code> statement or by reaching the end of the function, executes <code>exit()</code>, passing the argument of the return statement (or <code>0</code> if implicit return was used) as <code>exit_code</code>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>exit_code</td><td>-</td><td>exit status of the program</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>(none)</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(void)
+{
+    FILE *fp = fopen("data.txt","r");
+    if (fp == NULL)
+    {
+       fprintf(stderr, "error opening file data.txt in function main()\n");
+       exit( EXIT_FAILURE );
+    }
+    fclose(fp);
+    printf("Normal Return\n");
+    return EXIT_SUCCESS ;
+}
+```
+
+<p>Possible output:</p>
+
+```text
+error opening file data.txt in function main()
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.4.4 The exit function (p: 256)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.4.4 The exit function (p: 351-352)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20.4.3 The exit function (p: 315-316)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.10.4.3 The exit function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/program/abort/">abort</a></td><td>causes abnormal program termination (without cleaning up)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/program/atexit/">atexit</a></td><td>registers a function to be called on <strong>exit()</strong> invocation   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/program/quick_exit/">quick_exit</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>causes normal program termination without completely cleaning up   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/utility/program/exit" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+exit</td></tr>
+</table>

@@ -1,0 +1,331 @@
+---
+title: "scalbn, scalbnf, scalbnl, scalbln, scalblnf, scalblnl"
+slug: "c/numeric/math/scalbn"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/scalbn"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+float       scalbnf( float arg, int exp );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+double      scalbn( double arg, int exp );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+long double scalbnl( long double arg, int exp );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;tgmath.h&gt;</code></p>
+
+```c
+#define scalbn( arg, exp )
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+float       scalblnf( float arg, long exp );
+```
+
+<p class="decl-note">(5) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+double      scalbln( double arg, long exp );
+```
+
+<p class="decl-note">(6) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+long double scalblnl( long double arg, long exp );
+```
+
+<p class="decl-note">(7) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;tgmath.h&gt;</code></p>
+
+```c
+#define scalbln( arg, exp )
+```
+
+<p class="decl-note">(8) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="li-note"><span class="li-num">1-3,5-7)</span>  Multiplies a floating-point value <code>arg</code> by <a href="/reference/c/types/limits/">FLT_RADIX</a> raised to power <code>exp</code>.</p>
+
+<p class="li-note"><span class="li-num">4,8)</span>  Type-generic macros: If <code>arg</code> has type <code>long double</code>, <code>scalbnl</code> or <code>scalblnl</code> is called. Otherwise, if <code>arg</code> has integer type or the type <code>double</code>, <code>scalbn</code> or <code>scalbln</code> is called. Otherwise, <code>scalbnf</code> or <code>scalblnf</code> is called, respectively.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>arg</td><td>-</td><td>floating-point value</td></tr>
+<tr><td>exp</td><td>-</td><td>integer value</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>If no errors occur, <code>arg</code> multiplied by <a href="/reference/c/types/limits/">FLT_RADIX</a> to the power of <code>exp</code> (arg×FLT_RADIXexp ) is returned.</p>
+
+<p>If a range error due to overflow occurs, <code>±HUGE_VAL</code>, <code>±HUGE_VALF</code>, or <code>±HUGE_VALL</code> is returned.</p>
+
+<p>If a range error due to underflow occurs, the correct result (after rounding) is returned.</p>
+
+<h3 id="Error_handling">Error handling</h3>
+
+<p>Errors are reported as specified in <a href="/reference/c/numeric/math/math_errhandling/"><code>math_errhandling</code></a>.</p>
+
+<p>If the implementation supports IEEE floating-point arithmetic (IEC 60559),</p>
+
+<ul>
+<li>
+<p>Unless a range error occurs,</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INEXACT</a>
+
+<p>is never raised (the result is exact).</p>
+</li>
+<li>
+<p>Unless a range error occurs, the</p>
+
+<a href="/reference/c/numeric/fenv/FE_round/">current rounding mode</a>
+
+<p>is ignored.</p>
+</li>
+<li>
+<p>If</p>
+
+<code>arg</code>
+
+<p>is ±0, it is returned, unmodified.</p>
+</li>
+<li>
+<p>If</p>
+
+<code>arg</code>
+
+<p>is ±∞, it is returned, unmodified.</p>
+</li>
+<li>
+<p>If</p>
+
+<code>exp</code>
+
+<p>is 0, then</p>
+
+<code>arg</code>
+
+<p>is returned, unmodified.</p>
+</li>
+<li>
+<p>If</p>
+
+<code>arg</code>
+
+<p>is NaN, NaN is returned.</p>
+</li>
+</ul>
+
+<h3 id="Notes">Notes</h3>
+
+<p>On binary systems (where <a href="/reference/c/types/limits/">FLT_RADIX</a> is <code>2</code>), <code>scalbn</code> is equivalent to <a href="/reference/c/numeric/math/ldexp/">ldexp</a>.</p>
+
+<p>Although <code>scalbn</code> and <code>scalbln</code> are specified to perform the operation efficiently, on many implementations they are less efficient than multiplication or division by a power of two using arithmetic operators.</p>
+
+<p>The <code>scalbln</code> function is provided because the factor required to scale from the smallest positive floating-point value to the largest finite one may be greater than <code>32767</code>, the standard-guaranteed <a href="/reference/c/types/limits/">INT_MAX</a>. In particular, for the 80-bit <code>long double</code>, the factor is <code>32828</code>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <errno.h>
+#include <fenv.h>
+#include <float.h>
+#include <math.h>
+#include <stdio.h>
+ 
+// #pragma STDC FENV_ACCESS ON
+ 
+int main(void)
+{
+    printf("scalbn(7, -4) = %f\n", scalbn(7, -4));
+    printf("scalbn(1, -1074) = %g (minimum positive subnormal double)\n",
+            scalbn(1, -1074));
+    printf("scalbn(nextafter(1,0), 1024) = %g (largest finite double)\n",
+            scalbn(nextafter(1,0), 1024));
+ 
+    // special values
+    printf("scalbn(-0, 10) = %f\n", scalbn(-0.0, 10));
+    printf("scalbn(-Inf, -1) = %f\n", scalbn(-INFINITY, -1));
+ 
+    // error handling
+    errno = 0; feclearexcept(FE_ALL_EXCEPT);
+    printf("scalbn(1, 1024) = %f\n", scalbn(1, 1024));
+    if (errno == ERANGE)
+        perror("    errno == ERANGE");
+    if (fetestexcept(FE_OVERFLOW))
+        puts("    FE_OVERFLOW raised");
+}
+```
+
+<p>Possible output:</p>
+
+```text
+scalbn(7, -4) = 0.437500
+scalbn(1, -1074) = 4.94066e-324 (minimum positive subnormal double)
+scalbn(nextafter(1,0), 1024) = 1.79769e+308 (largest finite double)
+scalbn(-0, 10) = -0.000000
+scalbn(-Inf, -1) = -inf
+scalbn(1, 1024) = inf
+    errno == ERANGE: Numerical result out of range
+    FE_OVERFLOW raised
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.6.13 The scalbn functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.3.13 The scalbn functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.6.13 The scalbn functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.3.13 The scalbn functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.6.13 The scalbn functions (p: 247)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 373-375)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.3.13 The scalbn functions (p: 523)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.6.13 The scalbn functions (p: 228)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 Type-generic math &lt;tgmath.h&gt; (p: 335-337)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.9.3.13 The scalbn functions (p: 460)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/frexp/">frexp<br />frexpf<br />frexpl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>breaks a number into significand and a power of 2   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/ldexp/">ldexp<br />ldexpf<br />ldexpl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>multiplies a number by 2 raised to a power   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/scalbn" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+scalbn</td></tr>
+</table>

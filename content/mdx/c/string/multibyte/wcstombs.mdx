@@ -1,0 +1,288 @@
+---
+title: "wcstombs, wcstombs_s"
+slug: "c/string/multibyte/wcstombs"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/multibyte/wcstombs"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdlib.h&gt;</code></p>
+
+<p class="decl-note">(1)</p>
+
+```c
+size_t wcstombs( char          *dst, const wchar_t          *src, size_t len );
+```
+
+<p class="decl-note"><span class="std std-until std-c99">(until C99)</span></p>
+
+```c
+size_t wcstombs( char *restrict dst, const wchar_t *restrict src, size_t len );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+errno_t wcstombs_s( size_t *restrict retval, char *restrict dst, rsize_t dstsz,
+                    const wchar_t *restrict src, rsize_t len );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Converts a sequence of wide characters from the array whose first element is pointed to by <code>src</code> to its narrow multibyte representation that begins in the initial shift state. Converted characters are stored in the successive elements of the char array pointed to by <code>dst</code>. No more than <code>len</code> bytes are written to the destination array.</p>
+
+<p class="li-note">Each character is converted as if by a call to <a href="/reference/c/string/multibyte/wctomb/">wctomb</a>, except that the wctomb's conversion state is unaffected. The conversion stops if:</p>
+
+<p class="li-note">* The null character <code>L&#x27;\0&#x27;</code> was converted and stored. The bytes stored in this case are the unshift sequence (if necessary) followed by <code>&#x27;\0&#x27;</code>,</p>
+
+<p class="li-note">* A <code>wchar_t</code> was found that does not correspond to a valid character in the current C locale.</p>
+
+<p class="li-note">* The next multibyte character to be stored would exceed <code>len</code>.</p>
+
+<p class="li-note">If <code>src</code> and <code>dst</code> overlap, the behavior is unspecified.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Same as (1), except that</p>
+
+<p class="li-note">* conversion is as-if by <a href="/reference/c/string/multibyte/wcrtomb/">wcrtomb</a>, not <a href="/reference/c/string/multibyte/wctomb/">wctomb</a></p>
+
+<p class="li-note">* the function returns its result as an out-parameter <code>retval</code></p>
+
+<p class="li-note">* if the conversion stops without writing a null character, the function will store <code>&#x27;\0&#x27;</code> in the next byte in <code>dst</code>, which may be <code>dst[len]</code> or <code>dst[dstsz]</code>, whichever comes first (meaning up to len+1/dstsz+1 total bytes may be written). In this case, there may be no unshift sequence written before the terminating null.</p>
+
+<p class="li-note">* if <code>dst</code> is a null pointer, the number of bytes that would be produced is stored in <code>*retval</code></p>
+
+<p class="li-note">* the function clobbers the destination array from the terminating null and until <code>dstsz</code></p>
+
+<p class="li-note">* If <code>src</code> and <code>dst</code> overlap, the behavior is unspecified.</p>
+
+<div class="li-note"><p>* the following errors are detected at runtime and call the currently installed</p>
+
+<a href="/reference/c/error/set_constraint_handler_s/">constraint handler</a>
+
+<p>function:</p>
+
+<dl>
+<dd><ul>
+<li>
+<code>retval</code>
+
+<p>or</p>
+
+<code>src</code>
+
+<p>is a null pointer</p>
+</li>
+<li>
+<code>dstsz</code>
+
+<p>or</p>
+
+<code>len</code>
+
+<p>is greater than</p>
+
+RSIZE_MAX
+
+<p>(unless</p>
+
+<code>dst</code>
+
+<p>is null)</p>
+</li>
+<li>
+<code>dstsz</code>
+
+<p>is not zero (unless</p>
+
+<code>dst</code>
+
+<p>is null)</p>
+</li>
+<li>
+<code>len</code>
+
+<p>is greater than</p>
+
+<code>dstsz</code>
+
+<p>and the conversion does not encounter null or encoding error in the</p>
+
+<code>src</code>
+
+<p>array by the time</p>
+
+<code>dstsz</code>
+
+<p>is reached (unless</p>
+
+<code>dst</code>
+
+<p>is null)</p>
+</li>
+</ul></dd>
+<dd><p>As with all bounds-checked functions,</p>
+
+<code>wcstombs_s</code>
+
+<p>is only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<a href="/reference/c/program/"><code>&lt;stdlib.h&gt;</code></a>
+
+<p>.</p></dd>
+</dl></div>
+
+<h3 id="Notes">Notes</h3>
+
+<p>In most implementations, <code>wcstombs</code> updates a global static object of type <a href="/reference/c/string/multibyte/mbstate_t/">mbstate_t</a> as it processes through the string, and cannot be called simultaneously by two threads, <a href="/reference/c/string/multibyte/wcsrtombs/">wcsrtombs</a> or <code>wcstombs_s</code> should be used in such cases.</p>
+
+<p>POSIX specifies a common extension: if <code>dst</code> is a null pointer, this function returns the number of bytes that would be written to <code>dst</code>, if converted. Similar behavior is standard for <a href="/reference/c/string/multibyte/wcsrtombs/">wcsrtombs</a> and <code>wcstombs_s</code>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>dst</td><td>-</td><td>pointer to narrow character array where the multibyte character will be stored</td></tr>
+<tr><td>src</td><td>-</td><td>pointer to the first element of a null-terminated wide string to convert</td></tr>
+<tr><td>len</td><td>-</td><td>number of bytes available in the array pointed to by dst</td></tr>
+<tr><td>dstsz</td><td>-</td><td>max number of bytes that will be written (size of the <code>dst</code> array)</td></tr>
+<tr><td>retval</td><td>-</td><td>pointer to a size_t object where the result will be stored</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  On success, returns the number of bytes (including any shift sequences, but excluding the terminating <code>&#x27;\0&#x27;</code>) written to the character array whose first element is pointed to by <code>dst</code>. On conversion error (if invalid wide character was encountered), returns <code>(size_t)-1</code>.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Returns zero on success (in which case the number of bytes excluding terminating zero that were, or would be written to <code>dst</code>, is stored in <code>*retval</code>), non-zero on error. In case of a runtime constraint violation, stores <code>(size_t)-1</code> in <code>*retval</code> (unless <code>retval</code> is null) and sets <code>dst[0]</code> to <code>&#x27;\0&#x27;</code> (unless <code>dst</code> is null or <code>dstmax</code> is zero or greater than RSIZE_MAX)</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+ 
+int main(void)
+{
+    // 4 wide characters
+    const wchar_t src[] = L"z\u00df\u6c34\U0001f34c";
+    // they occupy 10 bytes in UTF-8
+    char dst[11];
+ 
+    setlocale(LC_ALL, "en_US.utf8");
+    printf("wide-character string: '%ls'\n",src);
+    for (size_t ndx=0; ndx < sizeof src/sizeof src[0]; ++ndx)
+        printf("   src[%2zu] = %#8x\n", ndx, src[ndx]);
+ 
+    int rtn_val = wcstombs(dst, src, sizeof dst);
+    printf("rtn_val = %d\n", rtn_val);
+    if (rtn_val > 0)
+        printf("multibyte string:  '%s'\n",dst);
+    for (size_t ndx=0; ndx<sizeof dst; ++ndx)
+        printf("   dst[%2zu] = %#2x\n", ndx, (unsigned char)dst[ndx]);
+}
+```
+
+<p>Output:</p>
+
+```text
+wide-character string: 'zß水🍌'
+   src[ 0] =     0x7a
+   src[ 1] =     0xdf
+   src[ 2] =   0x6c34
+   src[ 3] =  0x1f34c
+   src[ 4] =        0
+rtn_val = 10
+multibyte string:  'zß水🍌'
+   dst[ 0] = 0x7a
+   dst[ 1] = 0xc3
+   dst[ 2] = 0x9f
+   dst[ 3] = 0xe6
+   dst[ 4] = 0xb0
+   dst[ 5] = 0xb4
+   dst[ 6] = 0xf0
+   dst[ 7] = 0x9f
+   dst[ 8] = 0x8d
+   dst[ 9] = 0x8c
+   dst[10] =  0
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.8.2 The wcstombs function (p: 360)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.6.5.2 The wcstombs_s function (p: 612-614)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20.8.2 The wcstombs function (p: 324)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.10.8.2 The wcstombs function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/multibyte/wcsrtombs/">wcsrtombs<br />wcsrtombs_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>converts a wide string to narrow multibyte character string, given state   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/mbstowcs/">mbstowcs<br />mbstowcs_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>converts a narrow multibyte character string to wide string   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/multibyte/wcstombs" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+wcstombs</td></tr>
+</table></section></section>

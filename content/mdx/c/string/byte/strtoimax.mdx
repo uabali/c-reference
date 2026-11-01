@@ -1,0 +1,260 @@
+---
+title: "strtoimax, strtoumax"
+slug: "c/string/byte/strtoimax"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/byte/strtoimax"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;inttypes.h&gt;</code></p>
+
+```c
+intmax_t strtoimax( const char* restrict nptr,
+                    char** restrict endptr, int base );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+uintmax_t strtoumax( const char* restrict nptr,
+                     char** restrict endptr, int base );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p>Interprets an integer value in a byte string pointed to by <code>nptr</code>.</p>
+
+<p>Discards any whitespace characters (as identified by calling <a href="/reference/c/string/byte/isspace/"><code>isspace</code></a>) until the first non-whitespace character is found, then takes as many characters as possible to form a valid <em>base-n</em> (where n=<code>base</code>) integer number representation and converts them to an integer value. The valid integer value consists of the following parts:</p>
+
+<ul>
+<li>
+<span class="mark-note">(optional)</span>
+
+<p>plus or minus sign</p>
+</li>
+<li>
+<span class="mark-note">(optional)</span>
+
+<p>prefix (</p>
+
+<code>0</code>
+
+<p>) indicating octal base (applies only when the base is</p>
+
+<code>8</code>
+
+<p>or</p>
+
+<code>0</code>
+
+<p>)</p>
+</li>
+<li>
+<span class="mark-note">(optional)</span>
+
+<p>prefix (</p>
+
+<code>0x</code>
+
+<p>or</p>
+
+<code>0X</code>
+
+<p>) indicating hexadecimal base (applies only when the base is</p>
+
+<code>16</code>
+
+<p>or</p>
+
+<code>0</code>
+
+<p>)</p>
+</li>
+<li>
+<p>a sequence of digits</p>
+</li>
+</ul>
+
+<p>The set of valid values for base is <code>{0, 2, 3, ..., 36}</code>. The set of valid digits for base-<code>2</code> integers is <code>{0, 1}</code>, for base-<code>3</code> integers is <code>{0, 1, 2}</code>, and so on. For bases larger than <code>10</code>, valid digits include alphabetic characters, starting from <code>Aa</code> for base-<code>11</code> integer, to <code>Zz</code> for base-<code>36</code> integer. The case of the characters is ignored.</p>
+
+<p>Additional numeric formats may be accepted by the currently installed C <a href="/reference/c/locale/setlocale/">locale</a>.</p>
+
+<p>If the value of <code>base</code> is <code>0</code>, the numeric base is auto-detected: if the prefix is <code>0</code>, the base is octal, if the prefix is <code>0x</code> or <code>0X</code>, the base is hexadecimal, otherwise the base is decimal.</p>
+
+<p>If the minus sign was part of the input sequence, the numeric value calculated from the sequence of digits is negated as if by <a href="/reference/c/language/operator_arithmetic/#Unary_arithmetic">unary minus</a> in the result type.</p>
+
+<p>The functions sets the pointer pointed to by <code>endptr</code> to point to the character past the last character interpreted. If <code>endptr</code> is a null pointer, it is ignored.</p>
+
+<p>If the <code>nptr</code> is empty or does not have the expected form, no conversion is performed, and (if <code>endptr</code> is not a null pointer) the value of <code>nptr</code> is stored in the object pointed to by <code>endptr</code>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>nptr</td><td>-</td><td>pointer to the null-terminated byte string to be interpreted</td></tr>
+<tr><td>endptr</td><td>-</td><td>pointer to a pointer to character</td></tr>
+<tr><td>base</td><td>-</td><td><em>base</em> of the interpreted integer value</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<ul>
+<li>
+<p>If successful, an integer value corresponding to the contents of</p>
+
+<code>str</code>
+
+<p>is returned.</p>
+</li>
+<li>
+<p>If the converted value falls out of range of corresponding return type, a range error occurs (setting</p>
+
+<a href="/reference/c/error/errno/">errno</a>
+
+<p>to</p>
+
+<a href="/reference/c/error/errno_macros/">ERANGE</a>
+
+<p>) and</p>
+
+<a href="/reference/c/types/integer/">INTMAX_MAX</a>
+
+<p>,</p>
+
+<a href="/reference/c/types/integer/">INTMAX_MIN</a>
+
+<p>,</p>
+
+<a href="/reference/c/types/integer/">UINTMAX_MAX</a>
+
+<p>or</p>
+
+<code>0</code>
+
+<p>is returned, as appropriate.</p>
+</li>
+<li>
+<p>If no conversion can be performed,</p>
+
+<code>0</code>
+
+<p>is returned.</p>
+</li>
+</ul>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <errno.h>
+#include <inttypes.h>
+#include <stdio.h>
+#include <string.h>
+ 
+int main(void)
+{
+    char* endptr = NULL;
+ 
+    printf("%ld\n", strtoimax(" -123junk", &endptr, 10)); // base 10
+    printf("%ld\n", strtoimax("11111111", &endptr, 2));   // base 2
+    printf("%ld\n", strtoimax("XyZ", &endptr, 36));       // base 36
+    printf("%ld\n", strtoimax("010", &endptr, 0));        // octal auto-detection
+    printf("%ld\n", strtoimax("10", &endptr, 0));         // decimal auto-detection
+    printf("%ld\n", strtoimax("0x10", &endptr, 0));       // hexadecimal auto-detection
+ 
+    // range error: LONG_MAX+1 --> LONG_MAX
+    errno = 0;
+    printf("%ld\n", strtoimax("9223372036854775808", &endptr, 10));
+    printf("%s\n", strerror(errno));
+}
+```
+
+<p>Output:</p>
+
+```text
+-123
+255
+44027
+8
+10
+16
+9223372036854775807
+Numerical result out of range
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.8.2.3 The strtoimax and strtoumax functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.8.2.3 The strtoimax and strtoumax functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.8.2.3 The strtoimax and strtoumax functions (p: 219)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.8.2.3 The strtoimax and strtoumax functions (p: 200)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/wide/wcstoimax/">wcstoimax<br />wcstoumax</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>converts a wide string to <a href="/reference/c/types/integer/">intmax_t</a> or <a href="/reference/c/types/integer/">uintmax_t</a>   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strtol/">strtol<br />strtoll</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>converts a byte string to an integer value   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strtoul/">strtoul<br />strtoull</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>converts a byte string to an unsigned integer value   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/byte/strtoimax" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+strtoimax, strtoumax</td></tr>
+</table>

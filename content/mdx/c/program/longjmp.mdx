@@ -1,0 +1,168 @@
+---
+title: "longjmp"
+slug: "c/program/longjmp"
+category: "program"
+source: "https://en.cppreference.com/w/c/program/longjmp"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;setjmp.h&gt;</code></p>
+
+```c
+void longjmp( jmp_buf env, int status );
+```
+
+<p class="decl-note"><span class="std std-until std-c11">(until C11)</span></p>
+
+```c
+_Noreturn void longjmp( jmp_buf env, int status );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span>  <span class="std std-until std-c23">(until C23)</span></p>
+
+```c
+[[noreturn]] void longjmp( jmp_buf env, int status );
+```
+
+<p class="decl-note"><span class="std std-since std-c23">(since C23)</span></p>
+
+<p>Loads the execution context <code>env</code> saved by a previous call to <a href="/reference/c/program/setjmp/">setjmp</a>. This function does not return. Control is transferred to the call site of the macro <a href="/reference/c/program/setjmp/">setjmp</a> that set up <code>env</code>. That <a href="/reference/c/program/setjmp/">setjmp</a> then returns the value, passed as the <code>status</code>.</p>
+
+<p>If the function that called <a href="/reference/c/program/setjmp/">setjmp</a> has exited (whether by return or by a different <code>longjmp</code> higher up the stack), the behavior is undefined. In other words, only long jumps up the call stack are allowed.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><p>Jumping across threads (if the function that called <code>setjmp</code> was executed by another thread) is also undefined behavior.</p></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><p>If when <a href="/reference/c/program/setjmp/">setjmp</a> was called, a <a href="/reference/c/language/array/">VLA</a> or another <a href="/reference/c/language/declarations/">variably-modified type</a> variable was in scope and control left that scope, <code>longjmp</code> to that <code>setjmp</code> invokes undefined behavior even if control remained within the function.</p>
+
+<p>On the way up the stack, <code>longjmp</code> does not deallocate any VLAs, memory leaks may occur if their lifetimes are terminated in this way:</p>
+
+```c
+void g(int n)
+{
+    int a[n]; // a may remain allocated
+    h(n); // does not return
+}
+void h(int n)
+{
+    int b[n]; // b may remain allocated
+    longjmp(buf, 2); // might cause a memory leak for h's b and g's a
+}
+```</aside>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>env</td><td>-</td><td>variable referring to the execution state of the program saved by <a href="/reference/c/program/setjmp/">setjmp</a></td></tr>
+<tr><td>status</td><td>-</td><td>the value to return from <a href="/reference/c/program/setjmp/">setjmp</a>. If it is equal to <code>0</code>, <code>1</code> is used instead</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>(none)</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p><code>longjmp</code> is intended for handling unexpected error conditions where the function cannot return meaningfully. This is similar to exception handling in other programming languages.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <setjmp.h>
+#include <stdnoreturn.h>
+ 
+jmp_buf my_jump_buffer;
+ 
+noreturn void foo(int status) 
+{
+    printf("foo(%d) called\n", status);
+    longjmp(my_jump_buffer, status + 1); // will return status+1 out of setjmp
+}
+ 
+int main(void)
+{
+    volatile int count = 0; // modified local vars in setjmp scope must be volatile
+    if (setjmp(my_jump_buffer) != 5) // compare against constant in an if
+        foo(++count);
+}
+```
+
+<p>Output:</p>
+
+```text
+foo(1) called
+foo(2) called
+foo(3) called
+foo(4) called
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.13.2.1 The longjmp macro (p: 191-192)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.13.2.1 The longjmp macro (p: 263-264)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.13.2.1 The longjmp macro (p: 244-245)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.6.2.1 The longjmp function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/program/setjmp/">setjmp</a></td><td>saves the context   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/utility/program/longjmp" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+longjmp</td></tr>
+</table>

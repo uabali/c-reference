@@ -1,0 +1,69 @@
+---
+title: "mtx_plain, mtx_recursive, mtx_timed"
+slug: "c/thread/mtx_types"
+category: "thread"
+source: "https://en.cppreference.com/w/c/thread/mtx_types"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;threads.h&gt;</code></p>
+
+```c
+enum {
+    mtx_plain = /* unspecified */,
+    mtx_recursive = /* unspecified */,
+    mtx_timed = /* unspecified */
+
+};
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p>When passed to <a href="/reference/c/thread/mtx_init/">mtx_init</a>, identifies the type of a mutex to create.</p>
+
+<table class="ref-table ref-dsc">
+<tr><td>Constant</td><td>Explanation</td></tr>
+<tr><td><code>mtx_plain</code></td><td>plain mutex</td></tr>
+<tr><td><code>mtx_recursive</code></td><td>recursive mutex</td></tr>
+<tr><td><code>mtx_timed</code></td><td>timed mutex</td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.1/5 mtx_plain, mtx_recursive, mtx_timed (p: 274-275)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.1/5 mtx_plain, mtx_recursive, mtx_timed (p: 377)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/thread/mtx_init/">mtx_init</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>creates a mutex   <span class="mark-note">(function)</span></td></tr>
+</table>

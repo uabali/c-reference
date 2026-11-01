@@ -1,0 +1,852 @@
+---
+title: "Type"
+slug: "c/language/compatible_type"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/compatible_type"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>(See also <a href="/reference/c/language/arithmetic_types/">arithmetic types</a> for the details on most built-in types and <a href="/reference/c/types/">the list of type-related utilities</a> that are provided by the C library.)</p>
+
+<p><a href="/reference/c/language/object/">Objects</a>, <a href="/reference/c/language/functions/">functions</a>, and <a href="/reference/c/language/expressions/">expressions</a> have a property called <em>type</em>, which determines the interpretation of the binary value stored in an object or evaluated by the expression.</p>
+
+<h3 id="Type_classification">Type classification</h3>
+
+<p>The C type system consists of the following types:</p>
+
+<ul>
+<li>
+<p>the type</p>
+
+<code>void</code>
+</li>
+<li>
+<p>basic types</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>the type</p>
+
+<code>char</code>
+</li>
+<li>
+<p>signed integer types</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>standard:</p>
+
+<code>signed char</code>
+
+<p>,</p>
+
+<code>short</code>
+
+<p>,</p>
+
+<code>int</code>
+
+<p>,</p>
+
+<code>long</code>
+
+, <code>long long</code><span class="std std-since std-c99">(since C99)</span>
+</li>
+</ul></dd>
+</dl></dd>
+</dl>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><dl>
+<dd><dl>
+<dd><ul>
+<li>
+<p>bit-precise:</p>
+
+<code>_BitInt(N)</code>
+
+<p>where N is an integer constant expression that specifies the number of bits that are used to represent the type, including the sign bit. Each value of N designates a distinct type.</p>
+</li>
+</ul></dd>
+</dl></dd>
+</dl></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><dl>
+<dd><dl>
+<dd><ul>
+<li>
+<p>extended: implementation defined, e.g.</p>
+
+<code>__int128</code>
+</li>
+</ul></dd>
+</dl></dd>
+</dl></aside>
+
+<dl>
+<dd><ul>
+<li>
+<p>unsigned integer types</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>standard:</p>
+
+<code>_Bool</code>,<span class="std std-since std-c99">(since C99)</span>
+
+<code>unsigned char</code>
+
+<p>,</p>
+
+<code>unsigned short</code>
+
+<p>,</p>
+
+<code>unsigned int</code>
+
+<p>,</p>
+
+<code>unsigned long</code>
+
+, <code>unsigned long long</code><span class="std std-since std-c99">(since C99)</span>
+</li>
+</ul></dd>
+</dl></dd>
+</dl>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><dl>
+<dd><dl>
+<dd><ul>
+<li>
+<p>bit-precise:</p>
+
+<code>unsigned _BitInt(N)</code>
+
+<p>where</p>
+
+<code>N</code>
+
+<p>is an integer constant expression that specifies the number of bits that are used to represent the type. Each value of</p>
+
+<code>N</code>
+
+<p>designates a distinct type. This category includes the type</p>
+
+<code>unsigned _BitInt(1)</code>
+
+<p>which does not have a corresponding bit-precise signed integer type.</p>
+</li>
+</ul></dd>
+</dl></dd>
+</dl></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><dl>
+<dd><dl>
+<dd><ul>
+<li>
+<p>extended: implementation-defined, e.g.</p>
+
+<code>__uint128</code>
+</li>
+</ul></dd>
+</dl></dd>
+</dl></aside>
+
+<dl>
+<dd><ul>
+<li>
+<p>floating-point types</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>real floating-point types:</p>
+
+<code>float</code>
+
+<p>,</p>
+
+<code>double</code>
+
+<p>,</p>
+
+<code>long double</code>
+</li>
+</ul></dd>
+</dl></dd>
+</dl>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><dl>
+<dd><dl>
+<dd><ul>
+<li>
+<p>decimal real floating-point types:</p>
+
+<code>_Decimal32</code>
+
+<p>,</p>
+
+<code>_Decimal64</code>
+
+<p>,</p>
+
+<code>_Decimal128</code>
+</li>
+</ul></dd>
+</dl></dd>
+</dl></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><dl>
+<dd><dl>
+<dd><ul>
+<li>
+<p>complex types:</p>
+
+<code>float _Complex</code>
+
+<p>,</p>
+
+<code>double _Complex</code>
+
+<p>,</p>
+
+<code>long double _Complex</code>
+</li>
+<li>
+<p>imaginary types:</p>
+
+<code>float _Imaginary</code>
+
+<p>,</p>
+
+<code>double _Imaginary</code>
+
+<p>,</p>
+
+<code>long double _Imaginary</code>
+</li>
+</ul></dd>
+</dl></dd>
+</dl></aside>
+
+<ul>
+<li>
+<a href="/reference/c/language/enum/">enumerated types</a>
+</li>
+</ul>
+
+<ul>
+<li>
+<p>derived types</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<a href="/reference/c/language/array/">array types</a>
+</li>
+<li>
+<a href="/reference/c/language/struct/">structure types</a>
+</li>
+<li>
+<a href="/reference/c/language/union/">union types</a>
+</li>
+<li>
+<a href="/reference/c/language/functions/">function types</a>
+</li>
+<li>
+<a href="/reference/c/language/pointer/">pointer types</a>
+</li>
+</ul></dd>
+</dl>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><dl>
+<dd><ul>
+<li>
+<a href="/reference/c/language/atomic/">atomic types</a>
+</li>
+</ul></dd>
+</dl></aside>
+
+<p>For every type listed above several qualified versions of its type may exist, corresponding to the combinations of one, two, or all three of the <a href="/reference/c/language/const/"><code>const</code></a>, <a href="/reference/c/language/volatile/"><code>volatile</code></a>, and <a href="/reference/c/language/restrict/"><code>restrict</code></a> qualifiers (where allowed by the qualifier's semantics).</p>
+
+<h4 id="Type_groups">Type groups</h4>
+
+<ul>
+<li>
+<em>object types</em>
+
+<p>: all types that aren't function types</p>
+</li>
+<li>
+<em>character types</em>
+
+<p>:</p>
+
+<code>char</code>
+
+<p>,</p>
+
+<code>signed char</code>
+
+<p>,</p>
+
+<code>unsigned char</code>
+</li>
+<li>
+<em>integer types</em>
+
+<p>:</p>
+
+<code>char</code>
+
+<p>, signed integer types, unsigned integer types, enumerated types</p>
+</li>
+<li>
+<em>real types</em>
+
+<p>: integer types and real floating types</p>
+</li>
+<li>
+<a href="/reference/c/language/arithmetic_types/">arithmetic types</a>
+
+<p>: integer types and floating types</p>
+</li>
+<li>
+<em>scalar types</em>
+
+<p>: arithmetic types, pointer types</p>
+
+, and <a href="/reference/c/types/nullptr_t/">nullptr_t</a><span class="std std-since std-c23">(since C23)</span>
+</li>
+<li>
+<em>aggregate types</em>
+
+<p>: array types and structure types</p>
+</li>
+<li>
+<em>derived declarator types</em>
+
+<p>: array types, function types, and pointer types</p>
+</li>
+</ul>
+
+<p>Constructing a complete object type such that the number of bytes in its object representation is not representable in the type <a href="/reference/c/types/size_t/">size_t</a> (i.e. the result type of <a href="/reference/c/language/sizeof/"><code>sizeof</code></a> operator), including forming such a VLA type at runtime,<span class="std std-since std-c99">(since C99)</span> is undefined behavior.</p>
+
+<h3 id="Compatible_types">Compatible types</h3>
+
+<p>In a C program, the declarations referring to the same object or function in <em>different translation units</em> do not have to use the same type. They only have to use sufficiently similar types, formally known as <em>compatible types</em>. Same applies to function calls and lvalue accesses; argument types must be <em>compatible</em> with parameter types and lvalue expression type must be <em>compatible</em> with the object type that is accessed.</p>
+
+<p>The types <code>T</code> and <code>U</code> are compatible, if</p>
+
+<ul>
+<li>
+<p>they are the same type (same name or aliases introduced by a</p>
+
+<a href="/reference/c/language/typedef/"><code>typedef</code></a>
+
+<p>)</p>
+</li>
+<li>
+<p>they are identically cvr-qualified versions of compatible unqualified types</p>
+</li>
+<li>
+<p>they are pointer types and are pointing to compatible types</p>
+</li>
+<li>
+<p>they are array types, and</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>their element types are compatible, and</p>
+</li>
+<li>
+<p>if both have constant size, that size is the same. Note: arrays of unknown bound are compatible with any array of compatible element type.</p>
+
+VLA is compatible with any array of compatible element type.<span class="std std-since std-c99">(since C99)</span>
+</li>
+</ul></dd>
+</dl>
+
+<ul>
+<li>
+<p>they are both structure/union/enumeration types, and</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<span class="std std-since std-c99">(C99)</span>
+
+<p>if one is declared with a tag, the other must also be declared with the same tag.</p>
+</li>
+<li>
+<p>if both are completed types, their members must correspond exactly in number, be declared with compatible types, and have matching names.</p>
+</li>
+<li>
+<p>additionally, if they are enumerations, corresponding members must also have the same values.</p>
+</li>
+<li>
+<p>additionally, if they are structures or unions,</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>Corresponding members must be declared in the same order (structures only)</p>
+</li>
+<li>
+<p>Corresponding</p>
+
+<a href="/reference/c/language/bit_field/">bit-fields</a>
+
+<p>must have the same widths.</p>
+</li>
+</ul></dd>
+</dl></dd>
+</dl>
+
+<ul>
+<li>
+<p>one is an enumerated type and the other is that enumeration's underlying type</p>
+</li>
+<li>
+<p>they are function types, and</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>their return types are compatible</p>
+</li>
+<li>
+<p>they both use parameter lists, the number of parameters (including the use of the ellipsis) is the same, and the corresponding parameter, after applying array-to-pointer and function-to-pointer type adjustments and after stripping top-level qualifiers, have compatible types</p>
+</li>
+</ul></dd>
+</dl>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-until std-c23">(until C23)</span></p><dl>
+<dd><ul>
+<li>
+<p>one is an old-style (parameter-less) definition, the other has a parameter list, the parameter list does not use an ellipsis and each parameter is compatible (after function parameter type adjustment) with the corresponding old-style parameter after default argument promotions</p>
+</li>
+<li>
+<p>one is an old-style (parameter-less) declaration, the other has a parameter list, the parameter list does not use an ellipsis, and all parameters (after function parameter type adjustment) are unaffected by default argument promotions</p>
+</li>
+</ul></dd>
+</dl></aside>
+
+<p>The type <code>char</code> is not compatible with <code>signed char</code> and not compatible with <code>unsigned char</code>.</p>
+
+<p>If two declarations refer to the same object or function and do not use compatible types, the behavior of the program is undefined.</p>
+
+```c
+// Translation Unit 1
+struct S { int a; };
+extern struct S *x; // compatible with TU2's x, but not with TU3's x
+ 
+// Translation Unit 2
+struct S;
+extern struct S *x; // compatible with both x's
+ 
+// Translation Unit 3
+struct S { float a; };
+extern struct S *x; // compatible with TU2's x, but not with TU1's x
+ 
+// the behavior is undefined
+```
+
+```c
+// Translation Unit 1
+#include <stdio.h>
+ 
+struct s { int i; }; // compatible with TU3's s, but not TU2's
+extern struct s x = {0}; // compatible with TU3's x
+extern void f(void); // compatible with TU2's f
+ 
+int main()
+{
+    f();
+    return x.i;
+}
+ 
+// Translation Unit 2
+struct s { float f; }; // compatible with TU4's s, but not TU1's s
+extern struct s y = {3.14}; // compatible with TU4's y
+void f() // compatible with TU1's f
+{
+    return;
+}
+ 
+// Translation Unit 3
+struct s { int i; }; // compatible with TU1's s, but not TU2's s
+extern struct s x; // compatible with TU1's x
+ 
+// Translation Unit 4
+struct s { float f; }; // compatible with TU2's s, but not TU1's s
+extern struct s y; // compatible with TU2's y
+ 
+// the behavior is well-defined: only multiple declarations
+// of objects and functions must have compatible types, not the types themselves
+```
+
+<p>Note: C++ has no concept of compatible types. A C program that declares two types that are compatible but not identical in different translation units is not a valid C++ program.</p>
+
+<h3 id="Composite_types">Composite types</h3>
+
+<p>A composite type can be constructed from two types that are compatible; it is a type that is compatible with both of the two types and satisfies the following conditions:</p>
+
+<ul>
+<li>
+<p>If both types are array types, the following rules are applied:</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>If one type is an array of known constant size, the composite type is an array of that size.</p>
+</li>
+</ul></dd>
+</dl>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><dl>
+<dd><ul>
+<li>
+<p>Otherwise, if one type is a VLA whose size is specified by an expression that is not evaluated, a program necessitating the composite type of both types has undefined behavior.</p>
+</li>
+<li>
+<p>Otherwise, if one type is a VLA whose size is specified, the composite type is a VLA of that size.</p>
+</li>
+<li>
+<p>Otherwise, if one type is a VLA of unspecified size, the composite type is a VLA of unspecified size.</p>
+</li>
+</ul></dd>
+</dl></aside>
+
+<dl>
+<dd><ul>
+<li>
+<p>Otherwise, both types are arrays of unknown size and the composite type is an array of unknown size.</p>
+</li>
+</ul>
+
+<dl>
+<dd><p>The element type of the composite type is the composite type of the two element types.</p></dd>
+</dl></dd>
+</dl>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-until std-c23">(until C23)</span></p><ul>
+<li>
+<p>If only one type is a function type with a parameter type list (a function prototype), the composite type is a function prototype with the parameter type list.</p>
+</li>
+</ul></aside>
+
+<ul>
+<li>
+<p>If both types are function types with parameter type lists, the type of each parameter in the composite parameter type list is the composite type of the corresponding parameters.</p>
+</li>
+</ul>
+
+<p>These rules apply recursively to the types from which the two types are derived.</p>
+
+```c
+// Given the following two file scope declarations:
+int f(int (*)(), double (*)[3]);
+int f(int (*)(char *), double (*)[]); // C23: Error: conflicting types for 'f'
+// The resulting composite type for the function is:
+int f(int (*)(char *), double (*)[3]);
+```
+
+<p>For an identifier with internal or external <a href="/reference/c/language/storage_duration/">linkage</a> declared in a scope in which a prior declaration of that identifier is visible, if the prior declaration specifies internal or external linkage, the type of the identifier at the later declaration becomes the composite type.</p>
+
+<h3 id="Incomplete_types">Incomplete types</h3>
+
+<p>An incomplete type is an object type that lacks sufficient information to determine the size of the objects of that type. An incomplete type may be completed at some point in the translation unit.</p>
+
+<p>The following types are incomplete:</p>
+
+<ul>
+<li>
+<p>the type</p>
+
+<code>void</code>
+
+<p>. This type cannot be completed.</p>
+</li>
+<li>
+<p>array type of unknown size. It can be completed by a later declaration that specifies the size.</p>
+</li>
+</ul>
+
+```c
+extern char a[]; // the type of a is incomplete (this typically appears in a header)
+char a[10];      // the type of a is now complete (this typically appears in a source file)
+```
+
+<ul>
+<li>
+<p>structure or union type of unknown content. It can be completed by a declaration of the same structure or union that defines its content later in the same scope.</p>
+</li>
+</ul>
+
+```c
+struct node
+{
+    struct node* next; // struct node is incomplete at this point
+}; // struct node is complete at this point
+```
+
+<h3 id="Type_names">Type names</h3>
+
+<p>A type may have to be named in context other than the <a href="/reference/c/language/declarations/">declaration</a>. In these situations, <em>type name</em> is used, which is, grammatically, exactly the same as a list of <em>type-specifiers</em> and <em>type-qualifiers</em>, followed by the <em>declarator</em> (see <a href="/reference/c/language/declarations/">declarations</a>) as would be used to declare a single object or function of this type, except that the identifier is omitted:</p>
+
+```c
+int n; // declaration of an int
+sizeof(int); // use of type name
+ 
+int *a[3]; // declaration of an array of 3 pointers to int
+sizeof(int *[3]); // use of type name
+ 
+int (*p)[3]; // declaration of a pointer to array of 3 int
+sizeof(int (*)[3]); // use of type name
+ 
+int (*a)[*] // declaration of pointer to VLA (in a function parameter)
+sizeof(int (*)[*]) // use of type name (in a function parameter)
+ 
+int *f(void); // declaration of function
+sizeof(int *(void)); // use of type name
+ 
+int (*p)(void); // declaration of pointer to function
+sizeof(int (*)(void)); // use of type name
+ 
+int (*const a[])(unsigned int, ...) = {0}; // array of pointers to functions
+sizeof(int (*const [])(unsigned int, ...)); // use of type name
+```
+
+<p>Except the redundant parentheses around the identifier are meaningful in a type-name and represent "function with no parameter specification":</p>
+
+```c
+int (n); // declares n of type int
+sizeof(int ()); // uses type "function returning int"
+```
+
+<p>Type names are used in the following situations:</p>
+
+<ul>
+<li>
+<a href="/reference/c/language/cast/">cast</a>
+</li>
+<li>
+<a href="/reference/c/language/sizeof/">sizeof</a>
+</li>
+</ul>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><ul>
+<li>
+<a href="/reference/c/language/compound_literal/">compound literal</a>
+</li>
+</ul></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><ul>
+<li>
+<a href="/reference/c/language/generic/">generic selection</a>
+</li>
+<li>
+<a href="/reference/c/language/alignof/"><code>_Alignof</code></a><span class="std std-until std-c23">(until C23)</span>
+
+<a href="/reference/c/language/alignof/"><code>alignof</code></a><span class="std std-since std-c23">(since C23)</span>
+</li>
+<li>
+<a href="/reference/c/language/alignas/"><code>_Alignas</code></a><span class="std std-until std-c23">(until C23)</span>
+
+<a href="/reference/c/language/alignas/"><code>alignas</code></a><span class="std std-since std-c23">(since C23)</span>
+</li>
+<li>
+<a href="/reference/c/language/atomic/">_Atomic</a>
+
+<p>(when used as a type specifier)</p>
+</li>
+</ul></aside>
+
+<p>A type name may introduce a new type:</p>
+
+```c
+void* p = (void*)(struct X { int i; } *)0;
+// type name "struct X {int i;}*" used in the cast expression
+// introduces the new type "struct X"
+struct X x = {1}; // struct X is now in scope
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.5 Types (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.6 Representations of types (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.7 Compatible type and composite type (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.5 Types (p: 31-33)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.6 Representations of types (p: 31-35)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.7 Compatible type and composite type (p: 35-36)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.5 Types (p: 39-43)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.6 Representations of types (p: 44-46)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.7 Compatible type and composite type (p: 47-48)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.5 Types (p: 33-37)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.6 Representations of types (p: 37-40)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.7 Compatible type and composite type (p: 40-41)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.1.2.5 Types</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.1.2.6 Compatible type and composite type</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/type-id" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Type</td></tr>
+</table>

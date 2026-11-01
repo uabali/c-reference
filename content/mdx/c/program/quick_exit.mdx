@@ -1,0 +1,122 @@
+---
+title: "quick_exit"
+slug: "c/program/quick_exit"
+category: "program"
+source: "https://en.cppreference.com/w/c/program/quick_exit"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdlib.h&gt;</code></p>
+
+```c
+_Noreturn void quick_exit( int exit_code );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span>  <span class="std std-until std-c23">(until C23)</span></p>
+
+```c
+[[noreturn]] void quick_exit( int exit_code );
+```
+
+<p class="decl-note"><span class="std std-since std-c23">(since C23)</span></p>
+
+<p>Causes normal program termination to occur without completely cleaning the resources.</p>
+
+<p>Functions passed to <a href="/reference/c/program/at_quick_exit/">at_quick_exit</a> are called in reverse order of their registration. After calling the registered functions, calls <code>_Exit(exit_code)</code>.</p>
+
+<p>Functions passed to <a href="/reference/c/program/atexit/">atexit</a> or signal handlers passed to <a href="/reference/c/program/signal/">signal</a> are not called.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>exit_code</td><td>-</td><td>exit status of the program</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>(none)</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdlib.h>
+#include <stdio.h>
+ 
+void f1(void)
+{
+    puts("pushed first");
+    fflush(stdout);
+}
+ 
+void f2(void)
+{
+    puts("pushed second");
+}
+ 
+void f3(void)
+{
+    puts("won't be called");
+}
+ 
+int main(void)
+{
+    at_quick_exit(f1);
+    at_quick_exit(f2);
+    atexit(f3);
+    quick_exit(0);
+}
+```
+
+<p>Output:</p>
+
+```text
+pushed second
+pushed first
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.4.7 The quick_exit function (p: 257)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.4.7 The quick_exit function (p: 353)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/program/abort/">abort</a></td><td>causes abnormal program termination (without cleaning up)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/program/atexit/">atexit</a></td><td>registers a function to be called on <a href="/reference/c/program/exit/">exit()</a> invocation   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/program/at_quick_exit/">at_quick_exit</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>registers a function to be called on <strong><code>quick_exit</code></strong> invocation   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/utility/program/quick_exit" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+quick_exit</td></tr>
+</table>

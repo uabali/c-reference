@@ -1,0 +1,236 @@
+---
+title: "setvbuf"
+slug: "c/io/setvbuf"
+category: "io"
+source: "https://en.cppreference.com/w/c/io/setvbuf"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+```c
+int setvbuf( FILE *         stream, char *         buffer, 
+             int mode, size_t size );
+```
+
+<p class="decl-note"><span class="std std-until std-c99">(until C99)</span></p>
+
+```c
+int setvbuf( FILE *restrict stream, char *restrict buffer, 
+             int mode, size_t size );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+#define _IOFBF     /*unspecified*/
+#define _IOLBF     /*unspecified*/
+
+#define _IONBF     /*unspecified*/
+```
+
+<p>Changes the buffering mode of the given file stream <code>stream</code> as indicated by the argument <code>mode</code>. In addition,</p>
+
+<ul>
+<li>
+<p>If</p>
+
+<code>buffer</code>
+
+<p>is a null pointer, resizes the internal buffer to</p>
+
+<code>size</code>
+
+<p>.</p>
+</li>
+<li>
+<p>If</p>
+
+<code>buffer</code>
+
+<p>is not a null pointer, instructs the stream to use the user-provided buffer of size</p>
+
+<code>size</code>
+
+<p>beginning at</p>
+
+<code>buffer</code>
+
+<p>. The stream must be closed (with</p>
+
+<a href="/reference/c/io/fclose/">fclose</a>
+
+<p>) before the</p>
+
+<a href="/reference/c/language/lifetime/">lifetime</a>
+
+<p>of the array pointed to by</p>
+
+<code>buffer</code>
+
+<p>ends. The contents of the array after a successful call to</p>
+
+<code>setvbuf</code>
+
+<p>are indeterminate and any attempt to use it is undefined behavior.</p>
+</li>
+</ul>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>stream</td><td>-</td><td>the file stream to set the buffer to</td></tr>
+<tr><td>buffer</td><td>-</td><td>pointer to a buffer for the stream to use or null pointer to change size and mode only</td></tr>
+<tr><td>mode</td><td>-</td><td><p>buffering mode to use. It can be one of the following values:</p>
+
+<table class="ref-table">
+<tr><td><code>_IOFBF</code></td><td>full buffering</td></tr>
+<tr><td><code>_IOLBF</code></td><td>line buffering</td></tr>
+<tr><td><code>_IONBF</code></td><td>no buffering</td></tr>
+</table></td></tr>
+<tr><td>size</td><td>-</td><td>size of the buffer</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p><code>0</code> on success or nonzero on failure.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>This function may only be used after <code>stream</code> has been associated with an open file, but before any other operation (other than a failed call to <a href="/reference/c/io/setbuf/">setbuf</a>/<code>setvbuf</code>).</p>
+
+<p>Not all <code>size</code> bytes will necessarily be used for buffering: the actual buffer size is usually rounded down to a multiple of 2, a multiple of page size, etc.</p>
+
+<p>On many implementations, line buffering is only available for terminal input streams.</p>
+
+<p>A common error is setting the buffer of stdin or stdout to an array whose lifetime ends before the program terminates:</p>
+
+```c
+int main(void) {
+    char buf[BUFSIZ];
+    setbuf(stdin, buf);
+} // lifetime of buf ends, undefined behavior
+```
+
+<p>The default buffer size <a href="/reference/c/io/">BUFSIZ</a> is expected to be the most efficient buffer size for file I/O on the implementation, but POSIX <a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/fstat.html" rel="noreferrer" target="_blank">fstat</a> often provides a better estimate.</p>
+
+<h3 id="Example">Example</h3>
+
+<p>One use case for changing buffer size is when a better size is known. (This example uses some POSIX function, e.g. <a href="https://pubs.opengroup.org/onlinepubs/7908799/xsh/fileno.html" rel="noreferrer" target="_blank"><code>fileno</code></a>. See also SO: <a href="https://stackoverflow.com/questions/15749184/fileno-not-available" rel="noreferrer" target="_blank">#1</a> and <a href="https://stackoverflow.com/questions/44622827/why-am-i-getting-error-implicit-declaration-of-function-fileno-when-i-try-t" rel="noreferrer" target="_blank">#2</a>).</p>
+
+```c
+// Make some POSIX functions, such as `int fileno(FILE*)`, visible:
+#define _POSIX_SOURCE
+ 
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+ 
+int main(void)
+{
+    FILE* fp = fopen("/tmp/test.txt", "w+");
+    if (fp == NULL)
+    {
+        perror("fopen");
+        return EXIT_FAILURE;
+    }
+ 
+    struct stat stats;
+    if (fstat(fileno(fp), &stats) == -1) // POSIX only
+    {
+        perror("fstat");
+        return EXIT_FAILURE;
+    }
+ 
+    printf("BUFSIZ is %d, but optimal block size is %ld\n", BUFSIZ, stats.st_blksize);
+    if (setvbuf(fp, NULL, _IOFBF, stats.st_blksize) != 0)
+    {
+        perror("setvbuf failed"); // POSIX version sets errno
+        return EXIT_FAILURE;
+    }
+ 
+    int ch;
+    while((ch=fgetc(fp)) != EOF); // read entire file: use truss/strace to
+                                  // observe the read(2) syscalls used
+ 
+    fclose(fp);
+    return EXIT_SUCCESS;
+}
+```
+
+<p>Possible output:</p>
+
+```text
+BUFSIZ is 8192, but optimal block size is 65536
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.5.6 The setvbuf function (p: 225)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.5.6 The setvbuf function (p: 308)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.5.6 The setvbuf function (p: 273-274)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9.5.6 The setvbuf function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/setbuf/">setbuf</a></td><td>sets the buffer for a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c/setvbuf" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+setvbuf</td></tr>
+</table>

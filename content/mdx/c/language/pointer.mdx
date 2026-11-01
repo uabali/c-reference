@@ -1,0 +1,258 @@
+---
+title: "Pointer declaration"
+slug: "c/language/pointer"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/pointer"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Pointer is a type of an object that refers to a function or an object of another type, possibly adding qualifiers. Pointer may also refer to nothing, which is indicated by the special null pointer value.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+<p>In the <a href="/reference/c/language/declarations/">declaration grammar</a> of a pointer declaration, the <em>type-specifier</em> sequence designates the pointed-to type (which may be function or object type and may be incomplete), and the <em>declarator</em> has the form:</p>
+
+```text
+* attr-spec-seq (optional) qualifiers (optional) declarator
+```
+
+<p>where <em>declarator</em> may be the identifier that names the pointer being declared, including another pointer declarator (which would indicate a pointer to a pointer):</p>
+
+```c
+float *p, **pp; // p is a pointer to float
+                // pp is a pointer to a pointer to float
+int (*fp)(int); // fp is a pointer to function with type int(int)
+```
+
+<p>The <em>qualifiers</em> that appear between <code>*</code> and the identifier (or other nested declarator) qualify the type of the pointer that is being declared:</p>
+
+```c
+int n;
+const int * pc = &n; // pc is a non-const pointer to a const int
+// *pc = 2; // Error: n cannot be changed through pc without a cast
+pc = NULL; // OK: pc itself can be changed
+ 
+int * const cp = &n; // cp is a const pointer to a non-const int
+*cp = 2; // OK to change n through cp
+// cp = NULL; // Error: cp itself cannot be changed
+ 
+int * const * pcp = &cp; // non-const pointer to const pointer to non-const int
+```
+
+<p>The <em>attr-spec-seq</em><span class="std std-since std-c23">(C23)</span> is an optional list of <a href="/reference/c/language/attributes/">attributes</a>, applied to the declared pointer.</p>
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>Pointers are used for indirection, which is a ubiquitous programming technique; they can be used to implement pass-by-reference semantics, to access objects with dynamic <a href="/reference/c/language/storage_duration/">storage duration</a>, to implement "optional" types (using the null pointer value), aggregation relationship between structs, callbacks (using pointers to functions), generic interfaces (using pointers to void), and much more.</p>
+
+<h4 id="Pointers_to_objects">Pointers to objects</h4>
+
+<p>A pointer to object can be initialized with the result of the <a href="/reference/c/language/operator_member_access/">address-of operator</a> applied to an expression of object type (which may be incomplete):</p>
+
+```c
+int n;
+int *np = &n; // pointer to int
+int *const *npp = &np; // non-const pointer to const pointer to non-const int
+ 
+int a[2];
+int (*ap)[2] = &a; // pointer to array of int
+ 
+struct S { int n; } s = {1}
+int* sp = &s.n; // pointer to the int that is a member of s
+```
+
+<p>Pointers may appear as operands to the <a href="/reference/c/language/operator_member_access/#Dereference">indirection operator</a> (unary <code>*</code>), which returns <a href="/reference/c/language/value_category/">the lvalue</a> identifying the pointed-to object:</p>
+
+```c
+int n;
+int* p = &n; // pointer p is pointing to n
+*p = 7; // stores 7 in n
+printf("%d\n", *p); // lvalue-to-rvalue conversion reads the value from n
+```
+
+<p>Pointers to objects of <a href="/reference/c/language/struct/">struct</a> and <a href="/reference/c/language/union/">union</a> type may also appear as the left-hand operands of the <a href="/reference/c/language/operator_member_access/">member access through pointer</a> operator <code>-&gt;</code>.</p>
+
+<p>Because of the <a href="/reference/c/language/array/">array-to-pointer</a> implicit conversion, pointer to the first element of an array can be initialized with an expression of array type:</p>
+
+```c
+int a[2];
+int *p = a; // pointer to a[0]
+ 
+int b[3][3];
+int (*row)[3] = b; // pointer to b[0]
+```
+
+<p>Certain <a href="/reference/c/language/operator_arithmetic/">addition, subtraction</a>, <a href="/reference/c/language/operator_assignment/">compound assignment</a>, <a href="/reference/c/language/operator_incdec/">increment, and decrement</a> operators are defined for pointers to elements of arrays.</p>
+
+<p><a href="/reference/c/language/operator_comparison/">Comparison operators</a> are defined for pointers to objects in some situations: two pointers that represent the same address compare equal, two null pointer values compare equal, pointers to elements of the same array compare the same as the array indices of those elements, and pointers to struct members compare in order of declaration of those members.</p>
+
+<p>Many implementations also provide <a href="https://en.wikipedia.org/wiki/Total_order#Strict_total_order" rel="noreferrer" target="_blank">strict total ordering</a> of pointers of random origin, e.g. if they are implemented as addresses within continuous ("flat") virtual address space.</p>
+
+<h4 id="Pointers_to_functions">Pointers to functions</h4>
+
+<p>A pointer to function can be initialized with an address of a function. Because of the <a href="/reference/c/language/conversion/">function-to-pointer</a> conversion, the address-of operator is optional:</p>
+
+```c
+void f(int);
+void (*pf1)(int) = &f;
+void (*pf2)(int) = f; // same as &f
+```
+
+<p>Unlike functions, pointers to functions are objects and thus can be stored in arrays, copied, assigned, passed to other functions as arguments, etc.</p>
+
+<p>A pointer to function can be used on the left-hand side of the <a href="/reference/c/language/operator_other/#Function_call">function call operator</a>; this invokes the pointed-to function:</p>
+
+```c
+#include <stdio.h>
+ 
+int f(int n)
+{
+    printf("%d\n", n);
+    return n * n;
+}
+ 
+int main(void)
+{
+    int (*p)(int) = f;
+    int x = p(7);
+}
+```
+
+<p>Dereferencing a function pointer yields the function designator for the pointed-to function:</p>
+
+```c
+int f();
+int (*p)() = f;    // pointer p is pointing to f
+(*p)(); // function f invoked through the function designator
+p();    // function f invoked directly through the pointer
+```
+
+<p><a href="/reference/c/language/operator_comparison/">Equality comparison operators</a> are defined for pointers to functions (they compare equal if pointing to the same function).</p>
+
+<p>Because <a href="/reference/c/language/compatible_type/#Compatible_types">compatibility of function types</a> ignores top-level qualifiers of the function parameters, pointers to functions whose parameters only differ in their top-level qualifiers are interchangeable:</p>
+
+```c
+int f(int), fc(const int);
+int (*pc)(const int) = f; // OK
+int (*p)(int) = fc;       // OK
+pc = p;                   // OK
+```
+
+<h4 id="Pointers_to_void">Pointers to void</h4>
+
+<p>Pointer to object of any type can be <a href="/reference/c/language/conversion/">implicitly converted</a> to pointer to <code>void</code> (optionally <a href="/reference/c/language/const/">const</a> or <a href="/reference/c/language/volatile/">volatile</a>-qualified), and vice versa:</p>
+
+```c
+int n=1, *p=&n;
+void* pv = p; // int* to void*
+int* p2 = pv; // void* to int*
+printf("%d\n", *p2); // prints 1
+```
+
+<p>Pointers to void are used to pass objects of unknown type, which is common in generic interfaces: <a href="/reference/c/memory/malloc/">malloc</a> returns <code>void*</code>, <a href="/reference/c/algorithm/qsort/">qsort</a> expects a user-provided callback that accepts two <code>const void*</code> arguments. <a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_create.html" rel="noreferrer" target="_blank">pthread_create</a> expects a user-provided callback that accepts and returns <code>void*</code>. In all cases, it is the caller's responsibility to convert the pointer to the correct type before use.</p>
+
+<h3 id="Null_pointers">Null pointers</h3>
+
+<p>Pointers of every type have a special value known as <em>null pointer value</em> of that type. A pointer whose value is null does not point to an object or a function (dereferencing a null pointer is undefined behavior), and compares equal to all pointers of the same type whose value is also <em>null</em>.</p>
+
+<p>To initialize a pointer to null or to assign the null value to an existing pointer, a null pointer constant (<a href="/reference/c/types/NULL/">NULL</a>, or any other integer constant with the value zero) may be used. <a href="/reference/c/language/initialization/">static initialization</a> also initializes pointers to their null values.</p>
+
+<p>Null pointers can indicate the absence of an object or can be used to indicate other types of error conditions. In general, a function that receives a pointer argument almost always needs to check if the value is null and handle that case differently (for example, <a href="/reference/c/memory/free/">free</a> does nothing when a null pointer is passed).</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Although any pointer to object <a href="/reference/c/language/cast/">can be cast</a> to pointer to object of a different type, dereferencing a pointer to the type different from the declared type of the object is almost always undefined behavior. See <a href="/reference/c/language/object/#Strict_aliasing">strict aliasing</a> for details.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><p>It is possible to indicate to a function that accesses objects through pointers that those pointers do not alias. See <a href="/reference/c/language/restrict/">restrict</a> for details.</p></aside>
+
+<p>lvalue expressions of array type, when used in most contexts, undergo an <a href="/reference/c/language/conversion/">implicit conversion</a> to the pointer to the first element of the array. See <a href="/reference/c/language/array/#Array_to_pointer_conversion">array</a> for details.</p>
+
+```c
+char *str = "abc"; // "abc" is a char[4] array, str is a pointer to 'a'
+```
+
+<p>Pointers to char are often <a href="/reference/c/string/byte/">used to represent strings</a>. To represent a valid byte string, a pointer must be pointing at a char that is an element of an array of char, and there must be a char with the value zero at some index greater or equal to the index of the element referenced by the pointer.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.6.1 Pointer declarators (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.6.1 Pointer declarators (p: 93-94)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.6.1 Pointer declarators (p: 130)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.5.1 Pointer declarators (p: 115-116)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.5.4.1 Pointer declarators</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/pointer" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Pointer declaration</td></tr>
+</table>

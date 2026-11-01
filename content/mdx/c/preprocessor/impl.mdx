@@ -1,0 +1,219 @@
+---
+title: "Implementation defined behavior control"
+slug: "c/preprocessor/impl"
+category: "preprocessor"
+source: "https://en.cppreference.com/w/c/preprocessor/impl"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Implementation defined behavior is controlled by <code>#pragma</code> directive.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+#pragma pragma_params
+_Pragma ( string-literal )
+```
+
+<p class="li-note"><span class="li-num">1)</span>  Behaves in an implementation-defined manner (unless <em>pragma_params</em> is one of the standard pragmas shown below).</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Removes the encoding prefix (if any), the outer quotes, and leading/trailing whitespace from <em>string-literal</em>, replaces each <code>\&quot;</code> with <code>&quot;</code> and each <code>\\</code> with <code>\</code>, then tokenizes the result (as in <a href="/reference/c/language/translation_phases/">translation stage 3</a>), and then uses the result as if the input to <code>#pragma</code> in (1).</p>
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>The pragma directive controls implementation-specific behavior of the compiler, such as disabling compiler warnings or changing alignment requirements. Any pragma that is not recognized is ignored.</p>
+
+<h3 id="Standard_pragmas">Standard pragmas</h3>
+
+<p>The following three pragmas are defined by the language standard:</p>
+
+```text
+#pragma STDC FENV_ACCESS arg
+#pragma STDC FP_CONTRACT arg
+#pragma STDC CX_LIMITED_RANGE arg
+```
+
+<p>where <em>arg</em> is either <code>ON</code> or <code>OFF</code> or <code>DEFAULT</code>.</p>
+
+<p class="li-note"><span class="li-num">1)</span>  If set to <code>ON</code>, informs the compiler that the program will access or modify <a href="/reference/c/numeric/fenv/">floating-point environment</a>, which means that optimizations that could subvert flag tests and mode changes (e.g., global common subexpression elimination, code motion, and constant folding) are prohibited. The default value is implementation-defined, usually <code>OFF</code>.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Allows <em>contracting</em> of floating-point expressions, that is optimizations that omit rounding errors and floating-point exceptions that would be observed if the expression was evaluated exactly as written. For example, allows the implementation of <code>(x * y) + z</code> with a single fused multiply-add CPU instruction. The default value is implementation-defined, usually <code>ON</code>.</p>
+
+<p class="li-note"><span class="li-num">3)</span>  Informs the compiler that multiplication, division, and absolute value of complex numbers may use simplified mathematical formulas (x+iy)×(u+iv) = (xu-yv)+i(yu+xv), (x+iy)/(u+iv) = [(xu+yv)+i(yu-xv)]/(u2 +v2 ), and |x+iy| = √x2 +y2 , despite the possibility of intermediate overflow. In other words, the programmer guarantees that the range of the values that will be passed to those function is limited. The default value is <code>OFF</code></p>
+
+<p>Note: compilers that do not support these pragmas may provide equivalent compile-time options, such as gcc's <code>-fcx-limited-range</code> and <code>-ffp-contract</code>.</p>
+
+<h3 id="Non-standard_pragmas">Non-standard pragmas</h3>
+
+<h4 id=".23pragma_once"><code>#pragma once</code></h4>
+
+<p><code>#pragma once</code> is a non-standard pragma that is supported by the <a href="https://en.wikipedia.org/wiki/Pragma_once#Portability" rel="noreferrer" target="_blank">vast majority of modern compilers</a>. If it appears in a header file, it indicates that it is only to be parsed once, even if it is (directly or indirectly) included multiple times in the same source file.</p>
+
+<p>Standard approach to preventing multiple inclusion of the same header is by using <a href="https://en.wikipedia.org/wiki/Include_guard" rel="noreferrer" target="_blank">include guards</a>:</p>
+
+```c
+#ifndef LIBRARY_FILENAME_H
+#define LIBRARY_FILENAME_H
+// contents of the header
+#endif /* LIBRARY_FILENAME_H */
+```
+
+<p>So that all but the first inclusion of the header in any translation unit are excluded from compilation. All modern compilers record the fact that a header file uses an include guard and do not re-parse the file if it is encountered again, as long as the guard is still defined (see e.g. <a href="https://gcc.gnu.org/onlinedocs/cpp/Once-Only-Headers.html" rel="noreferrer" target="_blank">gcc</a>).</p>
+
+<p>With <code>#pragma once</code>, the same header appears as</p>
+
+```c
+#pragma once
+// contents of the header
+```
+
+<p>Unlike header guards, this pragma makes it impossible to erroneously use the same macro name in more than one file. On the other hand, since with <code>#pragma once</code> files are excluded based on their filesystem-level identity, this can't protect against including a header twice if it exists in more than one location in a project.</p>
+
+<h4 id=".23pragma_pack"><code>#pragma pack</code></h4>
+
+<p>This family of pragmas control the maximum alignment for subsequently defined structure and union members.</p>
+
+```text
+#pragma pack(arg)
+#pragma pack()
+#pragma pack(push)
+#pragma pack(push, arg)
+#pragma pack(pop)
+```
+
+<p>where <em>arg</em> is a small power of two and specifies the new alignment in bytes.</p>
+
+<p class="li-note"><span class="li-num">1)</span>  Sets the current alignment to value <em>arg</em>.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Sets the current alignment to the default value (specified by a command-line option).</p>
+
+<p class="li-note"><span class="li-num">3)</span>  Pushes the value of the current alignment on an internal stack.</p>
+
+<p class="li-note"><span class="li-num">4)</span>  Pushes the value of the current alignment on the internal stack and then sets the current alignment to value <em>arg</em>.</p>
+
+<p class="li-note"><span class="li-num">5)</span>  Pops the top entry from the internal stack and then sets (restores) the current alignment to that value.</p>
+
+<p><code>#pragma pack</code> may decrease the alignment of a structure, however, it cannot make a structure overaligned.</p>
+
+<p>See also specific details for <a href="https://gcc.gnu.org/onlinedocs/gcc/Structure-Layout-Pragmas.html" rel="noreferrer" target="_blank">GCC</a> and <a href="https://docs.microsoft.com/en-us/cpp/preprocessor/pack" rel="noreferrer" target="_blank">MSVC</a>.</p>
+
+<table class="ref-table">
+<tr><td></td><td><p>This section is incomplete</p>
+
+<p>Reason: Explain the effects of this pragmas on data members and also the pros and cons of using them. Sources for reference:</p>
+
+<ul>
+<li>
+<a href="https://stackoverflow.com/questions/3318410/pragma-pack-effect" rel="noreferrer" target="_blank">Stack Overflow</a>
+</li>
+</ul></td></tr>
+</table>
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: no example</td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.6 Pragma directive (p: 127)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.9 Pragma operator (p: 129)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.6 Pragma directive (p: 174)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.9 Pragma operator (p: 178)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.6 Pragma directive (p: 159)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.9 Pragma operator (p: 161-162)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.8.6 Pragma directive</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/preprocessor/impl" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Implementation defined behavior control</td></tr>
+</table>
+
+<h3 id="External_links">External links</h3>
+
+<table class="ref-table">
+<tr><td>1.</td><td><a href="https://docs.microsoft.com/en-us/cpp/preprocessor/pragma-directives-and-the-pragma-keyword?view=vs-2019" rel="noreferrer" target="_blank">C++ pragmas in Visual Studio 2019</a></td></tr>
+<tr><td>2.</td><td><a href="https://gcc.gnu.org/onlinedocs/gcc/Pragmas.html" rel="noreferrer" target="_blank">Pragmas</a> accepted by GCC</td></tr>
+<tr><td>3.</td><td><a href="https://www.ibm.com/support/knowledgecenter/en/SSGH3R_16.1.0/com.ibm.xlcpp161.aix.doc/compiler_ref/pragma_descriptions.html" rel="noreferrer" target="_blank">Individual pragma descriptions</a> and <a href="https://www.ibm.com/support/knowledgecenter/en/SSGH3R_16.1.0/com.ibm.xlcpp161.aix.doc/language_ref/std_pragmas.html" rel="noreferrer" target="_blank">Standard pragmas</a> in IBM AIX XL C 16.1</td></tr>
+<tr><td>4.</td><td><a href="http://download.oracle.com/docs/cd/E19422-01/819-3690/Pragmas_App.html#73499" rel="noreferrer" target="_blank">Appendix B. Pragmas</a> in Sun Studio 11 C++ User's Guide</td></tr>
+<tr><td>5.</td><td><a href="https://software.intel.com/content/www/us/en/develop/documentation/cpp-compiler-developer-guide-and-reference/top/compiler-reference/pragmas.html" rel="noreferrer" target="_blank">Intel C++ compiler pragmas</a></td></tr>
+<tr><td>6.</td><td><a href="http://h21007.www2.hp.com/portal/download/files/unprot/aCxx/Online_Help/pragmas.htm" rel="noreferrer" target="_blank">HP aCC compiler pragmas</a></td></tr>
+</table>

@@ -1,0 +1,84 @@
+---
+title: "As-if rule"
+slug: "c/language/as_if"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/as_if"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Allows any and all code transformations that do not change the observable behavior of the program.</p>
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>The C compiler is permitted to perform any changes to the program as long as the following remains true:</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-until std-c11">(until C11)</span></p><p class="li-note"><span class="li-num">1)</span>  At every <a href="/reference/c/language/eval_order/">sequence point</a>, the values of all <a href="/reference/c/language/volatile/">volatile</a> objects are stable (previous evaluations are complete, new evaluations not started).</p></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><p class="li-note"><span class="li-num">1)</span>  Accesses (reads and writes) to <a href="/reference/c/language/volatile/">volatile</a> objects occur strictly according to the semantics of the expressions in which they occur. In particular, they are <a href="/reference/c/atomic/memory_order/">not reordered</a> with respect to other volatile accesses on the same thread.</p></aside>
+
+<p class="li-note"><span class="li-num">2)</span>  At program termination, data written to files is exactly as if the program was executed as written.</p>
+
+<p class="li-note"><span class="li-num">3)</span>  Prompting text which is sent to interactive devices will be shown before the program waits for input.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><div class="li-note"><span class="li-num">4)</span>
+
+<p>If the pragma</p>
+
+<a href="/reference/c/preprocessor/impl/#Standard_pragmas"><code>#pragma STDC FENV_ACCESS</code></a>
+
+<p>is supported and is set to</p>
+
+<code>ON</code>
+
+<p>, the changes to the</p>
+
+<a href="/reference/c/numeric/fenv/">floating-point environment</a>
+
+<p>(floating-point exceptions and rounding modes) are guaranteed to be observed by the floating-point arithmetic operators and function calls as if executed as written, except that</p>
+
+<dl>
+<dd><ul>
+<li>
+<p>the result of any floating-point expression other than cast and assignment may have range and precision of a floating-point type different from the type of the expression (see</p>
+
+<a href="/reference/c/types/limits/FLT_EVAL_METHOD/">FLT_EVAL_METHOD</a>
+
+<p>),</p>
+</li>
+<li>
+<p>notwithstanding the above, intermediate results of any floating-point expression may be calculated as if to infinite range and precision (unless</p>
+
+<a href="/reference/c/preprocessor/impl/#Standard_pragmas"><code>#pragma STDC FP_CONTRACT</code></a>
+
+<p>is</p>
+
+<code>OFF</code>
+
+<p>).</p>
+</li>
+</ul></dd>
+</dl></div></aside>
+
+<h3 id="Notes">Notes</h3>
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: fill out similar to <a href="https://en.cppreference.com/w/cpp/language/as_if" rel="noreferrer" target="_blank">cpp/language/as_if</a></td></tr>
+</table>
+
+<h3 id="See_also">See also</h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/eval_order/">Order of evaluation</a>
+</li>
+</ul>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/as_if" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+as-if rule</td></tr>
+</table>

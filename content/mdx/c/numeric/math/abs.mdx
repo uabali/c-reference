@@ -1,0 +1,200 @@
+---
+title: "abs, labs, llabs, imaxabs"
+slug: "c/numeric/math/abs"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/abs"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdlib.h&gt;</code></p>
+
+```c
+int        abs( int n );
+```
+
+```c
+long       labs( long n );
+```
+
+```c
+long long llabs( long long n );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;inttypes.h&gt;</code></p>
+
+```c
+intmax_t imaxabs( intmax_t n );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>Computes the absolute value of an integer number. The behavior is undefined if the result cannot be represented by the return type.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>n</td><td>-</td><td>integer value</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>The absolute value of <code>n</code> (i.e. <code>|n|</code>), if it is representable.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>In 2's complement systems, the absolute value of the most-negative value is out of range, e.g. for 32-bit 2's complement type <code>int</code>, <a href="/reference/c/types/limits/">INT_MIN</a> is <code>-2147483648</code>, but the would-be result <code>2147483648</code> is greater than <a href="/reference/c/types/limits/">INT_MAX</a>, which is <code>2147483647</code>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <limits.h>
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(void)
+{
+    printf("abs(+3) = %d\n", abs(+3));
+    printf("abs(-3) = %d\n", abs(-3));
+ 
+//  printf("%+d\n", abs(INT_MIN)); // undefined behavior on 2's complement systems
+}
+```
+
+<p>Output:</p>
+
+```text
+abs(+3) = 3
+abs(-3) = 3
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.8.2.1 The imaxabs function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.6.1 The abs, labs and llabs functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.8.2.1 The imaxabs function (p: 159)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.6.1 The abs, labs and llabs functions (p: 259)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.8.2.1 The imaxabs function (p: 218)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.6.1 The abs, labs and llabs functions (p: 356)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.8.2.1 The imaxabs function (p: 199-200)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20.6.1 The abs, labs and llabs functions (p: 320)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.10.6.1 The abs function</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.10.6.3 The labs function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/fabs/">fabs<br />fabsf<br />fabsl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes absolute value of a floating-point value (\(\small{|x|}\)|x|)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/cabs/">cabs<br />cabsf<br />cabsl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the magnitude of a complex number   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/abs" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+abs</td></tr>
+</table>

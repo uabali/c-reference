@@ -1,0 +1,163 @@
+---
+title: "setlocale"
+slug: "c/locale/setlocale"
+category: "locale"
+source: "https://en.cppreference.com/w/c/locale/setlocale"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;locale.h&gt;</code></p>
+
+```c
+char* setlocale( int category, const char* locale );
+```
+
+<p>The <code>setlocale</code> function installs the specified system locale or its portion as the new C locale. The modifications remain in effect and influences the execution of all locale-sensitive C library functions until the next call to <code>setlocale</code>. If <code>locale</code> is a null pointer, <code>setlocale</code> queries the current C locale without modifying it.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>category</td><td>-</td><td>locale category identifier, one of the <a href="/reference/c/locale/LC_categories/"><code>LC_xxx</code></a> macros. May be null.</td></tr>
+<tr><td>locale</td><td>-</td><td>system-specific locale identifier. Can be <code>&quot;&quot;</code> for the user-preferred locale or <code>&quot;C&quot;</code> for the minimal locale</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>pointer to a narrow null-terminated string identifying the C locale after applying the changes, if any, or null pointer on failure.</p>
+
+<p>A copy of the returned string along with the category used in this call to <code>setlocale</code> may be used later in the program to restore the locale back to the state at the end of this call.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>During program startup, the equivalent of <code>setlocale(LC_ALL, &quot;C&quot;);</code> is executed before any user code is run.</p>
+
+<p>Although the return type is <code>char*</code>, modifying the pointed-to characters is undefined behavior.</p>
+
+<p>Because <code>setlocale</code> modifies global state which affects execution of locale-dependent functions, it is undefined behavior to call it from one thread, while another thread is executing any of the following functions: <a href="/reference/c/io/fprintf/">fprintf</a>, <a href="/reference/c/string/byte/isprint/">isprint</a>, <a href="/reference/c/string/wide/iswdigit/">iswdigit</a>, <a href="/reference/c/locale/localeconv/">localeconv</a>, <a href="/reference/c/string/byte/tolower/">tolower</a>, <a href="/reference/c/io/fscanf/">fscanf</a>, <a href="/reference/c/string/byte/ispunct/">ispunct</a>, <a href="/reference/c/string/wide/iswgraph/">iswgraph</a>, <a href="/reference/c/string/multibyte/mblen/">mblen</a>, <a href="/reference/c/string/byte/toupper/">toupper</a>, <a href="/reference/c/string/byte/isalnum/">isalnum</a>, <a href="/reference/c/string/byte/isspace/">isspace</a>, <a href="/reference/c/string/wide/iswlower/">iswlower</a>, <a href="/reference/c/string/multibyte/mbstowcs/">mbstowcs</a>, <a href="/reference/c/string/wide/towlower/">towlower</a>, <a href="/reference/c/string/byte/isalpha/">isalpha</a>, <a href="/reference/c/string/byte/isupper/">isupper</a>, <a href="/reference/c/string/wide/iswprint/">iswprint</a>, <a href="/reference/c/string/multibyte/mbtowc/">mbtowc</a>, <a href="/reference/c/string/wide/towupper/">towupper</a>, <a href="/reference/c/string/byte/isblank/">isblank</a>, <a href="/reference/c/string/wide/iswalnum/">iswalnum</a>, <a href="/reference/c/string/wide/iswpunct/">iswpunct</a>, <code>setlocale</code>, <a href="/reference/c/string/wide/wcscoll/">wcscoll</a>, <a href="/reference/c/string/byte/iscntrl/">iscntrl</a>, <a href="/reference/c/string/wide/iswalpha/">iswalpha</a>, <a href="/reference/c/string/wide/iswspace/">iswspace</a>, <a href="/reference/c/string/byte/strcoll/">strcoll</a>, <a href="/reference/c/string/wide/wcstof/">wcstod</a>, <a href="/reference/c/string/byte/isdigit/">isdigit</a>, <a href="/reference/c/string/wide/iswblank/">iswblank</a>, <a href="/reference/c/string/wide/iswupper/">iswupper</a>, <a href="/reference/c/string/byte/strerror/">strerror</a>, <a href="/reference/c/string/multibyte/wcstombs/">wcstombs</a>, <a href="/reference/c/string/byte/isgraph/">isgraph</a>, <a href="/reference/c/string/wide/iswcntrl/">iswcntrl</a>, <a href="/reference/c/string/wide/iswxdigit/">iswxdigit</a>, <a href="/reference/c/string/byte/strtof/">strtod</a>, <a href="/reference/c/string/wide/wcsxfrm/">wcsxfrm</a>, <a href="/reference/c/string/byte/islower/">islower</a>, <a href="/reference/c/string/wide/iswctype/">iswctype</a>, <a href="/reference/c/string/byte/isxdigit/">isxdigit</a>.</p>
+
+<p>POSIX also defines a locale named "POSIX", which is always accessible and is exactly equivalent to the default minimal "C" locale.</p>
+
+<p>POSIX also specifies that the returned pointer, not just the contents of the pointed-to string, may be invalidated by subsequent calls to <code>setlocale</code>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <locale.h>
+#include <stdio.h>
+#include <time.h>
+#include <wchar.h>
+ 
+int main(void)
+{
+    // the C locale will be UTF-8 enabled English;
+    // decimal dot will be German
+    // date and time formatting will be Japanese
+    setlocale(LC_ALL, "en_US.UTF-8");
+    setlocale(LC_NUMERIC, "de_DE.utf8");
+    setlocale(LC_TIME, "ja_JP.utf8");
+ 
+    wchar_t str[100];
+    time_t t = time(NULL);
+    wcsftime(str, 100, L"%A %c", localtime(&t));
+    wprintf(L"Number: %.2f\nDate: %ls\n", 3.14, str);
+}
+```
+
+<p>Possible output:</p>
+
+```text
+Number: 3,14
+Date: 月曜日 2017年09月25日 13時00分15秒
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.11.1.1 The setlocale function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.11.1.1 The setlocale function (p: 163-164)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.11.1.1 The setlocale function (p: 224-225)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.11.1.1 The setlocale function (p: 205-206)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.4.1.1 The setlocale function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/locale/LC_categories/">LC_ALL<br />LC_COLLATE<br />LC_CTYPE<br />LC_MONETARY<br />LC_NUMERIC<br />LC_TIME</a></td><td>locale categories for <strong>setlocale</strong>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/locale/setlocale" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+setlocale</td></tr>
+</table>
+
+<h3 id="External_links">External links</h3>
+
+<table class="ref-table">
+<tr><td>1.</td><td><a href="https://ss64.com/locale.html" rel="noreferrer" target="_blank">List of Windows locale names</a>.</td></tr>
+<tr><td>2.</td><td><a href="https://lh.2xlibre.net/locales/" rel="noreferrer" target="_blank">List of Linux locale names</a>.</td></tr>
+</table>

@@ -1,0 +1,281 @@
+---
+title: "Fixed width integer types (since C99)"
+slug: "c/types/integer"
+category: "types"
+source: "https://en.cppreference.com/w/c/types/integer"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<h3 id="Types">Types</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdint.h&gt;</code></td></tr>
+<tr><td><code>int8_t</code> <code>int16_t</code> <code>int32_t</code> <code>int64_t</code></td><td>signed integer type with width of  exactly 8, 16, 32 and 64 bits respectively with no padding bits and using 2's complement for negative values (provided only if the implementation directly supports the type)</td></tr>
+<tr><td><code>int_fast8_t</code> <code>int_fast16_t</code> <code>int_fast32_t</code> <code>int_fast64_t</code></td><td>fastest signed integer type with width of  at least 8, 16, 32 and 64 bits respectively</td></tr>
+<tr><td><code>int_least8_t</code> <code>int_least16_t</code> <code>int_least32_t</code> <code>int_least64_t</code></td><td>smallest signed integer type with width of  at least 8, 16, 32 and 64 bits respectively</td></tr>
+<tr><td><code>intmax_t</code></td><td>maximum width integer type</td></tr>
+<tr><td><code>intptr_t</code></td><td>integer type capable of holding a pointer</td></tr>
+<tr><td><code>uint8_t</code> <code>uint16_t</code> <code>uint32_t</code> <code>uint64_t</code></td><td>unsigned integer type with width of  exactly 8, 16, 32 and 64 bits respectively  (provided only if the implementation directly supports the type)</td></tr>
+<tr><td><code>uint_fast8_t</code> <code>uint_fast16_t</code> <code>uint_fast32_t</code> <code>uint_fast64_t</code></td><td>fastest unsigned integer type with width of  at least 8, 16, 32 and 64 bits respectively</td></tr>
+<tr><td><code>uint_least8_t</code> <code>uint_least16_t</code> <code>uint_least32_t</code> <code>uint_least64_t</code></td><td>smallest unsigned integer type with width of  at least 8, 16, 32 and 64 bits respectively</td></tr>
+<tr><td><code>uintmax_t</code></td><td>maximum width unsigned integer type</td></tr>
+<tr><td><code>uintptr_t</code></td><td>unsigned integer type capable of holding a pointer</td></tr>
+</table>
+
+<p>The implementation may define typedef names <code>intN_t</code>, <code>int_fastN_t</code>, <code>int_leastN_t</code>, <code>uintN_t</code>, <code>uint_fastN_t</code>, and <code>uint_leastN_t</code> when <em>N</em> is not 8, 16, 32 or 64. Typedef names of the form <code>intN_t</code> may only be defined if the implementation supports an integer type of that width with no padding. Thus, <code>uint24_t</code> denotes an unsigned integer type with a width of exactly 24 bits.</p>
+
+<p>Each of the macros listed in below is defined if and only if the implementation defines the corresponding typedef name. The macros <code>INTN_C</code> and <code>UINTN_C</code> correspond to the typedef names <code>int_leastN_t</code> and <code>uint_leastN_t</code>, respectively.</p>
+
+<h3 id="Macro_constants">Macro constants</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdint.h&gt;</code></td></tr>
+<tr><td colspan="2">Signed integers : width</td></tr>
+<tr><td>INT8_WIDTH<br />INT16_WIDTH<br />INT32_WIDTH<br />INT64_WIDTH
+
+<span class="std std-since std-c23">(C23)</span><span class="mark-note">(optional)</span></td><td>bit width of an object of type <code>int8_t</code>, <code>int16_t</code>, <code>int32_t</code>, <code>int64_t</code> (exactly 8, 16, 32, 64)   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>INT_FAST8_WIDTH<br />INT_FAST16_WIDTH<br />INT_FAST32_WIDTH<br />INT_FAST64_WIDTH
+
+<span class="std std-since std-c23">(C23)</span></td><td>bit width of an object of type <code>int_fast8_t</code>, <code>int_fast16_t</code>, <code>int_fast32_t</code>, <code>int_fast64_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>INT_LEAST8_WIDTH<br />INT_LEAST16_WIDTH<br />INT_LEAST32_WIDTH<br />INT_LEAST64_WIDTH
+
+<span class="std std-since std-c23">(C23)</span></td><td>bit width of an object of type <code>int_least8_t</code>, <code>int_least16_t</code>, <code>int_least32_t</code>, <code>int_least64_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>INTPTR_WIDTH
+
+<span class="std std-since std-c23">(C23)</span><span class="mark-note">(optional)</span></td><td>bit width of an object of type <code>intptr_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>INTMAX_WIDTH
+
+<span class="std std-since std-c23">(C23)</span></td><td>bit width of an object of type <code>intmax_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2">Signed integers : minimum value</td></tr>
+<tr><td>INT8_MIN<br />INT16_MIN<br />INT32_MIN<br />INT64_MIN</td><td>minimum value of an object of type <code>int8_t</code>, <code>int16_t</code>, <code>int32_t</code>, <code>int64_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>INT_FAST8_MIN<br />INT_FAST16_MIN<br />INT_FAST32_MIN<br />INT_FAST64_MIN</td><td>minimum value of an object of type <code>int_fast8_t</code>, <code>int_fast16_t</code>, <code>int_fast32_t</code>, <code>int_fast64_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>INT_LEAST8_MIN<br />INT_LEAST16_MIN<br />INT_LEAST32_MIN<br />INT_LEAST64_MIN</td><td>minimum value of an object of type <code>int_least8_t</code>, <code>int_least16_t</code>, <code>int_least32_t</code>, <code>int_least64_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>INTPTR_MIN</td><td>minimum value of an object of type <code>intptr_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>INTMAX_MIN</td><td>minimum value of an object of type <code>intmax_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2">Signed integers : maximum value</td></tr>
+<tr><td>INT8_MAX<br />INT16_MAX<br />INT32_MAX<br />INT64_MAX</td><td>maximum value of an object of type <code>int8_t</code>, <code>int16_t</code>, <code>int32_t</code>, <code>int64_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>INT_FAST8_MAX<br />INT_FAST16_MAX<br />INT_FAST32_MAX<br />INT_FAST64_MAX</td><td>maximum value of an object of type <code>int_fast8_t</code>, <code>int_fast16_t</code>, <code>int_fast32_t</code>, <code>int_fast64_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>INT_LEAST8_MAX<br />INT_LEAST16_MAX<br />INT_LEAST32_MAX<br />INT_LEAST64_MAX</td><td>maximum value of an object of type <code>int_least8_t</code>, <code>int_least16_t</code>, <code>int_least32_t</code>, <code>int_least64_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>INTPTR_MAX</td><td>maximum value of an object of type <code>intptr_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>INTMAX_MAX</td><td>maximum value of an object of type <code>intmax_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2">Unsigned integers : width</td></tr>
+<tr><td>UINT8_WIDTH<br />UINT16_WIDTH<br />UINT32_WIDTH<br />UINT64_WIDTH
+
+<span class="std std-since std-c23">(C23)</span><span class="mark-note">(optional)</span></td><td>bit width of an object of type <code>uint8_t</code>, <code>uint16_t</code>, <code>uint32_t</code>, <code>uint64_t</code> (exactly 8, 16, 32, 64)   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>UINT_FAST8_WIDTH<br />UINT_FAST16_WIDTH<br />UINT_FAST32_WIDTH<br />UINT_FAST64_WIDTH
+
+<span class="std std-since std-c23">(C23)</span></td><td>bit width of an object of type <code>uint_fast8_t</code>, <code>uint_fast16_t</code>, <code>uint_fast32_t</code>, <code>uint_fast64_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>UINT_LEAST8_WIDTH<br />UINT_LEAST16_WIDTH<br />UINT_LEAST32_WIDTH<br />UINT_LEAST64_WIDTH
+
+<span class="std std-since std-c23">(C23)</span></td><td>bit width of an object of type <code>uint_least8_t</code>, <code>uint_least16_t</code>, <code>uint_least32_t</code>, <code>uint_least64_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>UINTPTR_WIDTH
+
+<span class="std std-since std-c23">(C23)</span><span class="mark-note">(optional)</span></td><td>bit width of an object of type <code>uintptr_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>UINTMAX_WIDTH
+
+<span class="std std-since std-c23">(C23)</span></td><td>bit width of an object of type <code>uintmax_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2">Unsigned integers : maximum value</td></tr>
+<tr><td>UINT8_MAX<br />UINT16_MAX<br />UINT32_MAX<br />UINT64_MAX</td><td>maximum value of an object of type <code>uint8_t</code>, <code>uint16_t</code>, <code>uint32_t</code>, <code>uint64_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>UINT_FAST8_MAX<br />UINT_FAST16_MAX<br />UINT_FAST32_MAX<br />UINT_FAST64_MAX</td><td>maximum value of an object of type <code>uint_fast8_t</code>, <code>uint_fast16_t</code>, <code>uint_fast32_t</code>, <code>uint_fast64_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>UINT_LEAST8_MAX<br />UINT_LEAST16_MAX<br />UINT_LEAST32_MAX<br />UINT_LEAST64_MAX</td><td>maximum value of an object of type <code>uint_least8_t</code>, <code>uint_least16_t</code>, <code>uint_least32_t</code>, <code>uint_least64_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>UINTPTR_MAX</td><td>maximum value of an object of type <code>uintptr_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>UINTMAX_MAX</td><td>maximum value of an object of type <code>uintmax_t</code>   <span class="mark-note">(macro constant)</span></td></tr>
+</table>
+
+<h3 id="Function_macros_for_minimum-width_integer_constants">Function macros for minimum-width integer constants</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td>INT8_C<br />INT16_C<br />INT32_C<br />INT64_C</td><td>expands to an integer constant expression having the value specified by its argument and the type <code>int_least8_t</code>, <code>int_least16_t</code>, <code>int_least32_t</code>, <code>int_least64_t</code> respectively   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td>INTMAX_C</td><td>expands to an integer constant expression having the value specified by its argument and the type <code>intmax_t</code>   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td>UINT8_C<br />UINT16_C<br />UINT32_C<br />UINT64_C</td><td>expands to an integer constant expression having the value specified by its argument and the type <code>uint_least8_t</code>, <code>uint_least16_t</code>, <code>uint_least32_t</code>, <code>uint_least64_t</code> respectively   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td>UINTMAX_C</td><td>expands to an integer constant expression having the value specified by its argument and the type <code>uintmax_t</code>   <span class="mark-note">(function macro)</span></td></tr>
+</table>
+
+```c
+#include <stdint.h>
+UINT64_C(0x123) // might expand to 0x123ULL or 0x123UL
+```
+
+<h3 id="Format_macro_constants">Format macro constants</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;inttypes.h&gt;</code></td></tr>
+</table>
+
+<h4 id="Format_constants_for_the_fprintf_family_of_functions">Format constants for the <a href="/reference/c/io/fprintf/">fprintf</a> family of functions</h4>
+
+<p>Each of the <code>PRI</code> macros listed here is defined if and only if the implementation defines the corresponding typedef name.</p>
+
+<table class="ref-table">
+<tr><th rowspan="2">Equivalent for <code>int</code> or <code>unsigned int</code></th><th rowspan="2">Description</th><th colspan="5">Macros for data types</th></tr>
+<tr><td><code>[u]intx_t</code></td><td><code>[u]int_leastx_t</code></td><td><code>[u]int_fastx_t</code></td><td><code>[u]intmax_t</code></td><td><code>[u]intptr_t</code></td></tr>
+<tr><th><code>d</code></th><td rowspan="2">output of a signed decimal integer value</td><td>PRId<strong>x</strong></td><td>PRIdLEAST<strong>x</strong></td><td>PRIdFAST<strong>x</strong></td><td>PRIdMAX</td><td>PRIdPTR</td></tr>
+<tr><th><code>i</code></th><td>PRIi<strong>x</strong></td><td>PRIiLEAST<strong>x</strong></td><td>PRIiFAST<strong>x</strong></td><td>PRIiMAX</td><td>PRIiPTR</td></tr>
+<tr><th><code>u</code></th><td>output of an unsigned decimal integer value</td><td>PRIu<strong>x</strong></td><td>PRIuLEAST<strong>x</strong></td><td>PRIuFAST<strong>x</strong></td><td>PRIuMAX</td><td>PRIuPTR</td></tr>
+<tr><th><code>o</code></th><td>output of an unsigned octal integer value</td><td>PRIo<strong>x</strong></td><td>PRIoLEAST<strong>x</strong></td><td>PRIoFAST<strong>x</strong></td><td>PRIoMAX</td><td>PRIoPTR</td></tr>
+<tr><th><code>x</code></th><td>output of an unsigned lowercase hexadecimal integer value</td><td>PRIx<strong>x</strong></td><td>PRIxLEAST<strong>x</strong></td><td>PRIxFAST<strong>x</strong></td><td>PRIxMAX</td><td>PRIxPTR</td></tr>
+<tr><th><code>X</code></th><td>output of an unsigned uppercase hexadecimal integer value</td><td>PRIX<strong>x</strong></td><td>PRIXLEAST<strong>x</strong></td><td>PRIXFAST<strong>x</strong></td><td>PRIXMAX</td><td>PRIXPTR</td></tr>
+</table>
+
+<h4 id="Format_constants_for_the_fscanf_family_of_functions">Format constants for the <a href="/reference/c/io/fscanf/">fscanf</a> family of functions</h4>
+
+<p>Each of the <code>SCN</code> macros listed in here is defined if and only if the implementation defines the corresponding typedef name and has a suitable <a href="/reference/c/io/fscanf/">fscanf</a> length modifier for the type.</p>
+
+<table class="ref-table">
+<tr><th rowspan="2">Equivalent for <code>int</code> or <code>unsigned int</code></th><th rowspan="2">Description</th><th colspan="5">Macros for data types</th></tr>
+<tr><td><code>[u]intx_t</code></td><td><code>[u]int_leastx_t</code></td><td><code>[u]int_fastx_t</code></td><td><code>[u]intmax_t</code></td><td><code>[u]intptr_t</code></td></tr>
+<tr><th><code>d</code></th><td>input of a signed decimal integer value</td><td>SCNd<strong>x</strong></td><td>SCNdLEAST<strong>x</strong></td><td>SCNdFAST<strong>x</strong></td><td>SCNdMAX</td><td>SCNdPTR</td></tr>
+<tr><th><code>i</code></th><td>input of a signed integer value (base is determined by the first characters parsed)</td><td>SCNi<strong>x</strong></td><td>SCNiLEAST<strong>x</strong></td><td>SCNiFAST<strong>x</strong></td><td>SCNiMAX</td><td>SCNiPTR</td></tr>
+<tr><th><code>u</code></th><td>input of an unsigned decimal integer value</td><td>SCNu<strong>x</strong></td><td>SCNuLEAST<strong>x</strong></td><td>SCNuFAST<strong>x</strong></td><td>SCNuMAX</td><td>SCNuPTR</td></tr>
+<tr><th><code>o</code></th><td>input of an unsigned octal integer value</td><td>SCNo<strong>x</strong></td><td>SCNoLEAST<strong>x</strong></td><td>SCNoFAST<strong>x</strong></td><td>SCNoMAX</td><td>SCNoPTR</td></tr>
+<tr><th><code>x</code></th><td>input of an unsigned hexadecimal integer value</td><td>SCNx<strong>x</strong></td><td>SCNxLEAST<strong>x</strong></td><td>SCNxFAST<strong>x</strong></td><td>SCNxMAX</td><td>SCNxPTR</td></tr>
+</table>
+
+<h3 id="Example">Example</h3>
+
+<p>See also <a href="https://en.cppreference.com/w/cpp/language/user_literal#Notes" rel="noreferrer" target="_blank">C++ compatibility note</a> regarding spaces before <a href="/reference/c/types/integer/#Format_macro_constants">format macros</a> used in this example.</p>
+
+```c
+#include <inttypes.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    printf("%zu\n", sizeof(int64_t));
+    printf("%s\n", PRId64);
+    printf("%+" PRId64 "\n", INT64_MIN);
+    printf("%+" PRId64 "\n", INT64_MAX);
+ 
+    int64_t n = 7;
+    printf("%+" PRId64 "\n", n);
+}
+```
+
+<p>Possible output:</p>
+
+```text
+8
+lld
+-9223372036854775808
++9223372036854775807
++7
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.8.1 Macros for format specifiers (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.18 Integer types &lt;stdint.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.8.1 Macros for format specifiers (p: 158-159)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.18 Integer types &lt;stdint.h&gt; (p: 212-216)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.8.1 Macros for format specifiers (p: 217-218)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.18 Integer types &lt;stdint.h&gt; (p: 289-295)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.8.1 Macros for format specifiers (p: 198-199)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.18 Integer types &lt;stdint.h&gt; (p: 255-261)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/arithmetic_types/">Arithmetic types</a>
+</li>
+</ul>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/types/integer" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Fixed width integer types</td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/user_literal" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+User-defined literals (<a href="https://en.cppreference.com/w/cpp/language/user_literal#Notes" rel="noreferrer" target="_blank">formatting macros note</a>)</td></tr>
+</table>

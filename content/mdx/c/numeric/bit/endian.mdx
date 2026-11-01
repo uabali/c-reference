@@ -1,0 +1,121 @@
+---
+title: "__STDC_ENDIAN_LITTLE__, __STDC_ENDIAN_BIG__, __STDC_ENDIAN_NATIVE__"
+slug: "c/numeric/bit/endian"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/bit/endian"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdbit.h&gt;</code></p>
+
+```c
+#define __STDC_ENDIAN_LITTLE__ /* implementation-defined */
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+#define __STDC_ENDIAN_BIG__    /* implementation-defined */
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+#define __STDC_ENDIAN_NATIVE__ /* implementation-defined */
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c23">(since C23)</span></p>
+
+<p>Indicates the <a href="https://en.wikipedia.org/wiki/Endianness#Overview" rel="noreferrer" target="_blank">endianness</a> of all <a href="https://en.cppreference.com/w/cpp/language/type-id" rel="noreferrer" target="_blank">scalar types</a>:</p>
+
+<ul>
+<li>
+<p>If all scalar types are little-endian,</p>
+
+<code>__STDC_ENDIAN_NATIVE__</code>
+
+<p>equals</p>
+
+<code>__STDC_ENDIAN_LITTLE__</code>
+
+<p>.</p>
+</li>
+<li>
+<p>If all scalar types are big-endian,</p>
+
+<code>__STDC_ENDIAN_NATIVE__</code>
+
+<p>equals</p>
+
+<code>__STDC_ENDIAN_BIG__</code>
+
+<p>.</p>
+</li>
+<li>
+<p>If the platform uses neither little-endian nor big-endian,</p>
+
+<code>__STDC_ENDIAN_NATIVE__</code>
+
+<p>equals neither</p>
+
+<code>__STDC_ENDIAN_BIG__</code>
+
+<p>nor</p>
+
+<code>__STDC_ENDIAN_LITTLE__</code>
+
+<p>.</p>
+</li>
+<li>
+<p>The values of the integer constant expressions for</p>
+
+<code>__STDC_ENDIAN_BIG__</code>
+
+<p>and</p>
+
+<code>__STDC_ENDIAN_LITTLE__</code>
+
+<p>are not equal.</p>
+</li>
+</ul>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdbit.h>
+#include <stdio.h>
+ 
+int main()
+{
+    switch(__STDC_ENDIAN_NATIVE__)
+    {
+        case __STDC_ENDIAN_LITTLE__:
+            printf("__STDC_ENDIAN_LITTLE__\n");
+            break;
+        case __STDC_ENDIAN_BIG__:
+            printf("__STDC_ENDIAN_BIG__\n");
+            break;
+        default:
+            printf("mixed-endian\n");
+    }
+    return __STDC_ENDIAN_NATIVE__;
+}
+```
+
+<p>Possible output:</p>
+
+```text
+mixed-endian
+```
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/types/endian" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+endian</td></tr>
+</table>

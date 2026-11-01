@@ -1,0 +1,162 @@
+---
+title: "remove"
+slug: "c/io/remove"
+category: "io"
+source: "https://en.cppreference.com/w/c/io/remove"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+```c
+int remove( const char* pathname );
+```
+
+<p>Deletes the file identified by the character string pointed to by <code>pathname</code>.</p>
+
+<p>If the file is currently open by any process, the behavior of this function is implementation-defined. POSIX systems unlink the file name (directory entry), but the filesystem space used by the file is not reclaimed while it is open in any process and while other hard links to the file exist. Windows does not allow the file to be deleted in such cases.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>pathname</td><td>-</td><td>pointer to a null-terminated string containing the path identifying the file to delete</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p><code>0</code> upon success or non-zero value on error.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p><a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/remove.html" rel="noreferrer" target="_blank">POSIX specifies</a> many additional details for the behavior of this function.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(void)
+{
+    FILE* fp = fopen("file1.txt", "w"); // create file
+    if (!fp)
+    {
+        perror("file1.txt");
+        return EXIT_FAILURE;
+    }
+    puts("Created file1.txt");
+    fclose(fp);
+ 
+    int rc = remove("file1.txt");
+    if (rc)
+    {
+        perror("remove");
+        return EXIT_FAILURE;
+    }
+    puts("Removed file1.txt");
+ 
+    fp = fopen("file1.txt", "r"); // Failure: file does not exist
+    if (!fp)
+        perror("Opening removed file failed");
+ 
+    rc = remove("file1.txt"); // Failure: file does not exist
+    if (rc)
+        perror("Double-remove failed");
+ 
+    return EXIT_SUCCESS;
+}
+```
+
+<p>Possible output:</p>
+
+```text
+Created file1.txt
+Removed file1.txt
+Opening removed file failed: No such file or directory
+Double-remove failed: No such file or directory
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.4.1 The remove function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.4.1 The remove function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.4.1 The remove function (p: 302)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.4.1 The remove function (p: 268)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9.4.1 The remove function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/rename/">rename</a></td><td>renames a file   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c/remove" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+remove</td></tr>
+</table>

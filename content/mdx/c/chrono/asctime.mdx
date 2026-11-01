@@ -1,0 +1,442 @@
+---
+title: "asctime, asctime_s"
+slug: "c/chrono/asctime"
+category: "chrono"
+source: "https://en.cppreference.com/w/c/chrono/asctime"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;time.h&gt;</code></p>
+
+<p class="decl-note">(1)</p>
+
+```c
+char*                asctime( const struct tm* time_ptr );
+```
+
+<p class="decl-note"><span class="std std-until std-c23">(until C23)</span></p>
+
+```c
+[[deprecated]] char* asctime( const struct tm* time_ptr );
+```
+
+<p class="decl-note"><span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+errno_t asctime_s( char* buf, rsize_t bufsz, const struct tm* time_ptr );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+<div class="li-note"><span class="li-num">1)</span>
+
+<p>Converts given calendar time</p>
+
+<a href="/reference/c/chrono/tm/">tm</a>
+
+<p>to a textual representation of the following fixed 25-character form:</p>
+
+<code>Www Mmm dd hh:mm:ss yyyy\n</code>
+
+<ul>
+<li>
+<code>Www</code>
+
+<p>- three-letter English abbreviated day of the week from</p>
+
+<code>time_ptr-&gt;tm_wday</code>
+
+<p>, one of</p>
+
+<code>Mon</code>
+
+<p>,</p>
+
+<code>Tue</code>
+
+<p>,</p>
+
+<code>Wed</code>
+
+<p>,</p>
+
+<code>Thu</code>
+
+<p>,</p>
+
+<code>Fri</code>
+
+<p>,</p>
+
+<code>Sat</code>
+
+<p>,</p>
+
+<code>Sun</code>
+
+<p>.</p>
+</li>
+<li>
+<code>Mmm</code>
+
+<p>- three-letter English abbreviated month name from</p>
+
+<code>time_ptr-&gt;tm_mon</code>
+
+<p>, one of</p>
+
+<code>Jan</code>
+
+<p>,</p>
+
+<code>Feb</code>
+
+<p>,</p>
+
+<code>Mar</code>
+
+<p>,</p>
+
+<code>Apr</code>
+
+<p>,</p>
+
+<code>May</code>
+
+<p>,</p>
+
+<code>Jun</code>
+
+<p>,</p>
+
+<code>Jul</code>
+
+<p>,</p>
+
+<code>Aug</code>
+
+<p>,</p>
+
+<code>Sep</code>
+
+<p>,</p>
+
+<code>Oct</code>
+
+<p>,</p>
+
+<code>Nov</code>
+
+<p>,</p>
+
+<code>Dec</code>
+
+<p>.</p>
+</li>
+<li>
+<code>dd</code>
+
+<p>- 2-digit day of the month from</p>
+
+<code>timeptr-&gt;tm_mday</code>
+
+<p>as if printed by</p>
+
+<a href="/reference/c/io/fprintf/">sprintf</a>
+
+<p>using</p>
+
+<code>%2d</code>
+
+<p>.</p>
+</li>
+<li>
+<code>hh</code>
+
+<p>- 2-digit hour from</p>
+
+<code>timeptr-&gt;tm_hour</code>
+
+<p>as if printed by</p>
+
+<a href="/reference/c/io/fprintf/">sprintf</a>
+
+<p>using</p>
+
+<code>%.2d</code>
+
+<p>.</p>
+</li>
+<li>
+<code>mm</code>
+
+<p>- 2-digit minute from</p>
+
+<code>timeptr-&gt;tm_min</code>
+
+<p>as if printed by</p>
+
+<a href="/reference/c/io/fprintf/">sprintf</a>
+
+<p>using</p>
+
+<code>%.2d</code>
+
+<p>.</p>
+</li>
+<li>
+<code>ss</code>
+
+<p>- 2-digit second from</p>
+
+<code>timeptr-&gt;tm_sec</code>
+
+<p>as if printed by</p>
+
+<a href="/reference/c/io/fprintf/">sprintf</a>
+
+<p>using</p>
+
+<code>%.2d</code>
+
+<p>.</p>
+</li>
+<li>
+<code>yyyy</code>
+
+<p>- 4-digit year from</p>
+
+<code>timeptr-&gt;tm_year + 1900</code>
+
+<p>as if printed by</p>
+
+<a href="/reference/c/io/fprintf/">sprintf</a>
+
+<p>using</p>
+
+<code>%4d</code>
+
+<p>.</p>
+</li>
+</ul></div>
+
+<p class="li-note">The behavior is undefined if any member of <code>*time_ptr</code> is outside its normal range.</p>
+
+<p class="li-note">The behavior is undefined if the calendar year indicated by <code>time_ptr-&gt;tm_year</code> has more than 4 digits or is less than the year 1000.</p>
+
+<p class="li-note">The function does not support localization, and the newline character cannot be removed.</p>
+
+<p class="li-note">The function modifies static storage and is not thread-safe.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p class="li-note">This function is deprecated and should not be used in new code.</p></aside>
+
+<div class="li-note"><span class="li-num">2)</span>
+
+<p>Same as</p>
+
+(1)
+
+<p>, except that the message is written into user-provided storage</p>
+
+<code>buf</code>
+
+<p>, which is guaranteed to be null-terminated, and the following errors are detected at runtime and call the currently installed</p>
+
+<a href="/reference/c/error/set_constraint_handler_s/">constraint handler</a>
+
+<p>function:</p>
+
+<dl>
+<dd><ul>
+<li>
+<code>buf</code>
+
+<p>or</p>
+
+<code>time_ptr</code>
+
+<p>is a null pointer</p>
+</li>
+<li>
+<code>bufsz</code>
+
+<p>is less than 26 or greater than</p>
+
+RSIZE_MAX
+</li>
+<li>
+<p>not all members of</p>
+
+<code>*time_ptr</code>
+
+<p>are within their normal ranges</p>
+</li>
+<li>
+<p>the year indicated by</p>
+
+<code>time_ptr-&gt;tm_year</code>
+
+<p>is less than 0 or greater than 9999.</p>
+</li>
+</ul></dd>
+<dd><p>As with all bounds-checked functions,</p>
+
+<code>asctime_s</code>
+
+<p>is only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<a href="/reference/c/chrono/"><code>&lt;time.h&gt;</code></a>
+
+<p>.</p></dd>
+</dl></div>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>time_ptr</td><td>-</td><td>pointer to a <a href="/reference/c/chrono/tm/">tm</a> object specifying the time to print</td></tr>
+<tr><td>buf</td><td>-</td><td>pointer to a user-supplied buffer at least 26 bytes in length</td></tr>
+<tr><td>bufsz</td><td>-</td><td>size of the user-supplied buffer</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  pointer to a static null-terminated character string holding the textual representation of date and time as described above. The string may be shared between <code>asctime</code> and <a href="/reference/c/chrono/ctime/">ctime</a>, and may be overwritten on each invocation of any of those functions.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  zero on success, non-zero on failure, in which case <code>buf[0]</code> is set to zero (unless <code>buf</code> is a null pointer or <code>bufsz</code> is zero or greater than RSIZE_MAX).</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p><code>asctime</code> returns a pointer to static data and is not thread-safe. POSIX marks this function obsolete and recommends <a href="/reference/c/chrono/strftime/">strftime</a> instead. The C standard also recommends <a href="/reference/c/chrono/strftime/">strftime</a> instead of <code>asctime</code> and <code>asctime_s</code> because <code>strftime</code> is more flexible and locale-sensitive.</p>
+
+<p>POSIX limits undefined behaviors only to when the output string would be longer than 25 characters, when <code>timeptr-&gt;tm_wday</code> or <code>timeptr-&gt;tm_mon</code> are not within the expected ranges, or when <code>timeptr-&gt;tm_year</code> exceeds <code>INT_MAX - 1990</code>.</p>
+
+<p>Some implementations handle <code>timeptr-&gt;tm_mday == 0</code> as meaning the last day of the preceding month.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#define __STDC_WANT_LIB_EXT1__ 1
+#include <stdio.h>
+#include <time.h>
+ 
+int main(void)
+{
+    struct tm tm = *localtime(&(time_t){time(NULL)});
+    printf("%s", asctime(&tm)); // note implicit trailing '\n'
+ 
+#ifdef __STDC_LIB_EXT1__
+    char str[26];
+    asctime_s(str, sizeof str, &tm);
+    printf("%s", str);
+#endif
+}
+```
+
+<p>Possible output:</p>
+
+```text
+Tue May 26 21:51:50 2015
+Tue May 26 21:51:50 2015
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.27.2.1 The asctime function (p: 287)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.8.2.1 The asctime_s function (p: 453-454)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.27.2.1 The asctime function (p: 392-393)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.8.2.1 The asctime_s function (p: 624-625)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.23.3.1 The asctime function (p: 341-342)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.12.3.1 The asctime function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/chrono/ctime/">ctime<br />ctime_s</a>
+
+<span class="std std-since std-c23">(deprecated in C23)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>converts a <a href="/reference/c/chrono/time_t/">time_t</a> object to a textual representation   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/chrono/strftime/">strftime</a></td><td>converts a <a href="/reference/c/chrono/tm/">tm</a> object to custom textual representation   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/chrono/c/asctime" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+asctime</td></tr>
+</table>

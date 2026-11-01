@@ -1,0 +1,150 @@
+---
+title: "while loop"
+slug: "c/language/while"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/while"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Executes a <em>statement</em> repeatedly, until the value of <em>expression</em> becomes equal to zero. The test takes place before each iteration.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+attr-spec-seq(optional) while ( expression ) statement
+```
+
+<table class="ref-table ref-params">
+<tr><td><em>expression</em></td><td>-</td><td>any <a href="/reference/c/language/expressions/">expression</a> of <a href="/reference/c/language/compatible_type/#Type_groups">scalar type</a>. This expression is evaluated before each iteration, and if it compares equal to zero, the loop is exited.</td></tr>
+<tr><td><em>statement</em></td><td>-</td><td>any <a href="/reference/c/language/statements/">statement</a>, typically a compound statement, which serves as the body of the loop</td></tr>
+<tr><td><em>attr-spec-seq</em></td><td>-</td><td><span class="std std-since std-c23">(C23)</span>optional list of <a href="/reference/c/language/attributes/">attributes</a>, applied to the loop statement</td></tr>
+</table>
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>A <code>while</code> statement causes the <em>statement</em> (also called <em>the loop body</em>) to be executed repeatedly until the <em>expression</em> (also called <em>controlling expression</em>) compares equal to zero. The repetition occurs regardless of whether the loop body is entered normally or by a <a href="/reference/c/language/goto/">goto</a> into the middle of <em>statement</em>.</p>
+
+<p>The evaluation of <em>expression</em> takes place before each execution of <em>statement</em> (unless entered by a goto). If the controlling expression needs to be evaluated after the loop body, the <a href="/reference/c/language/do/">do-while loop</a> may be used.</p>
+
+<p>If the execution of the loop needs to be terminated at some point, <a href="/reference/c/language/break/">break statement</a> can be used as a terminating statement.</p>
+
+<p>If the execution of the loop needs to be continued at the end of the loop body, <a href="/reference/c/language/continue/">continue statement</a> can be used as a shortcut.</p>
+
+<p>A program with an endless loop has undefined behavior if the loop has no observable behavior (I/O, volatile accesses, atomic or synchronization operation) in any part of its <em>statement</em> or <em>expression</em>. This allows the compilers to optimize out all unobservable loops without proving that they terminate. The only exceptions are the loops where <em>expression</em> is a constant expression; <code>while(true)</code> is always an endless loop.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><p>As with all other selection and iteration statements, the while statement establishes <a href="/reference/c/language/scope/">block scope</a>: any identifier introduced in the <em>expression</em> goes out of scope after the <em>statement</em>.</p></aside>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Boolean and pointer expressions are often used as loop controlling expressions. The boolean value <code>false</code> and the null pointer value of any pointer type compare equal to zero.</p>
+
+<h3 id="Keywords">Keywords</h3>
+
+<p><a href="/reference/c/keyword/while/"><code>while</code></a></p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+enum { SIZE = 8 };
+int main(void)
+{
+    // trivial example
+    int array[SIZE], n = 0;
+    while(n < SIZE) array[n++] = rand() % 2;
+    puts("Array filled!");
+    n = 0;
+    while(n < SIZE) printf("%d ", array[n++]);
+    printf("\n");
+ 
+    // classic strcpy() implementation
+    // (copies a null-terminated string from src to dst)
+    char src[] = "Hello, world", dst[sizeof src], *p = dst, *q = src;
+    while((*p++ = *q++)) // double parentheses (that are not strictly necessary)
+                         // used to suppress warnings, ensuring that this is an
+                         // assignment (as opposed to a comparison) by intention,
+                         // whose result is used as a truth value
+        ; // null statement
+    puts(dst);
+}
+```
+
+<p>Output:</p>
+
+```text
+Array filled!
+1 0 1 1 1 1 0 0 
+Hello, world
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.8.5.1 The while statement (p: 109)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.8.5.1 The while statement (p: 151)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.8.5.1 The while statement (p: 136)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.6.5.1 The while statement</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/while" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+<code>while</code> loop</td></tr>
+</table>

@@ -1,0 +1,111 @@
+---
+title: "at_quick_exit"
+slug: "c/program/at_quick_exit"
+category: "program"
+source: "https://en.cppreference.com/w/c/program/at_quick_exit"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdlib.h&gt;</code></p>
+
+```c
+int at_quick_exit( void (*func)(void) );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Registers the function pointed to by <code>func</code> to be called on quick program termination (via <a href="/reference/c/program/quick_exit/">quick_exit</a>).</p>
+
+<p>Calling the function from several threads does not induce a data race. The implementation is guaranteed to support the registration of at least 32 functions. The exact limit is implementation-defined.</p>
+
+<p>The registered functions will not be called on <a href="/reference/c/program/exit/">normal program termination</a>. If a function need to be called in that case, <a href="/reference/c/program/atexit/">atexit</a> must be used.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>func</td><td>-</td><td>pointer to a function to be called on quick program termination</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p><code>0</code> if the registration succeeds, nonzero value otherwise.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdlib.h>
+#include <stdio.h>
+ 
+void f1(void)
+{
+    puts("pushed first");
+    fflush(stdout);
+}
+ 
+void f2(void)
+{
+    puts("pushed second");
+}
+ 
+int main(void)
+{
+    at_quick_exit(f1);
+    at_quick_exit(f2);
+    quick_exit(0);
+}
+```
+
+<p>Output:</p>
+
+```text
+pushed second
+pushed first
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.4.3 The at_quick_exit function (p: 255)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.4.3 The at_quick_exit function (p: 351)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/program/abort/">abort</a></td><td>causes abnormal program termination (without cleaning up)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/program/exit/">exit</a></td><td>causes normal program termination with cleaning up   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/program/atexit/">atexit</a></td><td>registers a function to be called on <a href="/reference/c/program/exit/">exit()</a> invocation   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/program/quick_exit/">quick_exit</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>causes normal program termination without completely cleaning up   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/utility/program/at_quick_exit" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+at_quick_exit</td></tr>
+</table>

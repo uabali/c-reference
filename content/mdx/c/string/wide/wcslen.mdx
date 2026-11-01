@@ -1,0 +1,161 @@
+---
+title: "wcslen, wcsnlen_s"
+slug: "c/string/wide/wcslen"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/wide/wcslen"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;wchar.h&gt;</code></p>
+
+```c
+size_t wcslen( const wchar_t *str );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c95">(since C95)</span></p>
+
+```c
+size_t wcsnlen_s(const wchar_t *str, size_t strsz);
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Returns the length of a wide string, that is the number of non-null wide characters that precede the terminating null wide character.</p>
+
+<div class="li-note"><span class="li-num">2)</span>
+
+<p>Same as</p>
+
+(1)
+
+<p>, except that the function returns zero if</p>
+
+<code>str</code>
+
+<p>is a null pointer and returns</p>
+
+<code>strsz</code>
+
+<p>if the null wide character was not found in the first</p>
+
+<code>strsz</code>
+
+<p>wide characters of</p>
+
+<code>src</code>
+
+<dl>
+<dd><p>As with all bounds-checked functions,</p>
+
+<code>wcslen_s</code>
+
+<p>is only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<a href="/reference/c/io/"><code>&lt;stdio.h&gt;</code></a>
+
+<p>..</p></dd>
+</dl></div>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>str</td><td>-</td><td>pointer to the null-terminated wide string to be examined</td></tr>
+<tr><td>strsz</td><td>-</td><td>maximum number of wide characters to examine</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  The length of the null-terminated wide string <code>str</code>.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  The length of the null-terminated wide string <code>str</code> on success, zero if <code>str</code> is a null pointer, <code>strsz</code> if the null wide character was not found.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p><code>strnlen_s</code> and <code>wcsnlen_s</code> are the only <a href="/reference/c/error/">bounds-checked functions</a> that do not invoke the runtime constraints handler. They are pure utility functions used to provide limited support for non-null terminated strings.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <wchar.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    wchar_t str[] = L"How many wide characters does this string contain?";
+ 
+    printf("without null character: %zu\n", wcslen(str));
+    printf("with null character: %zu\n", sizeof str / sizeof *str);
+}
+```
+
+<p>Output:</p>
+
+```text
+without null character: 50
+with null character: 51
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.4.6.1 The wcslen function (p: 439)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.9.2.4.1 The wcsnlen_s function (p: 646-647)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.4.6.1 The wcslen function (p: 385)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/byte/strlen/">strlen<br />strnlen_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>returns the length of a given string   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/wide/wcslen" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+wcslen</td></tr>
+</table></section>

@@ -1,0 +1,127 @@
+---
+title: "signbit"
+slug: "c/numeric/math/signbit"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/signbit"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+#define signbit( arg ) /* implementation defined */
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>Determines if the given floating-point number <code>arg</code> is negative. The macro returns an integral value.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>arg</td><td>-</td><td>floating-point value</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Nonzero integral value if <code>arg</code> is negative, <code>0</code> otherwise.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>This macro detects the sign bit of zeroes, infinities, and NaNs. Along with <a href="/reference/c/numeric/math/copysign/">copysign</a>, this macro is one of the only two portable ways to examine the sign of a NaN.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <math.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    printf("signbit(+0.0) = %d\n", signbit(+0.0));
+    printf("signbit(-0.0) = %d\n", signbit(-0.0));
+}
+```
+
+<p>Possible output:</p>
+
+```text
+signbit(+0.0) = 0
+signbit(-0.0) = 128
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.3.6 The signbit macro (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.3.6 The signbit macro (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.3.6 The signbit macro (p: 237)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.3.6 The signbit macro (p: 218)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/fabs/">fabs<br />fabsf<br />fabsl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes absolute value of a floating-point value (\(\small{|x|}\)|x|)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/copysign/">copysign<br />copysignf<br />copysignl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>produces a value with the magnitude of a given value and the sign of another given value   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/signbit" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+signbit</td></tr>
+</table>

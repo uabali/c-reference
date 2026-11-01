@@ -1,0 +1,125 @@
+---
+title: "Scalar initialization"
+slug: "c/language/scalar_initialization"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/scalar_initialization"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>When <a href="/reference/c/language/initialization/">initializing</a> an object of <a href="/reference/c/language/compatible_type/#Type_groups">scalar type</a>, the initializer must be a single expression</p>
+
+<p>The initializer for a scalar (an object of integer type including booleans and enumerated types, floating type including complex and imaginary, and pointer type including pointer to function) must be a single expression, optionally enclosed in braces, or an empty initializer<span class="std std-since std-c23">(since C23)</span>:</p>
+
+```text
+= expression
+= { expression }
+= { }
+```
+
+<p class="li-note"><span class="li-num">1,2)</span>  The expression is evaluated, and its value, after <a href="/reference/c/language/conversion/">conversion as if by assignment</a> to the type of the object, becomes the initial value of the object being initialized.</p>
+
+<p class="li-note"><span class="li-num">3)</span>  The object is <a href="/reference/c/language/initialization/#Empty_initialization">empty-initialized</a>, i.e. initialized to numeric zero for an object of an arithmetic or enumeration type, or null pointer value for an object of a pointer type.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Because of the rules that apply to conversions as if by assignment, <a href="/reference/c/language/const/"><code>const</code></a> and <a href="/reference/c/language/volatile/"><code>volatile</code></a> qualifiers on the declared type are ignored when determining which type to convert the <em>expression</em> to.</p>
+
+<p>See <a href="/reference/c/language/initialization/">initialization</a> for the rules that apply when no initializer is used.</p>
+
+<p>As with all other initializations, <em>expression</em> must be a <a href="/reference/c/language/constant_expression/">constant expression</a> when initializing objects of static or thread-local <a href="/reference/c/language/storage_duration/">storage duration</a>.</p>
+
+<p>The <em>expression</em> cannot be a <a href="/reference/c/language/operator_other/#Comma_operator">comma operator</a> (unless parenthesized) because the comma at the top level would be interpreted as the beginning of the next declarator.</p>
+
+<p>When initializing objects of floating-point type, all computations for the objects with automatic <a href="/reference/c/language/storage_duration/">storage duration</a> are done as-if at execution time and are affected by the <a href="/reference/c/numeric/fenv/FE_round/">current rounding</a>; floating-point errors are reported as specified in <a href="/reference/c/numeric/math/math_errhandling/"><code>math_errhandling</code></a>. For objects of static and thread-local storage duration, computations are done as-if at compile time, and no exceptions are raised:</p>
+
+```c
+void f(void)
+{
+#pragma STDC FENV_ACCESS ON
+    static float v = 1.1e75; // does not raise exceptions: static init
+ 
+    float u[] = { 1.1e75 }; // raises FE_INEXACT
+    float w = 1.1e75;       // raises FE_INEXACT
+ 
+    double x = 1.1e75; // may raise FE_INEXACT (depends on FLT_EVAL_METHOD)
+    float y = 1.1e75f; // may raise FE_INEXACT (depends on FLT_EVAL_METHOD)
+ 
+    long double z = 1.1e75; // does not raise exceptions (conversion is exact)
+}
+```
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdbool.h>
+int main(void)
+{
+    bool b = true;
+    const double d = 3.14;
+    int k = 3.15; // conversion from double to int
+    int n = {12}, // optional braces
+       *p = &n,   // non-constant expression OK for automatic variable
+       (*fp)(void) = main;
+    enum {RED, BLUE} e = RED; // enumerations are scalar types as well
+}
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.9/11 Initialization (p: 101)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.9/11 Initialization (p: 140)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.8/11 Initialization (p: 126)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.7 Initialization</p>
+</li>
+</ul></dd>
+</dl></section>

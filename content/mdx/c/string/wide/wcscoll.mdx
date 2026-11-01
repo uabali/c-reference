@@ -1,0 +1,128 @@
+---
+title: "wcscoll"
+slug: "c/string/wide/wcscoll"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/wide/wcscoll"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;wchar.h&gt;</code></p>
+
+```c
+int wcscoll( const wchar_t *lhs, const wchar_t *rhs );
+```
+
+<p class="decl-note"><span class="std std-since std-c95">(since C95)</span></p>
+
+<p>Compares two null-terminated wide strings according to the collation order defined by the <a href="/reference/c/locale/LC_categories/">LC_COLLATE</a> category of the currently installed locale.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>lhs, rhs</td><td>-</td><td>pointers to the null-terminated wide strings to compare</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Negative value if <code>lhs</code> is <em>less than</em> (precedes) <code>rhs</code>.</p>
+
+<p><code>0</code> if <code>lhs</code> is <em>equal to</em> <code>rhs</code>.</p>
+
+<p>Positive value if <code>lhs</code> is <em>greater than</em> (follows) <code>rhs</code>.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Collation order is the dictionary order: the position of the letter in the national alphabet (its <em>equivalence class</em>) has higher priority than its case or variant. Within an equivalence class, lowercase characters collate before their uppercase equivalents and locale-specific order may apply to the characters with diacritics. In some locales, groups of characters compare as single <em>collation units</em>. For example, <code>&quot;ch&quot;</code> in Czech follows <code>&quot;h&quot;</code> and precedes <code>&quot;i&quot;</code>, and <code>&quot;dzs&quot;</code> in Hungarian follows <code>&quot;dz&quot;</code> and precedes <code>&quot;g&quot;</code>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <wchar.h>
+#include <locale.h>
+ 
+void try_compare(const wchar_t* p1, const wchar_t* p2)
+{
+    if(wcscoll(p1, p2) < 0)
+        printf("%ls before %ls\n", p1, p2);
+    else
+        printf("%ls before %ls\n", p2, p1);
+}
+ 
+int main(void)
+{
+    setlocale(LC_ALL, "en_US.utf8");
+    printf("In the American locale: ");
+    try_compare(L"hrnec", L"chrt");
+ 
+    setlocale(LC_COLLATE, "cs_CZ.utf8");
+    printf("In the Czech locale: ");
+    try_compare(L"hrnec", L"chrt");
+ 
+    setlocale(LC_COLLATE, "en_US.utf8");
+    printf("In the American locale: ");
+    try_compare(L"år", L"ängel");
+ 
+    setlocale(LC_COLLATE, "sv_SE.utf8");
+    printf("In the Swedish locale: ");
+    try_compare(L"år", L"ängel");
+}
+```
+
+<p>Possible output:</p>
+
+```text
+In the American locale: chrt before hrnec
+In the Czech locale: hrnec before chrt
+In the American locale: ängel before år
+In the Swedish locale: år before ängel
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.4.4.2 The wcscoll function (p: 433-434)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.4.4.2 The wcscoll function (p: 379-380)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/byte/strcoll/">strcoll</a></td><td>compares two strings in accordance to the current locale   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcsxfrm/">wcsxfrm</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>transform a wide string so that wcscmp would produce the same result as wcscoll   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcscmp/">wcscmp</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>compares two wide strings   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/wide/wcscoll" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+wcscoll</td></tr>
+</table></section>

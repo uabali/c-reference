@@ -1,0 +1,87 @@
+---
+title: "atomic_fetch_xor, atomic_fetch_xor_explicit"
+slug: "c/atomic/atomic_fetch_xor"
+category: "atomic"
+source: "https://en.cppreference.com/w/c/atomic/atomic_fetch_xor"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdatomic.h&gt;</code></p>
+
+```c
+C atomic_fetch_xor( volatile A* obj, M arg );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c11">(since C11)</span></p>
+
+```c
+C atomic_fetch_xor_explicit( volatile A* obj, M arg, memory_order order );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Atomically replaces the value pointed by <code>obj</code> with the result of bitwise XOR between the old value of <code>obj</code> and <code>arg</code>, and returns the value <code>obj</code> held previously. The operation is read-modify-write operation. The first version orders memory accesses according to <a href="/reference/c/atomic/memory_order/">memory_order_seq_cst</a>, the second version orders memory accesses according to <code>order</code>.</p>
+
+<p>This is a <a href="/reference/c/language/generic/">generic function</a> defined for all <a href="/reference/c/language/atomic/">atomic object types</a> <code>A</code>. The argument is pointer to a volatile atomic type to accept addresses of both non-volatile and <a href="/reference/c/language/volatile/">volatile</a> (e.g. memory-mapped I/O) atomic objects, and volatile semantic is preserved when applying this operation to volatile atomic objects. <code>M</code> is either the non-atomic type corresponding to <code>A</code> if <code>A</code> is atomic integer type, or <a href="/reference/c/types/ptrdiff_t/">ptrdiff_t</a> if <code>A</code> is atomic pointer type.</p>
+
+<p>It is unspecified whether the name of a generic function is a macro or an identifier declared with external linkage. If a macro definition is suppressed in order to access an actual function (e.g. parenthesized like <code>(atomic_fetch_xor)(...)</code>), or a program defines an external identifier with the name of a generic function, the behavior is undefined.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>obj</td><td>-</td><td>pointer to the atomic object to modify</td></tr>
+<tr><td>arg</td><td>-</td><td>the value to bitwise XOR to the value stored in the atomic object</td></tr>
+<tr><td>order</td><td>-</td><td>the memory synchronization ordering for this operation: all values are permitted</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>The value held previously be the atomic object pointed to by <code>obj</code>.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17.7.5 The atomic_fetch and modify generic functions (p: 208)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17.7.5 The atomic_fetch and modify generic functions (p: 284-285)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/atomic/atomic_fetch_or/">atomic_fetch_or<br />atomic_fetch_or_explicit</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>atomic bitwise OR   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/atomic/atomic_fetch_and/">atomic_fetch_and<br />atomic_fetch_and_explicit</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>atomic bitwise AND   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/atomic/atomic_fetch_xor" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+atomic_fetch_xor, atomic_fetch_xor_explicit</td></tr>
+</table>

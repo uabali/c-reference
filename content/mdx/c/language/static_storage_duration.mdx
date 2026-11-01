@@ -1,0 +1,51 @@
+---
+title: "Static storage duration"
+slug: "c/language/static_storage_duration"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/static_storage_duration"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>An object whose identifier is declared without the storage-class specifier <code>_Thread_local</code>, and either with external or internal <a href="/reference/c/language/storage_duration/#Linkage">linkage</a> or with the storage-class specifier <code>static</code>, has static storage duration. Its lifetime is the entire execution of the program and its stored value is initialized only once, prior to program startup.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Since its stored value is initialized only once, an object with static storage duration can profile the invocations of a function.</p>
+
+<p>The other use of the keyword <code>static</code> is <a href="/reference/c/language/file_scope/">file scope</a>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+ 
+void f (void)
+{
+    static int count = 0;   // static variable   
+    int i = 0;              // automatic variable
+    printf("%d %d\n", i++, count++);
+}
+ 
+int main(void)
+{
+    for (int ndx=0; ndx<10; ++ndx)
+        f();
+}
+```
+
+<p>Output:</p>
+
+```text
+0 0
+0 1
+0 2
+0 3
+0 4
+0 5
+0 6
+0 7
+0 8
+0 9
+```

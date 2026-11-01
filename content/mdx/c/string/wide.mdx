@@ -1,0 +1,518 @@
+---
+title: "Null-terminated wide strings"
+slug: "c/string/wide"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/wide"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>A null-terminated wide string is a sequence of valid wide characters, ending with a null-character.</p>
+
+<h3 id="Functions">Functions</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2">Character classification</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;wctype.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/string/wide/iswalnum/">iswalnum</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>checks if a wide character is alphanumeric   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/iswalpha/">iswalpha</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>checks if a wide character is alphabetic   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/iswlower/">iswlower</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>checks if a wide character is an lowercase character   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/iswupper/">iswupper</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>checks if a wide character is an uppercase character   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/iswdigit/">iswdigit</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>checks if a wide character is a digit   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/iswxdigit/">iswxdigit</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>checks if a wide character is a hexadecimal character   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/iswcntrl/">iswcntrl</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>checks if a wide character is a control character   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/iswgraph/">iswgraph</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>checks if a wide character is a graphical character   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/iswspace/">iswspace</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>checks if a wide character is a space character   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/iswblank/">iswblank</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>checks if a wide character is a blank character   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/iswprint/">iswprint</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>checks if a wide character is a printing character   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/iswpunct/">iswpunct</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>checks if a wide character is a punctuation character   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/iswctype/">iswctype</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>classifies a wide character according to the specified <a href="/reference/c/locale/LC_categories/">LC_CTYPE</a> category   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wctype/">wctype</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>looks up a character classification category in the current C locale   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Character manipulation</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;wctype.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/string/wide/towlower/">towlower</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>converts a wide character to lowercase   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/towupper/">towupper</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>converts a wide character to uppercase   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/towctrans/">towctrans</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>performs character mapping according to the specified LC_CTYPE mapping category   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wctrans/">wctrans</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>looks up a character mapping category in the current C locale   <span class="mark-note">(function)</span></td></tr>
+</table>
+
+<table class="ref-table">
+<tr><th colspan="3">ASCII values</th><th rowspan="2">characters</th><th rowspan="2"><p><a href="/reference/c/string/byte/iscntrl/"><code>iscntrl</code></a>  <a href="/reference/c/string/wide/iswcntrl/"><code>iswcntrl</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isprint/"><code>isprint</code></a>  <a href="/reference/c/string/wide/iswprint/"><code>iswprint</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isspace/"><code>isspace</code></a>  <a href="/reference/c/string/wide/iswspace/"><code>iswspace</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isblank/"><code>isblank</code></a>  <a href="/reference/c/string/wide/iswblank/"><code>iswblank</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isgraph/"><code>isgraph</code></a>  <a href="/reference/c/string/wide/iswgraph/"><code>iswgraph</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/ispunct/"><code>ispunct</code></a>   <a href="/reference/c/string/wide/iswpunct/"><code>iswpunct</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isalnum/"><code>isalnum</code></a>   <a href="/reference/c/string/wide/iswalnum/"><code>iswalnum</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isalpha/"><code>isalpha</code></a>   <a href="/reference/c/string/wide/iswalpha/"><code>iswalpha</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isupper/"><code>isupper</code></a>  <a href="/reference/c/string/wide/iswupper/"><code>iswupper</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/islower/"><code>islower</code></a>  <a href="/reference/c/string/wide/iswlower/"><code>iswlower</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isdigit/"><code>isdigit</code></a>  <a href="/reference/c/string/wide/iswdigit/"><code>iswdigit</code></a></p></th><th rowspan="2"><p><a href="/reference/c/string/byte/isxdigit/"><code>isxdigit</code></a>  <a href="/reference/c/string/wide/iswxdigit/"><code>iswxdigit</code></a></p></th></tr>
+<tr><th>decimal</th><th>hexadecimal</th><th>octal</th></tr>
+<tr><td>0–8</td><td><code>\x0</code>–<code>\x8</code></td><td><code>\0</code>–<code>\10</code></td><td>control codes (<code>NUL</code>, etc.)</td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>9</td><td><code>\x9</code></td><td><code>\11</code></td><td>tab (<code>\t</code>)</td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>10–13</td><td><code>\xA</code>–<code>\xD</code></td><td><code>\12</code>–<code>\15</code></td><td>whitespaces (<code>\n</code>, <code>\v</code>, <code>\f</code>, <code>\r</code>)</td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>14–31</td><td><code>\xE</code>–<code>\x1F</code></td><td><code>\16</code>–<code>\37</code></td><td>control codes</td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>32</td><td><code>\x20</code></td><td><code>\40</code></td><td>space</td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>33–47</td><td><code>\x21</code>–<code>\x2F</code></td><td><code>\41</code>–<code>\57</code></td><td><code>!&quot;#$%&amp;&#x27;()*+,-./</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>48–57</td><td><code>\x30</code>–<code>\x39</code></td><td><code>\60</code>–<code>\71</code></td><td><code>0123456789</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td></tr>
+<tr><td>58–64</td><td><code>\x3A</code>–<code>\x40</code></td><td><code>\72</code>–<code>\100</code></td><td><code>:;&lt;=&gt;?@</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>65–70</td><td><code>\x41</code>–<code>\x46</code></td><td><code>\101</code>–<code>\106</code></td><td><code>ABCDEF</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td></tr>
+<tr><td>71–90</td><td><code>\x47</code>–<code>\x5A</code></td><td><code>\107</code>–<code>\132</code></td><td><code>GHIJKLMNOP</code> <code>QRSTUVWXYZ</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>91–96</td><td><code>\x5B</code>–<code>\x60</code></td><td><code>\133</code>–<code>\140</code></td><td><code>[\]^_`</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>97–102</td><td><code>\x61</code>–<code>\x66</code></td><td><code>\141</code>–<code>\146</code></td><td><code>abcdef</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td></tr>
+<tr><td>103–122</td><td><code>\x67</code>–<code>\x7A</code></td><td><code>\147</code>–<code>\172</code></td><td><code>ghijklmnop</code> <code>qrstuvwxyz</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>123–126</td><td><code>\x7B</code>–<code>\x7E</code></td><td><code>\173</code>–<code>\176</code></td><td><code>{|}~</code></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+<tr><td>127</td><td><code>\x7F</code></td><td><code>\177</code></td><td>backspace character (<code>DEL</code>)</td><td><strong><code>≠0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td><td><strong><code>0</code></strong></td></tr>
+</table>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2">Conversions to numeric formats</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;wchar.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcstol/">wcstol<br />wcstoll</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>converts a wide string to an integer value   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcstoul/">wcstoul<br />wcstoull</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>converts a wide string to an unsigned integer value   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcstof/">wcstof<br />wcstod<br />wcstold</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>converts a wide string to a floating-point value   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;inttypes.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcstoimax/">wcstoimax<br />wcstoumax</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>converts a wide string to <a href="/reference/c/types/integer/">intmax_t</a> or <a href="/reference/c/types/integer/">uintmax_t</a>   <span class="mark-note">(function)</span></td></tr>
+</table>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2">String manipulation</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;wchar.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcscpy/">wcscpy<br />wcscpy_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>copies one wide string to another   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcsncpy/">wcsncpy<br />wcsncpy_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>copies a certain amount of wide characters from one string to another   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcscat/">wcscat<br />wcscat_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>appends a copy of one wide string to another   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcsncat/">wcsncat<br />wcsncat_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>appends a certain amount of wide characters from one wide string to another   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcsxfrm/">wcsxfrm</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>transform a wide string so that wcscmp would produce the same result as wcscoll   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">String examination</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;wchar.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcslen/">wcslen<br />wcsnlen_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>returns the length of a wide string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcscmp/">wcscmp</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>compares two wide strings   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcsncmp/">wcsncmp</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>compares a certain amount of characters from two wide strings   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcscoll/">wcscoll</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>compares two wide strings in accordance to the current locale   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcschr/">wcschr</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>finds the first occurrence of a wide character in a wide string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcsrchr/">wcsrchr</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>finds the last occurrence of a wide character in a wide string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcsspn/">wcsspn</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>returns the length of the maximum initial segment that consists   of only the wide characters found in another wide string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcscspn/">wcscspn</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>returns the length of the maximum initial segment that consists   of only the wide chars <em>not</em> found in another wide string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcspbrk/">wcspbrk</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>finds the first location of any wide character in one wide string, in another wide string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcsstr/">wcsstr</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>finds the first occurrence of a wide string within another wide string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcstok/">wcstok<br />wcstok_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>finds the next token in a wide string   <span class="mark-note">(function)</span></td></tr>
+</table>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2">Wide character array manipulation</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;wchar.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/string/wide/wmemcpy/">wmemcpy<br />wmemcpy_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>copies a certain amount of wide characters between two non-overlapping arrays   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wmemmove/">wmemmove<br />wmemmove_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>copies a certain amount of wide characters between two, possibly overlapping, arrays   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wmemcmp/">wmemcmp</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>compares a certain amount of wide characters from two arrays   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wmemchr/">wmemchr</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>finds the first occurrence of a wide character in a wide character array   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wmemset/">wmemset</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>copies the given wide character to every position in a wide character array   <span class="mark-note">(function)</span></td></tr>
+</table>
+
+<h3 id="Types">Types</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stddef.h&gt;</code></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdlib.h&gt;</code></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;wchar.h&gt;</code></td></tr>
+<tr><td>wchar_t</td><td>integer type that can hold any valid wide character   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;wchar.h&gt;</code></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;wctype.h&gt;</code></td></tr>
+<tr><td>wint_t
+
+<span class="std std-since std-c95">(C95)</span></td><td>integer type that can hold any valid wide character and at least one more value   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;wctype.h&gt;</code></td></tr>
+<tr><td>wctrans_t
+
+<span class="std std-since std-c95">(C95)</span></td><td>scalar type that holds locale-specific character mapping   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td>wctype_t
+
+<span class="std std-since std-c95">(C95)</span></td><td>scalar type that holds locale-specific character classification   <span class="mark-note">(typedef)</span></td></tr>
+</table>
+
+<h3 id="Macros">Macros</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;wchar.h&gt;</code></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;wctype.h&gt;</code></td></tr>
+<tr><td>WEOF
+
+<span class="std std-since std-c95">(C95)</span></td><td>a non-character value of type wint_t used to indicate errors   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;wchar.h&gt;</code></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdint.h&gt;</code></td></tr>
+<tr><td>WCHAR_MIN
+
+<span class="std std-since std-c95">(C95)</span></td><td>the smallest valid value of wchar_t   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>WCHAR_MAX
+
+<span class="std std-since std-c95">(C95)</span></td><td>the largest valid value of wchar_t   <span class="mark-note">(macro constant)</span></td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19 Common definitions &lt;stddef.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.30 Wide character classification and mapping utilities &lt;wctype.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.16 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.17 Wide character classification and mapping utilities &lt;wctype.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.3 Common definitions &lt;stddef.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.9 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19 Common definitions &lt;stddef.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.30 Wide character classification and mapping utilities &lt;wctype.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.16 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.17 Wide character classification and mapping utilities &lt;wctype.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.3 Common definitions &lt;stddef.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.9 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19 Common definitions &lt;stddef.h&gt; (p: 288)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: 402-446)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.30 Wide character classification and mapping utilities &lt;wctype.h&gt; (p: 447-454)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.16 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: 456)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.17 Wide character classification and mapping utilities &lt;wctype.h&gt; (p: 457)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.3 Common definitions &lt;stddef.h&gt; (p: 585)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.9 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: 627-651)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17 Common definitions &lt;stddef.h&gt; (p: 254)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: 348-392)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Wide character classification and mapping utilities &lt;wctype.h&gt; (p: 393-400)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.12 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: 402)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.13 Wide character classification and mapping utilities &lt;wctype.h&gt; (p: 402)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.1.5 Common definitions &lt;stddef.h&gt;</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/wide" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+<code>Null</code>-terminated wide strings</td></tr>
+</table>

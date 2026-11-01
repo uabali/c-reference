@@ -1,0 +1,119 @@
+---
+title: "thrd_yield"
+slug: "c/thread/thrd_yield"
+category: "thread"
+source: "https://en.cppreference.com/w/c/thread/thrd_yield"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;threads.h&gt;</code></p>
+
+```c
+void thrd_yield(void);
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Provides a hint to the implementation to reschedule the execution of threads, allowing other threads to run.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<p>(none)</p>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>(none)</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The exact behavior of this function depends on the implementation, in particular on the mechanics of the OS scheduler in use and the state of the system. For example, a first-in-first-out realtime scheduler (<code>SCHED_FIFO</code> in Linux) would suspend the current thread and put it on the back of the queue of the same-priority threads that are ready to run, and if there are no other threads at the same priority, <code>yield</code> has no effect.</p>
+
+<p>The POSIX equivalent of this function is <a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/sched_yield.html" rel="noreferrer" target="_blank"><code>sched_yield</code></a>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <time.h>
+#include <threads.h>
+ 
+// utility function: difference between timespecs in microseconds
+double usdiff(struct timespec s, struct timespec e)
+{
+    double sdiff = difftime(e.tv_sec, s.tv_sec);
+    long nsdiff = e.tv_nsec - s.tv_nsec;
+    if(nsdiff < 0) return 1000000*(sdiff-1) + (1000000000L+nsdiff)/1000.0;
+    else return 1000000*(sdiff) + nsdiff/1000.0;
+}
+ 
+// busy wait while yielding
+void sleep_100us()
+{
+    struct timespec start, end;
+    timespec_get(&start, TIME_UTC);
+    do {
+        thrd_yield();
+        timespec_get(&end, TIME_UTC);
+    } while(usdiff(start, end) < 100.0);
+}
+ 
+int main()
+{
+    struct timespec start, end;
+    timespec_get(&start, TIME_UTC);
+    sleep_100us();
+    timespec_get(&end, TIME_UTC);
+    printf("Waited for %.3f us\n", usdiff(start, end));
+}
+```
+
+<p>Possible output:</p>
+
+```text
+Waited for 100.344 us
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.5.8 The thrd_yield function (p: 281)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.5.8 The thrd_yield function (p: 385)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/thread/thrd_sleep/">thrd_sleep</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>suspends execution of the calling thread for the given period of time   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/yield" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+yield</td></tr>
+</table>

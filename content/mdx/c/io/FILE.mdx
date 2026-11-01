@@ -1,0 +1,217 @@
+---
+title: "FILE"
+slug: "c/io/FILE"
+category: "io"
+source: "https://en.cppreference.com/w/c/io/FILE"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+```c
+typedef /* unspecified */ FILE;
+```
+
+<p>Each <code>FILE</code> object denotes a C stream.</p>
+
+<p>C standard does not specify whether <code>FILE</code> is a complete object type. While it may be possible to copy a valid <code>FILE</code>, using a pointer to such a copy as an argument for an I/O function invokes unspecified behavior. In other words, <code>FILE</code> may be semantically non-copyable.</p>
+
+<p>I/O streams can be used for both unformatted and formatted input and output. Furthermore, the functions that handle input and output can also be locale-sensitive, such that wide/multibyte conversions are performed as necessary.</p>
+
+<h3 id="Stream_state">Stream state</h3>
+
+<p>Besides the system-specific information necessary to access the device (<em>e.g.,</em> a POSIX file descriptor), each <code>FILE</code> object directly or indirectly holds the following:</p>
+
+<ol>
+<li>
+<span class="std std-since std-c95">(C95)</span>
+
+<p>Character width: unset, narrow, or wide.</p>
+</li>
+<li>
+<span class="std std-since std-c95">(C95)</span>
+
+<p>Parse state for conversions between multibyte and wide characters (an object of type</p>
+
+<a href="/reference/c/string/multibyte/mbstate_t/">mbstate_t</a>
+
+<p>)</p>
+</li>
+<li>
+<p>Buffering state: unbuffered, line-buffered, fully buffered.</p>
+</li>
+<li>
+<p>The buffer, which may be replaced by an external, user-provided buffer.</p>
+</li>
+<li>
+<p>I/O mode: input, output, or update (both input and output).</p>
+</li>
+<li>
+<p>Binary/text mode indicator.</p>
+</li>
+<li>
+<p>End-of-file status indicator.</p>
+</li>
+<li>
+<p>Error status indicator.</p>
+</li>
+<li>
+<p>File position indicator, accessible as an object of type</p>
+
+<a href="/reference/c/io/fpos_t/">fpos_t</a>
+
+<p>, which, for wide streams, includes parse state.</p>
+</li>
+<li>
+<span class="std std-since std-c11">(C11)</span>
+
+<p>Reentrant lock used to prevent data races when multiple threads read, write, position, or query the position of a stream.</p>
+</li>
+</ol>
+
+<h4 id="Narrow_and_wide_orientation">Narrow and wide orientation</h4>
+
+<p>A newly opened stream has no orientation. The first call to fwide or to any I/O function establishes the orientation: a wide I/O function makes the stream wide-oriented; a narrow I/O function makes the stream narrow-oriented. Once set, the orientation can be changed with only <a href="/reference/c/io/freopen/">freopen</a>. Narrow I/O functions cannot be called on a wide-oriented stream; wide I/O functions cannot be called on a narrow-oriented stream. Wide I/O functions convert between wide and multibyte characters as if by calling <a href="/reference/c/string/multibyte/mbrtowc/">mbrtowc</a> or <a href="/reference/c/string/multibyte/wcrtomb/">wcrtomb</a> with the conversion state as described by the stream. Unlike the multibyte character strings that are valid in a program, multibyte character sequences in the file may contain embedded nulls and do not have to begin or end in the initial shift state.</p>
+
+<p>The conversion state of a stream with wide orientation is established by the C locale that is installed at the time the stream's orientation is set.</p>
+
+<h4 id="Binary_and_text_modes">Binary and text modes</h4>
+
+<p>A <em>text stream</em> is an ordered sequence of characters that can be composed into lines; a line can be decomposed into zero or more characters plus a terminating <code>&#x27;\n&#x27;</code> (“newline”) character. Whether the last line requires a terminating <code>&#x27;\n&#x27;</code> is implementation-defined. Furthermore, characters may have to be added, altered, or deleted on input and output to conform to the conventions for representing text in the OS (in particular, C streams on Windows OS convert <code>&#x27;\n&#x27;</code> to <code>&#x27;\r\n&#x27;</code> on output, and convert <code>&#x27;\r\n&#x27;</code> to <code>&#x27;\n&#x27;</code> on input).</p>
+
+<p>Data read in from a text stream is guaranteed to compare equal to the data that were earlier written out to that stream only if each of the following is true:</p>
+
+<ul>
+<li>
+<p>The data consist of only printing characters and/or the control characters</p>
+
+<code>&#x27;\t&#x27;</code>
+
+<p>and</p>
+
+<code>&#x27;\n&#x27;</code>
+
+<p>(in particular, on Windows OS, the character</p>
+
+<code>&#x27;\0x1A&#x27;</code>
+
+<p>terminates input).</p>
+</li>
+<li>
+<p>No</p>
+
+<code>&#x27;\n&#x27;</code>
+
+<p>character is immediately preceded by space characters (such space characters may disappear when such output is later read as input).</p>
+</li>
+<li>
+<p>The last character is</p>
+
+<code>&#x27;\n&#x27;</code>
+
+<p>.</p>
+</li>
+</ul>
+
+<p>A <em>binary stream</em> is an ordered sequence of characters that can transparently record internal data. Data read in from a binary stream always equal the data that were earlier written out to that stream, except that an implementation is allowed to append an indeterminate number of null characters to the end of the stream. A wide binary stream doesn't need to end in the initial shift state.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>POSIX explicitly requires that the <code>LC_CTYPE</code> facet of the currently installed C locale be stored within the <code>FILE</code> object the moment the stream's orientation becomes wide; POSIX requires that this <code>LC_CTYPE</code> facet be used for all future I/O on this stream until the orientation is changed, regardless of any subsequent call to <a href="/reference/c/locale/setlocale/">setlocale</a>.</p>
+
+<p>It is intended that each line of text be composed of data that are essentially human-readable. POSIX implementations do not distinguish between text and binary streams (there is no special mapping for <code>&#x27;\n&#x27;</code> or any other characters).</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21 Input/output &lt;stdio.h&gt; (p: 217-247)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: 295-325)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21 Input/output &lt;stdio.h&gt; (p: 296-339)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: 402-446)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19 Input/output &lt;stdio.h&gt; (p: 262-305)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: 348-392)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9 INPUT/OUTPUT &lt;stdio.h&gt;</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/std_streams/">stdin<br />stdout<br />stderr</a></td><td>expression of type <code>FILE*</code> associated with the input stream expression of type <code>FILE*</code> associated with the output stream expression of type <code>FILE*</code> associated with the error output stream   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c/FILE" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+FILE</td></tr>
+</table>

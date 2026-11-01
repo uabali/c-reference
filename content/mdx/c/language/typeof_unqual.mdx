@@ -1,0 +1,64 @@
+---
+title: "typeof operators (since C23)"
+slug: "c/language/typeof_unqual"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/typeof_unqual"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Determines the type of an object.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+typeof( type )
+typeof( expression )
+typeof_unqual( type )
+typeof_unqual( expression )
+```
+
+<h3 id="Explanation">Explanation</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  produces the type-name with any nested typeof-specifier evaluated</p>
+
+<p class="li-note"><span class="li-num">2)</span>  yields the type-name representing the type of its operand. No implicit conversions are applied to <em>expression</em>.</p>
+
+<p class="li-note"><span class="li-num">3,4)</span>  the same as (1) and (2) respectively but remove qualifiers</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p><code>typeof</code> and <code>typeof_unqual</code> are collectively called the <em>typeof operators</em>. The <code>typeof</code> operators cannot be applied to bit-field members. If the type of the operand is a variably modified type, the operand is evaluated; otherwise, the operand is not evaluated. The result of the <code>typeof_unqual</code> operator is the non-atomic unqualified type that would result from the <code>typeof</code> operator. The <code>typeof</code> operator preserves all qualifiers.</p>
+
+<h3 id="Example">Example</h3>
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: no example</td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.2.5 The typeof specifiers (p: 115-118)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/decltype" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+decltype</td></tr>
+</table>

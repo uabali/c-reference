@@ -1,0 +1,69 @@
+---
+title: "thrd_equal"
+slug: "c/thread/thrd_equal"
+category: "thread"
+source: "https://en.cppreference.com/w/c/thread/thrd_equal"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;threads.h&gt;</code></p>
+
+```c
+int thrd_equal( thrd_t lhs, thrd_t rhs );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Checks whether <code>lhs</code> and <code>rhs</code> refer to the same thread.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>lhs, rhs</td><td>-</td><td>threads to compare</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Non-zero value if <code>lhs</code> and <code>rhs</code> refer to the same value, <code>0</code> otherwise.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.5.4 The thrd_equal function (p: 280)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.5.4 The thrd_equal function (p: 384)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/thread/id/operator_cmp" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+operator_cmp</td></tr>
+</table>

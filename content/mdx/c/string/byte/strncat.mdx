@@ -1,0 +1,348 @@
+---
+title: "strncat, strncat_s"
+slug: "c/string/byte/strncat"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/byte/strncat"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;string.h&gt;</code></p>
+
+<p class="decl-note">(1)</p>
+
+```c
+char *strncat( char *dest, const char *src, size_t count );
+```
+
+<p class="decl-note"><span class="std std-until std-c99">(until C99)</span></p>
+
+```c
+char *strncat( char *restrict dest, const char *restrict src, size_t count );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+errno_t strncat_s( char *restrict dest, rsize_t destsz,
+                   const char *restrict src, rsize_t count );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Appends at most <code>count</code> characters from the character array pointed to by <code>src</code>, stopping if the null character is found, to the end of the null-terminated byte string pointed to by <code>dest</code>. The character <code>src[0]</code> replaces the null terminator at the end of <code>dest</code>. The terminating null character is always appended in the end (so the maximum number of bytes the function may write is <code>count+1</code>).</p>
+
+<p class="li-note">The behavior is undefined if the destination array does not have enough space for the contents of both <code>dest</code> and the first <code>count</code> characters of <code>src</code>, plus the terminating null character. The behavior is undefined if the source and destination objects overlap. The behavior is undefined if either <code>dest</code> is not a pointer to a null-terminated byte string or <code>src</code> is not a pointer to a character array,</p>
+
+<div class="li-note"><span class="li-num">2)</span>
+
+<p>Same as</p>
+
+(1)
+
+<p>, except that this function may clobber the remainder of the destination array (from the last byte written to</p>
+
+<code>destsz</code>
+
+<p>) and that the following errors are detected at runtime and call the currently installed</p>
+
+<a href="/reference/c/error/set_constraint_handler_s/">constraint handler</a>
+
+<p>function:</p>
+
+<dl>
+<dd><ul>
+<li>
+<code>src</code>
+
+<p>or</p>
+
+<code>dest</code>
+
+<p>is a null pointer</p>
+</li>
+<li>
+<code>destsz</code>
+
+<p>or</p>
+
+<code>count</code>
+
+<p>is zero or greater than</p>
+
+RSIZE_MAX
+</li>
+<li>
+<p>there is no null character in the first</p>
+
+<code>destsz</code>
+
+<p>bytes of</p>
+
+<code>dest</code>
+</li>
+<li>
+<p>truncation would occur:</p>
+
+<code>count</code>
+
+<p>or the length of</p>
+
+<code>src</code>
+
+<p>, whichever is less, exceeds the space available between the null terminator of</p>
+
+<code>dest</code>
+
+<p>and</p>
+
+<code>destsz</code>
+
+<p>.</p>
+</li>
+<li>
+<p>overlap would occur between the source and the destination strings</p>
+</li>
+</ul></dd>
+</dl></div>
+
+<div class="li-note"><p>The behavior is undefined if the size of the character array pointed to by</p>
+
+<code>dest</code>
+
+<p>&lt;</p>
+
+<code>strnlen(dest,destsz)+strnlen(src,count)+1</code>
+
+<p>&lt;</p>
+
+<code>destsz</code>
+
+<p>; in other words, an erroneous value of</p>
+
+<code>destsz</code>
+
+<p>does not expose the impending buffer overflow. The behavior is undefined if the size of the character array pointed to by</p>
+
+<code>src</code>
+
+<p>&lt;</p>
+
+<code>strnlen(src,count)</code>
+
+<p>&lt;</p>
+
+<code>destsz</code>
+
+<p>; in other words, an erroneous value of</p>
+
+<code>count</code>
+
+<p>does not expose the impending buffer overflow.</p>
+
+<dl>
+<dd><p>As with all bounds-checked functions,</p>
+
+<code>strncat_s</code>
+
+<p>is only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<a href="/reference/c/string/byte/"><code>&lt;string.h&gt;</code></a>
+
+<p>.</p></dd>
+</dl></div>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>dest</td><td>-</td><td>pointer to the null-terminated byte string to append to</td></tr>
+<tr><td>src</td><td>-</td><td>pointer to the character array to copy from</td></tr>
+<tr><td>count</td><td>-</td><td>maximum number of characters to copy</td></tr>
+<tr><td>destsz</td><td>-</td><td>the size of the destination buffer</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  returns a copy of <code>dest</code></p>
+
+<p class="li-note"><span class="li-num">2)</span>  returns zero on success, returns non-zero on error. Also, on error, writes zero to <code>dest[0]</code> (unless <code>dest</code> is a null pointer or <code>destsz</code> is zero or greater than RSIZE_MAX).</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Because <code>strncat</code> needs to seek to the end of <code>dest</code> on each call, it is inefficient to concatenate many strings into one using <code>strncat</code>.</p>
+
+<p>Although truncation to fit the destination buffer is a security risk and therefore a runtime constraints violation for <code>strncat_s</code>, it is possible to get the truncating behavior by specifying <code>count</code> equal to the size of the destination array minus one: it will copy the first <code>count</code> bytes and append the null terminator as always: <code>strncat_s(dst, sizeof dst, src, (sizeof dst)-strnlen_s(dst, sizeof dst)-1);</code></p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#define __STDC_WANT_LIB_EXT1__ 1
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(void)
+{
+    char str[50] = "Hello ";
+    char str2[50] = "World!";
+    strcat(str, str2);
+    strncat(str, " Goodbye World!", 3);
+    puts(str);
+ 
+#ifdef __STDC_LIB_EXT1__
+    set_constraint_handler_s(ignore_handler_s);
+    char s1[100] = "good";
+    char s5[1000] = "bye";
+    int r1 = strncat_s(s1, 100, s5, 1000); // r1 is 0, s1 holds "goodbye\0"
+    printf("s1 = %s, r1 = %d\n", s1, r1);
+    char s2[6] = "hello";
+    int r2 = strncat_s(s2, 6, "", 1); // r2 is 0, s2 holds "hello\0"
+    printf("s2 = %s, r2 = %d\n", s2, r2);
+    char s3[6] = "hello";
+    int r3 = strncat_s(s3, 6, "X", 2); // r3 is non-zero, s3 holds "\0"
+    printf("s3 = %s, r3 = %d\n", s3, r3);
+    // the strncat_s truncation idiom:
+    char s4[7] = "abc";
+    int r4 = strncat_s(s4, 7, "defghijklmn", 3); // r4 is 0, s4 holds "abcdef\0"
+    printf("s4 = %s, r4 = %d\n", s4, r4);
+#endif
+}
+```
+
+<p>Possible output:</p>
+
+```text
+Hello World! Go
+s1 = goodbye, r1 = 0
+s2 = hello, r2 = 0
+s3 = , r3 = 22
+s4 = abcdef, r4 = 0
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.3.2 The strncat function (p: 379)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.7.2.2 The strncat_s function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.3.2 The strncat function (p: 265-266)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.7.2.2 The strncat_s function (p: 449-450)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.3.2 The strncat function (p: 364-365)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.7.2.2 The strncat_s function (p: 618-620)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.3.2 The strncat function (p: 327-328)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.11.3.2 The strncat function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/byte/strcat/">strcat<br />strcat_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>concatenates two strings   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strcpy/">strcpy<br />strcpy_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>copies one string to another   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/memccpy/">memccpy</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>copies one buffer to another, stopping after the specified delimiter   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/byte/strncat" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+strncat</td></tr>
+</table>

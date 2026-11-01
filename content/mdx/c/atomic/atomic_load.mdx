@@ -1,0 +1,85 @@
+---
+title: "atomic_load, atomic_load_explicit"
+slug: "c/atomic/atomic_load"
+category: "atomic"
+source: "https://en.cppreference.com/w/c/atomic/atomic_load"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdatomic.h&gt;</code></p>
+
+```c
+C atomic_load( const volatile A* obj );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c11">(since C11)</span></p>
+
+```c
+C atomic_load_explicit( const volatile A* obj, memory_order order );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Atomically loads and returns the current value of the atomic variable pointed to by <code>obj</code>. The operation is atomic read operation.</p>
+
+<p>The first version orders memory accesses according to <a href="/reference/c/atomic/memory_order/">memory_order_seq_cst</a>, the second version orders memory accesses according to <code>order</code>. <code>order</code> must be one of <a href="/reference/c/atomic/memory_order/">memory_order_relaxed</a>, <a href="/reference/c/atomic/memory_order/">memory_order_consume</a>, <a href="/reference/c/atomic/memory_order/">memory_order_acquire</a> or <a href="/reference/c/atomic/memory_order/">memory_order_seq_cst</a>. Otherwise the behavior is undefined.</p>
+
+<p>This is a <a href="/reference/c/language/generic/">generic function</a> defined for all <a href="/reference/c/language/atomic/">atomic object types</a> <code>A</code>. The argument is pointer to a volatile atomic type to accept addresses of both non-volatile and <a href="/reference/c/language/volatile/">volatile</a> (e.g. memory-mapped I/O) atomic objects, and volatile semantic is preserved when applying this operation to volatile atomic objects. <code>C</code> is the non-atomic type corresponding to <code>A</code>.</p>
+
+<p>It is unspecified whether the name of a generic function is a macro or an identifier declared with external linkage. If a macro definition is suppressed in order to access an actual function (e.g. parenthesized like <code>(atomic_load)(...)</code>), or a program defines an external identifier with the name of a generic function, the behavior is undefined.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>obj</td><td>-</td><td>pointer to the atomic object to access</td></tr>
+<tr><td>order</td><td>-</td><td>the memory synchronization ordering for this operation</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>The current value of the atomic variable pointed to by <code>obj</code>.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17.7.2 The atomic_load generic functions (p: 206)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17.7.2 The atomic_load generic functions (p: 282)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/atomic/atomic_store/">atomic_store<br />atomic_store_explicit</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>stores a value in an atomic object   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/atomic/atomic_load" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+atomic_load, atomic_load_explicit</td></tr>
+</table>

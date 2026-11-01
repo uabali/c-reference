@@ -1,0 +1,235 @@
+---
+title: "wcrtomb, wcrtomb_s"
+slug: "c/string/multibyte/wcrtomb"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/multibyte/wcrtomb"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;wchar.h&gt;</code></p>
+
+<p class="decl-note">(1)</p>
+
+```c
+size_t wcrtomb( char *s, wchar_t wc, mbstate_t *ps);
+```
+
+<p class="decl-note"><span class="std std-since std-c95">(since C95)</span></p>
+
+```c
+size_t wcrtomb( char *restrict s, wchar_t wc, mbstate_t *restrict ps);
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+errno_t wcrtomb_s(size_t *restrict retval, char *restrict s, rsize_t ssz,
+                  wchar_t wc, mbstate_t *restrict ps);
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Converts a wide character to its narrow multibyte representation.</p>
+
+<p class="li-note"><span class="li-num">1)</span>  If <code>s</code> is not a null pointer, the function determines the number of bytes necessary to store the multibyte character representation of <code>wc</code> (including any shift sequences, and taking into account the current multibyte conversion state <code>*ps</code>), and stores the multibyte character representation in the character array whose first element is pointed to by <code>s</code>, updating <code>*ps</code> as necessary. At most <code>MB_CUR_MAX</code> bytes can be written by this function.</p>
+
+<p class="li-note">If <code>s</code> is a null pointer, the call is equivalent to <code>wcrtomb(buf, L&#x27;\0&#x27;, ps)</code> for some internal buffer <code>buf</code>.</p>
+
+<p class="li-note">If wc is the null wide character <code>L&#x27;\0&#x27;</code>, a null byte is stored, preceded by any shift sequence necessary to restore the initial shift state and the conversion state parameter <code>*ps</code> is updated to represent the initial shift state.</p>
+
+<p class="li-note">If the environment macro <code>__STDC_ISO_10646__</code> is defined, the values of type <code>wchar_t</code> are the same as the short identifiers of the characters in the Unicode required set (typically UTF-32 encoding); otherwise, it is implementation-defined. In any case, the multibyte character encoding used by this function is specified by the currently active C locale.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Same as (1), except that</p>
+
+<p class="li-note">if <code>s</code> is a null pointer, the call is equivalent to <code>wcrtomb_s(&amp;retval, buf, sizeof buf, L&#x27;\0&#x27;, ps)</code> with internal variables <code>retval</code> and <code>buf</code> (whose size is greater than MB_CUR_MAX)</p>
+
+<p class="li-note">the result is returned in the out-parameter <code>retval</code></p>
+
+<div class="li-note"><p>the following errors are detected at runtime and call the currently installed</p>
+
+<a href="/reference/c/error/set_constraint_handler_s/">constraint handler</a>
+
+<p>function:</p>
+
+<dl>
+<dd><ul>
+<li>
+<code>retval</code>
+
+<p>or</p>
+
+<code>ps</code>
+
+<p>is a null pointer.</p>
+</li>
+<li>
+<code>ssz</code>
+
+<p>is zero or greater than</p>
+
+RSIZE_MAX
+
+<p>(unless</p>
+
+<code>s</code>
+
+<p>is null)</p>
+</li>
+<li>
+<code>ssz</code>
+
+<p>is less than the number of bytes that would be written (unless</p>
+
+<code>s</code>
+
+<p>is null)</p>
+</li>
+<li>
+<code>s</code>
+
+<p>is a null pointer but</p>
+
+<code>ssz</code>
+
+<p>is not zero</p>
+</li>
+</ul></dd>
+<dd><p>As with all bounds-checked functions,</p>
+
+<code>wcrtomb_s</code>
+
+<p>is only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<a href="/reference/c/string/wide/"><code>&lt;wchar.h&gt;</code></a>
+
+<p>.</p></dd>
+</dl></div>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>s</td><td>-</td><td>pointer to narrow character array where the multibyte character will be stored</td></tr>
+<tr><td>wc</td><td>-</td><td>the wide character to convert</td></tr>
+<tr><td>ps</td><td>-</td><td>pointer to the conversion state object used when interpreting the multibyte string</td></tr>
+<tr><td>ssz</td><td>-</td><td>max number of bytes to write (the size of the buffer <code>s</code>)</td></tr>
+<tr><td>retval</td><td>-</td><td>pointer to an out-parameter where the result (number of bytes in the multibyte string including any shift sequences) will be stored</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  On success, returns the number of bytes (including any shift sequences) written to the character array whose first element is pointed to by <code>s</code>.</p>
+
+<p class="li-note">On failure (if <code>wc</code> is not a valid wide character), returns <code>(size_t)-1</code>, stores <a href="/reference/c/error/errno_macros/">EILSEQ</a> in <a href="/reference/c/error/errno/">errno</a>, and leaves <code>*ps</code> in unspecified state.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Returns zero on success and non-zero on failure, in which case, <code>s[0]</code> is set to <code>&#x27;\0&#x27;</code> (unless <code>s</code> is null or <code>ssz</code> is zero or greater than RSIZE_MAX) and <code>*retval</code> is set to <code>(size_t)-1</code> (unless <code>retval</code> is null)</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <locale.h>
+#include <string.h>
+#include <wchar.h>
+#include <stdlib.h>
+ 
+int main(void)
+{
+    setlocale(LC_ALL, "en_US.utf8");
+    mbstate_t state;
+    memset(&state, 0, sizeof state);
+    wchar_t in[] = L"zß水🍌"; // or "z\u00df\u6c34\U0001F34C"
+    size_t in_sz = sizeof in / sizeof *in;
+ 
+    printf("Processing %zu wchar_t units: [ ", in_sz);
+    for(size_t n = 0; n < in_sz; ++n) printf("%#x ", (unsigned int)in[n]);
+    puts("]");
+ 
+    char out[MB_CUR_MAX * in_sz];
+    char *p = out;
+    for(size_t n = 0; n < in_sz; ++n) {
+        int rc = wcrtomb(p, in[n], &state); 
+        if(rc == -1) break;
+        p += rc;
+    }
+ 
+    size_t out_sz = p - out;
+    printf("into %zu UTF-8 code units: [ ", out_sz);
+    for(size_t x = 0; x < out_sz; ++x) printf("%#x ", +(unsigned char)out[x]);
+    puts("]");
+}
+```
+
+<p>Output:</p>
+
+```text
+Processing 5 wchar_t units: [ 0x7a 0xdf 0x6c34 0x1f34c 0 ]
+into 11 UTF-8 code units: [ 0x7a 0xc3 0x9f 0xe6 0xb0 0xb4 0xf0 0x9f 0x8d 0x8c 0 ]
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.6.3.3 The wcrtomb function (p: 444)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.9.3.1.1 The wcrtomb_s function (p: 647-648)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.6.3.3 The wcrtomb function (p: 390)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/multibyte/wctomb/">wctomb<br />wctomb_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>converts a wide character to its multibyte representation   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/mbrtowc/">mbrtowc</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>converts the next multibyte character to wide character, given state   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/multibyte/wcrtomb" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+wcrtomb</td></tr>
+</table></section>

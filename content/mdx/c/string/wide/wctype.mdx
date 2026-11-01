@@ -1,0 +1,117 @@
+---
+title: "wctype"
+slug: "c/string/wide/wctype"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/wide/wctype"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;wctype.h&gt;</code></p>
+
+```c
+wctype_t wctype( const char* str );
+```
+
+<p class="decl-note"><span class="std std-since std-c95">(since C95)</span></p>
+
+<p>Constructs a value of type wctype_t that describes a <a href="/reference/c/locale/LC_categories/">LC_CTYPE</a> category of wide character classification. It may be one of the standard classification categories, or a locale-specific category, such as <code>&quot;jkanji&quot;</code>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>str</td><td>-</td><td>C string holding the name of the desired category</td></tr>
+</table>
+
+<p>The following values of <code>str</code> are supported in all C locales:</p>
+
+<table class="ref-table ref-dsc">
+<tr><td>value of <code>str</code></td><td>effect</td></tr>
+<tr><td><code>&quot;alnum&quot;</code></td><td>identifies the category used by <a href="/reference/c/string/wide/iswalnum/">iswalnum</a></td></tr>
+<tr><td><code>&quot;alpha&quot;</code></td><td>identifies the category used by <a href="/reference/c/string/wide/iswalpha/">iswalpha</a></td></tr>
+<tr><td><code>&quot;blank&quot;</code></td><td>identifies the category used by <a href="/reference/c/string/wide/iswblank/">iswblank</a> <span class="std std-since std-c99">(C99)</span></td></tr>
+<tr><td><code>&quot;cntrl&quot;</code></td><td>identifies the category used by <a href="/reference/c/string/wide/iswcntrl/">iswcntrl</a></td></tr>
+<tr><td><code>&quot;digit&quot;</code></td><td>identifies the category used by <a href="/reference/c/string/wide/iswdigit/">iswdigit</a></td></tr>
+<tr><td><code>&quot;graph&quot;</code></td><td>identifies the category used by <a href="/reference/c/string/wide/iswgraph/">iswgraph</a></td></tr>
+<tr><td><code>&quot;lower&quot;</code></td><td>identifies the category used by <a href="/reference/c/string/wide/iswlower/">iswlower</a></td></tr>
+<tr><td><code>&quot;print&quot;</code></td><td>identifies the category used by <a href="/reference/c/string/wide/iswprint/">iswprint</a></td></tr>
+<tr><td><code>&quot;space&quot;</code></td><td>identifies the category used by <a href="/reference/c/string/wide/iswspace/">iswspace</a></td></tr>
+<tr><td><code>&quot;upper&quot;</code></td><td>identifies the category used by <a href="/reference/c/string/wide/iswupper/">iswupper</a></td></tr>
+<tr><td><code>&quot;xdigit&quot;</code></td><td>identifies the category used by <a href="/reference/c/string/wide/iswxdigit/">iswxdigit</a></td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>wctype_t object suitable for use with <a href="/reference/c/string/wide/iswctype/">iswctype</a> to classify wide characters according to the named category of the current C locale or zero if <code>str</code> does not name a category supported by the current C locale.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.30.2.2.2 The wctype function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.30.2.2.2 The wctype function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.30.2.2.2 The wctype function (p: 452)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25.2.2.2 The wctype function (p: 398)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/wide/iswctype/">iswctype</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>classifies a wide character according to the specified <a href="/reference/c/locale/LC_categories/">LC_CTYPE</a> category   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/wide/wctype" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+wctype</td></tr>
+</table>

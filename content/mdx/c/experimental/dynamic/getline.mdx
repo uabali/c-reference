@@ -1,0 +1,116 @@
+---
+title: "getline, getwline, getdelim, getwdelim"
+slug: "c/experimental/dynamic/getline"
+category: "experimental"
+source: "https://en.cppreference.com/w/c/experimental/dynamic/getline"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+```c
+ssize_t getline(char **lineptr, size_t *n, FILE *stream);
+```
+
+<p class="decl-note">(1) <span class="std std-since std-other">(dynamic memory TR)</span></p>
+
+```c
+ssize_t getwline(wchar_t **lineptr, size_t *n, FILE *stream);
+```
+
+<p class="decl-note">(2) <span class="std std-since std-other">(dynamic memory TR)</span></p>
+
+```c
+ssize_t getdelim(char ** restrict lineptr, size_t * restrict n,
+                 int delimiter, FILE *stream);
+```
+
+<p class="decl-note">(3) <span class="std std-since std-other">(dynamic memory TR)</span></p>
+
+```c
+ssize_t getwdelim(wchar_t ** restrict lineptr, size_t * restrict n,
+                 wint_t delimiter, FILE * stream);
+```
+
+<p class="decl-note">(4) <span class="std std-since std-other">(dynamic memory TR)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Behaves like <code>getdelim(lineptr, n, &#x27;\n&#x27;, stream)</code></p>
+
+<p class="li-note"><span class="li-num">2)</span>  Behaves like <code>getwdelim(lineptr, n, L&#x27;\n&#x27;, stream)</code></p>
+
+<p class="li-note"><span class="li-num">3)</span>  Reads from the stream <code>stream</code> as if by <a href="/reference/c/io/fgetc/">fgetc</a>, until <code>delimiter</code> is encountered, storing the characters in the buffer of size <code>*n</code> pointed to by <code>*lineptr</code>, automatically increasing its size as if by <a href="/reference/c/memory/realloc/">realloc</a> to fit the entire input, including the delimiter, and adding a null terminator. <code>*lineptr</code> may be null, in which case <code>*n</code> is ignored and <code>getline</code> allocates a new buffer as if by <a href="/reference/c/memory/malloc/">malloc</a>. The behavior is undefined if <code>delimiter</code> has a value that is outside the range of <code>unsigned char</code> or <a href="/reference/c/io/">EOF</a>.</p>
+
+<p class="li-note"><span class="li-num">4)</span>  Same as (3), except the characters are read as if by <a href="/reference/c/io/fgetwc/">fgetwc</a> and that <code>delimiter</code> must be a valid <code>wchar_t</code> or WEOF.</p>
+
+<p>If <code>*lineptr</code> is not null, the behavior is undefined if <code>*lineptr</code> is not a pointer that can be passed to <a href="/reference/c/memory/free/">free</a> or if <code>*n</code> is less than the size of the allocated memory pointed to by <code>*lineptr</code></p>
+
+<p>As all functions from Dynamic Memory TR, <code>getline</code> is only guaranteed to be available if <code>__STDC_ALLOC_LIB__</code> is defined by the implementation and if the user defines <code>__STDC_WANT_LIB_EXT2__</code> to the integer constant <code>1</code> before including <code>stdio.h</code>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>lineptr</td><td>-</td><td>pointer to a pointer to the initial buffer or to a null pointer</td></tr>
+<tr><td>n</td><td>-</td><td>pointer to the size of the initial buffer</td></tr>
+<tr><td>delimiter</td><td>-</td><td>the delimiter character</td></tr>
+<tr><td>stream</td><td>-</td><td>valid input stream, opened by <a href="/reference/c/io/fopen/">fopen</a></td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>The number of characters stored in the buffer, including the delimiter, but excluding the null terminator.</p>
+
+<p>On error, returns <code>-1</code> and sets <a href="/reference/c/io/feof/">feof</a> or <a href="/reference/c/io/ferror/">ferror</a> on <code>stream</code>.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>These functions are identical to their <a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/getdelim.html" rel="noreferrer" target="_blank">POSIX versions</a> except that it is allowed, but not required to set <a href="/reference/c/error/errno/">errno</a> on error.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#ifdef __STDC_ALLOC_LIB__
+#define __STDC_WANT_LIB_EXT2__ 1
+#else
+#define _POSIX_C_SOURCE 200809L
+#endif
+ 
+#include <stdio.h>
+#include <stdlib.h>
+void get_y_or_n(void)
+{
+    char *response = NULL;
+    size_t len;
+    printf("Continue? [y] n: ");
+    if((getline(&response, &len, stdin) < 0) || (len && response[0] == 'n')) {
+        free(response);
+        exit(0);
+    }
+    free(response);
+    return;
+}
+int main(void) 
+{
+    get_y_or_n();
+}
+```
+
+<p>Output:</p>
+
+```text
+Continue? [y] n:
+```
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/fgets/">fgets</a></td><td>gets a character string from a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/gets/">gets<br />gets_s</a>
+
+<span class="std std-until std-c11">(removed in C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>reads a character string from <a href="/reference/c/io/std_streams/">stdin</a>   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fgetws/">fgetws</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>gets a wide string from a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/memory/malloc/">malloc</a></td><td>allocates memory   <span class="mark-note">(function)</span></td></tr>
+</table>

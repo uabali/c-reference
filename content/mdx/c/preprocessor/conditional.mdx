@@ -1,0 +1,200 @@
+---
+title: "Conditional inclusion"
+slug: "c/preprocessor/conditional"
+category: "preprocessor"
+source: "https://en.cppreference.com/w/c/preprocessor/conditional"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>The preprocessor supports conditional compilation of parts of source file. This behavior is controlled by <code>#if</code>, <code>#else</code>, <code>#elif</code>, <code>#ifdef</code>, <code>#ifndef</code>, <code>#elifdef</code>, <code>#elifndef</code><span class="std std-since std-c23">(since C23)</span>, and <code>#endif</code> directives.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+#if expression
+#ifdef identifier
+#ifndef identifier
+#elif expression
+#elifdef identifier
+#elifndef identifier
+#else
+#endif
+```
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>The conditional preprocessing block starts with <code>#if</code>, <code>#ifdef</code> or <code>#ifndef</code> directive, then optionally includes any number of <code>#elif</code>, <code>#elifdef</code>, or <code>#elifndef</code><span class="std std-since std-c23">(since C23)</span> directives, then optionally includes at most one <code>#else</code> directive and is terminated with <code>#endif</code> directive. Any inner conditional preprocessing blocks are processed separately.</p>
+
+<p>Each of <code>#if</code>, <code>#ifdef</code>, <code>#ifndef</code>, <code>#elif</code>, <code>#elifdef</code>, <code>#elifndef</code><span class="std std-since std-c23">(since C23)</span>, and <code>#else</code> directives control code block until first <code>#elif</code>, <code>#elifdef</code>, <code>#elifndef</code><span class="std std-since std-c23">(since C23)</span>, <code>#else</code>, <code>#endif</code> directive not belonging to any inner conditional preprocessing blocks.</p>
+
+<p><code>#if</code>, <code>#ifdef</code> and <code>#ifndef</code> directives test the specified condition (see below) and if it evaluates to true, compiles the controlled code block. In that case subsequent <code>#else</code>, <code>#elifdef</code>, <code>#elifndef</code>,<span class="std std-since std-c23">(since C23)</span> and <code>#elif</code> directives are ignored. Otherwise, if the specified condition evaluates false, the controlled code block is skipped and the subsequent <code>#else</code>, <code>#elifdef</code>, <code>#elifndef</code>,<span class="std std-since std-c23">(since C23)</span> or <code>#elif</code> directive (if any) is processed. If the subsequent directive is <code>#else</code>, the code block controlled by the <code>#else</code> directive is unconditionally compiled. Otherwise, the <code>#elif</code>, <code>#elifdef</code>, or <code>#elifndef</code><span class="std std-since std-c23">(since C23)</span> directive acts as if it was <code>#if</code> directive: checks for condition, compiles or skips the controlled code block based on the result, and in the latter case processes subsequent <code>#elif</code>, <code>#elifdef</code>, <code>#elifndef</code>,<span class="std std-since std-c23">(since C23)</span> and <code>#else</code> directives. The conditional preprocessing block is terminated by <code>#endif</code> directive.</p>
+
+<h3 id="Conditional_evaluation">Conditional evaluation</h3>
+
+<h4 id=".23if.2C_.23elif"><code>#if, #elif</code></h4>
+
+<p>The <em>expression</em> is a constant expression, using only <a href="/reference/c/language/expressions/#Constants_and_literals">constants</a> and identifiers, defined using <a href="/reference/c/preprocessor/replace/"><code>#define</code></a> directive. Any identifier, which is not literal, non defined using <a href="/reference/c/preprocessor/replace/"><code>#define</code></a> directive, evaluates to <code>0</code> except <code>true</code> which evaluates to <code>1</code><span class="std std-since std-c23">(since C23)</span>.</p>
+
+<p>The expression may contain unary operators in form <code>defined</code> <em>identifier</em> or <code>defined (</code><em>identifier</em><code>)</code> which return <code>1</code> if the <em>identifier</em> was defined using <a href="/reference/c/preprocessor/replace/"><code>#define</code></a> directive and <code>0</code> otherwise. In this context, <code>__has_include</code>, <code>__has_embed</code> and <code>__has_c_attribute</code> are treated as if they were the name of defined macros.<span class="std std-since std-c23">(since C23)</span> If the <em>expression</em> evaluates to nonzero value, the controlled code block is included and skipped otherwise. If any used identifier is not a constant, it is replaced with <code>0</code>.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>In context of a preprocessor directive, a <code>__has_c_attribute</code> expression detects whether a given attribute token is supported and its supported version. See <a href="/reference/c/language/attributes/#Attribute_testing">Attribute testing</a>.</p></aside>
+
+<p>Note: Until <a href="https://open-std.org/JTC1/SC22/WG14/www/docs/dr_412.htm" rel="noreferrer" target="_blank">DR 412</a>, <code>#if cond1</code> ... <code>#elif cond2</code> is different from <code>#if cond1</code> ... <code>#else</code> followed by <code>#if cond3</code> because if <code>cond1</code> is true, the second <code>#if</code> is skipped and <code>cond3</code> does not need to be well-formed, while <code>#elif</code>'s <code>cond2</code> must be a valid expression. As of <a href="https://open-std.org/JTC1/SC22/WG14/www/docs/dr_412.htm" rel="noreferrer" target="_blank">DR 412</a>, <code>#elif</code> that leads the skipped code block is also skipped.</p>
+
+<h4 id="Combined_directives">Combined directives</h4>
+
+<p>Checks if the identifier was <a href="/reference/c/preprocessor/replace/">defined as a macro name</a>.</p>
+
+<p><code>#ifdef</code> <em>identifier</em> is essentially equivalent to <code>#if defined</code> <em>identifier</em>.</p>
+
+<p><code>#ifndef</code> <em>identifier</em> is essentially equivalent to <code>#if !defined</code> <em>identifier</em>.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p><code>#elifdef</code> <em>identifier</em> is essentially equivalent to <code>#elif defined</code> <em>identifier</em>.</p>
+
+<p><code>#elifndef</code> <em>identifier</em> is essentially equivalent to <code>#elif !defined</code> <em>identifier</em>.</p></aside>
+
+<h3 id="Notes">Notes</h3>
+
+<p>While <code>#elifdef</code> and <code>#elifndef</code> directives target C23, implementations may backport them to the older language modes as conforming extensions.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#define ABCD 2
+#include <stdio.h>
+ 
+int main(void)
+{
+ 
+#ifdef ABCD
+    printf("1: yes\n");
+#else
+    printf("1: no\n");
+#endif
+ 
+#ifndef ABCD
+    printf("2: no1\n");
+#elif ABCD == 2
+    printf("2: yes\n");
+#else
+    printf("2: no2\n");
+#endif
+ 
+#if !defined(DCBA) && (ABCD < 2 * 4 - 3)
+    printf("3: yes\n");
+#endif
+ 
+// C23 directives #elifdef/#elifndef
+#ifdef CPU
+    printf("4: no1\n");
+#elifdef GPU
+    printf("4: no2\n");
+#elifndef RAM
+    printf("4: yes\n"); // selected in C23 mode, may be selected in pre-C23 mode
+#else
+    printf("4: no3\n"); // may be selected in pre-C23 mode
+#endif
+}
+```
+
+<p>Possible output:</p>
+
+```text
+1: yes
+2: yes
+3: yes
+4: yes
+```
+
+<h3 id="Defect_reports">Defect reports</h3>
+
+<p>The following behavior-changing defect reports were applied retroactively to previously published C standards.</p>
+
+<table class="ref-table">
+<tr><th>DR</th><th>Applied to</th><th>Behavior as published</th><th>Correct behavior</th></tr>
+<tr><td><a href="https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2396.htm#dr_412" rel="noreferrer" target="_blank">DR 412</a></td><td>C89</td><td>failed <code>#elif</code>'s expression was required to be valid</td><td>failed <code>#elif</code> is skipped</td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.1 Conditional inclusion (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.1 Conditional inclusion (p: 118-119)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.1 Conditional inclusion (p: 162-164)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.1 Conditional inclusion (p: 147-149)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.8.1 Conditional inclusion</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/preprocessor/conditional" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Conditional inclusion</td></tr>
+</table>

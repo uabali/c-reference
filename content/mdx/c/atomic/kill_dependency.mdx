@@ -1,0 +1,85 @@
+---
+title: "kill_dependency"
+slug: "c/atomic/kill_dependency"
+category: "atomic"
+source: "https://en.cppreference.com/w/c/atomic/kill_dependency"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdatomic.h&gt;</code></p>
+
+```c
+A kill_dependency( A y );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Informs the compiler that the dependency tree started by an <a href="/reference/c/atomic/memory_order/">memory_order_consume</a> atomic load operation does not extend past the return value of <code>kill_dependency</code>; that is, the argument does not carry a dependency into the return value.</p>
+
+<p>The function is implemented as a macro. <code>A</code> is the type of <code>y</code>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>y</td><td>-</td><td>the expression whose return value is to be removed from a dependency tree</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Returns <code>y</code>, no longer a part of a dependency tree.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17.3.1 The kill_dependency macro (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17.3.1 The kill_dependency macro (p: 203-204)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17.3.1 The kill_dependency macro (p: 278)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/atomic/kill_dependency" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+kill_dependency</td></tr>
+</table>

@@ -1,0 +1,181 @@
+---
+title: "gets, gets_s"
+slug: "c/io/gets"
+category: "io"
+source: "https://en.cppreference.com/w/c/io/gets"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+```c
+char* gets( char* str );
+```
+
+<p class="decl-note">(1) <span class="std std-until std-c11">(removed in C11)</span></p>
+
+```c
+char* gets_s( char* str, rsize_t n );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Reads <a href="/reference/c/io/std_streams/">stdin</a> into the character array pointed to by <code>str</code> until a newline character is found or end-of-file occurs. A null character is written immediately after the last character read into the array. The newline character is discarded but not stored in the buffer.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Reads characters from <a href="/reference/c/io/std_streams/">stdin</a> until a newline is found or end-of-file occurs. Writes only at most <code>n - 1</code> characters into the array pointed to by <code>str</code>, and always writes the terminating null character (unless <code>str</code> is a null pointer). The newline character, if found, is discarded and does not count toward the number of characters written to the buffer.</p>
+
+<div class="li-note"><p>The following errors are detected at runtime and call the currently installed</p>
+
+<a href="/reference/c/error/set_constraint_handler_s/">constraint handler</a>
+
+<p>function:</p>
+
+<ul>
+<li>
+<code>n</code>
+
+<p>is zero;</p>
+</li>
+<li>
+<code>n</code>
+
+<p>is greater than</p>
+
+<code>RSIZE_MAX</code>
+
+<p>;</p>
+</li>
+<li>
+<code>str</code>
+
+<p>is a null pointer;</p>
+</li>
+<li>
+<em>endline</em>
+
+<p>or</p>
+
+<em>eof</em>
+
+<p>not encountered after storing</p>
+
+<code>n - 1</code>
+
+<p>characters to the buffer.</p>
+</li>
+</ul></div>
+
+<p class="li-note">In any case, <code>gets_s</code> first finishes reading and discarding the characters from <a href="/reference/c/io/std_streams/">stdin</a> until new-line character, end-of-file condition, or read error before calling the constraint handler.</p>
+
+<p class="li-note">As with all bounds-checked functions, <code>gets_s</code> is only guaranteed to be available if <code>__STDC_LIB_EXT1__</code> is defined by the implementation and if the user defines <code>__STDC_WANT_LIB_EXT1__</code> to the integer constant <code>1</code> before including <a href="/reference/c/io/"><code>&lt;stdio.h&gt;</code></a>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>str</td><td>-</td><td>a character array the characters from <a href="/reference/c/io/std_streams/">stdin</a> to be written to</td></tr>
+<tr><td>n</td><td>-</td><td>maximum number of characters that can be written to the array pointed to by <code>str</code></td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p><code>str</code> on success, a null pointer on failure.</p>
+
+<p>If the failure has been caused by end of file condition, additionally sets the <em>eof</em> indicator (see <a href="/reference/c/io/feof/">feof()</a>) on <a href="/reference/c/io/std_streams/">stdin</a>. If the failure has been caused by some other error, sets the <em>error</em> indicator (see <a href="/reference/c/io/ferror/">ferror()</a>) on <a href="/reference/c/io/std_streams/">stdin</a>.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The <code>gets()</code> function does not perform bounds checking, therefore this function is extremely vulnerable to buffer-overflow attacks. It cannot be used safely (unless the program runs in an environment which restricts what can appear on <code>stdin</code>). For this reason, the function has been deprecated in the third corrigendum to the C99 standard and removed altogether in the C11 standard. <a href="/reference/c/io/fgets/">fgets()</a> and <code>gets_s()</code> are the recommended replacements.</p>
+
+<p><strong>WARNING: Never use <code>gets()</code></strong>.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.5.4.1 The gets_s function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.5.4.1 The gets_s function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.5.4.1 The gets_s function (p: 602-603)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.7.7 The gets function (p: 298)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9.7.7 The gets function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/fscanf/">scanf<br />fscanf<br />sscanf<br />scanf_s<br />fscanf_s<br />sscanf_s</a>
+
+<span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>reads formatted input from <a href="/reference/c/io/std_streams/">stdin</a>, a file stream or a buffer   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fgets/">fgets</a></td><td>gets a character string from a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fputs/">fputs</a></td><td>writes a character string to a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/experimental/dynamic/getline/">getline<br />getwline<br />getdelim<br />getwdelim</a>
+
+<span class="std std-since std-other">(dynamic memory TR)</span></td><td>read from a stream into an automatically resized buffer until delimiter/end of line   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c/gets" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+gets</td></tr>
+</table>

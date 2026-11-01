@@ -1,0 +1,506 @@
+---
+title: "Concurrency support library"
+slug: "c/thread"
+category: "overview"
+source: "https://en.cppreference.com/w/c/thread"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>C includes built-in support for threads, atomic operations, mutual exclusion, condition variables, and thread-specific storages.</p>
+
+<p>These features are optionally provided:</p>
+
+<ul>
+<li>
+<p>if the macro constant</p>
+
+<code>__STDC_NO_THREADS__</code>
+
+<p>is defined by the compiler, the header</p>
+
+<strong><code>&lt;threads.h&gt;</code></strong>
+
+<p>and all of the names provided in it are not provided;</p>
+</li>
+<li>
+<p>if the macro constant</p>
+
+<code>__STDC_NO_ATOMICS__</code>
+
+<p>is defined by the compiler, the header</p>
+
+<a href="/reference/c/thread/#Atomic_operations"><code>&lt;stdatomic.h&gt;</code></a>
+
+<p>and all of the names provided in it are not provided.</p>
+</li>
+</ul>
+
+<p>See also <a href="/reference/c/language/atomic/"><code>_Atomic</code> type specifier and qualifier</a>.</p>
+
+<h3 id="Threads">Threads</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;threads.h&gt;</code></td></tr>
+<tr><td><code>thrd_t</code></td><td>implementation-defined complete object type identifying a thread</td></tr>
+<tr><td><a href="/reference/c/thread/thrd_create/">thrd_create</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>creates a thread   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/thrd_equal/">thrd_equal</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>checks if two identifiers refer to the same thread   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/thrd_current/">thrd_current</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>obtains the current thread identifier   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/thrd_sleep/">thrd_sleep</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>suspends execution of the calling thread for the given period of time   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/thrd_yield/">thrd_yield</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>yields the current time slice   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/thrd_exit/">thrd_exit</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>terminates the calling thread   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/thrd_detach/">thrd_detach</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>detaches a thread   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/thrd_join/">thrd_join</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>blocks until a thread terminates   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/thrd_errors/">thrd_success<br />thrd_timedout<br />thrd_busy<br />thrd_nomem<br />thrd_error</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>indicates a thread error status   <span class="mark-note">(constant)</span></td></tr>
+<tr><td>thrd_start_t
+
+<span class="std std-since std-c11">(C11)</span></td><td>a typedef of the function pointer type <code>int(*)(void*)</code>, used by <code>thrd_create</code>   <span class="mark-note">(typedef)</span></td></tr>
+</table>
+
+<h3 id="Atomic_operations">Atomic operations</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdatomic.h&gt;</code></td></tr>
+<tr><td colspan="2">Operations on atomic types</td></tr>
+<tr><td><a href="/reference/c/atomic/ATOMIC_LOCK_FREE_consts/">ATOMIC_BOOL_LOCK_FREE<br />ATOMIC_CHAR_LOCK_FREE<br />ATOMIC_CHAR16_T_LOCK_FREE<br />ATOMIC_CHAR32_T_LOCK_FREE<br />ATOMIC_WCHAR_T_LOCK_FREE<br />ATOMIC_SHORT_LOCK_FREE<br />ATOMIC_INT_LOCK_FREE<br />ATOMIC_LONG_LOCK_FREE<br />ATOMIC_LLONG_LOCK_FREE<br />ATOMIC_POINTER_LOCK_FREE</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>indicates that the given atomic type is lock-free   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td><a href="/reference/c/atomic/atomic_is_lock_free/">atomic_is_lock_free</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>indicates whether the atomic object is lock-free   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/atomic/atomic_store/">atomic_store<br />atomic_store_explicit</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>stores a value in an atomic object   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/atomic/atomic_load/">atomic_load<br />atomic_load_explicit</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>reads a value from an atomic object   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/atomic/atomic_exchange/">atomic_exchange<br />atomic_exchange_explicit</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>swaps a value with the value of an atomic object   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/atomic/atomic_compare_exchange/">atomic_compare_exchange_strong<br />atomic_compare_exchange_strong_explicit<br />atomic_compare_exchange_weak<br />atomic_compare_exchange_weak_explicit</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>swaps a value with an atomic object if the old value is what is expected, otherwise reads the old value   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/atomic/atomic_fetch_add/">atomic_fetch_add<br />atomic_fetch_add_explicit</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>atomic addition   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/atomic/atomic_fetch_sub/">atomic_fetch_sub<br />atomic_fetch_sub_explicit</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>atomic subtraction   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/atomic/atomic_fetch_or/">atomic_fetch_or<br />atomic_fetch_or_explicit</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>atomic bitwise OR   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/atomic/atomic_fetch_xor/">atomic_fetch_xor<br />atomic_fetch_xor_explicit</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>atomic bitwise exclusive OR   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/atomic/atomic_fetch_and/">atomic_fetch_and<br />atomic_fetch_and_explicit</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>atomic bitwise AND   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Flag type and operations</td></tr>
+<tr><td><a href="/reference/c/atomic/atomic_flag/">atomic_flag</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>lock-free atomic boolean flag  <span class="mark-note">(struct)</span></td></tr>
+<tr><td><a href="/reference/c/atomic/atomic_flag_test_and_set/">atomic_flag_test_and_set<br />atomic_flag_test_and_set_explicit</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>sets an atomic_flag to true and returns the old value   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/atomic/atomic_flag_clear/">atomic_flag_clear<br />atomic_flag_clear_explicit</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>sets an atomic_flag to false   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Initialization</td></tr>
+<tr><td><a href="/reference/c/atomic/atomic_init/">atomic_init</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>initializes an existing atomic object   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/atomic/ATOMIC_VAR_INIT/">ATOMIC_VAR_INIT</a>
+
+<span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c17">(deprecated in C17)</span><br /><span class="std std-until std-c23">(removed in C23)</span></td><td>initializes a new atomic object   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/atomic/ATOMIC_FLAG_INIT/">ATOMIC_FLAG_INIT</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>initializes a new <code>atomic_flag</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2">Memory synchronization ordering</td></tr>
+<tr><td><a href="/reference/c/atomic/memory_order/">memory_order</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>defines memory ordering constraints   <span class="mark-note">(enum)</span></td></tr>
+<tr><td><a href="/reference/c/atomic/kill_dependency/">kill_dependency</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>breaks a dependency chain for <code>memory_order_consume</code>   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/atomic/atomic_thread_fence/">atomic_thread_fence</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>generic memory order-dependent fence synchronization primitive   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/atomic/atomic_signal_fence/">atomic_signal_fence</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>fence between a thread and a signal handler executed in the same thread   <span class="mark-note">(function)</span></td></tr>
+</table>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2">Convenience type aliases</td></tr>
+<tr><td>Typedef name</td><td>Full type name</td></tr>
+<tr><td><code>atomic_bool</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic _Bool</code><span class="std std-until std-c23">(until C23)</span><code>_Atomic bool</code><span class="std std-since std-c23">(since C23)</span></td></tr>
+<tr><td><code>atomic_char</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic char</code></td></tr>
+<tr><td><code>atomic_schar</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic signed char</code></td></tr>
+<tr><td><code>atomic_uchar</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic unsigned char</code></td></tr>
+<tr><td><code>atomic_short</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic short</code></td></tr>
+<tr><td><code>atomic_ushort</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic unsigned short</code></td></tr>
+<tr><td><code>atomic_int</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic int</code></td></tr>
+<tr><td><code>atomic_uint</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic unsigned int</code></td></tr>
+<tr><td><code>atomic_long</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic long</code></td></tr>
+<tr><td><code>atomic_ulong</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic unsigned long</code></td></tr>
+<tr><td><code>atomic_llong</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic long long</code></td></tr>
+<tr><td><code>atomic_ullong</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic unsigned long long</code></td></tr>
+<tr><td><code>atomic_char8_t</code> <span class="std std-since std-c23">(C23)</span></td><td><code>_Atomic char8_t</code></td></tr>
+<tr><td><code>atomic_char16_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic char16_t</code></td></tr>
+<tr><td><code>atomic_char32_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic char32_t</code></td></tr>
+<tr><td><code>atomic_wchar_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic wchar_t</code></td></tr>
+<tr><td><code>atomic_int_least8_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic int_least8_t</code></td></tr>
+<tr><td><code>atomic_uint_least8_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic uint_least8_t</code></td></tr>
+<tr><td><code>atomic_int_least16_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic int_least16_t</code></td></tr>
+<tr><td><code>atomic_uint_least16_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic uint_least16_t</code></td></tr>
+<tr><td><code>atomic_int_least32_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic int_least32_t</code></td></tr>
+<tr><td><code>atomic_uint_least32_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic uint_least32_t</code></td></tr>
+<tr><td><code>atomic_int_least64_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic int_least64_t</code></td></tr>
+<tr><td><code>atomic_uint_least64_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic uint_least64_t</code></td></tr>
+<tr><td><code>atomic_int_fast8_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic int_fast8_t</code></td></tr>
+<tr><td><code>atomic_uint_fast8_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic uint_fast8_t</code></td></tr>
+<tr><td><code>atomic_int_fast16_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic int_fast16_t</code></td></tr>
+<tr><td><code>atomic_uint_fast16_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic uint_fast16_t</code></td></tr>
+<tr><td><code>atomic_int_fast32_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic int_fast32_t</code></td></tr>
+<tr><td><code>atomic_uint_fast32_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic uint_fast32_t</code></td></tr>
+<tr><td><code>atomic_int_fast64_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic int_fast64_t</code></td></tr>
+<tr><td><code>atomic_uint_fast64_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic uint_fast64_t</code></td></tr>
+<tr><td><code>atomic_intptr_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic intptr_t</code></td></tr>
+<tr><td><code>atomic_uintptr_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic uintptr_t</code></td></tr>
+<tr><td><code>atomic_size_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic size_t</code></td></tr>
+<tr><td><code>atomic_ptrdiff_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic ptrdiff_t</code></td></tr>
+<tr><td><code>atomic_intmax_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic intmax_t</code></td></tr>
+<tr><td><code>atomic_uintmax_t</code> <span class="std std-since std-c11">(C11)</span></td><td><code>_Atomic uintmax_t</code></td></tr>
+</table>
+
+<h3 id="Mutual_exclusion">Mutual exclusion</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;threads.h&gt;</code></td></tr>
+<tr><td><code>mtx_t</code></td><td>mutex identifier</td></tr>
+<tr><td><a href="/reference/c/thread/mtx_init/">mtx_init</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>creates a mutex   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/mtx_lock/">mtx_lock</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>blocks until locks a mutex   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/mtx_timedlock/">mtx_timedlock</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>blocks until locks a mutex or times out   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/mtx_trylock/">mtx_trylock</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>locks a mutex or returns without blocking if already locked   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/mtx_unlock/">mtx_unlock</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>unlocks a mutex   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/mtx_destroy/">mtx_destroy</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>destroys a mutex   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/mtx_types/">mtx_plain<br />mtx_recursive<br />mtx_timed</a>
+
+<span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>defines the type of a mutex   <span class="mark-note">(enum)</span></td></tr>
+<tr><td colspan="2">Call once</td></tr>
+<tr><td><a href="/reference/c/thread/ONCE_FLAG_INIT/">call_once</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>calls a function exactly once   <span class="mark-note">(function)</span></td></tr>
+</table>
+
+<h3 id="Condition_variables">Condition variables</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;threads.h&gt;</code></td></tr>
+<tr><td><code>cnd_t</code></td><td>condition variable identifier</td></tr>
+<tr><td><a href="/reference/c/thread/cnd_init/">cnd_init</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>creates a condition variable   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/cnd_signal/">cnd_signal</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>unblocks one thread blocked on a condition variable   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/cnd_broadcast/">cnd_broadcast</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>unblocks all threads blocked on a condition variable   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/cnd_wait/">cnd_wait</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>blocks on a condition variable   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/cnd_timedwait/">cnd_timedwait</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>blocks on a condition variable, with a timeout   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/cnd_destroy/">cnd_destroy</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>destroys a condition variable   <span class="mark-note">(function)</span></td></tr>
+</table>
+
+<h3 id="Thread-local_storage">Thread-local storage</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;threads.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/thread/thread_local/">thread_local</a>
+
+<span class="std std-since std-c11">(C11)</span><br /><span class="std std-until std-c23">(removed in C23)</span></td><td>convenience macro for storage-class specifier <code>_Thread_local</code>   <span class="mark-note">(keyword macro)</span></td></tr>
+<tr><td><code>tss_t</code></td><td>thread-specific storage pointer</td></tr>
+<tr><td><a href="/reference/c/thread/TSS_DTOR_ITERATIONS/">TSS_DTOR_ITERATIONS</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>maximum number of times destructors are called   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td><code>tss_dtor_t</code>
+
+<span class="std std-since std-c11">(C11)</span></td><td>function pointer type <code>void(*)(void*)</code>, used for TSS destructor   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td><a href="/reference/c/thread/tss_create/">tss_create</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>creates thread-specific storage pointer with a given destructor   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/tss_get/">tss_get</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>reads from thread-specific storage   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/tss_set/">tss_set</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>write to thread-specific storage   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/tss_delete/">tss_delete</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>releases the resources held by a given thread-specific pointer   <span class="mark-note">(function)</span></td></tr>
+</table>
+
+<h3 id="Reserved_identifiers">Reserved identifiers</h3>
+
+<p>In future revisions of the C standard:</p>
+
+<ul>
+<li>
+<p>function names, type names, and enumeration constants that begin with either</p>
+
+<code>cnd_</code>
+
+<p>,</p>
+
+<code>mtx_</code>
+
+<p>,</p>
+
+<code>thrd_</code>
+
+<p>, or</p>
+
+<code>tss_</code>
+
+<p>, and a lowercase letter may be added to the declarations in the</p>
+
+<code>&lt;threads.h&gt;</code>
+
+<p>header;</p>
+</li>
+<li>
+<p>macros that begin with</p>
+
+<code>ATOMIC_</code>
+
+<p>and an uppercase letter may be added to the macros defined in the</p>
+
+<a href="/reference/c/thread/#Atomic_operations"><code>&lt;stdatomic.h&gt;</code></a>
+
+<p>header;</p>
+</li>
+<li>
+<p>typedef names that begin with either</p>
+
+<code>atomic_</code>
+
+<p>or</p>
+
+<code>memory_</code>
+
+<p>, and a lowercase letter may be added to the declarations in the</p>
+
+<a href="/reference/c/thread/#Atomic_operations"><code>&lt;stdatomic.h&gt;</code></a>
+
+<p>header;</p>
+</li>
+<li>
+<p>enumeration constants that begin with</p>
+
+<code>memory_order_</code>
+
+<p>and a lowercase letter may be added to the definition of the</p>
+
+<a href="/reference/c/atomic/memory_order/">memory_order</a>
+
+<p>type in the</p>
+
+<a href="/reference/c/thread/#Atomic_operations"><code>&lt;stdatomic.h&gt;</code></a>
+
+<p>header;</p>
+</li>
+<li>
+<p>function names that begin with</p>
+
+<code>atomic_</code>
+
+<p>and a lowercase letter may be added to the declarations in the</p>
+
+<a href="/reference/c/thread/#Atomic_operations"><code>&lt;stdatomic.h&gt;</code></a>
+
+<p>header.</p>
+</li>
+</ul>
+
+<p>Identifiers reserved for functions names are always potentially<span class="std std-since std-c23">(since C23)</span> reserved for use as identifiers with external linkage, while other identifiers list here are potentially<span class="std std-since std-c23">(since C23)</span> reserved when <a href="/reference/c/thread/#Atomic_operations"><code>&lt;stdatomic.h&gt;</code></a> is included.</p>
+
+<p>Declaring, defining, or <code>#undef</code>ing such an identifier results in undefined behavior if it is provided by the standard or implementation<span class="std std-since std-c23">(since C23)</span>. Portable programs should not use those identifiers.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17 Atomics &lt;stdatomic.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26 Threads &lt;threads.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.8 Atomics &lt;stdatomic.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.15 Threads &lt;threads.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17 Atomics &lt;stdatomic.h&gt; (p: 200-209)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26 Threads &lt;threads.h&gt; (p: 274-283)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.8 Atomics &lt;stdatomic.h&gt; (p: 332)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.15 Threads &lt;threads.h&gt; (p: 333)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17 Atomics &lt;stdatomic.h&gt; (p: 273-286)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26 Threads &lt;threads.h&gt; (p: 376-387)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.8 Atomics &lt;stdatomic.h&gt; (p: 455-456)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.15 Threads &lt;threads.h&gt; (p: 456)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/atomic" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Concurrency support library</td></tr>
+</table>
+
+<h3 id="External_links">External links</h3>
+
+<table class="ref-table">
+<tr><td><a href="https://www.gnu.org/software/libc/manual/html_node/ISO-C-Mutexes.html" rel="noreferrer" target="_blank">GNU GCC Libc Manual: ISO C Mutexes</a></td></tr>
+</table>

@@ -1,0 +1,65 @@
+---
+title: "thrd_success, thrd_timedout, thrd_busy, thrd_nomem, thrd_error"
+slug: "c/thread/thrd_errors"
+category: "thread"
+source: "https://en.cppreference.com/w/c/thread/thrd_errors"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;threads.h&gt;</code></p>
+
+```c
+enum {
+    thrd_success = /* unspecified */,
+    thrd_nomem = /* unspecified */,
+    thrd_timedout = /* unspecified */,
+    thrd_busy = /* unspecified */,
+    thrd_error = /* unspecified */
+
+};
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Identifiers for thread states and errors.</p>
+
+<table class="ref-table ref-dsc">
+<tr><td>Constant</td><td>Explanation</td></tr>
+<tr><td><code>thrd_success</code></td><td>indicates successful return value</td></tr>
+<tr><td><code>thrd_nomem</code></td><td>indicates unsuccessful return value due to out of memory condition</td></tr>
+<tr><td><code>thrd_timedout</code></td><td>indicates timed out return value</td></tr>
+<tr><td><code>thrd_busy</code></td><td>indicates unsuccessful return value due to resource temporary unavailable</td></tr>
+<tr><td><code>thrd_error</code></td><td>indicates unsuccessful return value</td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.1/5 thrd_success, thrd_timedout, ... (p: 275)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.1/5 thrd_success, thrd_timedout, ... (p: 377)</p>
+</li>
+</ul></dd>
+</dl></section>

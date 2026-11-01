@@ -1,0 +1,358 @@
+---
+title: "ilogb, ilogbf, ilogbl"
+slug: "c/numeric/math/ilogb"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/ilogb"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+int ilogbf( float arg );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+int ilogb( double arg );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+int ilogbl( long double arg );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;tgmath.h&gt;</code></p>
+
+```c
+#define ilogb( arg )
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+#define FP_ILOGB0    /* implementation-defined */
+```
+
+<p class="decl-note">(5) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+#define FP_ILOGBNAN  /* implementation-defined */
+```
+
+<p class="decl-note">(6) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="li-note"><span class="li-num">1-3)</span>  Extracts the value of the unbiased exponent from the floating-point argument <code>arg</code>, and returns it as a signed integer value.</p>
+
+<p class="li-note"><span class="li-num">4)</span>  Type-generic macros: If <code>arg</code> has type <code>long double</code>, <code>ilogbl</code> is called. Otherwise, if <code>arg</code> has integer type or the type <code>double</code>, <code>ilogb</code> is called. Otherwise, <code>ilogbf</code> is called.</p>
+
+<p class="li-note"><span class="li-num">5)</span>  Expands to integer constant expression whose value is either <a href="/reference/c/types/limits/">INT_MIN</a> or <code>-INT_MAX</code>.</p>
+
+<p class="li-note"><span class="li-num">6)</span>  Expands to integer constant expression whose value is either <a href="/reference/c/types/limits/">INT_MIN</a> or <code>+INT_MAX</code>.</p>
+
+<p>Formally, the unbiased exponent is the integral part of logr|arg| as a signed integral value, for non-zero <code>arg</code>, where <code>r</code> is <a href="/reference/c/types/limits/">FLT_RADIX</a>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>arg</td><td>-</td><td>floating-point value</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>If no errors occur, the unbiased exponent of <code>arg</code> is returned as a signed int value.</p>
+
+<p>If <code>arg</code> is zero, FP_ILOGB0 is returned.</p>
+
+<p>If <code>arg</code> is infinite, <a href="/reference/c/types/limits/">INT_MAX</a> is returned.</p>
+
+<p>If <code>arg</code> is a NaN, FP_ILOGBNAN is returned.</p>
+
+<p>If the correct result is greater than <a href="/reference/c/types/limits/">INT_MAX</a> or smaller than <a href="/reference/c/types/limits/">INT_MIN</a>, the return value is unspecified and a domain error or range error may occur.</p>
+
+<h3 id="Error_handling">Error handling</h3>
+
+<p>Errors are reported as specified in <a href="/reference/c/numeric/math/math_errhandling/"><code>math_errhandling</code></a>.</p>
+
+<p>A domain error or range error may occur if <code>arg</code> is zero, infinite, or NaN.</p>
+
+<p>If the correct result is greater than <a href="/reference/c/types/limits/">INT_MAX</a> or smaller than <a href="/reference/c/types/limits/">INT_MIN</a>, a domain error or a range error may occur</p>
+
+<p>If the implementation supports IEEE floating-point arithmetic (IEC 60559),</p>
+
+<ul>
+<li>
+<p>If the correct result is greater than</p>
+
+<a href="/reference/c/types/limits/">INT_MAX</a>
+
+<p>or smaller than</p>
+
+<a href="/reference/c/types/limits/">INT_MIN</a>
+
+<p>,</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>is raised.</p>
+</li>
+<li>
+<p>If</p>
+
+<code>arg</code>
+
+<p>is ±0, ±∞, or NaN,</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>is raised.</p>
+</li>
+<li>
+<p>In all other cases, the result is exact (</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INEXACT</a>
+
+<p>is never raised) and</p>
+
+<a href="/reference/c/numeric/fenv/FE_round/">the current rounding mode</a>
+
+<p>is ignored.</p>
+</li>
+</ul>
+
+<h3 id="Notes">Notes</h3>
+
+<p>If <code>arg</code> is not zero, infinite, or NaN, the value returned is exactly equivalent to <code>(int)logb(arg)</code>.</p>
+
+<p><a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/ilogb.html" rel="noreferrer" target="_blank">POSIX requires</a> that a domain error occurs if <code>arg</code> is zero, infinite, NaN, or if the correct result is outside of the range of <code>int</code>.</p>
+
+<p>POSIX also requires that, on XSI-conformant systems, the value returned when the correct result is greater than <a href="/reference/c/types/limits/">INT_MAX</a> is <a href="/reference/c/types/limits/">INT_MAX</a> and the value returned when the correct result is less than <a href="/reference/c/types/limits/">INT_MIN</a> is <a href="/reference/c/types/limits/">INT_MIN</a>.</p>
+
+<p>The correct result can be represented as <code>int</code> on all known implementations. For overflow to occur, <a href="/reference/c/types/limits/">INT_MAX</a> must be less than <code>LDBL_MAX_EXP * log2(FLT_RADIX)</code> or <a href="/reference/c/types/limits/">INT_MIN</a> must be greater than <code>LDBL_MIN_EXP - LDBL_MANT_DIG) * log2(FLT_RADIX)</code>.</p>
+
+<p>The value of the exponent returned by <code>ilogb</code> is always 1 less than the exponent retuned by <a href="/reference/c/numeric/math/frexp/">frexp</a> because of the different normalization requirements: for the exponent <code>e</code> returned by <code>ilogb</code>, |arg*r-e | is between 1 and <code>r</code> (typically between <code>1</code> and <code>2</code>), but for the exponent <code>e</code> returned by <a href="/reference/c/numeric/math/frexp/">frexp</a>, |arg*2-e | is between <code>0.5</code> and <code>1</code>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <fenv.h>
+#include <float.h>
+#include <math.h>
+#include <stdio.h>
+// #pragma STDC FENV_ACCESS ON
+ 
+int main(void)
+{
+    double f = 123.45;
+    printf("Given the number %.2f or %a in hex,\n", f, f);
+ 
+    double f3;
+    double f2 = modf(f, &f3);
+    printf("modf() makes %.0f + %.2f\n", f3, f2);
+ 
+    int i;
+    f2 = frexp(f, &i);
+    printf("frexp() makes %f * 2^%d\n", f2, i);
+ 
+    i = ilogb(f);
+    printf("logb()/ilogb() make %f * %d^%d\n", f/scalbn(1.0, i), FLT_RADIX, i);
+ 
+    // error handling
+    feclearexcept(FE_ALL_EXCEPT);
+    printf("ilogb(0) = %d\n", ilogb(0));
+    if (fetestexcept(FE_INVALID))
+        puts("    FE_INVALID raised");
+}
+```
+
+<p>Possible output:</p>
+
+```text
+Given the number 123.45 or 0x1.edccccccccccdp+6 in hex,
+modf() makes 123 + 0.45
+frexp() makes 0.964453 * 2^7
+logb()/ilogb() make 1.92891 * 2^6
+ilogb(0) = -2147483648
+    FE_INVALID raised
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12/8 Mathematics &lt;math.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.6.5 The ilogb functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.3.5 The ilogb functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12/8 Mathematics &lt;math.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.6.5 The ilogb functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.3.5 The ilogb functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12/8 Mathematics &lt;math.h&gt; (p: 232)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.6.5 The ilogb functions (p: 244)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 373-375)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.3.5 The ilogb functions (p: 521)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12/8 Mathematics &lt;math.h&gt; (p: 213)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.6.5 The ilogb functions (p: 224-225)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 Type-generic math &lt;tgmath.h&gt; (p: 335-337)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.9.3.5 The ilogb functions (p: 458)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/frexp/">frexp<br />frexpf<br />frexpl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>breaks a number into significand and a power of 2   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/logb/">logb<br />logbf<br />logbl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>extracts exponent of the given number   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/scalbn/">scalbn<br />scalbnf<br />scalbnl<br />scalbln<br />scalblnf<br />scalblnl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes efficiently a number times <a href="/reference/c/types/limits/">FLT_RADIX</a> raised to a power   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/ilogb" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+ilogb</td></tr>
+</table>

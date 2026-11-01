@@ -1,0 +1,128 @@
+---
+title: "float_t, double_t"
+slug: "c/numeric/math/float_t"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/float_t"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+typedef /* implementation-defined */ float_t
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+typedef /* implementation-defined */ double_t
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>The types <code>float_t</code> and <code>double_t</code> are floating types at least as wide as <code>float</code> and <code>double</code>, respectively, and such that <code>double_t</code> is at least as wide as <code>float_t</code>. The value of <a href="/reference/c/types/limits/FLT_EVAL_METHOD/">FLT_EVAL_METHOD</a> determines the types of <code>float_t</code> and <code>double_t</code>.</p>
+
+<table class="ref-table ref-dsc">
+<tr><td><code>FLT_EVAL_METHOD</code></td><td>Explanation</td></tr>
+<tr><td><code>0</code></td><td><code>float_t</code> and <code>double_t</code> are equivalent to <code>float</code> and <code>double</code>, respectively</td></tr>
+<tr><td><code>1</code></td><td>both <code>float_t</code> and <code>double_t</code> are equivalent to <code>double</code></td></tr>
+<tr><td><code>2</code></td><td>both <code>float_t</code> and <code>double_t</code> are equivalent to <code>long double</code></td></tr>
+<tr><td><code>other</code></td><td>both <code>float_t</code> and <code>double_t</code> are implementation defined</td></tr>
+</table>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <float.h>
+#include <math.h>
+#include <stdio.h>
+ 
+#define SHOW(expr) printf("%s = %d\n", #expr, (int)(expr))
+ 
+int main()
+{
+    SHOW(FLT_EVAL_METHOD);
+    SHOW(sizeof(float));
+    SHOW(sizeof(float_t));
+    SHOW(sizeof(double));
+    SHOW(sizeof(double_t));
+}
+```
+
+<p>Possible output:</p>
+
+```text
+FLT_EVAL_METHOD = 1
+sizeof(float) = 4
+sizeof(float_t) = 8
+sizeof(double) = 8
+sizeof(double_t) = 8
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12 Mathematics &lt;math.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12 Mathematics &lt;math.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12 Mathematics &lt;math.h&gt; (p: 231)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12 Mathematics &lt;math.h&gt; (p: 212)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/types/limits/FLT_EVAL_METHOD/">FLT_EVAL_METHOD</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>specifies in what precision all arithmetic operations are done   <span class="mark-note">(macro constant)</span></td></tr>
+</table>

@@ -1,0 +1,188 @@
+---
+title: "stdc_leading_zeros"
+slug: "c/numeric/bit/stdc_leading_zeros"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/bit/stdc_leading_zeros"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdbit.h&gt;</code></p>
+
+```c
+unsigned int stdc_leading_zeros_uc( unsigned char value ) [[unsequenced]];
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+unsigned int stdc_leading_zeros_us( unsigned short value ) [[unsequenced]];
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+unsigned int stdc_leading_zeros_ui( unsigned int value ) [[unsequenced]];
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+unsigned int stdc_leading_zeros_ul( unsigned long int value ) [[unsequenced]];
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+unsigned int stdc_leading_zeros_ull( unsigned long long int value ) [[unsequenced]];
+```
+
+<p class="decl-note">(5) <span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+#define stdc_leading_zeros( value )
+// exposed interface:
+
+generic_return_type stdc_leading_zeros( generic_value_type value ) [[unsequenced]];
+```
+
+<p class="decl-note">(6) <span class="std std-since std-c23">(since C23)</span></p>
+
+<p class="li-note"><span class="li-num">1-5)</span>  Returns the number of consecutive <code>0</code> bits in the <code>value</code>, starting from the most significant bit.</p>
+
+<div class="li-note"><span class="li-num">6)</span>
+
+<p>The type-generic function (marked by its</p>
+
+<code>generic_value_type</code>
+
+<p>argument) returns the appropriate value based on the type of the input value, so long as it is a:</p>
+
+<ul>
+<li>
+<p>standard unsigned integer type, excluding</p>
+
+<code>bool</code>
+
+<p>;</p>
+</li>
+<li>
+<p>extended unsigned integer type;</p>
+</li>
+<li>
+<p>or, bit-precise unsigned integer type whose width matches a standard or extended integer type, excluding</p>
+
+<code>bool</code>
+
+<p>.</p>
+</li>
+</ul>
+
+<p>The</p>
+
+<code>generic_return_type</code>
+
+<p>shall be a suitable large unsigned integer type capable of representing the computed result.</p></div>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>value</td><td>-</td><td>value of unsigned integer type</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>The number of consecutive <code>0</code> bits in the <code>value</code>, starting from the most significant bit.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <limits.h>
+#include <stdbit.h>
+#include <stdint.h>
+#include <stdio.h>
+ 
+#define bits_num(value) (sizeof(value) * CHAR_BIT)
+ 
+#define bin_impl(T, suffix) \
+const char* bin_##suffix(T x) \
+{ \
+    static char buf[bits_num(x) * CHAR_BIT + 1]; \
+    for (T i = 0, mask = ((T)1 << (bits_num(x) - 1)); mask; mask >>= 1) \
+        buf[i++] = x & mask ? '1' : '0'; \
+    buf[bits_num(x)] = '\0'; \
+    return buf; \
+}
+ 
+bin_impl(uint8_t, u8)
+bin_impl(uint16_t, u16)
+bin_impl(uint32_t, u32)
+bin_impl(uint64_t, u64)
+ 
+#define bin(x) _Generic((x), \
+    uint8_t: bin_u8, uint16_t: bin_u16, uint32_t: bin_u32, default: bin_u64)(x)
+ 
+int main()
+{
+    puts("uint8_t:");
+    for (uint8_t x = 0b11000000; ; x >>= 1)
+    {
+        printf("x = [%s], leading zeros: %d\n", bin(x), stdc_leading_zeros(x));
+        if (!x)
+            break;
+    }
+ 
+    puts("uint16_t:");
+    for (uint16_t x = 0b11000000; ; x >>= 1)
+    {
+        printf("x = [%s], leading zeros: %d\n", bin(x), stdc_leading_zeros(x));
+        if (!x)
+            break;
+    }
+}
+```
+
+<p>Output:</p>
+
+```text
+uint8_t:
+x = [11000000], leading zeros: 0
+x = [01100000], leading zeros: 1
+x = [00110000], leading zeros: 2
+x = [00011000], leading zeros: 3
+x = [00001100], leading zeros: 4
+x = [00000110], leading zeros: 5
+x = [00000011], leading zeros: 6
+x = [00000001], leading zeros: 7
+x = [00000000], leading zeros: 8
+uint16_t:
+x = [0000000011000000], leading zeros: 8
+x = [0000000001100000], leading zeros: 9
+x = [0000000000110000], leading zeros: 10
+x = [0000000000011000], leading zeros: 11
+x = [0000000000001100], leading zeros: 12
+x = [0000000000000110], leading zeros: 13
+x = [0000000000000011], leading zeros: 14
+x = [0000000000000001], leading zeros: 15
+x = [0000000000000000], leading zeros: 16
+```
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/numeric/bit/stdc_first_leading_zero&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">stdc_first_leading_zero</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>finds the first position of <code>0</code> bit, starting from the most significant bit <span class="mark-note">(type-generic function macro)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/numeric/bit/stdc_count_zeros&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">stdc_count_zeros</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>counts the number of <code>0</code> bits in an unsigned integer <span class="mark-note">(type-generic function macro)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/numeric/bit/stdc_leading_ones&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">stdc_leading_ones</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>counts the number of consecutive <code>1</code> bits, starting from the most significant bit <span class="mark-note">(type-generic function macro)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/countl_zero" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+countl_zero</td></tr>
+</table>

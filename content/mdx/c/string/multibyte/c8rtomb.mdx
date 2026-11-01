@@ -1,0 +1,66 @@
+---
+title: "c8rtomb"
+slug: "c/string/multibyte/c8rtomb"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/multibyte/c8rtomb"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;uchar.h&gt;</code></p>
+
+```c
+size_t c8rtomb( char* restrict s, char8_t c8, mbstate_t* restrict ps );
+```
+
+<p class="decl-note"><span class="std std-since std-c23">(since C23)</span></p>
+
+<p>Converts a single code point from UTF-8 to a narrow multibyte character representation.</p>
+
+<p>If <code>s</code> is not a null pointer and <code>c8</code> is the last code unit in a valid UTF-8 encoding of a code point, the function determines the number of bytes necessary to store the multibyte character representation of that code point (including any shift sequences, and taking into account the current multibyte conversion state <code>*ps</code>), and stores the multibyte character representation in the character array whose first element is pointed to by <code>s</code>, updating <code>*ps</code> as necessary. At most MB_CUR_MAX bytes can be written by this function.</p>
+
+<p>If <code>c8</code> is not the final UTF-8 code unit in a representation of a code point, the function does not write to the array pointed to by <code>s</code>, only <code>*ps</code> is updated.</p>
+
+<p>If <code>s</code> is a null pointer, the call is equivalent to <code>c8rtomb(buf, u8&#x27;\0&#x27;, ps)</code> for some internal buffer <code>buf</code>.</p>
+
+<p>If <code>c8</code> is the null character <code>u8&#x27;\0&#x27;</code>, a null byte is stored, preceded by any shift sequence necessary to restore the initial shift state and the conversion state parameter <code>*ps</code> is updated to represent the initial shift state.</p>
+
+<p>The multibyte encoding used by this function is specified by the currently active C locale.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>s</td><td>-</td><td>pointer to narrow character array where the multibyte character will be stored</td></tr>
+<tr><td>c8</td><td>-</td><td>the UTF-8 code unit to convert</td></tr>
+<tr><td>ps</td><td>-</td><td>pointer to the conversion state object used when interpreting the multibyte string</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>The number of bytes stored in the array object (including any shift sequences). This may be zero when <code>c8</code> is not the final code unit in the UTF-8 representation of a code point.</p>
+
+<p>If <code>c8</code> is invalid (does not contribute to a sequence of <code>char8_t</code> corresponding to a valid multibyte character), the value of the macro <a href="/reference/c/error/errno_macros/">EILSEQ</a> is stored in <a href="/reference/c/error/errno/">errno</a>, <code>(size_t)-1</code> is returned, and the conversion state is unspecified.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Calls to <code>c8rtomb</code> with a null pointer argument for <code>s</code> may introduce a data race with other calls to <code>c8rtomb</code> with a null pointer argument for <code>s</code>.</p>
+
+<h3 id="Example">Example</h3>
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: no example</td></tr>
+</table>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/multibyte/mbrtoc8/">mbrtoc8</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>converts a narrow multibyte character to UTF-8 encoding   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/multibyte/c8rtomb" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+c8rtomb</td></tr>
+</table>

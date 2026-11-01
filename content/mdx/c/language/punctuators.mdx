@@ -1,0 +1,1141 @@
+---
+title: "Punctuation"
+slug: "c/language/punctuators"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/punctuators"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>These are the punctuation symbols in C. The meaning of each symbol is detailed in the linked pages.</p>
+
+<h3 id=".7B_.7D"><code>{</code> <code>}</code></h3>
+
+<ul>
+<li>
+<p>In a</p>
+
+<a href="/reference/c/language/struct/">struct</a>
+
+<p>or</p>
+
+<a href="/reference/c/language/union/">union</a>
+
+<p>definition, delimit the</p>
+
+<em>struct-declaration-list</em>
+
+<p>.</p>
+</li>
+<li>
+<p>In an</p>
+
+<a href="/reference/c/language/enum/">enum</a>
+
+<p>definition, delimit the enumerator list.</p>
+</li>
+<li>
+<p>Delimit a</p>
+
+<a href="/reference/c/language/statements/#Compound_statements">compound statement</a>
+
+<p>. The compound statement may be part of a</p>
+
+<a href="/reference/c/language/function_definition/">function definition</a>
+
+<p>.</p>
+</li>
+<li>
+<p>In</p>
+
+<a href="/reference/c/language/initialization/">initialization</a>
+
+<p>, delimit the initializers.</p>
+</li>
+</ul>
+
+<h3 id=".5B_.5D"><code>[</code> <code>]</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_member_access/#Subscript">Subscript operator</a>
+
+<p>.</p>
+</li>
+<li>
+<p>Part of</p>
+
+<a href="/reference/c/language/declarations/#Declarators">array declarator</a>
+
+<p>in a</p>
+
+<a href="/reference/c/language/declarations/">declaration</a>
+
+<p>or a</p>
+
+<a href="/reference/c/language/compatible_type/#Type_names">type-id</a>
+
+<p>.</p>
+</li>
+<li>
+<p>In</p>
+
+<a href="/reference/c/language/initialization/">initialization</a>
+
+<p>, introduce a designator for an array element.</p>
+
+<span class="std std-since std-c99">(since C99)</span>
+</li>
+<li>
+<p>In an</p>
+
+<a href="/reference/c/language/attributes/">attribute specifier</a>
+
+<p>, delimit the attributes.</p>
+
+<span class="std std-since std-c23">(since C23)</span>
+</li>
+</ul>
+
+<h3 id=".23"><code>#</code></h3>
+
+<ul>
+<li>
+<p>Introduce a</p>
+
+<a href="/reference/c/preprocessor/">preprocessing directive</a>
+
+<p>.</p>
+</li>
+<li>
+<p>The</p>
+
+<a href="/reference/c/preprocessor/replace/#.23_and_.23.23_operators">preprocessing operator for stringification</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".23.23"><code>##</code></h3>
+
+<ul>
+<li>
+<p>The</p>
+
+<a href="/reference/c/preprocessor/replace/#.23_and_.23.23_operators">preprocessing operator for token pasting</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".28_.29"><code>(</code> <code>)</code></h3>
+
+<ul>
+<li>
+<p>In an expression,</p>
+
+<a href="/reference/c/language/expressions/#Primary_expressions">indicate grouping</a>
+
+<p>.</p>
+</li>
+<li>
+<a href="/reference/c/language/operator_other/#Function_call">Function call operator</a>
+
+<p>.</p>
+</li>
+<li>
+<p>In a</p>
+
+<a href="/reference/c/language/sizeof/"><code>sizeof</code></a>
+
+, <a href="/reference/c/language/alignof/"><code>_Alignof</code></a><span class="std std-since std-c11">(since C11)</span>
+
+, <a href="/reference/c/language/typeof_unqual/"><code>typeof</code></a> or <a href="/reference/c/language/typeof_unqual/"><code>typeof_unqual</code></a><span class="std std-since std-c23">(since C23)</span>
+
+<p>expression, delimit the operand.</p>
+</li>
+<li>
+<p>In an</p>
+
+<a href="/reference/c/language/cast/">explicit cast</a>
+
+<p>, delimit the type-id.</p>
+</li>
+<li>
+<p>In a</p>
+
+<a href="/reference/c/language/compound_literal/">compound literal</a>
+
+<p>, delimit the type-id.</p>
+
+<span class="std std-since std-c99">(since C99)</span>
+</li>
+<li>
+<p>In a</p>
+
+<a href="/reference/c/language/declarations/">declaration</a>
+
+<p>or a</p>
+
+<a href="/reference/c/language/compatible_type/#Type_names">type-id</a>
+
+<p>, indicate grouping.</p>
+</li>
+<li>
+<p>In a</p>
+
+<a href="/reference/c/language/function_declaration/">function declarator</a>
+
+<p>(in a</p>
+
+<a href="/reference/c/language/declarations/">declaration</a>
+
+<p>or a</p>
+
+<a href="/reference/c/language/compatible_type/#Type_names">type-id</a>
+
+<p>), delimit the parameter list.</p>
+</li>
+<li>
+<p>In an</p>
+
+<a href="/reference/c/language/if/"><code>if</code></a>
+
+<p>,</p>
+
+<a href="/reference/c/language/switch/"><code>switch</code></a>
+
+<p>,</p>
+
+<a href="/reference/c/language/while/"><code>while</code></a>
+
+<p>,</p>
+
+<a href="/reference/c/language/do/"><code>do-while</code></a>
+
+<p>, or</p>
+
+<a href="/reference/c/language/for/"><code>for</code></a>
+
+<p>statement, delimit the controlling clause.</p>
+</li>
+<li>
+<p>In a</p>
+
+<a href="/reference/c/preprocessor/replace/#Function-like_macros">function-like macro definition</a>
+
+<p>, delimit the macro parameters.</p>
+</li>
+<li>
+<p>In a</p>
+
+<a href="/reference/c/preprocessor/replace/#Function-like_macros">function-like macro invocation</a>
+
+<p>, delimit the macro arguments or prevent commas from being interpreted as argument separators.</p>
+</li>
+<li>
+<p>Part of a</p>
+
+<code>defined</code>
+
+, <code>__has_include</code>, <code>__has_embed</code> or <code>__has_c_attribute</code><span class="std std-since std-c23">(since C23)</span>
+
+<p>preprocessing operator.</p>
+</li>
+<li>
+<p>Part of a</p>
+
+<a href="/reference/c/language/generic/">generic selection expression</a>
+
+<p>.</p>
+
+<span class="std std-since std-c11">(since C11)</span>
+</li>
+<li>
+<p>In an</p>
+
+<a href="/reference/c/language/atomic/"><code>_Atomic</code></a>
+
+<p>type specifier, delimit the type-id.</p>
+
+<span class="std std-since std-c11">(since C11)</span>
+</li>
+<li>
+<p>In a</p>
+
+<a href="/reference/c/language/static_assert/">static assertion declaration</a>
+
+<p>, delimit the operands.</p>
+
+<span class="std std-since std-c11">(since C11)</span>
+</li>
+<li>
+<p>In an</p>
+
+<a href="/reference/c/language/alignas/"><code>_Alignas</code></a>
+
+<p>specifier, delimit the operand.</p>
+
+<span class="std std-since std-c11">(since C11)</span>
+</li>
+<li>
+<p>In an</p>
+
+<a href="/reference/c/language/attributes/">attribute</a>
+
+<p>, delimit the attribute arguments.</p>
+
+<span class="std std-since std-c23">(since C23)</span>
+</li>
+<li>
+<p>In a bit-precise integer type name (</p>
+
+<code>_BitInt(N)</code>
+
+<p>), delimit the size.</p>
+
+<span class="std std-since std-c23">(since C23)</span>
+</li>
+<li>
+<p>Part of</p>
+
+<a href="/reference/c/preprocessor/replace/"><code>__VA_OPT__</code></a>
+
+<p>replacement in a variadic macro definition.</p>
+
+<span class="std std-since std-c23">(since C23)</span>
+</li>
+<li>
+<p>In a preprocessor parameter used in</p>
+
+<a href="/reference/c/preprocessor/embed/"><code>#embed</code> directives</a>
+
+<p>and</p>
+
+<code>__has_embed</code>
+
+<p>preprocessing expressions, delimit the preprocessor parameter clause.</p>
+
+<span class="std std-since std-c23">(since C23)</span>
+</li>
+</ul>
+
+<h3 id=".3B"><code>;</code></h3>
+
+<ul>
+<li>
+<p>Indicate the end of</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>a</p>
+
+<a href="/reference/c/language/statements/">statement</a>
+
+<p>(including the init-statement of a for statement)</p>
+</li>
+<li>
+<p>a</p>
+
+<a href="/reference/c/language/declarations/">declaration</a>
+
+<p>or</p>
+
+<em>struct-declaration-list</em>
+</li>
+</ul></dd>
+</dl>
+
+<ul>
+<li>
+<p>Separate the second and third clauses of a</p>
+
+<a href="/reference/c/language/for/">for statement</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=":"><code>:</code></h3>
+
+<ul>
+<li>
+<p>Part of</p>
+
+<a href="/reference/c/language/operator_other/#Conditional_operator">conditional operator</a>
+
+<p>.</p>
+</li>
+<li>
+<p>Part of</p>
+
+<a href="/reference/c/language/statements/#Labels">label declaration</a>
+
+<p>.</p>
+</li>
+<li>
+<p>In a</p>
+
+<a href="/reference/c/language/bit_field/">bit-field member declaration</a>
+
+<p>, introduce the width.</p>
+</li>
+<li>
+<p>Introduce an</p>
+
+<a href="/reference/c/language/enum/">enum base</a>
+
+<p>, which specifies the underlying type of the enum.</p>
+
+<span class="std std-since std-c23">(since C23)</span>
+</li>
+<li>
+<p>In a</p>
+
+<a href="/reference/c/language/generic/">generic association</a>
+
+<p>, delimit the type-id or</p>
+
+<code>default</code>
+
+<p>and the selected expression.</p>
+
+<span class="std std-since std-c11">(since C11)</span>
+</li>
+</ul>
+
+<h3 id="..."><code>...</code></h3>
+
+<ul>
+<li>
+<p>In the</p>
+
+<a href="/reference/c/language/function_declaration/#Parameter_list">parameter list</a>
+
+<p>of a function declarator, signify a</p>
+
+<a href="/reference/c/language/variadic/">variadic function</a>
+
+<p>.</p>
+</li>
+<li>
+<p>In a</p>
+
+<a href="/reference/c/preprocessor/replace/">macro definition</a>
+
+<p>, signify a variadic macro.</p>
+
+<span class="std std-since std-c99">(since C99)</span>
+</li>
+</ul>
+
+<h3 id=".3F"><code>?</code></h3>
+
+<ul>
+<li>
+<p>Part of</p>
+
+<a href="/reference/c/language/operator_other/#Conditional_operator">conditional operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id="::"><code>::</code></h3>
+
+<ul>
+<li>
+<p>In an</p>
+
+<a href="/reference/c/language/attributes/">attribute</a>
+
+<p>, indicate attribute scope.</p>
+
+<span class="std std-since std-c23">(since C23)</span>
+</li>
+<li>
+<p>In a preprocessor prefixed parameter (used by</p>
+
+<a href="/reference/c/preprocessor/embed/"><code>#embed</code></a>
+
+<p>and</p>
+
+<code>__has_embed</code>
+
+<p>), indicate scope.</p>
+
+<span class="std std-since std-c23">(since C23)</span>
+</li>
+</ul>
+
+<h3 id="."><code>.</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_member_access/#Member_access">Member access operator</a>
+
+<p>.</p>
+</li>
+<li>
+<p>In</p>
+
+<a href="/reference/c/language/initialization/">initialization</a>
+
+<p>, introduce a designator for a struct/union member.</p>
+
+<span class="std std-since std-c99">(since C99)</span>
+</li>
+</ul>
+
+<h3 id="-.3E"><code>-&gt;</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_member_access/#Member_access_through_pointer">Member access operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".7E"><code>~</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_arithmetic/#Bitwise_logic">Unary complement operator (a.k.a. bitwise not operator)</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".21"><code>!</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_logical/#Logical_NOT">Logical not operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".2B"><code>+</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_arithmetic/#Unary_arithmetic">Unary plus operator</a>
+
+<p>.</p>
+</li>
+<li>
+<a href="/reference/c/language/operator_arithmetic/#Additive_operators">Binary plus operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id="-"><code>-</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_arithmetic/#Unary_arithmetic">Unary minus operator</a>
+
+<p>.</p>
+</li>
+<li>
+<a href="/reference/c/language/operator_arithmetic/#Additive_operators">Binary minus operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".2A"><code>*</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_member_access/#Dereference">Indirection operator</a>
+
+<p>.</p>
+</li>
+<li>
+<a href="/reference/c/language/operator_arithmetic/#Multiplicative_operators">Multiplication operator</a>
+
+<p>.</p>
+</li>
+<li>
+<p>Pointer operator operator in a</p>
+
+<a href="/reference/c/language/declarations/#Declarators">declarator</a>
+
+<p>or in a</p>
+
+<a href="/reference/c/language/compatible_type/#Type_names">type-id</a>
+
+<p>.</p>
+</li>
+<li>
+<p>Placeholder for the length of a variable-length array declarator in a</p>
+
+<a href="/reference/c/language/function_declaration/">function declaration</a>
+
+<p>.</p>
+
+<span class="std std-since std-c99">(since C99)</span>
+</li>
+</ul>
+
+<h3 id=".2F"><code>/</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_arithmetic/#Multiplicative_operators">Division operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".25"><code>%</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_arithmetic/#Multiplicative_operators">Modulo operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".5E"><code>^</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_arithmetic/#Bitwise_logic">Bitwise xor operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".26"><code>&amp;</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_member_access/#Address_of">Address-of operator</a>
+
+<p>.</p>
+</li>
+<li>
+<a href="/reference/c/language/operator_arithmetic/#Bitwise_logic">Bitwise and operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".7C"><code>|</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_arithmetic/#Bitwise_logic">Bitwise or operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".3D"><code>=</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_assignment/#Simple_assignment">Simple assignment operator</a>
+
+<p>.</p>
+</li>
+<li>
+<p>In</p>
+
+<a href="/reference/c/language/initialization/">initialization</a>
+
+<p>, delimit the object and the initializer list.</p>
+</li>
+<li>
+<p>In an</p>
+
+<a href="/reference/c/language/enum/">enum definition</a>
+
+<p>, introduce the value of enumeration constant.</p>
+</li>
+</ul>
+
+<h3 id=".2B.3D"><code>+=</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_assignment/#Compound_assignment">Compound assignment operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id="-.3D"><code>-=</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_assignment/#Compound_assignment">Compound assignment operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".2A.3D"><code>*=</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_assignment/#Compound_assignment">Compound assignment operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".2F.3D"><code>/=</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_assignment/#Compound_assignment">Compound assignment operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".25.3D"><code>%=</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_assignment/#Compound_assignment">Compound assignment operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".5E.3D"><code>^=</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_assignment/#Compound_assignment">Compound assignment operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".26.3D"><code>&amp;=</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_assignment/#Compound_assignment">Compound assignment operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".7C.3D"><code>|=</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_assignment/#Compound_assignment">Compound assignment operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".3D.3D"><code>==</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_comparison/#Equality_operators">Equality operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".21.3D"><code>!=</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_comparison/#Equality_operators">Inequality operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".3C"><code>&lt;</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_comparison/#Relational_operators">Less-than operator</a>
+
+<p>.</p>
+</li>
+<li>
+<p>Introduce a header name in</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>a</p>
+
+<a href="/reference/c/preprocessor/include/"><code>#include</code> directive</a>
+</li>
+<li>
+<p>a</p>
+
+<a href="/reference/c/preprocessor/include/"><code>__has_include</code> preprocessing expression</a>
+
+<span class="std std-since std-c23">(since C23)</span>
+</li>
+<li>
+<p>a</p>
+
+<a href="/reference/c/preprocessor/embed/"><code>#embed</code> directive</a>
+
+<span class="std std-since std-c23">(since C23)</span>
+</li>
+<li>
+<p>a</p>
+
+<a href="/reference/c/preprocessor/embed/"><code>__has_embed</code> preprocessing expression</a>
+
+<span class="std std-since std-c23">(since C23)</span>
+</li>
+<li>
+<p>implementation-defined locations within a</p>
+
+<a href="/reference/c/preprocessor/impl/"><code>#pragma</code> directive</a>
+</li>
+</ul></dd>
+</dl>
+
+<h3 id=".3E"><code>&gt;</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_comparison/#Relational_operators">Greater-than operator</a>
+
+<p>.</p>
+</li>
+<li>
+<p>Indicate the end of a header name in</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>a</p>
+
+<a href="/reference/c/preprocessor/include/"><code>#include</code> directive</a>
+</li>
+<li>
+<p>a</p>
+
+<a href="/reference/c/preprocessor/include/"><code>__has_include</code> preprocessing expression</a>
+
+<span class="std std-since std-c23">(since C23)</span>
+</li>
+<li>
+<p>a</p>
+
+<a href="/reference/c/preprocessor/embed/"><code>#embed</code> directive</a>
+
+<span class="std std-since std-c23">(since C23)</span>
+</li>
+<li>
+<p>a</p>
+
+<a href="/reference/c/preprocessor/embed/"><code>__has_embed</code> preprocessing expression</a>
+
+<span class="std std-since std-c23">(since C23)</span>
+</li>
+<li>
+<p>implementation-defined locations within a</p>
+
+<a href="/reference/c/preprocessor/impl/"><code>#pragma</code> directive</a>
+</li>
+</ul></dd>
+</dl>
+
+<h3 id=".3C.3D"><code>&lt;=</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_comparison/#Relational_operators">Less-than-or-equal-to operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".3E.3D"><code>&gt;=</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_comparison/#Relational_operators">Greater-than-or-equal-to operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".26.26"><code>&amp;&amp;</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_logical/#Logical_AND">Logical and operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".7C.7C"><code>||</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_logical/#Logical_OR">Logical or operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".3C.3C"><code>&lt;&lt;</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_arithmetic/#Shift_operators">Bitwise shift operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".3E.3E"><code>&gt;&gt;</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_arithmetic/#Shift_operators">Bitwise shift operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".3C.3C.3D"><code>&lt;&lt;=</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_assignment/#Compound_assignment">Compound assignment operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".3E.3E.3D"><code>&gt;&gt;=</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_assignment/#Compound_assignment">Compound assignment operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".2B.2B"><code>++</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_incdec/">Increment operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id="--"><code>--</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_incdec/">Decrement operator</a>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id=".2C"><code>,</code></h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_other/#Comma_operator">Comma operator</a>
+
+<p>.</p>
+</li>
+<li>
+<p>List separator in</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>the declarator list in a</p>
+
+<a href="/reference/c/language/declarations/">declaration</a>
+</li>
+<li>
+<p>initializer list in</p>
+
+<a href="/reference/c/language/initialization/">initialization</a>
+
+, including <a href="/reference/c/language/compound_literal/">compound literals</a><span class="std std-since std-c99">(since C99)</span>
+</li>
+<li>
+<p>the argument list in a</p>
+
+<a href="/reference/c/language/operator_other/#Function_call">function call expression</a>
+</li>
+<li>
+<p>the enumerator list in an</p>
+
+<a href="/reference/c/language/enum/">enum</a>
+
+<p>declaration</p>
+</li>
+<li>
+<p>a function parameter list</p>
+</li>
+<li>
+<p>the macro parameter list in a</p>
+
+<a href="/reference/c/preprocessor/replace/#Function-like_macros">function-like macro definition</a>
+</li>
+<li>
+<p>the macro argument list in a</p>
+
+<a href="/reference/c/preprocessor/replace/#Function-like_macros">function-like macro invocation</a>
+
+<p>, unless found between an inner set of parentheses</p>
+</li>
+<li>
+<p>the generic association list in a</p>
+
+<a href="/reference/c/language/generic/">generic selection expression</a>
+
+<span class="std std-since std-c11">(since C11)</span>
+</li>
+<li>
+<p>an</p>
+
+<a href="/reference/c/language/attributes/">attribute</a>
+
+<p>list</p>
+
+<span class="std std-since std-c23">(since C23)</span>
+</li>
+</ul></dd>
+</dl>
+
+<ul>
+<li>
+<p>In a</p>
+
+<a href="/reference/c/language/static_assert/">static assertion declaration</a>
+
+<p>, separate the arguments.</p>
+
+<span class="std std-since std-c11">(since C11)</span>
+</li>
+<li>
+<p>In a</p>
+
+<a href="/reference/c/language/generic/">generic selection expression</a>
+
+<p>, separate the controlling expression and the generic association list.</p>
+
+<span class="std std-since std-c11">(since C11)</span>
+</li>
+</ul>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.4.6 Punctuators (p: 68-69)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.4.6 Punctuators (p: 52-53)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.4.6 Punctuators (p: 72-73)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.4.6 Punctuators (p: 63-64)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.1.6 Punctuators</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/language/operator_alternative/">Alternative representations</a> <span class="std std-since std-c95">(C95)</span></td><td>alternative spellings for certain operators</td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/punctuators" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Punctuation</td></tr>
+</table>

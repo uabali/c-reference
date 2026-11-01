@@ -1,0 +1,203 @@
+---
+title: "strrchr"
+slug: "c/string/byte/strrchr"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/byte/strrchr"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;string.h&gt;</code></p>
+
+```c
+char* strrchr( const char* str, int ch );
+```
+
+<p class="decl-note">(1)</p>
+
+```c
+/*QChar*/* strrchr( /*QChar*/* str, int ch );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c23">(since C23)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Finds the last occurrence of <code>ch</code> (after conversion to <code>char</code> as if by <code>(char)ch</code>) in the null-terminated byte string pointed to by <code>str</code> (each character interpreted as <code>unsigned char</code>). The terminating null character is considered to be a part of the string and can be found if searching for <code>&#x27;\0&#x27;</code>.</p>
+
+<div class="li-note"><span class="li-num">2)</span>
+
+<p>Type-generic function equivalent to</p>
+
+(1)
+
+<p>. Let</p>
+
+<code>T</code>
+
+<p>be an unqualified character object type.</p>
+
+<dl>
+<dd><ul>
+<li>
+<p>If</p>
+
+<code>str</code>
+
+<p>is of type</p>
+
+<code>const T*</code>
+
+<p>, the return type is</p>
+
+<code>const char*</code>
+
+<p>.</p>
+</li>
+<li>
+<p>Otherwise, if</p>
+
+<code>str</code>
+
+<p>is of type</p>
+
+<code>T*</code>
+
+<p>, the return type is</p>
+
+<code>char*</code>
+
+<p>.</p>
+</li>
+<li>
+<p>Otherwise, the behavior is undefined.</p>
+</li>
+</ul></dd>
+</dl>
+
+<p>If a macro definition of each of these generic functions is suppressed to access an actual function (e.g. if</p>
+
+<code>(strrchr)</code>
+
+<p>or a function pointer is used), the actual function declaration</p>
+
+(1)
+
+<p>becomes visible.</p></div>
+
+<p>The behavior is undefined if <code>str</code> is not a pointer to a null-terminated byte string.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>str</td><td>-</td><td>pointer to the null-terminated byte string to be analyzed</td></tr>
+<tr><td>ch</td><td>-</td><td>character to search for</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Pointer to the found character in <code>str</code>, or null pointer if no such character is found.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <string.h>
+ 
+int main(void)
+{
+    char szSomeFileName[] = "foo/bar/foobar.txt";
+    char* pLastSlash = strrchr(szSomeFileName, '/');
+    char* pszBaseName = pLastSlash ? pLastSlash + 1 : szSomeFileName;
+    printf("Base Name: %s", pszBaseName);
+}
+```
+
+<p>Output:</p>
+
+```text
+Base Name: foobar.txt
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.5.5 The strrchr function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.5.5 The strrchr function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.5.5 The strrchr function (p: 368-369)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.5.5 The strrchr function (p: 331)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.11.5.5 The strrchr function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/byte/strchr/">strchr</a></td><td>finds the first occurrence of a character   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strpbrk/">strpbrk</a></td><td>finds the first location of any character in one string, in another string   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/byte/strrchr" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+strrchr</td></tr>
+</table>

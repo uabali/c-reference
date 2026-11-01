@@ -1,0 +1,137 @@
+---
+title: "atexit"
+slug: "c/program/atexit"
+category: "program"
+source: "https://en.cppreference.com/w/c/program/atexit"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdlib.h&gt;</code></p>
+
+```c
+int atexit( void (*func)(void) );
+```
+
+<p>Registers the function pointed to by <code>func</code> to be called on normal program termination (via <a href="/reference/c/program/exit/">exit()</a> or returning from <code>main()</code>). The functions will be called in reverse order they were registered, i.e. the function registered last will be executed first.</p>
+
+<p>The same function may be registered more than once.</p>
+
+<p>The implementation is guaranteed to support the registration of at least <code>32</code> functions. The exact limit is implementation-defined.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>func</td><td>-</td><td>pointer to a function to be called on normal program termination</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p><code>0</code> if the registration succeeds, nonzero value otherwise.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdlib.h>
+#include <stdio.h>
+ 
+void f1(void)
+{
+    puts("f1");
+}
+ 
+void f2(void)
+{
+    puts("f2");
+}
+ 
+int main(void)
+{
+    if ( ! atexit(f1) && ! atexit(f2) && ! atexit(f2) )
+        return EXIT_SUCCESS ;
+ 
+    // atexit registration failed
+    return EXIT_FAILURE ;
+ 
+}   // <- if registration was successful calls f2, f2, f1
+```
+
+<p>Output:</p>
+
+```text
+f2
+f2
+f1
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.4.2 The atexit function (p: 255)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.4.2 The atexit function (p: 350)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20.4.2 The atexit function (p: 315)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.10.4.2 The atexit function (p: 156)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/program/at_quick_exit/">at_quick_exit</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>registers a function to be called on <a href="/reference/c/program/quick_exit/"><code>quick_exit</code></a> invocation   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/utility/program/atexit" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+atexit</td></tr>
+</table>

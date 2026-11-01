@@ -1,0 +1,110 @@
+---
+title: "mtx_init"
+slug: "c/thread/mtx_init"
+category: "thread"
+source: "https://en.cppreference.com/w/c/thread/mtx_init"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;threads.h&gt;</code></p>
+
+```c
+int mtx_init( mtx_t* mutex, int type );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Creates a new mutex object with <code>type</code>. The object pointed to by <code>mutex</code> is set to an identifier of the newly created mutex.</p>
+
+<p><code>type</code> must have one of the following values:</p>
+
+<ul>
+<li>
+<a href="/reference/c/thread/mtx_types/">mtx_plain</a>
+
+<p>- a simple, non-recursive mutex is created.</p>
+</li>
+<li>
+<a href="/reference/c/thread/mtx_types/">mtx_timed</a>
+
+<p>- a non-recursive mutex, that supports timeout, is created.</p>
+</li>
+<li>
+<code>mtx_plain | mtx_recursive</code>
+
+<p>- a recursive mutex is created.</p>
+</li>
+<li>
+<code>mtx_timed | mtx_recursive</code>
+
+<p>- a recursive mutex, that supports timeout, is created.</p>
+</li>
+</ul>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>mutex</td><td>-</td><td>pointer to the mutex to initialize</td></tr>
+<tr><td>type</td><td>-</td><td>the type of the mutex</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p><a href="/reference/c/thread/thrd_errors/">thrd_success</a> if successful, <a href="/reference/c/thread/thrd_errors/">thrd_error</a> otherwise.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.4.2 The mtx_init function (p: 277-278)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.4.2 The mtx_init function (p: 381)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/mutex/mutex" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+mutex</td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/timed_mutex/timed_mutex" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+timed_mutex</td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/recursive_mutex/recursive_mutex" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+recursive_mutex</td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/recursive_timed_mutex/recursive_timed_mutex" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+recursive_timed_mutex</td></tr>
+</table>

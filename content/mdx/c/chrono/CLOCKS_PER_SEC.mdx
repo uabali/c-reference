@@ -1,0 +1,107 @@
+---
+title: "CLOCKS_PER_SEC"
+slug: "c/chrono/CLOCKS_PER_SEC"
+category: "chrono"
+source: "https://en.cppreference.com/w/c/chrono/CLOCKS_PER_SEC"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;time.h&gt;</code></p>
+
+```c
+#define CLOCKS_PER_SEC /* implementation-defined */
+```
+
+<p>Expands to an expression (not necessarily a compile-time constant) of type <a href="/reference/c/chrono/clock_t/">clock_t</a> equal to the number of clock ticks per second, as returned by <a href="/reference/c/chrono/clock/">clock()</a>.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>POSIX defines <a href="https://pubs.opengroup.org/onlinepubs/9799919799/basedefs/time.h.html" rel="noreferrer" target="_blank"><code>CLOCKS_PER_SEC</code></a> as <code>1&#x27;000&#x27;000</code>, regardless of the actual precision of <a href="/reference/c/chrono/clock/">clock</a>.</p>
+
+<p>Until standardized as <code>CLOCKS_PER_SEC</code> in C89, this macro was sometimes known by its IEEE std 1003.1-1988 name <code>CLK_TCK</code>: that name was not included in C89 and was removed from POSIX itself in 1996 over ambiguity with <code>_SC_CLK_TCK</code>, which gives number of clocks per second for the function <a href="https://pubs.opengroup.org/onlinepubs/9799919799/functions/times.html" rel="noreferrer" target="_blank"><code>times</code></a>).</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.27.1/2 Components of time (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.27.1/2 Components of time (p: 284)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.27.1/2 Components of time (p: 388)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.23.1/2 Components of time (p: 338)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.12.1 Components of time</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/chrono/clock/">clock</a></td><td>returns raw processor clock time since the program is started   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/chrono/clock_t/">clock_t</a></td><td>processor time since era type   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/chrono/c/CLOCKS_PER_SEC" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+CLOCKS_PER_SEC</td></tr>
+</table>

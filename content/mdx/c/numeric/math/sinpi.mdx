@@ -1,0 +1,178 @@
+---
+title: "sinpi, sinpif, sinpil, sinpid32, sinpid64, sinpid128"
+slug: "c/numeric/math/sinpi"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/sinpi"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+float       sinpif( float arg );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+double      sinpi( double arg );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+long double sinpil( long double arg );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+_Decimal32  sinpid32( _Decimal32 arg );
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+_Decimal64  sinpid64( _Decimal64 arg );
+```
+
+<p class="decl-note">(5) <span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+_Decimal128 sinpid128( _Decimal128 arg );
+```
+
+<p class="decl-note">(6) <span class="std std-since std-c23">(since C23)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;tgmath.h&gt;</code></p>
+
+```c
+#define sinpi( arg )
+```
+
+<p class="decl-note">(7) <span class="std std-since std-c23">(since C23)</span></p>
+
+<p class="li-note"><span class="li-num">1-6)</span>  Computes the sine of <code>π·arg</code> measured in radians, thus regarding <code>arg</code> as a measurement in half-revolutions.</p>
+
+<p class="li-note"><span class="li-num">7)</span>  Type-generic macro: calls the correct function based on the type of <code>arg</code>. If the argument has integer type, (2) is called.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>The functions (4-6) are declared if and only if the implementation predefines <code>__STDC_IEC_60559_DFP__</code> (i.e. the implementation supports decimal floating-point numbers).</p></aside>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>arg</td><td>-</td><td>floating-point value whose product with <code>π</code> represents an angle in radians</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>If no errors occur, the sine of <code>π·arg</code> (sin(π×arg)) in the range [-1, +1], is returned.</p>
+
+<h3 id="Error_handling">Error handling</h3>
+
+<p>Errors are reported as specified in <a href="/reference/c/numeric/math/math_errhandling/"><code>math_errhandling</code></a>.</p>
+
+<p>If the implementation supports IEEE floating-point arithmetic (IEC 60559):</p>
+
+<ul>
+<li>
+<p>if the argument is ±0, it is returned unmodified;</p>
+</li>
+<li>
+<p>if the argument is ±∞, NaN is returned and</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>is raised;</p>
+</li>
+<li>
+<p>if the argument is NaN, NaN is returned.</p>
+</li>
+</ul>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <errno.h>
+#include <fenv.h>
+#include <math.h>
+#include <stdio.h>
+ 
+#ifndef __GNUC__
+#pragma STDC FENV_ACCESS ON
+#endif
+ 
+#if __STDC_VERSION__ < 202311L
+// A naive implementation of a subset of sinpi family
+double sinpi(double arg)
+{
+    return sin(arg * (double)3.1415926535897932384626433);
+}
+#endif
+ 
+int main(void)
+{
+    const double pi = acos(-1);
+ 
+    // typical usage
+    printf("sinpi(1) = %f, sin(pi) = %f\n", sinpi(1), sin(pi));
+    printf("sinpi(0.5) = %f, sin(pi/2) = %f\n", sinpi(0.5), sin(pi / 2));
+    printf("sinpi(-0.75) = %f, sin(-3*pi/4) = %f\n", sinpi(-0.75), sin(-3 * pi / 4));
+ 
+    // special values
+    printf("sinpi(+0) = %f\n", sinpi(0.0));
+    printf("sinpi(-0) = %f\n", sinpi(-0.0));
+ 
+    // error handling
+    feclearexcept(FE_ALL_EXCEPT);
+    printf("sinpi(INFINITY) = %f\n", sinpi(INFINITY));
+    if (fetestexcept(FE_INVALID))
+        puts("    FE_INVALID raised");
+}
+```
+
+<p>Possible output:</p>
+
+```text
+sinpi(1) = 0.000000, sin(pi) = 0.000000
+sinpi(0.5) = 1.000000, sin(pi/2) = 1.000000
+sinpi(-0.75) = -0.707107, sin(-3*pi/4) = -0.707107
+sinpi(+0) = 0.000000
+sinpi(-0) = -0.000000
+sinpi(INFINITY) = -nan
+    FE_INVALID raised
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.4.13 The sinpi functions (p: 247-248)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.27 Type generic math &lt;tgmath.h&gt; (p: 387)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/sin/">sin<br />sinf<br />sinl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes sine (\({\small\sin{x} }\)sin(x))   <span class="mark-note">(function)</span></td></tr>
+</table>

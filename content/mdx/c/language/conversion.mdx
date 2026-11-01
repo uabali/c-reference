@@ -1,0 +1,1016 @@
+---
+title: "Implicit conversions"
+slug: "c/language/conversion"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/conversion"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>When an expression is used in the context where a value of a different type is expected, <em>conversion</em> may occur:</p>
+
+```c
+int n = 1L; // expression 1L has type long, int is expected
+n = 2.1; // expression 2.1 has type double, int is expected
+char *p = malloc(10); // expression malloc(10) has type void*, char* is expected
+```
+
+<p>Conversions take place in the following situations:</p>
+
+<h3 id="Conversion_as_if_by_assignment">Conversion as if by assignment</h3>
+
+<ul>
+<li>
+<p>In the</p>
+
+<a href="/reference/c/language/operator_assignment/">assignment</a>
+
+<p>operator, the value of the right-hand operand is converted to the unqualified type of the left-hand operand.</p>
+</li>
+<li>
+<p>In</p>
+
+<a href="/reference/c/language/scalar_initialization/">scalar initialization</a>
+
+<p>, the value of the initializer expression is converted to the unqualified type of the object being initialized</p>
+</li>
+<li>
+<p>In a</p>
+
+<a href="/reference/c/language/operator_other/">function-call expression</a>
+
+<p>, to a function that has a prototype, the value of each argument expression is converted to the type of the unqualified declared types of the corresponding parameter</p>
+</li>
+<li>
+<p>In a</p>
+
+<a href="/reference/c/language/return/">return statement</a>
+
+<p>, the value of the operand of</p>
+
+<code>return</code>
+
+<p>is converted to an object having the return type of the function</p>
+</li>
+</ul>
+
+<p>Note that actual assignment, in addition to the conversion, also removes extra range and precision from floating-point types and prohibits overlaps; those characteristics do not apply to conversion as if by assignment.</p>
+
+<h3 id="Default_argument_promotions">Default argument promotions</h3>
+
+<p>In a <a href="/reference/c/language/operator_other/#Function_call">function call expression</a> when the call is made to</p>
+
+<p class="li-note"><span class="li-num">1)</span>  a <a href="/reference/c/language/function_declaration/">function without a prototype</a> <span class="std std-until std-c23">(until C23)</span></p>
+
+<p class="li-note"><span class="li-num">2)</span>  a <a href="/reference/c/language/variadic/">variadic function</a>, where the argument expression is one of the trailing arguments that are matched against the ellipsis parameter</p>
+
+<p>Each argument of integer type undergoes <em>integer promotion</em> (see below), and each argument of type <code>float</code> is implicitly converted to the type <code>double</code></p>
+
+```c
+int add_nums(int count, ...);
+int sum = add_nums(2, 'c', true); // add_nums is called with three ints: (2, 99, 1)
+```
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><p>Note that <code>float complex</code> and <code>float imaginary</code> are not promoted to <code>double complex</code> and <code>double imaginary</code> in this context.</p></aside>
+
+<h3 id="Usual_arithmetic_conversions">Usual arithmetic conversions</h3>
+
+<p>The arguments of the following arithmetic operators undergo implicit conversions for the purpose of obtaining the <em>common real type</em>, which is the type in which the calculation is performed:</p>
+
+<ul>
+<li>
+<a href="/reference/c/language/operator_arithmetic/">binary arithmetic</a>
+
+<code>*</code>
+
+<p>,</p>
+
+<code>/</code>
+
+<p>,</p>
+
+<code>%</code>
+
+<p>,</p>
+
+<code>+</code>
+
+<p>,</p>
+
+<code>-</code>
+</li>
+<li>
+<a href="/reference/c/language/operator_comparison/">relational operators</a>
+
+<code>&lt;</code>
+
+<p>,</p>
+
+<code>&gt;</code>
+
+<p>,</p>
+
+<code>&lt;=</code>
+
+<p>,</p>
+
+<code>&gt;=</code>
+
+<p>,</p>
+
+<code>==</code>
+
+<p>,</p>
+
+<code>!=</code>
+</li>
+<li>
+<a href="/reference/c/language/operator_arithmetic/">binary bitwise arithmetic</a>
+
+<code>&amp;</code>
+
+<p>,</p>
+
+<code>^</code>
+
+<p>,</p>
+
+<code>|</code>
+
+<p>,</p>
+</li>
+<li>
+<p>the</p>
+
+<a href="/reference/c/language/operator_other/">conditional operator</a>
+
+<code>?:</code>
+</li>
+</ul>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><div class="li-note"><span class="li-num">1)</span>
+
+<p>If one operand has decimal floating type, the other operand shall not have standard floating,</p>
+
+<p>complex, or imaginary type.</p>
+
+<dl>
+<dd><ul>
+<li>
+<p>First, if the type of either operand is _Decimal128, the other operand is converted to _Decimal128.</p>
+</li>
+<li>
+<p>Otherwise, if the type of either operand is _Decimal64, the other operand is converted to _Decimal64.</p>
+</li>
+<li>
+<p>Otherwise, if the type of either operand is _Decimal32, the other operand is converted to _Decimal32.</p>
+</li>
+</ul></dd>
+</dl></div></aside>
+
+<div class="li-note"><span class="li-num">2)</span>
+
+<p>Otherwise, if one operand is</p>
+
+<code>long double</code>
+
+, <code>long double complex</code>, or <code>long double imaginary</code> <span class="std std-since std-c99">(since C99)</span>
+
+<p>, the other operand is implicitly converted as follows:</p>
+
+<dl>
+<dd><ul>
+<li>
+<p>integer or real floating type to</p>
+
+<code>long double</code>
+</li>
+</ul></dd>
+</dl>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><dl>
+<dd><ul>
+<li>
+<p>complex type to</p>
+
+<code>long double complex</code>
+</li>
+<li>
+<p>imaginary type to</p>
+
+<code>long double imaginary</code>
+</li>
+</ul></dd>
+</dl></aside></div>
+
+<div class="li-note"><span class="li-num">3)</span>
+
+<p>Otherwise, if one operand is</p>
+
+<code>double</code>
+
+, <code>double complex</code>, or <code>double imaginary</code> <span class="std std-since std-c99">(since C99)</span>
+
+<p>, the other operand is implicitly converted as follows:</p>
+
+<dl>
+<dd><ul>
+<li>
+<p>integer or real floating type to</p>
+
+<code>double</code>
+</li>
+</ul></dd>
+</dl>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><dl>
+<dd><ul>
+<li>
+<p>complex type to</p>
+
+<code>double complex</code>
+</li>
+<li>
+<p>imaginary type to</p>
+
+<code>double imaginary</code>
+</li>
+</ul></dd>
+</dl></aside></div>
+
+<div class="li-note"><span class="li-num">4)</span>
+
+<p>Otherwise, if one operand is</p>
+
+<code>float</code>
+
+, <code>float complex</code>, or <code>float imaginary</code> <span class="std std-since std-c99">(since C99)</span>
+
+<p>, the other operand is implicitly converted as follows:</p>
+
+<dl>
+<dd><ul>
+<li>
+<p>integer type to</p>
+
+<code>float</code>
+
+<p>(the only real type possible is float, which remains as-is)</p>
+</li>
+</ul></dd>
+</dl>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><dl>
+<dd><ul>
+<li>
+<p>complex type remains</p>
+
+<code>float complex</code>
+</li>
+<li>
+<p>imaginary type remains</p>
+
+<code>float imaginary</code>
+</li>
+</ul></dd>
+</dl></aside></div>
+
+<div class="li-note"><span class="li-num">5)</span>
+
+<p>Otherwise, both operands are integers. Both operands undergo</p>
+
+<em>integer promotions</em>
+
+<p>(see below); then, after integer promotion, one of the following cases applies:</p>
+
+<dl>
+<dd><ul>
+<li>
+<p>If the types are the same, that type is the common type.</p>
+</li>
+<li>
+<p>Else, the types are different:</p>
+
+<ul>
+<li>
+<p>If the types have the same signedness (both signed or both unsigned), the operand whose type has the lesser</p>
+
+<em>conversion rank</em>
+
+<sup>1</sup>
+
+<p>is implicitly converted</p>
+
+<sup>2</sup>
+
+<p>to the other type.</p>
+</li>
+<li>
+<p>Else, the operands have different signedness:</p>
+
+<ul>
+<li>
+<p>If the unsigned type has</p>
+
+<em>conversion rank</em>
+
+<p>greater than or equal to the rank of the signed type, then the operand with the signed type is implicitly converted to the unsigned type.</p>
+</li>
+<li>
+<p>Else, the unsigned type has</p>
+
+<em>conversion rank</em>
+
+<p>less than the signed type:</p>
+
+<ul>
+<li>
+<p>If the signed type can represent all values of the unsigned type, then the operand with the unsigned type is implicitly converted to the signed type.</p>
+</li>
+<li>
+<p>Else, both operands undergo implicit conversion to the unsigned type counterpart of the signed operand's type.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul></dd>
+</dl></div>
+
+<hr />
+
+<dl>
+<dd><dl>
+<dd><dl>
+<dd>1. Refer to "integer promotions" below for the rules on ranking.</dd>
+<dd>2. Refer to "integer conversions" under "implicit conversion semantics" below.</dd>
+</dl></dd>
+</dl></dd>
+</dl>
+
+```c
+1.f + 20000001; // int is converted to float, giving 20000000.00
+                // addition and then rounding to float gives 20000000.00
+ 
+(char)'a' + 1L; // first, char 'a', which is 97, is promoted to int
+                // different types: int and long
+                // same signedness: both signed
+                // different rank: long is of greater rank than int
+                // therefore, int 97 is converted to long 97
+                // the result is 97 + 1 = 98 of type signed long
+ 
+2u - 10; // different types: unsigned int and signed int
+         // different signedness
+         // same rank
+         // therefore, signed int 10 is converted to unsigned int 10
+         // since the arithmetic operation is performed for unsigned integers
+         // (see "Arithmetic operators" topic), the calculation performed is (2 - 10)
+         // modulo (2 raised to n), where n is the number of value bits of unsigned int
+         // if unsigned int is 32-bit long and there is no padding bits in its object
+         // representation, then the result is (-8) modulo (2 raised to 32) = 4294967288
+         // of type unsigned int
+ 
+5UL - 2ULL; // different types: unsigned long and unsigned long long
+            // same signedness
+            // different rank: rank of unsigned long long is greater
+            // therefore, unsigned long 5 is converted to unsigned long long 5
+            // since the arithmetic operation is performed for unsigned integers
+            // (see "Arithmetic operators" topic),
+            // if unsigned long long is 64-bit long, then
+            // the result is (5 - 2) modulo (2 raised to 64) = 3 of type
+            // unsigned long long
+ 
+0UL - 1LL; // different types: unsigned long and signed long long
+           // different signedness
+           // different rank: rank of signed long long is greater.
+           // if ULONG_MAX > LLONG_MAX, then signed long long cannot represent all
+           // unsigned long therefore, this is the last case: both operands are converted
+           // to unsigned long long unsigned long 0 is converted to unsigned long long 0
+           // long long 1 is converted to unsigned long long 1 since the arithmetic
+           // operation is performed for unsigned integers
+           // (see "Arithmetic operators" topic),
+           // if unsigned long long is 64-bit long, then  
+           // the calculation is (0 - 1) modulo (2 raised to 64)
+           // thus, the result is 18446744073709551615 (ULLONG_MAX) of type
+           // unsigned long long
+```
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><p>The result type is determined as follows:</p>
+
+<ul>
+<li>
+<p>if both operands are complex, the result type is complex</p>
+</li>
+<li>
+<p>if both operands are imaginary, the result type is imaginary</p>
+</li>
+<li>
+<p>if both operands are real, the result type is real</p>
+</li>
+<li>
+<p>if the two floating-point operands have different type domains (complex vs. real, complex vs imaginary, or imaginary vs. real), the result type is complex</p>
+</li>
+</ul>
+
+```c
+double complex z = 1 + 2*I;
+double f = 3.0;
+z + f; // z remains as-is, f is converted to double, the result is double complex
+```</aside>
+
+<p>As always, the result of a floating-point operator may have greater range and precision than is indicated by its type (see <a href="/reference/c/types/limits/FLT_EVAL_METHOD/">FLT_EVAL_METHOD</a>).</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><p>Note: real and imaginary operands are not implicitly converted to complex because doing so would require extra computation, while producing undesirable results in certain cases involving infinities, NaNs and signed zeros. For example, if reals were converted to complex, 2.0×(3.0+i∞) would evaluate as (2.0+i0.0)×(3.0+i∞) ⇒ (2.0×3.0–0.0×∞) + i(2.0×∞+0.0×3.0) ⇒ NaN+i∞ rather than the correct 6.0+i∞. If imaginaries were converted to complex, i2.0×(∞+i3.0) would evaluate as (0.0+i2.0) × (∞+i3.0) ⇒ (0.0×∞ – 2.0×3.0) + i(0.0×3.0 + 2.0×∞) ⇒ NaN + i∞ instead of –6.0 + i∞.</p></aside>
+
+<p>Note: regardless of usual arithmetic conversions, the calculation may always be performed in a narrower type than specified by these rules under the <a href="/reference/c/language/as_if/">as-if rule</a></p>
+
+<h3 id="Value_transformations">Value transformations</h3>
+
+<h4 id="Lvalue_conversion">Lvalue conversion</h4>
+
+<p>Any <a href="/reference/c/language/value_category/">lvalue expression</a> of any non-array type, when used in any context other than</p>
+
+<ul>
+<li>
+<p>as the operand of the</p>
+
+<a href="/reference/c/language/operator_member_access/">address-of operator</a>
+
+<p>(if allowed)</p>
+</li>
+<li>
+<p>as the operand of the pre/post</p>
+
+<a href="/reference/c/language/operator_incdec/">increment and decrement operators</a>
+
+<p>.</p>
+</li>
+<li>
+<p>as the left-hand operand of the</p>
+
+<a href="/reference/c/language/operator_member_access/">member access</a>
+
+<p>(dot) operator.</p>
+</li>
+<li>
+<p>as the left-hand operand of the</p>
+
+<a href="/reference/c/language/operator_assignment/">assignment and compound assignment</a>
+
+<p>operators.</p>
+</li>
+<li>
+<p>as the operand of</p>
+
+<a href="/reference/c/language/sizeof/">sizeof</a>
+</li>
+</ul>
+
+<p>undergoes <em>lvalue conversion</em>: the type remains the same, but loses <a href="/reference/c/language/const/">const</a>/<a href="/reference/c/language/volatile/">volatile</a>/<a href="/reference/c/language/restrict/">restrict</a>-qualifiers and <a href="/reference/c/language/atomic/">atomic</a> properties, if any. The value remains the same, but loses its lvalue properties (the address may no longer be taken).</p>
+
+<p>If the lvalue has incomplete type, the behavior is undefined.</p>
+
+<p>If the lvalue designates an object of automatic storage duration whose address was never taken and if that object was uninitialized (not declared with an initializer and no assignment to it has been performed prior to use), the behavior is undefined.</p>
+
+<p>This conversion models the memory load of the value of the object from its location.</p>
+
+```c
+volatile int n = 1;
+int x = n;            // lvalue conversion on n reads the value of n
+volatile int* p = &n; // no lvalue conversion: does not read the value of n
+```
+
+<h4 id="Array_to_pointer_conversion">Array to pointer conversion</h4>
+
+<p>Any <a href="/reference/c/language/value_category/">lvalue expression</a> of <a href="/reference/c/language/array/">array type</a>, when used in any context other than</p>
+
+<ul>
+<li>
+<p>as the operand of the</p>
+
+<a href="/reference/c/language/operator_member_access/">address-of operator</a>
+</li>
+<li>
+<p>as the operand of</p>
+
+<a href="/reference/c/language/sizeof/">sizeof</a>
+</li>
+<li>
+<p>as the operand of</p>
+
+<a href="/reference/c/language/typeof_unqual/">typeof</a>
+
+<p>and</p>
+
+<a href="/reference/c/language/typeof_unqual/">typeof_unqual</a>
+
+<span class="std std-since std-c23">(since C23)</span>
+</li>
+<li>
+<p>as the string literal used for</p>
+
+<a href="/reference/c/language/array_initialization/">array initialization</a>
+</li>
+</ul>
+
+<p>undergoes a conversion to the non-lvalue pointer to its first element.</p>
+
+<p>If the array was declared <a href="/reference/c/language/storage_duration/">register</a>, the behavior is undefined.</p>
+
+```c
+int a[3], b[3][4];
+int* p = a;      // conversion to &a[0]
+int (*q)[4] = b; // conversion to &b[0]
+```
+
+<h4 id="Function_to_pointer_conversion">Function to pointer conversion</h4>
+
+<p>Any function designator expression, when used in any context other than</p>
+
+<ul>
+<li>
+<p>as the operand of the</p>
+
+<a href="/reference/c/language/operator_member_access/">address-of operator</a>
+</li>
+<li>
+<p>as the operand of</p>
+
+<a href="/reference/c/language/sizeof/">sizeof</a>
+</li>
+<li>
+<p>as the operand of</p>
+
+<a href="/reference/c/language/typeof_unqual/">typeof</a>
+
+<p>and</p>
+
+<a href="/reference/c/language/typeof_unqual/">typeof_unqual</a>
+
+<span class="std std-since std-c23">(since C23)</span>
+</li>
+</ul>
+
+<p>undergoes a conversion to the non-lvalue pointer to the function designated by the expression.</p>
+
+```c
+int f(int);
+int (*p)(int) = f; // conversion to &f
+(***p)(1); // repeated dereference to f and conversion back to &f
+```
+
+<h3 id="Implicit_conversion_semantics">Implicit conversion semantics</h3>
+
+<p>Implicit conversion, whether <em>as if by assignment</em> or a <em>usual arithmetic conversion</em>, consists of two stages:</p>
+
+<p class="li-note"><span class="li-num">1)</span>  value transformation (if applicable)</p>
+
+<p class="li-note"><span class="li-num">2)</span>  one of the conversions listed below (if it can produce the target type)</p>
+
+<h4 id="Compatible_types">Compatible types</h4>
+
+<p>Conversion of a value of any type to any <a href="/reference/c/language/types/#Compatible_types">compatible type</a> is always a no-op and does not change the representation.</p>
+
+```c
+uint8_t (*a)[10];         // if uint8_t is a typedef to unsigned char
+unsigned char (*b)[] = a; // then these pointer types are compatible
+```
+
+<h4 id="Integer_promotions">Integer promotions</h4>
+
+<p>Integer promotion is the implicit conversion of a value of any integer type with <em>rank</em> less or equal to <em>rank</em> of int or of a <a href="/reference/c/language/bit_field/">bit-field</a> of type _Bool<span class="std std-until std-c23">(until C23)</span>bool<span class="std std-since std-c23">(since C23)</span>, <code>int</code>, <code>signed int</code>, <code>unsigned int</code>, to the value of type <code>int</code> or <code>unsigned int</code>.</p>
+
+<p>If <code>int</code> can represent the entire range of values of the original type (or the range of values of the original bit-field), the value is converted to type <code>int</code>. Otherwise the value is converted to <code>unsigned int</code>.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>The value from a bit-field of a bit-precise integer type is converted to the corresponding bit-precise integer type. Otherwise, bit-precise integer types are exempt from the integer promotion rules.</p></aside>
+
+<p>Integer promotions preserve the value, including the sign:</p>
+
+```c
+int main(void)
+{
+    void f(); // old-style function declaration
+              // since C23, void f(...) has the same behavior wrt promotions
+    char x = 'a'; // integer conversion from int to char
+    f(x); // integer promotion from char back to int
+}
+ 
+void f(x) int x; {} // the function expects int
+```
+
+<p><em>rank</em> above is a property of every <a href="/reference/c/language/compatible_type/">integer type</a> and is defined as follows:</p>
+
+<p class="li-note"><span class="li-num">1)</span>  the ranks of all signed integer types are different and increase with their precision: rank of <code>signed char</code> &lt; rank of <code>short</code> &lt; rank of <code>int</code> &lt; rank of <code>long int</code> &lt; rank of <code>long long int</code></p>
+
+<p class="li-note"><span class="li-num">2)</span>  the ranks of all signed integer types equal the ranks of the corresponding unsigned integer types</p>
+
+<p class="li-note"><span class="li-num">3)</span>  the rank of any standard integer type is greater than the rank of any extended integer type or bit-precise integer type<span class="std std-since std-c23">(since C23)</span> of the same size (that is, rank of <code>__int64</code> &lt; rank of <code>long long int</code>, but rank of <code>long long</code> &lt; rank of <code>__int128</code> due to the rule (1))</p>
+
+<p class="li-note"><span class="li-num">4)</span>  rank of <code>char</code> equals rank of <code>signed char</code> and rank of <code>unsigned char</code></p>
+
+<p class="li-note"><span class="li-num">5)</span>  the rank of _Bool<span class="std std-until std-c23">(until C23)</span>bool<span class="std std-since std-c23">(since C23)</span> is less than the rank of any other standard integer type</p>
+
+<p class="li-note"><span class="li-num">6)</span>  the rank of any enumerated type equals the rank of its compatible integer type</p>
+
+<p class="li-note"><span class="li-num">7)</span>  ranking is transitive: if rank of T1 &lt; rank of T2 and rank of T2 &lt; rank of T3 then rank of T1 &lt; rank of T3</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p class="li-note"><span class="li-num">8)</span>  the rank of a bit-precise signed integer type shall be greater than the rank of any standard integer type with less width or any bit-precise integer type with less width.</p>
+
+<p class="li-note"><span class="li-num">9)</span>  the rank of any bit-precise integer type relative to an extended integer type of the same width is implementation-defined.</p></aside>
+
+<p class="li-note"><span class="li-num">10)</span>  any aspects of relative ranking of extended integer types not covered above are implementation defined.</p>
+
+<p>Note: integer promotions are applied only</p>
+
+<ul>
+<li>
+<p>as part of</p>
+
+<em>usual arithmetic conversions</em>
+
+<p>(see above)</p>
+</li>
+<li>
+<p>as part of</p>
+
+<em>default argument promotions</em>
+
+<p>(see above)</p>
+</li>
+<li>
+<p>to the operand of the unary arithmetic operators</p>
+
+<code>+</code>
+
+<p>and</p>
+
+<code>-</code>
+</li>
+<li>
+<p>to the operand of the unary bitwise operator</p>
+
+<code>~</code>
+</li>
+<li>
+<p>to both operands of the shift operators</p>
+
+<code>&lt;&lt;</code>
+
+<p>and</p>
+
+<code>&gt;&gt;</code>
+</li>
+</ul>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><h4 id="Boolean_conversion">Boolean conversion</h4>
+
+<p>A value of any scalar type can be implicitly converted to <code>_Bool</code><span class="std std-until std-c23">(until C23)</span><code>bool</code><span class="std std-since std-c23">(since C23)</span>. The values that compare equal to an integer constant expression of value zero<span class="std std-until std-c23">(until C23)</span>are a zero (for arithmetic types), null (for pointer types) or have a type of <a href="/reference/c/types/nullptr_t/">nullptr_t</a><span class="std std-since std-c23">(since C23)</span> are converted to <code>0</code><span class="std std-until std-c23">(until C23)</span><code>false</code><span class="std std-since std-c23">(since C23)</span>, all other values are converted to <code>1</code><span class="std std-until std-c23">(until C23)</span><code>true</code><span class="std std-since std-c23">(since C23)</span>.</p>
+
+```c
+bool b1 = 0.5;              // b1 == 1 (0.5 converted to int would be zero)
+bool b2 = 2.0*_Imaginary_I; // b2 == 1 (but converted to int would be zero)
+bool b3 = 0.0 + 3.0*I;      // b3 == 1 (but converted to int would be zero)
+bool b4 = 0.0/0.0;          // b4 == 1 (NaN does not compare equal to zero)
+bool b5 = nullptr;          // b5 == 0 (since C23: nullptr is converted to false)
+```</aside>
+
+<h4 id="Integer_conversions">Integer conversions</h4>
+
+<p>A value of any integer type can be implicitly converted to any other integer type. Except where covered by promotions and boolean conversions above, the rules are:</p>
+
+<ul>
+<li>
+<p>if the target type can represent the value, the value is unchanged</p>
+</li>
+<li>
+<p>otherwise, if the target type is unsigned, the value</p>
+
+2b
+
+<p>, where</p>
+
+b
+
+<p>is the number of value bits in the target type, is repeatedly subtracted or added to the source value until the result fits in the target type. In other words, unsigned integers implement modulo arithmetic.</p>
+</li>
+<li>
+<p>otherwise, if the target type is signed, the behavior is implementation-defined (which may include raising a signal)</p>
+</li>
+</ul>
+
+```c
+char x = 'a'; // int -> char, result unchanged
+unsigned char n = -123456; // target is unsigned, result is 192 (that is, -123456+483*256)
+signed char m = 123456;    // target is signed, result is implementation-defined
+assert(sizeof(int) > -1);  // assert fails:
+                           // operator > requests conversion of -1 to size_t,
+                           // target is unsigned, result is SIZE_MAX
+```
+
+<h4 id="Real_floating-integer_conversions">Real floating-integer conversions</h4>
+
+<p>A finite value of any real floating type can be implicitly converted to any integer type. Except where covered by boolean conversion above, the rules are:</p>
+
+<ul>
+<li>
+<p>The fractional part is discarded (truncated towards zero).</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>If the resulting value can be represented by the target type, that value is used</p>
+</li>
+<li>
+<p>otherwise, the behavior is undefined</p>
+</li>
+</ul></dd>
+</dl>
+
+```c
+int n = 3.14; // n == 3
+int x = 1e10; // undefined behavior for 32-bit int
+```
+
+<p>A value of any integer type can be implicitly converted to any real floating type.</p>
+
+<ul>
+<li>
+<p>if the value can be represented exactly by the target type, it is unchanged</p>
+</li>
+<li>
+<p>if the value can be represented, but cannot be represented exactly, the result is an implementation-defined choice of either the nearest higher or nearest lower value, although if IEEE arithmetic is supported, rounding is to nearest. It is unspecified whether</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INEXACT</a>
+
+<p>is raised in this case.</p>
+</li>
+<li>
+<p>if the value cannot be represented, the behavior is undefined, although if IEEE arithmetic is supported,</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>is raised and the result value is unspecified.</p>
+</li>
+</ul>
+
+<p>The result of this conversion may have greater range and precision than its target type indicates (see <a href="/reference/c/types/limits/FLT_EVAL_METHOD/">FLT_EVAL_METHOD</a>).</p>
+
+<p>If control over <a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INEXACT</a> is needed in floating-to-integer conversions, <a href="/reference/c/numeric/math/rint/">rint</a> and <a href="/reference/c/numeric/math/nearbyint/">nearbyint</a> may be used.</p>
+
+```c
+double d = 10; // d = 10.00
+float f = 20000001; // f = 20000000.00 (FE_INEXACT)
+float x = 1+(long long)FLT_MAX; // undefined behavior
+```
+
+<h4 id="Real_floating-point_conversions">Real floating-point conversions</h4>
+
+<p>A value of any real floating type can be implicitly converted to any other real floating type.</p>
+
+<ul>
+<li>
+<p>If the value can be represented by the target type exactly, it is unchanged</p>
+</li>
+<li>
+<p>if the value can be represented, but cannot be represented exactly, the result is the nearest higher or the nearest lower value (in other words, rounding direction is implementation-defined), although if IEEE arithmetic is supported, rounding is to nearest</p>
+</li>
+<li>
+<p>if the value cannot be represented, the behavior is undefined</p>
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: check IEEE if appropriately-signed infinity is required</td></tr>
+</table>
+</li>
+</ul>
+
+<p>The result of this conversion may have greater range and precision than its target type indicates (see <a href="/reference/c/types/limits/FLT_EVAL_METHOD/">FLT_EVAL_METHOD</a>).</p>
+
+```c
+double d = 0.1; // d = 0.1000000000000000055511151231257827021181583404541015625
+float f = d;    // f = 0.100000001490116119384765625
+float x = 2*(double)FLT_MAX; // undefined
+```
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><h4 id="Complex_type_conversions">Complex type conversions</h4>
+
+<p>A value of any complex type can be implicitly converted to any other complex type. The real part and the imaginary part individually follow the conversion rules for the real floating types.</p>
+
+```c
+double complex d = 0.1 + 0.1*I;
+float complex f = d; // f is (0.100000001490116119384765625, 0.100000001490116119384765625)
+```
+
+<h4 id="Imaginary_type_conversions">Imaginary type conversions</h4>
+
+<p>A value of any imaginary type can be implicitly converted to any other imaginary type. The imaginary part follows the conversion rules for the real floating types.</p>
+
+```c
+double imaginary d = 0.1*_Imaginary_I;
+float imaginary f = d; // f is 0.100000001490116119384765625*I
+```
+
+<h4 id="Real-complex_conversions">Real-complex conversions</h4>
+
+<p>A value of any real floating type can be implicitly converted to any complex type.</p>
+
+<ul>
+<li>
+<p>The real part of the result is determined by the conversion rules for the real floating types</p>
+</li>
+<li>
+<p>The imaginary part of the result is positive zero (or unsigned zero on non-IEEE systems)</p>
+</li>
+</ul>
+
+<p>A value of any complex type can be implicitly converted to any real floating type</p>
+
+<ul>
+<li>
+<p>The real part is converted following the rules for the real floating types</p>
+</li>
+<li>
+<p>The imaginary part is discarded</p>
+</li>
+</ul>
+
+<p>Note: in complex-to-real conversion, a NaN in the imaginary part will not propagate to the real result.</p>
+
+```c
+double complex z = 0.5 + 3*I;
+float f = z;  // the imaginary part is discarded, f is set to 0.5
+z = f;        // sets z to 0.5 + 0*I
+```
+
+<h4 id="Real-imaginary_conversions">Real-imaginary conversions</h4>
+
+<p>A value of any imaginary type can be implicitly converted to any real type (integer or floating-point). The result is always a positive (or unsigned) zero, except when the target type is _Bool<span class="std std-until std-c23">(until C23)</span>bool<span class="std std-since std-c23">(since C23)</span>, in which case boolean conversion rules apply.</p>
+
+<p>A value of any real type can be implicitly converted to any imaginary type. The result is always a positive imaginary zero.</p>
+
+```c
+double imaginary z = 3*I;
+bool b = z;  // Boolean conversion: sets b to true 
+float f = z; // Real-imaginary conversion: sets f to 0.0 
+z = 3.14;    // Imaginary-real conversion: sets z to 0*_Imaginary_I
+```
+
+<h4 id="Complex-imaginary_conversions">Complex-imaginary conversions</h4>
+
+<p>A value of any imaginary type can be implicitly converted to any complex type.</p>
+
+<ul>
+<li>
+<p>The real part of the result is the positive zero</p>
+</li>
+<li>
+<p>The imaginary part of the result follows the conversion rules for the corresponding real types</p>
+</li>
+</ul>
+
+<p>A value of any complex type can be implicitly converted to any imaginary type</p>
+
+<ul>
+<li>
+<p>The real part is discarded</p>
+</li>
+<li>
+<p>The imaginary part of the result follows the conversion rules for the corresponding real types</p>
+</li>
+</ul>
+
+```c
+double imaginary z = I * (3*I); // the complex result -3.0+0i loses real part
+                                // sets z to 0*_Imaginary_I
+```</aside>
+
+<h4 id="Pointer_conversions">Pointer conversions</h4>
+
+<p>A pointer to <code>void</code> can be implicitly converted to and from any pointer to object type with the following semantics:</p>
+
+<ul>
+<li>
+<p>If a pointer to object is converted to a pointer to void and back, its value compares equal to the original pointer.</p>
+</li>
+<li>
+<p>No other guarantees are offered</p>
+</li>
+</ul>
+
+```c
+int* p = malloc(10 * sizeof(int)); // malloc returns void*
+```
+
+<p>A pointer to an unqualified type may be implicitly converted to the pointer to qualified version of that type (in other words, <a href="/reference/c/language/const/">const</a>, <a href="/reference/c/language/volatile/">volatile</a>, and <a href="/reference/c/language/restrict/">restrict</a> qualifiers can be added). The original pointer and the result compare equal.</p>
+
+```c
+int n;
+const int* p = &n; // &n has type int*
+```
+
+<p>Any integer <a href="/reference/c/language/constant_expression/">constant expression</a> with value <code>0</code> as well as integer pointer expression with value zero cast to the type <code>void*</code> can be implicitly converted to any pointer type (both pointer to object and pointer to function). The result is the null pointer value of its type, guaranteed to compare unequal to any non-null pointer value of that type. This integer or void* expression is known as <em>null pointer constant</em> and the standard library provides one definition of this constant as the macro <a href="/reference/c/types/NULL/">NULL</a>.</p>
+
+```c
+int* p = 0;
+double* q = NULL;
+```
+
+<h3 id="Notes">Notes</h3>
+
+<p>Although signed integer overflow in any arithmetic operator is undefined behavior, overflowing a signed integer type in an integer conversion is merely unspecified behavior.</p>
+
+<p>On the other hand, although unsigned integer overflow in any arithmetic operator (and in integer conversion) is a well-defined operation and follows the rules of modulo arithmetic, overflowing an unsigned integer in a floating-to-integer conversion is undefined behavior: the values of real floating type that can be converted to unsigned integer are the values from the open interval (-1; Unnn_MAX+1).</p>
+
+```c
+unsigned int n = -1.0; // undefined behavior
+```
+
+<p>Conversions between pointers and integers (except from pointer to _Bool<span class="std std-until std-c23">(until C23)</span>bool<span class="std std-since std-c23">(since C23)</span> and <span class="std std-since std-c99">(since C99)</span>from integer constant expression with the value zero to pointer), between pointers to objects (except where either to or from is a pointer to void) and conversions between pointers to functions (except when the functions have compatible types) are never implicit and require a <a href="/reference/c/language/cast/">cast operator</a>.</p>
+
+<p>There are no conversions (implicit or explicit) between pointers to functions and pointers to objects (including void*) or integers.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.3 Conversions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.3 Conversions (p: 37-41)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.3 Conversions (p: 50-56)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.3 Conversions (p: 42-48)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.2 Conversions</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/implicit_cast" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Implicit conversions</td></tr>
+</table>

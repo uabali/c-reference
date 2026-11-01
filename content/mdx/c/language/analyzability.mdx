@@ -1,0 +1,218 @@
+---
+title: "Analyzability"
+slug: "c/language/analyzability"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/analyzability"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>This optional extension to the C language limits the potential results of executing some forms of undefined behavior, which improves the effectiveness of static analysis of such programs. Analyzability is only guaranteed to be enabled if the <a href="/reference/c/preprocessor/replace/">predefined macro constant</a> <code>__STDC_ANALYZABLE__</code><span class="std std-since std-c11">(C11)</span> is defined by the compiler.</p>
+
+<p>If the compiler supports analyzability, any language or library construct whose behavior is undefined is further classified between <em>critical</em> and <em>bounded</em> undefined behavior, and the behavior of all bounded UB cases is limited as specified below.</p>
+
+<h3 id="Critical_undefined_behavior">Critical undefined behavior</h3>
+
+<p>Critical UB is undefined behavior that might perform a memory write or a volatile memory read out of bounds of any object. A program that has critical undefined behavior may be susceptible to security exploits.</p>
+
+<p>Only the following undefined behaviors are critical:</p>
+
+<ul>
+<li>
+<p>access to an object outside of its</p>
+
+<a href="/reference/c/language/lifetime/">lifetime</a>
+
+<p>(e.g. through a dangling pointer)</p>
+</li>
+<li>
+<p>write to an object whose declarations are not</p>
+
+<a href="/reference/c/language/compatible_type/#Compatible_types">compatible</a>
+</li>
+<li>
+<p>function call through a function pointer whose type is not</p>
+
+<a href="/reference/c/language/compatible_type/#Compatible_types">compatible</a>
+
+<p>with the type of the function it points to</p>
+</li>
+<li>
+<a href="/reference/c/language/value_category/">lvalue expression</a>
+
+<p>is evaluated, but does not designate an object</p>
+</li>
+<li>
+<p>attempted modification of a</p>
+
+<a href="/reference/c/language/string_literal/">string literal</a>
+</li>
+<li>
+<a href="/reference/c/language/operator_member_access/">dereferencing</a>
+
+<p>an invalid (null, indeterminate, etc) or</p>
+
+<a href="/reference/c/language/operator_arithmetic/">past-the-end</a>
+
+<p>pointer</p>
+</li>
+<li>
+<p>modification of a</p>
+
+<a href="/reference/c/language/const/">const object</a>
+
+<p>through a non-const pointer</p>
+</li>
+<li>
+<p>call to a standard library function or macro with an invalid argument</p>
+</li>
+<li>
+<p>call to a variadic standard library function with unexpected argument type (e.g. call to</p>
+
+<a href="/reference/c/io/fprintf/">printf</a>
+
+<p>with an argument of the type that doesn't match its conversion specifier)</p>
+</li>
+<li>
+<a href="/reference/c/program/longjmp/">longjmp</a>
+
+<p>where there is no</p>
+
+<a href="/reference/c/program/setjmp/">setjmp</a>
+
+<p>up the calling scope, across threads, or from within the scope of a VM type.</p>
+</li>
+<li>
+<p>any use of the pointer that was deallocated by</p>
+
+<a href="/reference/c/memory/free/">free</a>
+
+<p>or</p>
+
+<a href="/reference/c/memory/realloc/">realloc</a>
+</li>
+<li>
+<p>any</p>
+
+<a href="/reference/c/string/byte/">string</a>
+
+<p>or</p>
+
+<a href="/reference/c/string/wide/">wide string</a>
+
+<p>library function accesses an array out of bounds</p>
+</li>
+</ul>
+
+<h3 id="Bounded_undefined_behavior">Bounded undefined behavior</h3>
+
+<p>Bounded UB is undefined behavior that cannot perform an illegal memory write, although it may trap and may produce or store indeterminate values.</p>
+
+<ul>
+<li>
+<p>All undefined behavior not listed as critical is bounded, including</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>multithreaded data races</p>
+</li>
+<li>
+<p>use of a</p>
+
+<a href="/reference/c/language/initialization/">indeterminate values</a>
+
+<p>with automatic storage duration</p>
+</li>
+<li>
+<a href="/reference/c/language/object/#Strict_aliasing">strict aliasing</a>
+
+<p>violations</p>
+</li>
+<li>
+<a href="/reference/c/language/object/#alignment">misaligned</a>
+
+<p>object access</p>
+</li>
+<li>
+<p>signed integer overflow</p>
+</li>
+<li>
+<a href="/reference/c/language/eval_order/">unsequenced side-effects</a>
+
+<p>modify the same scalar or modify and read the same scalar</p>
+</li>
+<li>
+<p>floating-to-integer or pointer-to-integer</p>
+
+<a href="/reference/c/language/conversion/">conversion</a>
+
+<p>overflow</p>
+</li>
+<li>
+<a href="/reference/c/language/operator_arithmetic/">bitwise shift</a>
+
+<p>by a negative or too large bit count</p>
+</li>
+<li>
+<a href="/reference/c/language/operator_arithmetic/">integer division</a>
+
+<p>by zero</p>
+</li>
+<li>
+<p>use of a void expression</p>
+</li>
+<li>
+<p>direct</p>
+
+<a href="/reference/c/language/operator_assignment/">assignment</a>
+
+<p>or</p>
+
+<a href="/reference/c/string/byte/memcpy/">memcpy</a>
+
+<p>of inexactly-overlapped objects</p>
+</li>
+<li>
+<a href="/reference/c/language/restrict/">restrict</a>
+
+<p>violations</p>
+</li>
+<li>
+<p>etc.. ALL undefined behavior that's not in the critical list.</p>
+</li>
+</ul></dd>
+</dl>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Bounded undefined behavior disables certain optimizations: compilation with analyzability enabled preserves source-code causality, which <a href="/reference/c/language/as_if/">may be violated</a> by undefined behavior otherwise.</p>
+
+<p>Analyzability extension permits, as a form of implementation-defined behavior, for the <a href="/reference/c/error/set_constraint_handler_s/">runtime constraint handler</a> to be invoked when a trap occurs.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.8.3/1 Conditional feature macros (p: 177)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>Annex L Analyzability (p: 652-653)</p>
+</li>
+</ul></dd>
+</dl></section>

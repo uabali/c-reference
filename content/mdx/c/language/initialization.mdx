@@ -1,0 +1,226 @@
+---
+title: "Initialization"
+slug: "c/language/initialization"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/initialization"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>A <a href="/reference/c/language/declarations/">declaration</a> of an object may provide its initial value through the process known as <em>initialization</em>.</p>
+
+<p>For each <a href="/reference/c/language/declarations/">declarator</a>, the initializer, if not omitted, may be one of the following:</p>
+
+```text
+= expression
+= { initializer-list }
+= { }
+```
+
+<p>where <em>initializer-list</em> is a non-empty comma-separated list of <em>initializer</em> s (with an optional trailing comma), where each initializer has one of three possible forms:</p>
+
+```text
+expression
+{ initializer-list }
+{ }
+designator-list = initializer
+```
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><p>where <em>designator-list</em> is a list of either array designators of the form <code>[</code> <em>constant-expression</em> <code>]</code> or struct/union member designators of the form <code>.</code> <em>identifier</em> ; see <a href="/reference/c/language/array_initialization/">array initialization</a> and <a href="/reference/c/language/struct_initialization/">struct initialization</a>.</p>
+
+<p>Note: besides initializers, brace-enclosed <em>initializer-list</em> may appear in <a href="/reference/c/language/compound_literal/">compound literals</a>, which are expressions of the form:</p>
+
+```text
+( type ) { initializer-list }
+( type ) { }
+```</aside>
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>The initializer specifies the initial value stored in an object.</p>
+
+<h4 id="Explicit_initialization">Explicit initialization</h4>
+
+<p>If an initializer is provided, see</p>
+
+<ul>
+<li>
+<a href="/reference/c/language/scalar_initialization/">scalar initialization</a>
+
+<p>for the initialization of scalar types</p>
+</li>
+<li>
+<a href="/reference/c/language/array_initialization/">array initialization</a>
+
+<p>for the initialization of array types</p>
+</li>
+<li>
+<a href="/reference/c/language/struct_initialization/">struct initialization</a>
+
+<p>for the initialization of struct and union types.</p>
+</li>
+</ul>
+
+<h4 id="Implicit_initialization">Implicit initialization</h4>
+
+<p>If an initializer is not provided:</p>
+
+<ul>
+<li>
+<p>objects with automatic</p>
+
+<a href="/reference/c/language/storage_duration/">storage duration</a>
+
+<p>are initialized to indeterminate values (which may be</p>
+
+<a href="/reference/c/language/object/">trap representations</a>
+
+<p>)</p>
+</li>
+<li>
+<p>objects with static and thread-local</p>
+
+<a href="/reference/c/language/storage_duration/">storage duration</a>
+
+<p>are empty-initialized</p>
+</li>
+</ul>
+
+<h4 id="Empty_initialization">Empty initialization</h4>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>An object is empty-initialized if it is explicitly initialized from initializer <code>= {}</code>.</p></aside>
+
+<p>In some cases, an object is empty-initialized if it is not initialized explicitly, that is:</p>
+
+<ul>
+<li>
+<p>pointers are initialized to null pointer values of their types</p>
+</li>
+<li>
+<p>objects of integral types are initialized to unsigned zero</p>
+</li>
+<li>
+<p>objects of floating types are initialized to positive zero</p>
+</li>
+<li>
+<p>all elements of arrays, all members of structs, and the first members of unions are empty-initialized, recursively, plus all padding bits are initialized to zero</p>
+</li>
+</ul>
+
+<dl>
+<dd><p>(on platforms where null pointer values and floating zeroes have all-bit-zero representations, this form of initialization for statics is normally implemented by allocating them in the .bss section of the program image)</p></dd>
+</dl>
+
+<h3 id="Notes">Notes</h3>
+
+<p>When initializing an object of static or thread-local <a href="/reference/c/language/storage_duration/">storage duration</a>, every <em>expression</em> in the initializer must be a <a href="/reference/c/language/constant_expression/">constant expression</a> or <a href="/reference/c/language/string_literal/">string literal</a>.</p>
+
+<p>Initializers cannot be used in declarations of objects of incomplete type, VLAs, and block-scope objects with linkage.</p>
+
+<p>The initial values of function parameters are established as if by assignment from the arguments of a <a href="/reference/c/language/operator_other/#Function_call">function call</a>, rather than by initialization.</p>
+
+<p>If an indeterminate value is used as an argument to any standard library call, the behavior is undefined. Otherwise, the result of any expression involving indeterminate values is an indeterminate value (e.g. <code>int n;</code>, <code>n</code> may not compare equal to itself and it may appear to change its value on subsequent reads)</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-until std-c23">(until C23)</span></p><p>There is no special construct in C corresponding to <a href="https://en.cppreference.com/w/cpp/language/value_initialization" rel="noreferrer" target="_blank">value initialization</a> in C++; however, <code>= {0}</code> (or <code>(T){0}</code> in compound literals)<span class="std std-since std-c99">(since C99)</span> can be used instead, as the C standard does not allow empty structs, empty unions, or arrays of zero length.</p></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>The empty initializer <code>= {}</code> (or <code>(T){}</code> in compound literals) can be used to achieve the same semantics as <a href="https://en.cppreference.com/w/cpp/language/value_initialization" rel="noreferrer" target="_blank">value initialization</a> in C++.</p></aside>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdlib.h>
+int a[2]; // initializes a to {0, 0}
+int main(void)
+{
+    int i;          // initializes i to an indeterminate value
+    static int j;   // initializes j to 0
+    int k = 1;      // initializes k to 1
+ 
+    // initializes int x[3] to 1,3,5
+    // initializes int* p to &x[0]
+    int x[] = { 1, 3, 5 }, *p = x;
+ 
+    // initializes w (an array of two structs) to
+    // { { {1,0,0}, 0}, { {2,0,0}, 0} }
+    struct {int a[3], b;} w[] = {[0].a = {1}, [1].a[0] = 2};
+ 
+    // function call expression can be used for a local variable
+    char* ptr = malloc(10);
+    free(ptr);
+ 
+//  Error: objects with static storage duration require constant initializers
+//  static char* ptr = malloc(10);
+ 
+//  Error: VLA cannot be initialized
+//  int vla[n] = {0};
+}
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.9 Initialization (p: 100-105)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.9 Initialization (p: 139-144)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.8 Initialization (p: 125-130)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.5.7 Initialization</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/initialization" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Initialization</td></tr>
+</table>

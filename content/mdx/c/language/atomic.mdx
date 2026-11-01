@@ -1,0 +1,378 @@
+---
+title: "Atomic types"
+slug: "c/language/atomic"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/atomic"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+_Atomic ( type-name )
+_Atomic type-name
+```
+
+<p class="li-note"><span class="li-num">1)</span>  Use as a type specifier; this designates a new atomic type</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Use as a type qualifier; this designates the atomic version of <em>type-name</em>. In this role, it may be mixed with <a href="/reference/c/language/const/"><code>const</code></a>, <a href="/reference/c/language/volatile/"><code>volatile</code></a>, and <a href="/reference/c/language/restrict/"><code>restrict</code></a>, although unlike other qualifiers, the atomic version of <em>type-name</em> may have a different size, alignment, and object representation.</p>
+
+<table class="ref-table ref-params">
+<tr><td><em>type-name</em></td><td>-</td><td>any type other than array or function. For (1), <em>type-name</em> also cannot be atomic or cvr-qualified</td></tr>
+</table>
+
+<p>The header <a href="/reference/c/thread/#Atomic_operations"><code>&lt;stdatomic.h&gt;</code></a> defines <a href="/reference/c/thread/#Atomic_operations">many convenience type aliases</a>, from <a href="/reference/c/thread/#Atomic_operations"><code>atomic_bool</code></a> to <a href="/reference/c/thread/#Atomic_operations"><code>atomic_uintmax_t</code></a>, which simplify the use of this keyword with built-in and library types.</p>
+
+```c
+_Atomic const int* p1;  // p is a pointer to an atomic const int
+const atomic_int* p2;   // same
+const _Atomic(int)* p3; // same
+```
+
+<p>If the macro constant <code>__STDC_NO_ATOMICS__</code> is defined by the compiler, the keyword <code>_Atomic</code> is not provided.</p>
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>Objects of atomic types are the only objects that are free from <a href="/reference/c/language/memory_model/">data races</a>; that is, they may be modified by two threads concurrently or modified by one and read by another.</p>
+
+<p>Each atomic object has its own associated <em>modification order</em>, which is a total order of modifications made to that object. If, from some thread's point of view, modification <code>A</code> of some atomic <code>M</code> <a href="/reference/c/atomic/memory_order/">happens-before</a> modification <code>B</code> of the same atomic <code>M</code>, then in the modification order of <code>M</code>, <code>A</code> occurs before <code>B</code>.</p>
+
+<p>Note that although each atomic object has its own modification order, there is no single total order; different threads may observe modifications to different atomic objects in different orders.</p>
+
+<p>There are four coherence kinds that are guaranteed for all atomic operations:</p>
+
+<ul>
+<li>
+<strong>write-write coherence</strong>
+
+<p>: If an operation</p>
+
+<code>A</code>
+
+<p>that modifies an atomic object</p>
+
+<code>M</code>
+
+<em>happens-before</em>
+
+<p>an operation</p>
+
+<code>B</code>
+
+<p>that modifies</p>
+
+<code>M</code>
+
+<p>, then</p>
+
+<code>A</code>
+
+<p>appears earlier than</p>
+
+<code>B</code>
+
+<p>in the modification order of</p>
+
+<code>M</code>
+
+<p>.</p>
+</li>
+<li>
+<strong>read-read coherence</strong>
+
+<p>: If a value computation</p>
+
+<code>A</code>
+
+<p>of an atomic object</p>
+
+<code>M</code>
+
+<p>happens before a value computation</p>
+
+<code>B</code>
+
+<p>of</p>
+
+<code>M</code>
+
+<p>, and</p>
+
+<code>A</code>
+
+<p>takes its value from a side effect</p>
+
+<code>X</code>
+
+<p>on</p>
+
+<code>M</code>
+
+<p>, then the value computed by</p>
+
+<code>B</code>
+
+<p>is either the value stored by</p>
+
+<code>X</code>
+
+<p>or is the value stored by a side effect</p>
+
+<code>Y</code>
+
+<p>on</p>
+
+<code>M</code>
+
+<p>, where</p>
+
+<code>Y</code>
+
+<p>appears later than</p>
+
+<code>X</code>
+
+<p>in the modification order of</p>
+
+<code>M</code>
+
+<p>.</p>
+</li>
+<li>
+<strong>read-write coherence</strong>
+
+<p>: If a value computation</p>
+
+<code>A</code>
+
+<p>of an atomic object</p>
+
+<code>M</code>
+
+<em>happens-before</em>
+
+<p>an operation</p>
+
+<code>B</code>
+
+<p>on</p>
+
+<code>M</code>
+
+<p>, then</p>
+
+<code>A</code>
+
+<p>takes its value from a side effect</p>
+
+<code>X</code>
+
+<p>on</p>
+
+<code>M</code>
+
+<p>, where</p>
+
+<code>X</code>
+
+<p>appears before</p>
+
+<code>B</code>
+
+<p>in the modification order of</p>
+
+<code>M</code>
+
+<p>.</p>
+</li>
+<li>
+<strong>write-read coherence</strong>
+
+<p>: If a side effect</p>
+
+<code>X</code>
+
+<p>on an atomic object</p>
+
+<code>M</code>
+
+<em>happens-before</em>
+
+<p>a value computation</p>
+
+<code>B</code>
+
+<p>of</p>
+
+<code>M</code>
+
+<p>, then the evaluation</p>
+
+<code>B</code>
+
+<p>takes its value from</p>
+
+<code>X</code>
+
+<p>or from a side effect</p>
+
+<code>Y</code>
+
+<p>that appears after</p>
+
+<code>X</code>
+
+<p>in the modification order of</p>
+
+<code>M</code>
+
+<p>.</p>
+</li>
+</ul>
+
+<p>Some atomic operations are also synchronization operations; they may have additional release semantics, acquire semantics, or sequentially-consistent semantics. See <a href="/reference/c/atomic/memory_order/">memory_order</a>.</p>
+
+<p>Built-in <a href="/reference/c/language/operator_incdec/">increment and decrement operators</a> and <a href="/reference/c/language/operator_assignment/">compound assignment</a> are read-modify-write atomic operations with total sequentially consistent ordering (as if using <a href="/reference/c/atomic/memory_order/">memory_order_seq_cst</a>). If less strict synchronization semantics are desired, the <a href="/reference/c/thread/#Atomic_operations">standard library functions</a> may be used instead.</p>
+
+<p>Atomic properties are only meaningful for <a href="/reference/c/language/value_category/">lvalue expressions</a>. Lvalue-to-rvalue conversion (which models a memory read from an atomic location to a CPU register) strips atomicity along with other qualifiers.</p>
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: more, review interaction with memory_order and atomic library pages</td></tr>
+</table>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Accessing a member of an atomic struct/union is undefined behavior.</p>
+
+<p>The library type <code>sig_atomic_t</code> does not provide inter-thread synchronization or memory ordering, only atomicity.</p>
+
+<p>The <a href="/reference/c/language/volatile/"><code>volatile</code></a> types do not provide inter-thread synchronization, memory ordering, or atomicity.</p>
+
+<p>Implementations are recommended to ensure that the representation of <code>_Atomic(T)</code> in C is same as that of <code>std::atomic&lt;T&gt;</code> in C++ for every possible type <code>T</code>. The mechanisms used to ensure atomicity and memory ordering should be compatible.</p>
+
+<h3 id="Keywords">Keywords</h3>
+
+<p><a href="/reference/c/keyword/_Atomic/"><code>_Atomic</code></a></p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdatomic.h>
+#include <stdio.h>
+#include <threads.h>
+ 
+atomic_int acnt;
+int cnt;
+ 
+int f(void* thr_data)
+{
+    for (int n = 0; n < 1000; ++n)
+    {
+        ++cnt;
+        ++acnt;
+        // for this example, relaxed memory order is sufficient, e.g.
+        // atomic_fetch_add_explicit(&acnt, 1, memory_order_relaxed);
+    }
+    return 0;
+}
+ 
+int main(void)
+{
+    thrd_t thr[10];
+    for (int n = 0; n < 10; ++n)
+        thrd_create(&thr[n], f, NULL);
+    for (int n = 0; n < 10; ++n)
+        thrd_join(thr[n], NULL);
+ 
+    printf("The atomic counter is %u\n", acnt);
+    printf("The non-atomic counter is %u\n", cnt);
+}
+```
+
+<p>Possible output:</p>
+
+```text
+The atomic counter is 10000
+The non-atomic counter is 8644
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.2.4 Atomic type specifiers (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17 Atomics &lt;stdatomic.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.2.4 Atomic type specifiers (p: 87)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17 Atomics &lt;stdatomic.h&gt; (p: 200-209)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.2.4 Atomic type specifiers (p: 121)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17 Atomics &lt;stdatomic.h&gt; (p: 273-286)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><strong><a href="/reference/c/thread/">Concurrency support library</a></strong></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/atomic/atomic" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+atomic</td></tr>
+</table>

@@ -1,0 +1,91 @@
+---
+title: "thrd_create"
+slug: "c/thread/thrd_create"
+category: "thread"
+source: "https://en.cppreference.com/w/c/thread/thrd_create"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;threads.h&gt;</code></p>
+
+```c
+int thrd_create( thrd_t *thr, thrd_start_t func, void *arg );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Creates a new thread executing the function <code>func</code>. The function is invoked as <code>func(arg)</code>.</p>
+
+<p>If successful, the object pointed to by <code>thr</code> is set to the identifier of the new thread.</p>
+
+<p>The completion of this function <em>synchronizes-with</em> the beginning of the thread.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>thr</td><td>-</td><td>pointer to memory location to put the identifier of the new thread</td></tr>
+<tr><td>func</td><td>-</td><td>function to execute</td></tr>
+<tr><td>arg</td><td>-</td><td>argument to pass to the function</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p><a href="/reference/c/thread/thrd_errors/">thrd_success</a> if the creation of the new thread was successful. Otherwise returns <a href="/reference/c/thread/thrd_errors/">thrd_nomem</a> if there was insufficient amount of memory or <a href="/reference/c/thread/thrd_errors/">thrd_error</a> if another error occurred.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The thread identifiers may be reused for new threads once the thread has finished and joined or detached.</p>
+
+<p>The type <a href="/reference/c/thread/">thrd_start_t</a> is a typedef of <code>int(*)(void*)</code>, which differs from the POSIX equivalent <code>void*(*)(void*)</code></p>
+
+<p>All thread-specific storage values (see <a href="/reference/c/thread/tss_create/">tss_create</a>) are initialized to <a href="/reference/c/types/NULL/">NULL</a>.</p>
+
+<p>Return from the function <code>func</code> is equivalent to calling <a href="/reference/c/thread/thrd_exit/">thrd_exit</a> with the argument equal to the return value of <code>func</code>.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.5.1 The thrd_create function (p: 279)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.5.1 The thrd_create function (p: 383)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/thread/thrd_detach/">thrd_detach</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>detaches a thread   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/thrd_join/">thrd_join</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>blocks until a thread terminates   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/thread/thread" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+thread</td></tr>
+</table>

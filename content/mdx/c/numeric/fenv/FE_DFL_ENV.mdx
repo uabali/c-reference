@@ -1,0 +1,139 @@
+---
+title: "FE_DFL_ENV"
+slug: "c/numeric/fenv/FE_DFL_ENV"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/fenv/FE_DFL_ENV"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;fenv.h&gt;</code></p>
+
+```c
+#define FE_DFL_ENV  /*implementation defined*/
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>The macro constant <strong>FE_DFL_ENV</strong> expands to an expression of type <code>const fenv_t*</code>, which points to a full copy of the default floating-point environment, that is, the environment as loaded at program startup.</p>
+
+<p>Additional macros that begin with <code>FE_</code> followed by uppercase letters, and have the type <code>const fenv_t*</code>, may be supported by an implementation.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <fenv.h>
+ 
+#pragma STDC FENV_ACCESS ON
+ 
+void show_fe_exceptions(void)
+{
+    printf("current exceptions raised: ");
+    if(fetestexcept(FE_DIVBYZERO))     printf(" FE_DIVBYZERO");
+    if(fetestexcept(FE_INEXACT))       printf(" FE_INEXACT");
+    if(fetestexcept(FE_INVALID))       printf(" FE_INVALID");
+    if(fetestexcept(FE_OVERFLOW))      printf(" FE_OVERFLOW");
+    if(fetestexcept(FE_UNDERFLOW))     printf(" FE_UNDERFLOW");
+    if(fetestexcept(FE_ALL_EXCEPT)==0) printf(" none");
+    printf("\n");
+}
+ 
+void show_fe_rounding_method(void)
+{
+    printf("current rounding method:    ");
+    switch (fegetround()) {
+           case FE_TONEAREST:  printf ("FE_TONEAREST");  break;
+           case FE_DOWNWARD:   printf ("FE_DOWNWARD");   break;
+           case FE_UPWARD:     printf ("FE_UPWARD");     break;
+           case FE_TOWARDZERO: printf ("FE_TOWARDZERO"); break;
+           default:            printf ("unknown");
+    };
+    printf("\n");
+}
+ 
+void show_fe_environment(void)
+{
+    show_fe_exceptions();
+    show_fe_rounding_method();
+} 
+ 
+int main()
+{
+    printf("On startup:\n");
+    show_fe_environment();
+ 
+    // Change environment
+    fesetround(FE_DOWNWARD);     // change rounding mode
+    feraiseexcept(FE_INVALID);   // raise exception
+    printf("\nBefore restoration:\n");
+    show_fe_environment();
+ 
+    fesetenv(FE_DFL_ENV);    // restore
+    printf("\nAfter restoring default environment:\n");
+    show_fe_environment();
+}
+```
+
+<p>Output:</p>
+
+```text
+On startup:
+current exceptions raised:  none
+current rounding method:    FE_TONEAREST
+ 
+Before restoration:
+current exceptions raised:  FE_INVALID
+current rounding method:    FE_DOWNWARD
+ 
+After restoring default environment:
+current exceptions raised:  none
+current rounding method:    FE_TONEAREST
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.6/9 Floating-point environment &lt;fenv.h&gt; (p: 208)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.6/8 Floating-point environment &lt;fenv.h&gt; (p: 188-189)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/fenv/feenv/">fegetenv<br />fesetenv</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>saves or restores the current floating-point environment   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/fenv/feupdateenv/">feupdateenv</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>restores the floating-point environment and raises the previously raise exceptions   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/fenv/FE_DFL_ENV" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+FE_DFL_ENV</td></tr>
+</table></section>

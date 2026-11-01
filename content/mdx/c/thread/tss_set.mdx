@@ -1,0 +1,94 @@
+---
+title: "tss_set"
+slug: "c/thread/tss_set"
+category: "thread"
+source: "https://en.cppreference.com/w/c/thread/tss_set"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;threads.h&gt;</code></p>
+
+```c
+int tss_set( tss_t tss_id, void *val );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Sets the value of the thread-specific storage identified by <code>tss_id</code> for the current thread to <code>val</code>. Different threads may set different values to the same key.</p>
+
+<p>The destructor, if available, is not invoked.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>tss_id</td><td>-</td><td>thread-specific storage key, obtained from <a href="/reference/c/thread/tss_create/">tss_create</a> and not deleted by <a href="/reference/c/thread/tss_delete/">tss_delete</a></td></tr>
+<tr><td>val</td><td>-</td><td>value to set thread-specific storage to</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p><a href="/reference/c/thread/thrd_errors/">thrd_success</a> if successful, <a href="/reference/c/thread/thrd_errors/">thrd_error</a> otherwise.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The POSIX equivalent of this function is <a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_setspecific.html" rel="noreferrer" target="_blank"><code>pthread_setspecific</code></a>.</p>
+
+<p>Typically TSS is used to store pointers to blocks of dynamically allocated memory that have been reserved for use by the calling thread.</p>
+
+<p><code>tss_set</code> may be called in the TSS destructor. If the destructor exits with non-NULL value in the TSS storage, it will be retried by <a href="/reference/c/thread/thrd_exit/">thrd_exit</a> up to <a href="/reference/c/thread/TSS_DTOR_ITERATIONS/">TSS_DTOR_ITERATIONS</a> times, after which the storage will be lost.</p>
+
+<h3 id="Example">Example</h3>
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: improve, perhaps look for POSIX examples for inspiration</td></tr>
+</table>
+
+```c
+int thread_func(void *arg) {
+    tss_t key;
+    if (thrd_success == tss_create(&key, free)) {
+        tss_set(key, malloc(4)); // stores a pointer on TSS
+        // ...
+    }
+} // calls free() for the pointer stored on TSS
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.6.4 The tss_set function (p: 282-283)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.6.4 The tss_set function (p: 387)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/thread/tss_get/">tss_get</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>reads from thread-specific storage   <span class="mark-note">(function)</span></td></tr>
+</table>

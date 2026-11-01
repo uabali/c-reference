@@ -1,0 +1,110 @@
+---
+title: "_Imaginary_I"
+slug: "c/numeric/complex/Imaginary_I"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/complex/Imaginary_I"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;complex.h&gt;</code></p>
+
+```c
+#define _Imaginary_I /* unspecified */
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>The <code>_Imaginary_I</code> macro expands to a value of type <code>const float _Imaginary</code> with the value of the imaginary unit.</p>
+
+<p>As with any pure imaginary number support in C, this macro is only defined if the imaginary numbers are supported.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span> <span class="std std-until std-c11">(until C11)</span></p><p>A compiler that defines <code>__STDC_IEC_559_COMPLEX__</code> is not required to support imaginary numbers. POSIX recommends checking if the macro <code>_Imaginary_I</code> is defined to identify imaginary number support.</p></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><p>Imaginary numbers are supported if <code>__STDC_IEC_559_COMPLEX__</code> is defined.</p></aside>
+
+<h3 id="Notes">Notes</h3>
+
+<p>This macro allows for the precise way to assemble a complex number from its real and imaginary components, e.g. with <code>(double complex)((double)x + _Imaginary_I * (double)y)</code>. This pattern was standardized in C11 as the macro <code>CMPLX</code>. Note that if <code>_Complex_I</code> is used instead, this expression is allowed to convert negative zero to positive zero in the imaginary position.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <complex.h>
+#include <math.h>
+ 
+int main(void)
+{
+    double complex z1 = 0.0 + INFINITY * _Imaginary_I;
+    printf("z1 = %.1f%+.1fi\n", creal(z1), cimag(z1));
+ 
+    double complex z2 = 0.0 + INFINITY * _Complex_I;
+    printf("z2 = %.1f%+.1fi\n", creal(z2), cimag(z2));
+}
+```
+
+<p>Output:</p>
+
+```text
+z1 = 0.0+Infi 
+z2 = NaN+Infi
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3.1/5 _Imaginary_I (p: 188)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>G.6/1 _Imaginary_I (p: 537)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3.1/3 _Imaginary_I (p: 170)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>G.6/1 _Imaginary_I (p: 472)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/complex/Complex_I/">_Complex_I</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>the complex unit constant i   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/I/">I</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>the complex or imaginary unit constant i   <span class="mark-note">(macro constant)</span></td></tr>
+</table></section>

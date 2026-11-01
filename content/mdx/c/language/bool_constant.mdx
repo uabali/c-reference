@@ -1,0 +1,63 @@
+---
+title: "Predefined Boolean constants (since C23)"
+slug: "c/language/bool_constant"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/bool_constant"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+true
+false
+```
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>Keywords <code>true</code> and <code>false</code> represent predefined constants. They are <a href="/reference/c/language/value_category/#Non-lvalue_object_expressions">non-lvalues</a> of type <a href="/reference/c/language/types/"><code>bool</code></a>.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>See <a href="/reference/c/language/conversion/#Integer_conversions">integral conversions</a> for implicit conversions from <code>bool</code> to other types and <a href="/reference/c/language/conversion/#Boolean_conversion">boolean conversions</a> for the implicit conversions from other types to <code>bool</code>.</p>
+
+<p>Until C23, <code>true</code> and <code>false</code> were implemented as macros provided in <a href="/reference/c/types/"><code>&lt;stdbool.h&gt;</code></a>. An implementation may also define <code>bool</code>, <code>true</code>, and <code>false</code> as predefined macros in C23 for compatibility.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <assert.h>
+ 
+int main()
+{
+    assert(true == 1 && 0 == false);
+}
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.4.4.6 Predefined constants (p: 66)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/bool_literal" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Boolean literals</td></tr>
+</table>

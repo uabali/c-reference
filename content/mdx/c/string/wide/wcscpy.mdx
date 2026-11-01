@@ -1,0 +1,242 @@
+---
+title: "wcscpy, wcscpy_s"
+slug: "c/string/wide/wcscpy"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/wide/wcscpy"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;wchar.h&gt;</code></p>
+
+<p class="decl-note">(1)</p>
+
+```c
+wchar_t* wcscpy( wchar_t* dest, const wchar_t* src );
+```
+
+<p class="decl-note"><span class="std std-since std-c95">(since C95)</span>  <span class="std std-until std-c99">(until C99)</span></p>
+
+```c
+wchar_t* wcscpy( wchar_t* restrict dest, const wchar_t* restrict src );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+errno_t wcscpy_s( wchar_t* restrict dest, rsize_t destsz,
+                  const wchar_t* restrict src );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Copies the wide string pointed to by <code>src</code> (including the terminating null wide character) to wide character array pointed to by <code>dest</code>. The behavior is undefined if the <code>dest</code> array is not large enough. The behavior is undefined if the strings overlap.</p>
+
+<div class="li-note"><span class="li-num">2)</span>
+
+<p>Same as</p>
+
+(1)
+
+<p>, except that it may clobber the rest of the destination array with unspecified values and that the following errors are detected at runtime and call the currently installed</p>
+
+<a href="/reference/c/error/set_constraint_handler_s/">constraint handler</a>
+
+<p>function:</p>
+
+<dl>
+<dd><ul>
+<li>
+<code>src</code>
+
+<p>or</p>
+
+<code>dest</code>
+
+<p>is a null pointer</p>
+</li>
+<li>
+<code>destsz</code>
+
+<p>is zero or greater than</p>
+
+<code>RSIZE_MAX / sizeof(wchar_t)</code>
+</li>
+<li>
+<code>destsz</code>
+
+<p>is less or equal</p>
+
+<code>wcsnlen_s(src, destsz)</code>
+
+<p>, in other words, truncation would occur</p>
+</li>
+<li>
+<p>overlap would occur between the source and the destination strings</p>
+</li>
+</ul></dd>
+<dd><p>As with all bounds-checked functions,</p>
+
+<code>wcscpy_s</code>
+
+<p>is only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<a href="/reference/c/string/wide/"><code>&lt;wchar.h&gt;</code></a>
+
+<p>.</p></dd>
+</dl></div>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>dest</td><td>-</td><td>pointer to the wide character array to copy to</td></tr>
+<tr><td>src</td><td>-</td><td>pointer to the null-terminated wide string to copy from</td></tr>
+<tr><td>destsz</td><td>-</td><td>maximum number of characters to write, typically the size of the destination buffer</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  returns a copy of <code>dest</code></p>
+
+<p class="li-note"><span class="li-num">2)</span>  returns zero on success, returns non-zero on error. Also, on error, writes <code>L&#x27;\0&#x27;</code> to <code>dest[0]</code> (unless <code>dest</code> is a null pointer or <code>destsz</code> is zero or greater than <code>RMAX_SIZE / sizeof(wchar_t)</code>).</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <locale.h>
+#include <stdio.h>
+#include <wchar.h>
+ 
+int main(void)
+{
+    wchar_t* src = L"犬 means dog";
+//  src[0] = L'狗' ; // this would be undefined behavior
+    wchar_t dst[wcslen(src) + 1]; // +1 for the null terminator
+    wcscpy(dst, src);
+    dst[0] = L'狗'; // OK
+ 
+    setlocale(LC_ALL, "en_US.utf8");
+    printf("src = %ls\ndst = %ls\n", src, dst);
+}
+```
+
+<p>Output:</p>
+
+```text
+src = 犬 means dog
+dst = 狗 means dog
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.4.1.2 The wcscpy function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.9.2.1.1 The wcscpy_s function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.4.1.2 The wcscpy function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.9.2.1.1 The wcscpy_s function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.4.1.2 The wcscpy function (p: 430)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.9.2.1.1 The wcscpy_s function (p: 639)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.4.1.2 The wcscpy function (p: 376)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/wide/wcsncpy/">wcsncpy<br />wcsncpy_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>copies a certain amount of wide characters from one string to another   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wmemcpy/">wmemcpy<br />wmemcpy_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>copies a certain amount of wide characters between two non-overlapping arrays   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strcpy/">strcpy<br />strcpy_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>copies one string to another   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/wide/wcscpy" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+wcscpy</td></tr>
+</table>

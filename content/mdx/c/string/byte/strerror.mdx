@@ -1,0 +1,255 @@
+---
+title: "strerror, strerror_s, strerrorlen_s"
+slug: "c/string/byte/strerror"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/byte/strerror"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;string.h&gt;</code></p>
+
+```c
+char* strerror( int errnum );
+```
+
+<p class="decl-note">(1)</p>
+
+```c
+errno_t strerror_s( char *buf, rsize_t bufsz, errno_t errnum );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+```c
+size_t strerrorlen_s( errno_t errnum );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Returns a pointer to the textual description of the system error code <code>errnum</code>, identical to the description that would be printed by <a href="/reference/c/io/perror/">perror()</a>.</p>
+
+<p class="li-note"><code>errnum</code> is usually acquired from the <code>errno</code> variable, however the function accepts any value of type <code>int</code>. The contents of the string are locale-specific.</p>
+
+<p class="li-note">The returned string must not be modified by the program, but may be overwritten by a subsequent call to the <code>strerror</code> function. <code>strerror</code> is not required to be thread-safe. Implementations may be returning different pointers to static read-only string literals or may be returning the same pointer over and over, pointing at a static buffer in which strerror places the string.</p>
+
+<div class="li-note"><span class="li-num">2)</span>
+
+<p>Same as</p>
+
+(1)
+
+<p>, except that the message is copied into user-provided storage</p>
+
+<code>buf</code>
+
+<p>. No more than</p>
+
+<code>bufsz-1</code>
+
+<p>bytes are written, the buffer is always null-terminated. If the message had to be truncated to fit the buffer and</p>
+
+<code>bufsz</code>
+
+<p>is greater than 3, then only</p>
+
+<code>bufsz-4</code>
+
+<p>bytes are written, and the characters</p>
+
+<code>&quot;...&quot;</code>
+
+<p>are appended before the null terminator. In addition, the following errors are detected at runtime and call the currently installed</p>
+
+<a href="/reference/c/error/set_constraint_handler_s/">constraint handler</a>
+
+<p>function:</p>
+
+<dl>
+<dd><ul>
+<li>
+<code>buf</code>
+
+<p>is a null pointer</p>
+</li>
+<li>
+<code>bufsz</code>
+
+<p>is zero or greater than</p>
+
+RSIZE_MAX
+</li>
+</ul></dd>
+</dl></div>
+
+<p class="li-note">The behavior is undefined if writing to <code>buf</code> occurs past the end of the array, which can happen when the size of the buffer pointed to by <code>buf</code> is less than the number of characters in the error message which in turn is less than <code>bufsz</code>.</p>
+
+<div class="li-note"><span class="li-num">3)</span>
+
+<p>Computes the length of the untruncated locale-specific error message that</p>
+
+<code>strerror_s</code>
+
+<p>would write if it were called with</p>
+
+<code>errnum</code>
+
+<p>. The length does not include the null terminator.</p>
+
+<dl>
+<dd><p>As with all bounds-checked functions,</p>
+
+<code>strerror_s</code>
+
+<p>and</p>
+
+<code>strerrorlen_s</code>
+
+<p>are only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<a href="/reference/c/string/byte/"><code>&lt;string.h&gt;</code></a>
+
+<p>.</p></dd>
+</dl></div>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>errnum</td><td>-</td><td>integral value referring to an error code</td></tr>
+<tr><td>buf</td><td>-</td><td>pointer to a user-provided buffer</td></tr>
+<tr><td>bufsz</td><td>-</td><td>size of the user-provided buffer</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  Pointer to a null-terminated byte string corresponding to the <a href="/reference/c/error/errno/">errno</a> error code <code>errnum</code>.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Zero if the entire message was successfully stored in <code>buf</code>, non-zero otherwise.</p>
+
+<p class="li-note"><span class="li-num">3)</span>  Length (not including the null terminator) of the message that <code>strerror_s</code> would return</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p><a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/strerror.html" rel="noreferrer" target="_blank">POSIX</a> allows subsequent calls to <code>strerror</code> to invalidate the pointer value returned by an earlier call. It also specifies that it is the <a href="/reference/c/locale/LC_categories/"><code>LC_MESSAGES</code></a> locale facet that controls the contents of these messages.</p>
+
+<p><code>strerror_s</code> is the only bounds-checked function that allows truncation, because providing as much information as possible about a failure was deemed to be more desirable. POSIX also defines <a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/strerror.html" rel="noreferrer" target="_blank"><code>strerror_r</code></a> for similar purposes.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#define __STDC_WANT_LIB_EXT1__ 1
+#include <stdio.h>
+#include <errno.h>
+#include <string.h>
+#include <locale.h>
+ 
+int main(void)
+{
+    FILE *fp = fopen(tmpnam((char[L_tmpnam]){0}), "r");
+    if(fp==NULL) {
+        printf("File opening error: %s\n", strerror(errno));
+        setlocale(LC_MESSAGES, "de_DE.utf8");
+        printf("Now in German: %s\n", strerror(errno));
+#ifdef __STDC_LIB_EXT1__
+        setlocale(LC_ALL, "ja_JP.utf8"); // printf needs CTYPE for multibyte output
+        size_t errmsglen = strerrorlen_s(errno) + 1;
+        char errmsg[errmsglen]; 
+        strerror_s(errmsg, errmsglen, errno);
+        printf("Now in Japanese: %s\n", errmsg);
+#endif
+    }
+}
+```
+
+<p>Possible output:</p>
+
+```text
+File opening error: No such file or directory
+Now in German: Datei oder Verzeichnis nicht gefunden
+Now in Japanese: そのようなファイル、又はディレクトリはありません
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.6.2 The strerror function (p: 371)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.7.4.2 The strerror_s function (p: 622)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.7.4.3 The strerrorlen_s function (p: 623)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.6.2 The strerror function (p: 334)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.11.6.2 The strerror function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/perror/">perror</a></td><td>displays a character string corresponding of the current error to <a href="/reference/c/io/std_streams/">stderr</a>   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/error/errno/">errno</a></td><td>macro which expands to POSIX-compatible thread-local error number variable <span class="mark-note">(macro variable)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/byte/strerror" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+strerror</td></tr>
+</table></section></section>

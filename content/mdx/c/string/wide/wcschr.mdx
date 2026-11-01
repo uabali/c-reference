@@ -1,0 +1,175 @@
+---
+title: "wcschr"
+slug: "c/string/wide/wcschr"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/wide/wcschr"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;wchar.h&gt;</code></p>
+
+```c
+wchar_t *wcschr( const wchar_t *str, wchar_t ch );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c95">(since C95)</span></p>
+
+```c
+/*QWchar_t*/ *wcschr( /*QWchar_t*/ *str, wchar_t ch );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c23">(since C23)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Finds the first occurrence of the wide character <code>ch</code> in the wide string pointed to by <code>str</code>.</p>
+
+<div class="li-note"><span class="li-num">2)</span>
+
+<p>Type-generic function equivalent to</p>
+
+(1)
+
+<p>. Let</p>
+
+<code>T</code>
+
+<p>be an unqualified wide character object type.</p>
+
+<dl>
+<dd><ul>
+<li>
+<p>If</p>
+
+<code>str</code>
+
+<p>is of type</p>
+
+<code>const T*</code>
+
+<p>, the return type is</p>
+
+<code>const wchar_t*</code>
+
+<p>.</p>
+</li>
+<li>
+<p>Otherwise, if</p>
+
+<code>str</code>
+
+<p>is of type</p>
+
+<code>T*</code>
+
+<p>, the return type is</p>
+
+<code>wchar_t*</code>
+
+<p>.</p>
+</li>
+<li>
+<p>Otherwise, the behavior is undefined.</p>
+</li>
+</ul></dd>
+</dl>
+
+<p>If a macro definition of each of these generic functions is suppressed to access an actual function (e.g. if</p>
+
+<code>(wcschr)</code>
+
+<p>or a function pointer is used), the actual function declaration</p>
+
+(1)
+
+<p>becomes visible.</p></div>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>str</td><td>-</td><td>pointer to the null-terminated wide string to be analyzed</td></tr>
+<tr><td>ch</td><td>-</td><td>wide character to search for</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Pointer to the found character in <code>str</code>, or a null pointer if no such character is found.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <wchar.h>
+#include <stdio.h>
+#include <locale.h>
+ 
+int main(void)
+{
+    wchar_t arr[] = L"白猫 黒猫 кошки";
+    wchar_t *cat = wcschr(arr, L'猫');
+    wchar_t *dog = wcschr(arr, L'犬');
+ 
+    setlocale(LC_ALL, "en_US.utf8");
+    if(cat)
+        printf("The character 猫 found at position %td\n", cat-arr);
+    else
+        puts("The character 猫 not found");
+ 
+    if(dog)
+        printf("The character 犬 found at position %td\n", dog-arr);
+    else
+        puts("The character 犬 not found");
+}
+```
+
+<p>Output:</p>
+
+```text
+The character 猫 found at position 1
+The character 犬 not found
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.4.5.1 The wcschr function (p: 435)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.4.5.1 The wcschr function (p: 381)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/wide/wcsrchr/">wcsrchr</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>finds the last occurrence of a wide character in a wide string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcspbrk/">wcspbrk</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>finds the first location of any wide character in one wide string, in another wide string   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/wide/wcschr" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+wcschr</td></tr>
+</table></section>

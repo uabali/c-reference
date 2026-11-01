@@ -1,0 +1,141 @@
+---
+title: "feupdateenv"
+slug: "c/numeric/fenv/feupdateenv"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/fenv/feupdateenv"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;fenv.h&gt;</code></p>
+
+```c
+int feupdateenv( const fenv_t* envp );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>First, remembers the currently raised floating-point exceptions, then restores the floating-point environment from the object pointed to by <code>envp</code> (similar to <a href="/reference/c/numeric/fenv/feenv/">fesetenv</a>), then raises the floating-point exceptions that were saved.</p>
+
+<p>This function may be used to end the non-stop mode established by an earlier call to <a href="/reference/c/numeric/fenv/feholdexcept/">feholdexcept</a>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>envp</td><td>-</td><td>pointer to the object of type <code>fenv_t</code> set by an earlier call to <a href="/reference/c/numeric/fenv/feholdexcept/">feholdexcept</a> or <code>fegetenv</code> or equal to <a href="/reference/c/numeric/fenv/FE_DFL_ENV/">FE_DFL_ENV</a></td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p><code>0</code> on success, non-zero otherwise.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <fenv.h>
+#include <float.h>
+ 
+#pragma STDC FENV_ACCESS ON
+ 
+void show_fe_exceptions(void)
+{
+    printf("current exceptions raised: ");
+    if(fetestexcept(FE_DIVBYZERO))     printf(" FE_DIVBYZERO");
+    if(fetestexcept(FE_INEXACT))       printf(" FE_INEXACT");
+    if(fetestexcept(FE_INVALID))       printf(" FE_INVALID");
+    if(fetestexcept(FE_OVERFLOW))      printf(" FE_OVERFLOW");
+    if(fetestexcept(FE_UNDERFLOW))     printf(" FE_UNDERFLOW");
+    if(fetestexcept(FE_ALL_EXCEPT)==0) printf(" none");
+    printf("\n");
+}
+ 
+double x2 (double x)   /* times two */
+{
+    fenv_t curr_excepts;
+ 
+    /* Save and clear current f-p environment. */
+    feholdexcept(&curr_excepts);
+ 
+    /* Raise inexact and overflow exceptions. */
+    printf("In x2():  x = %f\n", x=x*2.0);
+    show_fe_exceptions();
+    feclearexcept(FE_INEXACT);   /* hide inexact exception from caller */
+ 
+    /* Merge caller's exceptions (FE_INVALID)        */
+    /* with remaining x2's exceptions (FE_OVERFLOW). */
+    feupdateenv(&curr_excepts);
+    return x;
+}
+ 
+int main(void)
+{    
+    feclearexcept(FE_ALL_EXCEPT);
+    feraiseexcept(FE_INVALID);   /* some computation with invalid argument */
+    show_fe_exceptions();
+    printf("x2(DBL_MAX) = %f\n", x2(DBL_MAX));
+    show_fe_exceptions();
+ 
+    return 0;
+}
+```
+
+<p>Output:</p>
+
+```text
+current exceptions raised:  FE_INVALID
+In x2():  x = inf
+current exceptions raised:  FE_INEXACT FE_OVERFLOW
+x2(DBL_MAX) = inf
+current exceptions raised:  FE_INVALID FE_OVERFLOW
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.6.4.4 The feupdateenv function (p: 214-215)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.6.4.4 The feupdateenv function (p: 195-196)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/fenv/feholdexcept/">feholdexcept</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>saves the environment, clears all status flags and ignores all future errors   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/fenv/feenv/">fegetenv<br />fesetenv</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>saves or restores the current floating-point environment   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/fenv/FE_DFL_ENV/">FE_DFL_ENV</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>default floating-point environment   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/fenv/feupdateenv" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+feupdateenv</td></tr>
+</table></section>

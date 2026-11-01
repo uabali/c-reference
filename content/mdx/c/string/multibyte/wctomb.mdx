@@ -1,0 +1,255 @@
+---
+title: "wctomb, wctomb_s"
+slug: "c/string/multibyte/wctomb"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/multibyte/wctomb"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdlib.h&gt;</code></p>
+
+```c
+int wctomb( char *s, wchar_t wc );
+```
+
+<p class="decl-note">(1)</p>
+
+```c
+errno_t wctomb_s( int *restrict status, char *restrict s, rsize_t ssz, wchar_t wc );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Converts a wide character <code>wc</code> to multibyte encoding and stores it (including any shift sequences) in the char array whose first element is pointed to by <code>s</code>. No more than <code>MB_CUR_MAX</code> characters are stored. The conversion is affected by the current locale's LC_CTYPE category.</p>
+
+<p class="li-note">If <code>wc</code> is the null character, the null byte is written to <code>s</code>, preceded by any shift sequences necessary to restore the initial shift state.</p>
+
+<p class="li-note">If <code>s</code> is a null pointer, this function resets the global conversion state and determines whether shift sequences are used.</p>
+
+<div class="li-note"><span class="li-num">2)</span>
+
+<p>Same as</p>
+
+(1)
+
+<p>, except that the result is returned in the out-parameter</p>
+
+<code>status</code>
+
+<p>and the following errors are detected at runtime and call the currently installed</p>
+
+<a href="/reference/c/error/set_constraint_handler_s/">constraint handler</a>
+
+<p>function:</p>
+
+<dl>
+<dd><ul>
+<li>
+<code>ssz</code>
+
+<p>is less than the number of bytes that would be written (unless</p>
+
+<code>s</code>
+
+<p>is null)</p>
+</li>
+<li>
+<code>ssz</code>
+
+<p>is greater than</p>
+
+RSIZE_MAX
+
+<p>(unless</p>
+
+<code>s</code>
+
+<p>is null)</p>
+</li>
+<li>
+<code>s</code>
+
+<p>is a null pointer but</p>
+
+<code>ssz</code>
+
+<p>is not zero</p>
+</li>
+</ul></dd>
+<dd><p>As with all bounds-checked functions,</p>
+
+<code>wctomb_s</code>
+
+<p>is only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<a href="/reference/c/program/"><code>&lt;stdlib.h&gt;</code></a>
+
+<p>.</p></dd>
+</dl></div>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Each call to <code>wctomb</code> updates the internal global conversion state (a static object of type <a href="/reference/c/string/multibyte/mbstate_t/">mbstate_t</a>, known only to this function). If the multibyte encoding uses shift states, this function is not reentrant. In any case, multiple threads should not call <code>wctomb</code> without synchronization: <a href="/reference/c/string/multibyte/wcrtomb/">wcrtomb</a> or <code>wctomb_s</code> may be used instead.</p>
+
+<p>Unlike most bounds-checked functions, <code>wctomb_s</code> does not null-terminate its output, because it is designed to be used in loops that process strings character-by-character.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>s</td><td>-</td><td>pointer to the character array for output</td></tr>
+<tr><td>wc</td><td>-</td><td>wide character to convert</td></tr>
+<tr><td>ssz</td><td>-</td><td>maximum number of bytes to write to <code>s</code> (size of the array <code>s</code>)</td></tr>
+<tr><td>status</td><td>-</td><td>pointer to an out-parameter where the result (length of the multibyte sequence or the shift sequence status) will be stored</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  If <code>s</code> is not a null pointer, returns the number of bytes that are contained in the multibyte representation of <code>wc</code> or <code>-1</code> if <code>wc</code> is not a valid character.</p>
+
+<p class="li-note">If <code>s</code> is a null pointer, resets its internal conversion state to represent the initial shift state and returns <code>0</code> if the current multibyte encoding is not state-dependent (does not use shift sequences) or a non-zero value if the current multibyte encoding is state-dependent (uses shift sequences).</p>
+
+<p class="li-note"><span class="li-num">2)</span>  zero on success, in which case the multibyte representation of <code>wc</code> is stored in <code>s</code> and its length is stored in <code>*status</code>, or, if <code>s</code> is null, the shift sequence status is stored in <code>status</code>). Non-zero on encoding error or runtime constraint violation, in which case <code>(size_t)-1</code> is stored in <code>*status</code>. The value stored in <code>*status</code> never exceeds MB_CUR_MAX</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+ 
+void demo(wchar_t wc)
+{
+    const char* dep = wctomb(NULL, wc) ? "Yes" : "No";
+    printf("State-dependent encoding? %s.\n", dep);
+ 
+    char mb[MB_CUR_MAX];
+    int len = wctomb(mb, wc);
+    printf("wide char '%lc' -> multibyte char [", wc);
+    for (int idx = 0; idx < len; ++idx)
+        printf("%s%#2x", idx ? " " : "", (unsigned char)mb[idx]);
+    printf("]\n");
+}
+ 
+int main(void)
+{
+    setlocale(LC_ALL, "en_US.utf8");
+    printf("MB_CUR_MAX = %zu\n", MB_CUR_MAX);
+    demo(L'A');
+    demo(L'\u00df');
+    demo(L'\U0001d10b');
+}
+```
+
+<p>Possible output:</p>
+
+```text
+MB_CUR_MAX = 6
+State-dependent encoding? No.
+wide char 'A' -> multibyte char [0x41]
+State-dependent encoding? No.
+wide char 'ß' -> multibyte char [0xc3 0x9f]
+State-dependent encoding? No.
+wide char '𝄋' -> multibyte char [0xf0 0x9d 0x84 0x8b]
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.7.3 The wctomb function (p: 261)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.6.4.1 The wctomb_s function (p: 443)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.7.3 The wctomb function (p: 358-359)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.6.4.1 The wctomb_s function (p: 610-611)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20.7.3 The wctomb function (p: 322-323)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.10.7.3 The wctomb function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/multibyte/mbtowc/">mbtowc</a></td><td>converts the next multibyte character to wide character   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/multibyte/wcrtomb/">wcrtomb<br />wcrtomb_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>converts a wide character to its multibyte representation, given state   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/multibyte/wctomb" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+wctomb</td></tr>
+</table>

@@ -1,0 +1,66 @@
+---
+title: "C attribute: noreturn, _Noreturn (since C23)"
+slug: "c/language/attributes/noreturn"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/attributes/noreturn"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Indicates that the function does not return.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+[[ noreturn ]][[ __noreturn__ ]]
+[[ _Noreturn ]][[ ___Noreturn__ ]]
+```
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>Indicates that the function does not return.</p>
+
+<p>This attribute applies to the name of the function and specifies that the function does not return by executing the return statement or by reaching the end of the function body (it may return by executing <a href="/reference/c/program/longjmp/">longjmp</a>). The behavior is undefined if the function with this attribute actually returns. A compiler diagnostic is recommended if this can be detected.</p>
+
+<p>It has been previously denoted by the keyword <a href="/reference/c/language/_Noreturn/"><code>_Noreturn</code></a> until it was deprecated since C23 and replaced by this attribute.</p>
+
+<h3 id="Standard_library">Standard library</h3>
+
+<p>The following standard functions are declared with <code>noreturn</code> attribute (they used to be declared with <a href="/reference/c/language/_Noreturn/"><code>_Noreturn</code></a> specifier until C23):</p>
+
+<ul>
+<li>
+<a href="/reference/c/program/abort/">abort()</a>
+</li>
+<li>
+<a href="/reference/c/program/exit/">exit()</a>
+</li>
+<li>
+<a href="/reference/c/program/_Exit/">_Exit()</a>
+</li>
+<li>
+<a href="/reference/c/program/quick_exit/">quick_exit()</a>
+</li>
+<li>
+<a href="/reference/c/thread/thrd_exit/">thrd_exit()</a>
+</li>
+<li>
+<a href="/reference/c/program/longjmp/">longjmp()</a>
+</li>
+</ul>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="/reference/c/language/_Noreturn/">C documentation</a>
+
+<p>for</p>
+
+_Noreturn</td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/attributes/noreturn" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+<code>[[noreturn]]</code></td></tr>
+</table>

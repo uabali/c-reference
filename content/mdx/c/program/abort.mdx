@@ -1,0 +1,148 @@
+---
+title: "abort"
+slug: "c/program/abort"
+category: "program"
+source: "https://en.cppreference.com/w/c/program/abort"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdlib.h&gt;</code></p>
+
+```c
+void abort(void);
+```
+
+<p class="decl-note"><span class="std std-until std-c11">(until C11)</span></p>
+
+```c
+_Noreturn void abort(void);
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span>  <span class="std std-until std-c23">(until C23)</span></p>
+
+```c
+[[noreturn]] void abort(void);
+```
+
+<p class="decl-note"><span class="std std-since std-c23">(since C23)</span></p>
+
+<p>Causes abnormal program termination unless <a href="/reference/c/program/SIG_types/">SIGABRT</a> is being caught by a signal handler passed to signal and the handler does not return.</p>
+
+<p>Functions passed to <a href="/reference/c/program/atexit/">atexit()</a> are not called. Whether open resources such as files are closed is implementation defined. An implementation defined status is returned to the host environment that indicates unsuccessful execution.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<p>(none)</p>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>(none)</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>POSIX <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/abort.html" rel="noreferrer" target="_blank">specifies</a> that the <code>abort()</code> function overrides blocking or ignoring the <code>SIGABRT</code> signal.</p>
+
+<p>Some compiler intrinsics, e.g. <a href="https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html" rel="noreferrer" target="_blank"><code>__builtin_trap</code></a> (gcc, clang, and icc) or <a href="https://learn.microsoft.com/en-us/cpp/intrinsics/fastfail" rel="noreferrer" target="_blank"><code>__fastfail</code></a>/<a href="https://learn.microsoft.com/en-us/cpp/intrinsics/debugbreak" rel="noreferrer" target="_blank"><code>__debugbreak</code></a> (msvc), can be used to terminate the program as fast as possible.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(void)
+{
+    FILE *fp = fopen("data.txt","r");
+    if (fp == NULL)
+    {
+        fprintf(stderr, "error opening file data.txt in function main()\n");
+        abort();
+    }
+ 
+    /* Normal processing continues here. */
+    fclose(fp);
+    printf("Normal Return\n");
+    return 0;
+}
+```
+
+<p>Output:</p>
+
+```text
+error opening file data.txt in function main()
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.4.1 The abort function (p: 255)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.4.1 The abort function (p: 350)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20.4.1 The abort function (p: 315)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.10.4.1 The abort function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/program/exit/">exit</a></td><td>causes normal program termination with cleaning up   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/program/atexit/">atexit</a></td><td>registers a function to be called on <a href="/reference/c/program/exit/">exit()</a> invocation   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/program/quick_exit/">quick_exit</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>causes normal program termination without completely cleaning up   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/utility/program/abort" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+abort</td></tr>
+</table>

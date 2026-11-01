@@ -1,0 +1,35 @@
+C Reference — c.umutabali.com
+Owner: Umut Abali
+
+This project combines two licenses:
+
+1. Software (the Next.js application, conversion tools, tests, and the
+   example programs under content/curated) is MIT. See LICENSE.
+
+2. Reference content is Creative Commons Attribution-ShareAlike 3.0
+   Unported. See LICENSE-CONTENT.
+
+Attribution for the reference text
+----------------------------------
+
+The C language and C standard library pages are adapted from cppreference.com:
+
+  https://en.cppreference.com/w/c
+
+The offline snapshot is html-book v20250209 (retrieved 2025-02-09) from:
+
+  https://github.com/PeterFeicht/cppreference-doc/releases/tag/v20250209
+
+That text is Copyright the cppreference contributors and licensed under
+CC BY-SA 3.0:
+
+  https://creativecommons.org/licenses/by-sa/3.0/
+
+Every reference page on this site links to the corresponding original
+cppreference page. Sections labeled "Added on c.umutabali.com" are original
+commentary and are also published under CC BY-SA 3.0.
+
+As of 1 November 2026, v20250209 is the latest html-book release. The April
+2026 cppreference redesign broke the upstream update scripts
+(PeterFeicht/cppreference-doc issue 51). tools/sync_upstream.py detects a
+newer dump when one is published.

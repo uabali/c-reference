@@ -1,0 +1,91 @@
+---
+title: "Bit manipulation (since C23)"
+slug: "c/numeric/bit_manip"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/bit_manip"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2">Functions</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdbit.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/numeric/bit/stdc_leading_zeros/">stdc_leading_zeros</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>counts the number of consecutive <code>0</code> bits, starting from the most significant bit <span class="mark-note">(type-generic function macro)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/numeric/bit/stdc_leading_ones&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">stdc_leading_ones</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>counts the number of consecutive <code>1</code> bits, starting from the most significant bit <span class="mark-note">(type-generic function macro)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/numeric/bit/stdc_trailing_zeros&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">stdc_trailing_zeros</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>counts the number of consecutive <code>0</code> bits, starting from the least significant bit <span class="mark-note">(type-generic function macro)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/numeric/bit/stdc_trailing_ones&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">stdc_trailing_ones</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>counts the number of consecutive <code>1</code> bits, starting from the least significant bit <span class="mark-note">(type-generic function macro)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/numeric/bit/stdc_first_leading_zero&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">stdc_first_leading_zero</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>finds the first position of <code>0</code> bit, starting from the most significant bit <span class="mark-note">(type-generic function macro)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/numeric/bit/stdc_first_leading_one&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">stdc_first_leading_one</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>finds the first position of <code>1</code> bit, starting from the most significant bit <span class="mark-note">(type-generic function macro)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/numeric/bit/stdc_first_trailing_zero&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">stdc_first_trailing_zero</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>finds the first position of <code>0</code> bit, starting from the least significant bit <span class="mark-note">(type-generic function macro)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/numeric/bit/stdc_first_trailing_one&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">stdc_first_trailing_one</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>finds the first position of <code>1</code> bit, starting from the least significant bit <span class="mark-note">(type-generic function macro)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/numeric/bit/stdc_count_zeros&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">stdc_count_zeros</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>counts the number of <code>0</code> bits in an unsigned integer <span class="mark-note">(type-generic function macro)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/numeric/bit/stdc_count_ones&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">stdc_count_ones</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>counts the number of <code>1</code> bits in an unsigned integer <span class="mark-note">(type-generic function macro)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/numeric/bit/stdc_has_single_bit&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">stdc_has_single_bit</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>checks if a number is an integral power of 2 <span class="mark-note">(type-generic function macro)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/numeric/bit/stdc_bit_width&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">stdc_bit_width</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>finds the smallest number of bits needed to represent the given value <span class="mark-note">(type-generic function macro)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/numeric/bit/stdc_bit_floor&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">stdc_bit_floor</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>finds the largest integral power of 2 not greater than the given value <span class="mark-note">(type-generic function macro)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/numeric/bit/stdc_bit_ceil&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">stdc_bit_ceil</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>finds the smallest integral power of 2 not less than the given value <span class="mark-note">(type-generic function macro)</span></td></tr>
+<tr><td colspan="2">Macro constants</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdbit.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/numeric/endian/">__STDC_ENDIAN_LITTLE__<br />__STDC_ENDIAN_BIG__<br />__STDC_ENDIAN_NATIVE__</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>indicates the endianness of scalar types   <span class="mark-note">(macro constant)</span></td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.18 Bit and byte utilities &lt;stdbit.h&gt;</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/utility/bit" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Bit manipulation</td></tr>
+</table>

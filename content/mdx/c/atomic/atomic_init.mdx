@@ -1,0 +1,100 @@
+---
+title: "atomic_init"
+slug: "c/atomic/atomic_init"
+category: "atomic"
+source: "https://en.cppreference.com/w/c/atomic/atomic_init"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdatomic.h&gt;</code></p>
+
+```c
+void atomic_init( volatile A* obj, C desired );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Initializes the default-constructed atomic object <code>obj</code> with the value <code>desired</code>. The function is not atomic: concurrent access from another thread, even through an atomic operation, is a data race.</p>
+
+<p>This is a <a href="/reference/c/language/generic/">generic function</a> defined for all <a href="/reference/c/language/atomic/">atomic object types</a> <code>A</code>. The argument is pointer to a volatile atomic type to accept addresses of both non-volatile and <a href="/reference/c/language/volatile/">volatile</a> (e.g. memory-mapped I/O) atomic objects, and volatile semantic is preserved when applying this operation to volatile atomic objects. <code>C</code> is the non-atomic type corresponding to <code>A</code>.</p>
+
+<p>It is unspecified whether the name of a generic function is a macro or an identifier declared with external linkage. If a macro definition is suppressed in order to access an actual function (e.g. parenthesized like <code>(atomic_init)(...)</code>), or a program defines an external identifier with the name of a generic function, the behavior is undefined.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>obj</td><td>-</td><td>pointer to an atomic object to initialize</td></tr>
+<tr><td>desired</td><td>-</td><td>the value to initialize atomic object with</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>(none)</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p><code>atomic_init</code> is the only way to initialize dynamically-allocated atomic objects. For example:</p>
+
+```c
+_Atomic int *p = malloc(sizeof(_Atomic int));
+atomic_init(p, 42);
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17.2.2 The atomic_init generic function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17.2.2 The atomic_init generic function (p: 201)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17.2.2 The atomic_init generic function (p: 274-275)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/atomic/ATOMIC_VAR_INIT/">ATOMIC_VAR_INIT</a>
+
+<span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c17">(deprecated in C17)</span><br /><span class="std std-until std-c23">(removed in C23)</span></td><td>initializes a new atomic object   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/atomic/atomic_init" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+atomic_init</td></tr>
+</table>

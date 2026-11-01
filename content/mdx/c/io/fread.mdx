@@ -1,0 +1,178 @@
+---
+title: "fread"
+slug: "c/io/fread"
+category: "io"
+source: "https://en.cppreference.com/w/c/io/fread"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+```c
+size_t fread( void          *buffer, size_t size, size_t count,
+              FILE          *stream );
+```
+
+<p class="decl-note"><span class="std std-until std-c99">(until C99)</span></p>
+
+```c
+size_t fread( void *restrict buffer, size_t size, size_t count,
+              FILE *restrict stream );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>Reads up to <code>count</code> objects into the array <code>buffer</code> from the given input stream <code>stream</code> as if by calling <a href="/reference/c/io/fgetc/">fgetc</a> <code>size</code> times for each object, and storing the results, in the order obtained, into the successive positions of <code>buffer</code>, which is reinterpreted as an array of <code>unsigned char</code>. The file position indicator for the stream is advanced by the number of characters read.</p>
+
+<p>If an error occurs, the resulting value of the file position indicator for the stream is indeterminate. If a partial element is read, its value is indeterminate.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>buffer</td><td>-</td><td>pointer to the array where the read objects are stored</td></tr>
+<tr><td>size</td><td>-</td><td>size of each object in bytes</td></tr>
+<tr><td>count</td><td>-</td><td>the number of the objects to be read</td></tr>
+<tr><td>stream</td><td>-</td><td>the stream to read</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Number of objects read successfully, which may be less than <code>count</code> if an error or end-of-file condition occurs.</p>
+
+<p>If <code>size</code> or <code>count</code> is zero, <code>fread</code> returns zero and performs no other action.</p>
+
+<p><code>fread</code> does not distinguish between end-of-file and error, and callers must use <a href="/reference/c/io/feof/">feof</a> and <a href="/reference/c/io/ferror/">ferror</a> to determine which occurred.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+ 
+enum { SIZE = 5 };
+ 
+int main(void)
+{
+    const double a[SIZE] = {1.0, 2.0, 3.0, 4.0, 5.0};
+    printf("Array has size %ld bytes, element size: %ld\n", sizeof a, sizeof *a);
+    FILE *fp = fopen("test.bin", "wb"); // must use binary mode
+    fwrite(a, sizeof *a, SIZE, fp); // writes an array of doubles
+    fclose(fp);
+ 
+    double b[SIZE];
+    fp = fopen("test.bin","rb");
+    const size_t ret_code = fread(b, sizeof b[0], SIZE, fp); // reads an array of doubles
+    if (ret_code == SIZE)
+    {
+        printf("Array at %p read successfully, contents:\n", (void*)&a);
+        for (int n = 0; n != SIZE; ++n)
+            printf("%f ", b[n]);
+        putchar('\n');
+    }
+    else // error handling
+    {
+        if (feof(fp))
+            printf("Error reading test.bin: unexpected end of file\n");
+        else if (ferror(fp))
+            perror("Error reading test.bin");
+    }
+ 
+    fclose(fp);
+}
+```
+
+<p>Possible output:</p>
+
+```text
+Array has size 40 bytes, element size: 8
+Array at 0x1337f00d6960 read successfully, contents:
+1.000000 2.000000 3.000000 4.000000 5.000000
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.8.1 The fread function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.8.1 The fread function (p: 243-244)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.8.1 The fread function (p: 335)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.8.1 The fread function (p: 301)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9.8.1 The fread function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/fscanf/">scanf<br />fscanf<br />sscanf<br />scanf_s<br />fscanf_s<br />sscanf_s</a>
+
+<span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>reads formatted input from <a href="/reference/c/io/std_streams/">stdin</a>, a file stream or a buffer   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fgets/">fgets</a></td><td>gets a character string from a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fwrite/">fwrite</a></td><td>writes to a file   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c/fread" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+fread</td></tr>
+</table>

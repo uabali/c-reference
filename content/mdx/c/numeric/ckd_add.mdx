@@ -1,0 +1,72 @@
+---
+title: "ckd_add"
+slug: "c/numeric/ckd_add"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/ckd_add"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdckdint.h&gt;</code></p>
+
+```c
+#define ckd_add( result, a, b ) /* implementation-defined */
+// exposed interface:
+
+bool ckd_add( type1* result, type2 a, type3 b );
+```
+
+<p class="decl-note"><span class="std std-since std-c23">(since C23)</span></p>
+
+<p>Computes the addition <code>x + y</code> and stores the result into <code>*result</code>. The addition is performed as if both operands were represented in a signed integer type with infinite range, and the result was then converted from this integer type to <code>type1</code>. If the value assigned to <code>*result</code> correctly represents the mathematical result of the operation, it returns <code>false</code>. Otherwise, it returns <code>true</code>. In this case, the value assigned to <code>*result</code> is the mathematical result of the operation wrapped around to the width of <code>*result</code>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>a, b</td><td>-</td><td>integer values</td></tr>
+<tr><td>result</td><td>-</td><td>address of where result should be stored</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p><code>false</code> if the value assigned to <code>*result</code> correctly represents the mathematical result of the addition, <code>true</code> otherwise.</p>
+
+<h3 id="Note">Note</h3>
+
+<p>Both <code>type2</code> and <code>type3</code> shall be any integer type other than "plain" <code>char</code>, <code>bool</code>, a bit-precise integer type, or an enumerated type, and they can be the same. <code>*result</code> shall be a modifiable lvalue of any integer type other than "plain" <code>char</code>, <code>bool</code>, a bit-precise integer type, or an enumerated type.</p>
+
+<p>It is recommended to produce a diagnostic message if <code>type2</code> or <code>type3</code> are not suitable integer types, or if <code>*result</code> is not a modifiable lvalue of a suitable integer type.</p>
+
+<h3 id="Example">Example</h3>
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: no example</td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20.1 The ckd_ checked integer operation macros (p: 311)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/ckd_sub/">ckd_sub</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>checked subtraction operation on two integers <span class="mark-note">(type-generic function macro)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/ckd_mul/">ckd_mul</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>checked multiplication operation on two integers <span class="mark-note">(type-generic function macro)</span></td></tr>
+</table>

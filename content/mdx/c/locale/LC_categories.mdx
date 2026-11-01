@@ -1,0 +1,159 @@
+---
+title: "LC_ALL, LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_NUMERIC, LC_TIME"
+slug: "c/locale/LC_categories"
+category: "locale"
+source: "https://en.cppreference.com/w/c/locale/LC_categories"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;locale.h&gt;</code></p>
+
+```c
+#define LC_ALL      /* implementation-defined */
+```
+
+```c
+#define LC_COLLATE  /* implementation-defined */
+```
+
+```c
+#define LC_CTYPE    /* implementation-defined */
+```
+
+```c
+#define LC_MONETARY /* implementation-defined */
+```
+
+```c
+#define LC_NUMERIC  /* implementation-defined */
+```
+
+```c
+#define LC_TIME     /* implementation-defined */
+```
+
+<p>Each of the above macro constants expand to integer constant expressions with distinct values that are suitable for use as the first argument of <a href="/reference/c/locale/setlocale/">setlocale</a>.</p>
+
+<table class="ref-table ref-dsc">
+<tr><td>Constant</td><td>Explanation</td></tr>
+<tr><td><code>LC_ALL</code></td><td>selects the entire C locale</td></tr>
+<tr><td><code>LC_COLLATE</code></td><td>selects the collation category of the C locale</td></tr>
+<tr><td><code>LC_CTYPE</code></td><td>selects the character classification category of the C locale</td></tr>
+<tr><td><code>LC_MONETARY</code></td><td>selects the monetary formatting category of the C locale</td></tr>
+<tr><td><code>LC_NUMERIC</code></td><td>selects the numeric formatting category of the C locale</td></tr>
+<tr><td><code>LC_TIME</code></td><td>selects the time formatting category of the C locale</td></tr>
+</table>
+
+<p>Additional macro constants, with names that begin with <code>LC_</code> followed by at least one uppercase letter, may be defined in <code>locale.h</code>. For example, the POSIX specification requires <code>LC_MESSAGES</code> (which controls, among other things, <a href="/reference/c/io/perror/">perror</a> and <a href="/reference/c/string/byte/strerror/">strerror</a>), ISO/IEC 30112:2014 (<a href="https://www.open-std.org/JTC1/SC35/WG5/docs/30112d10.pdf" rel="noreferrer" target="_blank">2014 draft</a>) additionally defines <code>LC_IDENTIFICATION</code>, <code>LC_XLITERATE</code>, <code>LC_NAME</code>, <code>LC_ADDRESS</code>, <code>LC_TELEPHONE</code>, <code>LC_PAPER</code>, <code>LC_MEASUREMENT</code>, and <code>LC_KEYBOARD</code>, which are supported by the GNU C library (except for <code>LC_XLITERATE</code>).</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <locale.h>
+#include <stdio.h>
+#include <time.h>
+#include <wchar.h>
+ 
+int main(void)
+{
+    setlocale(LC_ALL, "en_US.UTF-8"); // the C locale will be the UTF-8 enabled English
+    setlocale(LC_NUMERIC, "de_DE.utf8"); // decimal dot will be German
+    setlocale(LC_TIME, "ja_JP.utf8");    // date/time formatting will be Japanese
+    wchar_t str[100];
+    time_t t = time(NULL);
+    wcsftime(str, 100, L"%A %c", localtime(&t));
+    wprintf(L"Number: %.2f\nDate: %Ls\n", 3.14, str);
+}
+```
+
+<p>Possible output:</p>
+
+```text
+Number: 3,14
+Date: 金曜日 2023年09月15日 20時04分14秒
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.11/3 Localization &lt;locale.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.11/3 Localization &lt;locale.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.11/3 Localization &lt;locale.h&gt; (p: 224)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.11/3 Localization &lt;locale.h&gt; (p: 205)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.4 LOCALIZATION &lt;locale.h&gt;</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/locale/setlocale/">setlocale</a></td><td>gets and sets the current C locale   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/locale/LC_categories" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+locale categories</td></tr>
+</table>

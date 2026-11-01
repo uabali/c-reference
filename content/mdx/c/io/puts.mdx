@@ -1,0 +1,145 @@
+---
+title: "puts"
+slug: "c/io/puts"
+category: "io"
+source: "https://en.cppreference.com/w/c/io/puts"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+```c
+int puts( const char* str );
+```
+
+<p>Writes every character from the null-terminated string <code>str</code> and one additional newline character <code>&#x27;\n&#x27;</code> to the output stream <a href="/reference/c/io/std_streams/">stdout</a>, as if by repeatedly executing <a href="/reference/c/io/putc/">fputc</a>.</p>
+
+<p>The terminating null character from <code>str</code> is not written.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>str</td><td>-</td><td>character string to be written</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>On success, returns a non-negative value.</p>
+
+<p>On failure, returns <a href="/reference/c/io/">EOF</a> and sets the <em>error</em> indicator (see <a href="/reference/c/io/ferror/">ferror()</a>) on <code>stream</code>.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The <code>puts</code> function appends the newline character to the output, while <a href="/reference/c/io/fputs/">fputs</a> function does not.</p>
+
+<p>Different implementations return different non-negative numbers: some return the last character written, some return the number of characters written (or <a href="/reference/c/types/limits/">INT_MAX</a> if the string was longer than that), some simply return a non-negative constant.</p>
+
+<p>A typical cause of failure for <code>puts</code> is running out of space on the file system, when <a href="/reference/c/io/std_streams/">stdout</a> is redirected to a file.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+ 
+int main(void)
+{
+    int rc = puts("Hello World");
+ 
+    if (rc == EOF)
+        perror("puts()"); // POSIX requires that errno is set
+}
+```
+
+<p>Output:</p>
+
+```text
+Hello World
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.7.9 The puts function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.7.9 The puts function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.7.9 The puts function (p: 333)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.7.10 The puts function (p: 299)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.9.7.10 The puts function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/fputs/">fputs</a></td><td>writes a character string to a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fprintf/">printf<br />fprintf<br />sprintf<br />snprintf<br />printf_s<br />fprintf_s<br />sprintf_s<br />snprintf_s</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>prints formatted output to <a href="/reference/c/io/std_streams/">stdout</a>, a file stream or a buffer   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c/puts" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+puts</td></tr>
+</table>

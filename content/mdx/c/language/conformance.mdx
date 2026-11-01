@@ -1,0 +1,262 @@
+---
+title: "Conformance"
+slug: "c/language/conformance"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/conformance"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p><em>Conformance</em> has a three-fold definition:</p>
+
+<ul>
+<li>
+<em>strictly conforming program</em>
+
+<p>- uses only well-defined language constructs, that is constructs with a single behavior. It excludes unspecified, undefined, or implementation-defined behavior, and does not exceed any minimum implementation limit.</p>
+</li>
+<li>
+<em>conforming program</em>
+
+<p>- acceptable to a conforming implementation.</p>
+</li>
+<li>
+<em>conforming implementation</em>
+
+<p>-</p>
+
+<ul>
+<li>
+<p>A conforming hosted implementation shall accept any strictly conforming program.</p>
+</li>
+<li>
+<p>A conforming freestanding implementation shall accept any strictly conforming program in which the use of the features specified in the library clause (clause 7) is confined to the contents of the freestanding standard library headers (see below).</p>
+</li>
+<li>
+<p>A conforming implementation may have extensions (including additional library functions), provided they do not alter the behavior of any strictly conforming program.</p>
+</li>
+</ul>
+</li>
+</ul>
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>The standard does not define any minimum implementation limit on translation units. A hosted environment has an operating system; a freestanding environment does not. A program running in a hosted environment may use all features described in the library clause (clause 7); a program running in a freestanding environment may use a subset of library features required by clause 4.</p>
+
+<h4 id="Freestanding_standard_library_headers">Freestanding standard library headers</h4>
+
+<p>All standard library features in every fully freestanding header are required to be provided by a freestanding implementation.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>Some standard library headers are conditionally freestanding.</p>
+
+<ul>
+<li>
+<p>If the implementation predefines the macro</p>
+
+<code>__STDC_IEC_60559_BFP__</code>
+
+<p>or</p>
+
+<code>__STDC_IEC_60559_DFP__</code>
+
+<p>, then</p>
+
+<a href="/reference/c/numeric/math/"><code>&lt;math.h&gt;</code></a>
+
+<p>and</p>
+
+<a href="/reference/c/numeric/fenv/"><code>&lt;fenv.h&gt;</code></a>
+
+<p>are fully freestanding headers. However, the behavior of functions in these headers is required to be well-defined in a freestanding environment only if a program does not set the state of the</p>
+
+<a href="/reference/c/preprocessor/impl/#Standard_pragmas"><code>FENV_ACCESS</code></a>
+
+<p>pragma to</p>
+
+<code>ON</code>
+
+<p>.</p>
+</li>
+</ul>
+
+<p>Some standard library headers are partially freestanding.</p>
+
+<ul>
+<li>
+<p>In</p>
+
+<a href="/reference/c/program/"><code>&lt;stdlib.h&gt;</code></a>
+
+<p>,</p>
+
+<a href="/reference/c/program/memalignment/"><code>memalignment</code></a>
+
+<p>is freestanding. Additionally, when</p>
+
+<code>__STDC_IEC_60559_BFP__</code>
+
+<p>or</p>
+
+<code>__STDC_IEC_60559_DFP__</code>
+
+<p>are predefined, numeric conversion functions (</p>
+
+<code>atoX</code>
+
+<p>,</p>
+
+<code>strtoX</code>
+
+<p>, and</p>
+
+<code>strfromX</code>
+
+<p>) are also freestanding, while their behavior is required to be well-defined in a freestanding environment only if a program does not set the state of the</p>
+
+<a href="/reference/c/preprocessor/impl/#Standard_pragmas"><code>FENV_ACCESS</code></a>
+
+<p>pragma to</p>
+
+<code>ON</code>
+
+<p>. No other component in</p>
+
+<a href="/reference/c/program/"><code>&lt;stdlib.h&gt;</code></a>
+
+<p>is required to be to be provided by a freestanding implementation.</p>
+</li>
+<li>
+<p>In</p>
+
+<a href="/reference/c/string/byte/"><code>&lt;string.h&gt;</code></a>
+
+<p>,</p>
+
+<a href="/reference/c/string/byte/strdup/"><code>strdup</code></a>
+
+<p>,</p>
+
+<a href="/reference/c/string/byte/strndup/"><code>strndup</code></a>
+
+<p>,</p>
+
+<a href="/reference/c/string/byte/strcoll/">strcoll</a>
+
+<p>,</p>
+
+<a href="/reference/c/string/byte/strxfrm/">strxfrm</a>
+
+<p>,</p>
+
+<a href="/reference/c/string/byte/strtok/">strtok</a>
+
+<p>, and</p>
+
+<a href="/reference/c/string/byte/strerror/">strerror</a>
+
+<p>are not required to be provided by a freestanding implementation.</p>
+</li>
+</ul></aside>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2">Fully freestanding standard library headers</td></tr>
+<tr><td><a href="/reference/c/types/limits/#Limits_of_floating-point_types"><code>&lt;float.h&gt;</code></a></td><td><a href="/reference/c/types/limits/#Limits_of_floating-point_types">Limits of floating-point types</a></td></tr>
+<tr><td><a href="/reference/c/language/operator_alternative/"><code>&lt;iso646.h&gt;</code></a> <span class="std std-since std-c95">(since C95)</span></td><td><a href="/reference/c/language/operator_alternative/">Alternative operator spellings</a></td></tr>
+<tr><td><a href="/reference/c/types/limits/"><code>&lt;limits.h&gt;</code></a></td><td><a href="/reference/c/types/limits/">Ranges of integer types</a></td></tr>
+<tr><td><a href="/reference/c/types/"><code>&lt;stdalign.h&gt;</code></a> <span class="std std-since std-c11">(since C11)</span></td><td><a href="/reference/c/types/"><code>alignas</code> and <code>alignof</code></a> convenience macros</td></tr>
+<tr><td><a href="/reference/c/variadic/"><code>&lt;stdarg.h&gt;</code></a></td><td><a href="/reference/c/variadic/">Variable arguments</a></td></tr>
+<tr><td><a href="/reference/c/types/"><code>&lt;stdbool.h&gt;</code></a> <span class="std std-since std-c99">(since C99)</span></td><td><a href="/reference/c/types/">Macros for boolean type</a></td></tr>
+<tr><td><a href="/reference/c/types/"><code>&lt;stddef.h&gt;</code></a></td><td><a href="/reference/c/types/">Common macro definitions</a></td></tr>
+<tr><td><a href="/reference/c/types/integer/"><code>&lt;stdint.h&gt;</code></a> <span class="std std-since std-c99">(since C99)</span></td><td><a href="/reference/c/types/integer/">Fixed-width integer types</a></td></tr>
+<tr><td><a href="/reference/c/language/_Noreturn/"><code>&lt;stdnoreturn.h&gt;</code></a> <span class="std std-since std-c11">(since C11)</span></td><td><a href="/reference/c/types/"><code>noreturn</code></a> convenience macro</td></tr>
+<tr><td><a href="/reference/c/numeric/#Bit_manipulation"><code>&lt;stdbit.h&gt;</code></a> <span class="std std-since std-c23">(since C23)</span></td><td>Macros to work with the byte and bit representations of types</td></tr>
+<tr><td colspan="2">Conditionally fully freestanding standard library headers</td></tr>
+<tr><td><a href="/reference/c/numeric/fenv/"><code>&lt;fenv.h&gt;</code></a> <span class="std std-since std-c23">(since C23)</span></td><td><a href="/reference/c/numeric/fenv/">Floating-point environment</a></td></tr>
+<tr><td><a href="/reference/c/numeric/math/"><code>&lt;math.h&gt;</code></a> <span class="std std-since std-c23">(since C23)</span></td><td><a href="/reference/c/numeric/math/">Common mathematics functions</a></td></tr>
+<tr><td colspan="2">Partially freestanding standard library headers</td></tr>
+<tr><td><a href="/reference/c/program/"><code>&lt;stdlib.h&gt;</code></a> <span class="std std-since std-c23">(since C23)</span></td><td>General utilities: <a href="/reference/c/memory/">memory management</a>, <a href="/reference/c/program/">program utilities</a>, <a href="/reference/c/string/">string conversions</a>, <a href="/reference/c/numeric/random/">random numbers</a>, <a href="/reference/c/algorithm/">algorithms</a></td></tr>
+<tr><td><a href="/reference/c/string/byte/"><code>&lt;string.h&gt;</code></a> <span class="std std-since std-c23">(since C23)</span></td><td><a href="/reference/c/string/byte/">String handling</a></td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4 Conformance (p: 9-10)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4 Conformance (p: 4)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4 Conformance (p: 8-9)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4 Conformance (p: 7-8)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>1.7 Compliance</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/freestanding" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Freestanding and hosted implementation</td></tr>
+</table>

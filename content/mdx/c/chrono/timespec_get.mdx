@@ -1,0 +1,142 @@
+---
+title: "timespec_get"
+slug: "c/chrono/timespec_get"
+category: "chrono"
+source: "https://en.cppreference.com/w/c/chrono/timespec_get"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;time.h&gt;</code></p>
+
+```c
+int timespec_get( struct timespec *ts, int base );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c11">(since C11)</span></p>
+
+```c
+#define TIME_UTC /* implementation-defined */
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Modifies the timespec object pointed to by <code>ts</code> to hold the current calendar time in the time base <code>base</code>.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Expands to a value suitable for use as the <code>base</code> argument of <code>timespec_get</code></p>
+
+<p>Other macro constants beginning with <code>TIME_</code> may be provided by the implementation to indicate additional time bases</p>
+
+<p>If <code>base</code> is <code>TIME_UTC</code>, then</p>
+
+<ul>
+<li>
+<code>ts-&gt;tv_sec</code>
+
+<p>is set to the number of seconds since an implementation defined epoch, truncated to a whole value</p>
+</li>
+<li>
+<code>ts-&gt;tv_nsec</code>
+
+<p>member is set to the integral number of nanoseconds, rounded to the resolution of the system clock</p>
+</li>
+</ul>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>ts</td><td>-</td><td>pointer to an object of type <code>struct timespec</code></td></tr>
+<tr><td>base</td><td>-</td><td><code>TIME_UTC</code> or another nonzero integer value indicating the time base</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>The value of <code>base</code> if successful, zero otherwise.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The POSIX function <a href="https://pubs.opengroup.org/onlinepubs/9799919799/functions/clock_getres.html" rel="noreferrer" target="_blank"><code>clock_gettime(CLOCK_REALTIME, ts)</code></a> may also be used to populate a <code>timespec</code> with the time since the Epoch.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <time.h>
+ 
+int main(void)
+{
+    struct timespec ts;
+    timespec_get(&ts, TIME_UTC);
+    char buff[100];
+    strftime(buff, sizeof buff, "%D %T", gmtime(&ts.tv_sec));
+    printf("Current time: %s.%09ld UTC\n", buff, ts.tv_nsec);
+}
+```
+
+<p>Possible output:</p>
+
+```text
+Current time: 02/18/15 14:34:03.048508855 UTC
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.27.2.5 The timespec_get function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.27.2.5 The timespec_get function (p: 286)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.27.2.5 The timespec_get function (p: 390)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/chrono/timespec/">timespec</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>time in seconds and nanoseconds  <span class="mark-note">(struct)</span></td></tr>
+<tr><td><a href="/reference/c/chrono/timespec_getres/">timespec_getres</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>returns the resolution of calendar time based on a given time base   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/chrono/time/">time</a></td><td>returns the current calendar time of the system as time since epoch   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/chrono/c/timespec_get" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+timespec_get</td></tr>
+</table>

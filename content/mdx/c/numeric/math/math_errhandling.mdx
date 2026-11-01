@@ -1,0 +1,173 @@
+---
+title: "MATH_ERRNO, MATH_ERREXCEPT, math_errhandling"
+slug: "c/numeric/math/math_errhandling"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/math_errhandling"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+#define MATH_ERRNO        1
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+#define MATH_ERREXCEPT    2
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+#define math_errhandling  /*implementation defined*/
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>The macro constant <code>math_errhandling</code> expands to an expression of type <code>int</code> that is either equal to <code>MATH_ERRNO</code>, or equal to <code>MATH_ERREXCEPT</code>, or equal to their bitwise OR (<code>MATH_ERRNO | MATH_ERREXCEPT</code>).</p>
+
+<p>The value of <code>math_errhandling</code> indicates the type of error handling that is performed by the floating-point operators and <a href="/reference/c/numeric/math/">functions</a>:</p>
+
+<table class="ref-table ref-dsc">
+<tr><td>Constant</td><td>Explanation</td></tr>
+<tr><td><code>MATH_ERREXCEPT</code></td><td>indicates that floating-point exceptions are used: at least <a href="/reference/c/numeric/fenv/FE_exceptions/">FE_DIVBYZERO</a>, <a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>, and <a href="/reference/c/numeric/fenv/FE_exceptions/">FE_OVERFLOW</a> are defined in <code>&lt;fenv.h&gt;</code>.</td></tr>
+<tr><td><code>MATH_ERRNO</code></td><td>indicates that floating-point operations use the variable <a href="/reference/c/error/errno/">errno</a> to report errors.</td></tr>
+</table>
+
+<p>If the implementation supports IEEE floating-point arithmetic (IEC 60559), <code>math_errhandling &amp; MATH_ERREXCEPT</code> is required to be non-zero.</p>
+
+<p>The following floating-point error conditions are recognized:</p>
+
+<table class="ref-table">
+<tr><th>Condition</th><th>Explanation</th><th>errno</th><th>floating-point exception</th><th>Example</th></tr>
+<tr><td>Domain error</td><td>the argument is outside the range in which the operation is mathematically defined (the description of <a href="/reference/c/numeric/math/">each function</a> lists the required domain errors)</td><td><a href="/reference/c/error/errno_macros/">EDOM</a></td><td><a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a></td><td><code>acos(2)</code></td></tr>
+<tr><td>Pole error</td><td>the mathematical result of the function is exactly infinite or undefined</td><td><a href="/reference/c/error/errno_macros/">ERANGE</a></td><td><a href="/reference/c/numeric/fenv/FE_exceptions/">FE_DIVBYZERO</a></td><td><code>log(0.0)</code>, <code>1.0/0.0</code></td></tr>
+<tr><td>Range error due to overflow</td><td>the mathematical result is finite, but becomes infinite after rounding, or becomes the largest representable finite value after rounding down</td><td><a href="/reference/c/error/errno_macros/">ERANGE</a></td><td><a href="/reference/c/numeric/fenv/FE_exceptions/">FE_OVERFLOW</a></td><td><code>pow(DBL_MAX,2)</code></td></tr>
+<tr><td>Range error due to underflow</td><td>the result is non-zero, but becomes zero after rounding, or becomes subnormal with a loss of precision</td><td><a href="/reference/c/error/errno_macros/">ERANGE</a> or unchanged (implementation-defined)</td><td><a href="/reference/c/numeric/fenv/FE_exceptions/">FE_UNDERFLOW</a> or nothing (implementation-defined)</td><td><code>DBL_TRUE_MIN/2</code></td></tr>
+<tr><td>Inexact result</td><td>the result has to be rounded to fit in the destination type</td><td>unchanged</td><td><a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INEXACT</a> or nothing (unspecified)</td><td><code>sqrt(2)</code>, <code>1.0/10.0</code></td></tr>
+</table>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Whether <a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INEXACT</a> is raised by the mathematical library functions is unspecified in general, but may be explicitly specified in the description of the function (e.g. <a href="/reference/c/numeric/math/rint/">rint</a> vs <a href="/reference/c/numeric/math/nearbyint/">nearbyint</a>).</p>
+
+<p>Before C99, floating-point exceptions were not specified, <code>EDOM</code> was required for any domain error, <code>ERANGE</code> was required for overflows and implementation-defined for underflows.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <fenv.h>
+#include <math.h>
+#include <errno.h>
+#pragma STDC FENV_ACCESS ON
+int main(void)
+{
+    printf("MATH_ERRNO is %s\n", math_errhandling & MATH_ERRNO ? "set" : "not set");
+    printf("MATH_ERREXCEPT is %s\n",
+           math_errhandling & MATH_ERREXCEPT ? "set" : "not set");
+    feclearexcept(FE_ALL_EXCEPT);
+    errno = 0;
+    printf("log(0) = %f\n", log(0));
+    if(errno == ERANGE)
+        perror("errno == ERANGE");
+    if(fetestexcept(FE_DIVBYZERO))
+        puts("FE_DIVBYZERO (pole error) reported");
+}
+```
+
+<p>Possible output:</p>
+
+```text
+MATH_ERRNO is set
+MATH_ERREXCEPT is set
+log(0) = -inf
+errno = ERANGE: Numerical result out of range
+FE_DIVBYZERO (pole error) reported
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12/9 MATH_ERRNO, MATH_ERREXCEPT, math_errhandling (p: 170)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10/4 MATH_ERREXCEPT, math_errhandling (p: 377)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12/9 MATH_ERRNO, MATH_ERREXCEPT, math_errhandling (p: 233)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10/4 MATH_ERREXCEPT, math_errhandling (p: 517)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12/9 MATH_ERRNO, MATH_ERREXCEPT, math_errhandling (p: 214)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.9/4 MATH_ERREXCEPT, math_errhandling&gt; (p: 454)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/fenv/FE_exceptions/">FE_ALL_EXCEPT<br />FE_DIVBYZERO<br />FE_INEXACT<br />FE_INVALID<br />FE_OVERFLOW<br />FE_UNDERFLOW</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>floating-point exceptions   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td><a href="/reference/c/error/errno/">errno</a></td><td>macro which expands to POSIX-compatible thread-local error number variable <span class="mark-note">(macro variable)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/math_errhandling" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+math_errhandling</td></tr>
+</table>

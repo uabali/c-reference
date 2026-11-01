@@ -1,0 +1,186 @@
+---
+title: "Variadic arguments"
+slug: "c/language/variadic"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/variadic"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Variadic functions are functions that may be called with different number of arguments.</p>
+
+<p>Only prototyped <a href="/reference/c/language/function_declaration/">function declarations</a> may be variadic. This is indicated by the parameter of the form <code>...</code> which must appear last in the parameter list and must follow at least one named parameter<span class="std std-until std-c23">(until C23)</span>. The ellipsis parameter and the proceeding parameter must be delimited by <code>,</code>.</p>
+
+```c
+// Prototyped declaration
+int printx(const char* fmt, ...); // function declared this way
+printx("hello world");     // may be called with one
+printx("a=%d b=%d", a, b); // or more arguments
+ 
+int printz(...); // OK since C23 and in C++
+// Error until C23: ... must follow at least one named parameter
+ 
+// int printy(..., const char* fmt); // Error: ... must be the last
+// int printa(const char* fmt...);   // Error in C: ',' is required; OK in C++
+```
+
+<p>At the <a href="/reference/c/language/operator_other/#Function_call">function call</a>, each argument that is a part of the variable argument list undergoes special implicit conversions known as <a href="/reference/c/language/conversion/#Default_argument_promotions">default argument promotions</a>.</p>
+
+<p>Within the body of a function that uses variadic arguments, the values of these arguments may be accessed using the <a href="/reference/c/variadic/"><code>&lt;stdarg.h&gt;</code> library facilities</a>:</p>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdarg.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/variadic/va_start/">va_start</a></td><td>enables access to variadic function arguments   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/variadic/va_arg/">va_arg</a></td><td>accesses the next variadic function argument   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/variadic/va_copy/">va_copy</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>makes a copy of the variadic function arguments   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/variadic/va_end/">va_end</a></td><td>ends traversal of the variadic function arguments   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/variadic/va_list/">va_list</a></td><td>holds the information needed by va_start, va_arg, va_end, and va_copy   <span class="mark-note">(typedef)</span></td></tr>
+</table>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Although old-style (prototype-less) <a href="/reference/c/language/function_declaration/">function declarations</a> allow the subsequent function calls to use any number of arguments, they are not allowed to be variadic (as of C89). The definition of such function must specify a fixed number of parameters and cannot use the <code>stdarg.h</code> macros.</p>
+
+```c
+// old-style declaration, removed in C23
+int printx(); // function declared this way
+printx("hello world");     // may be called with one
+printx("a=%d b=%d", a, b); // or more arguments
+// the behavior of at least one of these calls is undefined, depending on
+// the number of parameters the function is defined to take
+```
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <time.h>
+#include <stdarg.h>
+ 
+void tlog(const char* fmt,...)
+{
+    char msg[50];
+    strftime(msg, sizeof msg, "%T", localtime(&(time_t){time(NULL)}));
+    printf("[%s] ", msg);
+    va_list args;
+    va_start(args, fmt);
+    vprintf(fmt, args);
+    va_end(args);
+}
+ 
+int main(void)
+{
+   tlog("logging %d %d %d...\n", 1, 2, 3);
+}
+```
+
+<p>Output:</p>
+
+```text
+[10:21:38] logging 1 2 3...
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.6.3/9 Function declarators (including prototypes) (p: 96)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.16 Variable arguments &lt;stdarg.h&gt; (p: 197-199)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.6.3/9 Function declarators (including prototypes) (p: 133)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.16 Variable arguments &lt;stdarg.h&gt; (p: 269-272)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.5.3/9 Function declarators (including prototypes) (p: 119)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.15 Variable arguments &lt;stdarg.h&gt; (p: 249-252)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.5.4.3/5 Function declarators (including prototypes)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.8 VARIABLE ARGUMENTS &lt;stdarg.h&gt;</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/variadic_arguments" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Variadic arguments</td></tr>
+</table>

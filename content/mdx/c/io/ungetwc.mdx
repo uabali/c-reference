@@ -1,0 +1,86 @@
+---
+title: "ungetwc"
+slug: "c/io/ungetwc"
+category: "io"
+source: "https://en.cppreference.com/w/c/io/ungetwc"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;wchar.h&gt;</code></p>
+
+```c
+wint_t ungetwc( wint_t ch, FILE *stream );
+```
+
+<p class="decl-note"><span class="std std-since std-c95">(since C95)</span></p>
+
+<p>If <code>ch</code> does not equal WEOF, pushes the wide character <code>ch</code> into the input buffer associated with the stream <code>stream</code> in such a manner that subsequent read operation from <code>stream</code> will retrieve that wide character. The external device associated with the stream is not modified.</p>
+
+<p>Stream repositioning operations <a href="/reference/c/io/fseek/">fseek</a>, <a href="/reference/c/io/fsetpos/">fsetpos</a>, and <a href="/reference/c/io/rewind/">rewind</a> discard the effects of <code>ungetwc</code>.</p>
+
+<p>If <code>ungetwc</code> is called more than once without an intervening read or repositioning, it may fail (in other words, a pushback buffer of size 1 is guaranteed, but any larger buffer is implementation-defined). If multiple successful <code>ungetwc</code> were performed, read operations retrieve the pushed-back wide characters in reverse order of <code>ungetwc</code></p>
+
+<p>If <code>ch</code> equals WEOF, the operation fails and the stream is not affected.</p>
+
+<p>A successful call to <code>ungetwc</code> clears the end of file status flag <a href="/reference/c/io/feof/">feof</a>.</p>
+
+<p>A successful call to <code>ungetwc</code> on a stream (whether text or binary) modifies the stream position indicator in unspecified manner but guarantees that after all pushed-back wide characters are retrieved with a read operation, the stream position indicator is equal to its value before <code>ungetwc</code>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>ch</td><td>-</td><td>wide character to be put back</td></tr>
+<tr><td>stream</td><td>-</td><td>file stream to put the wide character back to</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>On success <code>ch</code> is returned.</p>
+
+<p>On failure <code>WEOF</code> is returned and the given stream remains unchanged.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.3.10 The ungetwc function (p: 425-426)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.3.10 The ungetwc function (p: 370-371)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/ungetc/">ungetc</a></td><td>puts a character back into a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fgetwc/">fgetwc<br />getwc</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>gets a wide character from a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c/ungetwc" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+ungetwc</td></tr>
+</table></section>

@@ -1,0 +1,106 @@
+---
+title: "max_align_t"
+slug: "c/types/max_align_t"
+category: "types"
+source: "https://en.cppreference.com/w/c/types/max_align_t"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stddef.h&gt;</code></p>
+
+```c
+typedef /*implementation-defined*/ max_align_t;
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p><code>max_align_t</code> is a type whose alignment requirement is at least as strict (as large) as that of every scalar type.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Pointers returned by allocation functions such as <a href="/reference/c/memory/malloc/">malloc</a> are suitably aligned for any object, which means they are aligned at least as strictly as <code>max_align_t</code>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <inttypes.h>
+#include <stdalign.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(void)
+{
+    size_t a = alignof(max_align_t);
+    printf("Alignment of max_align_t is %zu (%#zx)\n", a, a);
+ 
+    void *p = malloc(123);
+    printf("The address obtained from malloc(123) is %#" PRIxPTR"\n",
+            (uintptr_t)p);
+    free(p);
+}
+```
+
+<p>Possible output:</p>
+
+```text
+Alignment of max_align_t is 16 (0x10)
+The address obtained from malloc(123) is 0x1fa67010
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19 Common definitions &lt;stddef.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19 Common definitions &lt;stddef.h&gt; (p: 211)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19 Common definitions &lt;stddef.h&gt; (p: 288)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/types/max_align_t" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+max_align_t</td></tr>
+</table>

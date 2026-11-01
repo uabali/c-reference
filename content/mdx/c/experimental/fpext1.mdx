@@ -1,0 +1,250 @@
+---
+title: "Floating-point extensions part 1: binary floating-point arithmetic"
+slug: "c/experimental/fpext1"
+category: "experimental"
+source: "https://en.cppreference.com/w/c/experimental/fpext1"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Floating-point extensions for C - Part 1: Binary floating-point arithmetic, ISO/IEC TS 18661-1:2014, defines the following new components for the C standard library, as recommended by ISO/IEC/IEEE 60559:2011 (the current revision of IEEE-754)</p>
+
+<table class="ref-table ref-dsc">
+<tr><td>__STDC_IEC_60559_BFP__</td><td>integer constant of type <code>long</code> and value <code>201ymmL</code>, replaces __STDC_IEC_559__   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__STDC_IEC_60559_COMPLEX__</td><td>integer constant of type <code>long</code> and value <code>201ymmL</code>, replaces __STDC_IEC_559_COMPLEX__   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;limits.h&gt;</code></td></tr>
+<tr><td>CHAR_WIDTH SCHAR_WIDTH UCHAR_WIDTH<br />SHRT_WIDTH USHRT_WIDTH<br />INT_WIDTH UINT_WIDTH<br />LONG_WIDTH ULONG_WIDTH<br />LLONG_WIDTH ULLONG_WIDTH
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>width, in bits, of the corresponding type   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;float.h&gt;</code></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/CR_DECIMAL_DIG&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">CR_DECIMAL_DIG</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>conversions between all supported binary floating-point types and character sequences with at most CR_DECIMAL_DIG significant decimal digits are correctly rounded (this is at least DECIMAL_DIG + 3)   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;fenv.h&gt;</code></td></tr>
+<tr><td>femode_t
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>collection of dynamic floating-point control modes supported by the implementation, including the dynamic rounding direction mode   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td>FE_DFL_MODE
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>pointer to the default femode_t   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>FE_SNANS_ALWAYS_SIGNAL
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>defined (as integer constant 1) if sNaN arguments cause the functions that suppress qNaNs, like <a href="/reference/c/numeric/math/hypot/">hypot</a> or <a href="/reference/c/numeric/math/fmax/">fmax</a>, to raise FE_INVALID and return a qNaN   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/fesetexcept&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">fesetexcept</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>sets the specified floating-point exception flags without causing any side-effects that raising them would   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/fetestexceptflag&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">fetestexceptflag</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>tests if given flags are in a saved representation of the floating-point exception flags   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/fegetmode_fesetmode&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">fegetmode<br />fesetmode</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>gets and sets all the implementation’s dynamic floating-point control modes collectively   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdint.h&gt;</code></td></tr>
+<tr><td>INTn_WIDTH UINTn_WIDTH<br />INT_LEASTn_WIDTH UINT_LEASTn_WIDTH<br />INT_FASTn_WIDTH UINT_FASTn_WIDTH<br />INTPTR_WIDTH UINTPTR_WIDTH<br />INTMAX_WIDTH UINTMAX_WIDTH<br />PTRDIFF_WIDTH<br />SIG_ATOMIC_WIDTH<br />SIZE_WIDTH<br />WCHAR_WIDTH WINT_WIDTH
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>width, in bits, of the corresponding type   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdlib.h&gt;</code></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/strfromf&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">strfromd<br />strfromf<br />strfroml</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>convert a single foating-point number to string using the specified snprintf format   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;math.h&gt;</code></td></tr>
+<tr><td>FP_INT_UPWARD<br />FP_INT_DOWNWARD<br />FP_INT_TOWARDZERO<br />FP_INT_TONEARESTFROMZERO<br />FP_INT_TONEAREST
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>rounding direction for the functions ceil, floor, trunc, round, and roundeven, suitable for use with fromfp family of functions   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>FP_LLOGB0
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>value returned by llogb if the argument is zero   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>FP_LLOGBNAN
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>value returned by llogb if the argument is NaN   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/SNAN&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">SNANF<br />SNAN<br />SNANL</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>represents a signalling NaN for float, double, long double respectively   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>FP_FAST_FADD FP_FAST_FADDL FP_FAST_DADDL<br />FP_FAST_FSUB FP_FAST_FSUBL FP_FAST_DSUBL<br />FP_FAST_FMUL FP_FAST_FMULL FP_FAST_DMULL<br />FP_FAST_FDIV FP_FAST_FDIVL FP_FAST_DDIVL<br />FP_FAST_FFMA FP_FAST_FFMAL FP_FAST_DFMAL<br />FP_FAST_FSQRT FP_FAST_FSQRTL FP_FAST_DSQRTL
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>if defined, indicates that the corresponding function executes faster than the equivalent function in a larger type followed by a cast to target type   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>iseqsig
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td><span class="mark-note">(function macro)</span></td></tr>
+<tr><td>iscanonical
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>tests if the floating-point value is canonical   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td>issignaling
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>tests if the floating-point value is a signalling NaN   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td>issubnormal
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>tests if the floating-point value is subnormal   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td>iszero
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>tests if the floating-point value is a zero (positive, negative, unsigned)   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/fromfp&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">fromfp<br />fromfpf<br />fromfpl</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>round to signed integer using the specified rounding direction   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/ufromfp&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">ufromfp<br />ufromfpf<br />ufromfpl</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>round to unsigned integer using the specified rounding direction   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/fromfpx&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">fromfpx<br />fromfpxf<br />fromfpxl</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>round to signed integer using the specified rounding direction, reporting inexactness   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/ufromfpx&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">ufromfpx<br />ufromfpxf<br />ufromfpxl</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>round to unsigned integer using the specified rounding direction, reporting inexactness   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/roundeven&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">roundeven<br />roundevenf<br />roundevenl</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>rounds to nearest, halfway cases to even   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/llogb&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">llogb<br />llogbf<br />llogbl</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>equivalent to <a href="/reference/c/numeric/math/logb/">logb</a> except the return type is <code>long</code>   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/fmaxmag&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">fmaxmag<br />fmaxmagf<br />fmaxmagl</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>returns the value of their argument of maximum magnitude   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/fminmag&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">fminmag<br />fminmagf<br />fminmagl</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>returns the value of their argument of minimum magnitude   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/experimental/fpext1/nextup/">nextup<br />nextupf<br />nextupl</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>returns the next greater representable floating-point value   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/nextdown&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">nextdown<br />nextdownf<br />nextdown l</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>returns the next smaller representable floating-point value   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/fadd&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">fadd<br />faddl<br />daddl</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>calculates x+y as if in infinite precision and rounded once to target type   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/fsub&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">fsub<br />fsubl<br />dsubl</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>calculates x-y as if in infinite precision and rounded once to target type   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/fmul&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">fmul<br />fmull<br />dmull</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>calculates x*y as if in infinite precision and rounded once to target type   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/fdiv&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">fdiv<br />fdivl<br />ddivl</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>calculates x/y as if in infinite precision and rounded once to target type   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/ffma&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">ffma<br />ffmal<br />dfmal</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>calculates the same as <a href="/reference/c/numeric/math/fma/">fma</a> as if in infinite precision and rounded once to target type   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/fsqrt&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">fsqrt<br />fsqrtl<br />dsqrtl</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>calculates the same as <a href="/reference/c/numeric/math/sqrt/">sqrt</a> as if in infinite precision and rounded once to target type   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/totalorder&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">totalorder<br />totalorderf<br />totalorderl</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>orders two floating-point values using the ISO 60559 total order relation   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/totalordermag&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">totalordermag<br />totalordermagf<br />totalordermagl</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>orders the magnitudes of two floating-point values using the ISO 60559 total order relation   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/canonicalize&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">canonicalize<br />canonicalizef<br />canonicalizel</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>obtains the ISO 60559 canonical binary encoding of the given floating-point value   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/getpayload&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">getpayload<br />getpayloadf<br />getpayloadl</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>extracts the payload from the given NaN value   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/setpayload&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">setpayload<br />setpayloadf<br />setpayloadl</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>creates a quiet NaN with the specified payload   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="https://en.cppreference.com/mwiki/index.php?title=c/experimental/fpext1/setpayloadsig&amp;action=edit&amp;redlink=1" rel="noreferrer" target="_blank">setpayloadsig<br />setpayloadsigf<br />setpayloadsigl</a>
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>creates a signalling NaN with the specified payload   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;tgmath.h&gt;</code></td></tr>
+<tr><td>roundeven
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of roundeven   <span class="mark-note">(function)</span></td></tr>
+<tr><td>llogb
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of llogb   <span class="mark-note">(function)</span></td></tr>
+<tr><td>fmaxmag
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of fmaxmag   <span class="mark-note">(function)</span></td></tr>
+<tr><td>fminmag
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of fminmag   <span class="mark-note">(function)</span></td></tr>
+<tr><td>nextup
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of nextup   <span class="mark-note">(function)</span></td></tr>
+<tr><td>nextdown
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of nextdown   <span class="mark-note">(function)</span></td></tr>
+<tr><td>fromfp
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of fromfp   <span class="mark-note">(function)</span></td></tr>
+<tr><td>ufromfp
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of ufromfp   <span class="mark-note">(function)</span></td></tr>
+<tr><td>fromfpx
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of fromfpx   <span class="mark-note">(function)</span></td></tr>
+<tr><td>ufromfpx
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of ufromfpx   <span class="mark-note">(function)</span></td></tr>
+<tr><td>nextdown
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of nextdown   <span class="mark-note">(function)</span></td></tr>
+<tr><td>totalorder
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of totalorder   <span class="mark-note">(function)</span></td></tr>
+<tr><td>totalordermag
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of totalordermag   <span class="mark-note">(function)</span></td></tr>
+<tr><td>fadd
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of fadd   <span class="mark-note">(function)</span></td></tr>
+<tr><td>dadd
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of dadd   <span class="mark-note">(function)</span></td></tr>
+<tr><td>fsub
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of fsub   <span class="mark-note">(function)</span></td></tr>
+<tr><td>dsub
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of dsub   <span class="mark-note">(function)</span></td></tr>
+<tr><td>fmul
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of fmul   <span class="mark-note">(function)</span></td></tr>
+<tr><td>dmul
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of dmul   <span class="mark-note">(function)</span></td></tr>
+<tr><td>fdiv
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of fdiv   <span class="mark-note">(function)</span></td></tr>
+<tr><td>ddiv
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of ddiv   <span class="mark-note">(function)</span></td></tr>
+<tr><td>ffma
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of ffma   <span class="mark-note">(function)</span></td></tr>
+<tr><td>dfma
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of dfma   <span class="mark-note">(function)</span></td></tr>
+<tr><td>fsqrt
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of fsqrt   <span class="mark-note">(function)</span></td></tr>
+<tr><td>dsqrt
+
+<span class="std std-since std-other">(FP Ext 1 TS)</span></td><td>generic overload of dsqrt   <span class="mark-note">(function)</span></td></tr>
+</table>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The standard C macros __STDC_IEC_559__ and __STDC_IEC_559_COMPLEX__ are made obsolete by this technical specification.</p>
+
+<p>All functions and macros added to the C library by this extension are only declared if a macro <code>__STDC_WANT_IEC_60559_BFP_EXT__</code> is defined before the corresponding header is included.</p>
+
+<p>Besides additions to the standard library, ISO/IEC TS 18661-1:2014 makes a number of changes to the core language, notably splitting floating-point control between static (controlled by the new <code>#pragma STDC FENV_ROUND</code>), and dynamic (controlled by <a href="/reference/c/numeric/fenv/feround/">fesetround</a>). Most math.h functions respect the static rounding mode, if set, over the dynamic rounding mode.</p>
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: add to the pragma page or describe the pragma in full here?</td></tr>
+</table>

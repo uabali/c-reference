@@ -1,0 +1,298 @@
+---
+title: "Type support"
+slug: "c/types"
+category: "overview"
+source: "https://en.cppreference.com/w/c/types"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>See also <a href="/reference/c/language/types/">type system overview</a> and <a href="/reference/c/language/arithmetic_types/">arithmetic types defined by the language</a>.</p>
+
+<h3 id="Basic_types">Basic types</h3>
+
+<h4 id="Additional_basic_types_and_convenience_macros">Additional basic types and convenience macros</h4>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stddef.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/types/size_t/">size_t</a></td><td>unsigned integer type returned by the <a href="/reference/c/language/sizeof/"><code>sizeof</code></a> operator   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td><a href="/reference/c/types/ptrdiff_t/">ptrdiff_t</a></td><td>signed integer type returned when subtracting two pointers   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td><a href="/reference/c/types/nullptr_t/">nullptr_t</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>the type of the predefined null pointer constant <a href="/reference/c/language/nullptr/"><code>nullptr</code></a>   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td><a href="/reference/c/types/NULL/">NULL</a></td><td>implementation-defined null pointer constant   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td><a href="/reference/c/types/max_align_t/">max_align_t</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>a type with alignment requirement as great as any other scalar type   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td><a href="/reference/c/types/offsetof/">offsetof</a></td><td>byte offset from the beginning of a struct type to specified member   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdbool.h&gt;</code></td></tr>
+<tr><td>bool
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-until std-c23">(removed in C23)</span></td><td>convenience macro, expands to <a href="/reference/c/keyword/_Bool/"><code>_Bool</code></a>   <span class="mark-note">(keyword macro)</span></td></tr>
+<tr><td>true
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-until std-c23">(removed in C23)</span></td><td>expands to integer constant <code>1</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>false
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-until std-c23">(removed in C23)</span></td><td>expands to integer constant <code>0</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__bool_true_false_are_defined
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c23">(deprecated in C23)</span></td><td>expands to integer constant <code>1</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdalign.h&gt;</code></td></tr>
+<tr><td>alignas
+
+<span class="std std-since std-c11">(C11)</span><br /><span class="std std-until std-c23">(removed in C23)</span></td><td>convenience macro, expands to keyword <a href="/reference/c/keyword/_Alignas/"><code>_Alignas</code></a>   <span class="mark-note">(keyword macro)</span></td></tr>
+<tr><td>alignof
+
+<span class="std std-since std-c11">(C11)</span><br /><span class="std std-until std-c23">(removed in C23)</span></td><td>convenience macro, expands to keyword <a href="/reference/c/keyword/_Alignof/"><code>_Alignof</code></a>   <span class="mark-note">(keyword macro)</span></td></tr>
+<tr><td>__alignas_is_defined
+
+<span class="std std-since std-c11">(C11)</span><br /><span class="std std-until std-c23">(removed in C23)</span></td><td>expands to integer constant <code>1</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>__alignof_is_defined
+
+<span class="std std-since std-c11">(C11)</span><br /><span class="std std-until std-c23">(removed in C23)</span></td><td>expands to integer constant <code>1</code>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdnoreturn.h&gt;</code></td></tr>
+<tr><td>noreturn
+
+<span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c23">(deprecated in C23)</span></td><td>convenience macro, expands to <a href="/reference/c/keyword/_Noreturn/"><code>_Noreturn</code></a>   <span class="mark-note">(keyword macro)</span></td></tr>
+</table>
+
+<h4 id="Fixed_width_integer_types_.28since_C99.29"><a href="/reference/c/types/integer/">Fixed width integer types</a> <span class="std std-since std-c99">(since C99)</span></h4>
+
+<h4 id="Numeric_limits"><a href="/reference/c/types/limits/">Numeric limits</a></h4>
+
+<h3 id="Notes">Notes</h3>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span> <span class="std std-until std-c23">(until C23)</span></p><p>The type of <code>true</code> and <code>false</code> is <code>int</code> rather than <code>_Bool</code>.</p>
+
+<p>A program may undefine and perhaps then redefine the macros <code>bool</code>, <code>true</code> and <code>false</code>. However, such ability is a deprecated feature.</p></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>The type of <code>true</code> and <code>false</code> is <code>bool</code>. It is unspecified whether any of <code>bool</code>, <code>_Bool</code>, <code>true</code>, or <code>false</code> is implemented as a predefined macro.</p>
+
+<p>If <code>bool</code>, <code>true</code>, or <code>false</code> (but not <code>_Bool</code>) is defined as a predefined macro, a program may undefine and perhaps redefine it.</p></aside>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdalign.h>
+#include <stdbool.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    printf("%d %d %d\n", true && false, true || false, !false);
+    printf("%d %d\n", true ^ true, true + true);
+    printf("%zu\n", alignof(short));
+}
+```
+
+<p>Possible output:</p>
+
+```text
+0 1 1
+0 2
+2
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.15 Alignment &lt;stdalign.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.18 Boolean type and values &lt;stdbool.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19 Common definitions &lt;stddef.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.23 _Noreturn &lt;stdnoreturn.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.9 Boolean type and values &lt;stdbool.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.15 Alignment &lt;stdalign.h&gt; (p: 196)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.18 Boolean type and values &lt;stdbool.h&gt; (p: 210)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19 Common definitions &lt;stddef.h&gt; (p: 211)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.23 _Noreturn &lt;stdnoreturn.h&gt; (p: 263)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.9 Boolean type and values &lt;stdbool.h&gt; (p: 332)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.15 Alignment &lt;stdalign.h&gt; (p: 268)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.18 Boolean type and values &lt;stdbool.h&gt; (p: 287)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19 Common definitions &lt;stddef.h&gt; (p: 288)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.23 _Noreturn &lt;stdnoreturn.h&gt; (p: 361)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.9 Boolean type and values &lt;stdbool.h&gt; (p: 456)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.18 Boolean type and values &lt;stdbool.h&gt; (p: 253)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19 Common definitions &lt;stddef.h&gt; (p: 254)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.7 Boolean type and values &lt;stdbool.h&gt; (p: 401)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.1.5 Common definitions &lt;stddef.h&gt;</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/types" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Type support library</td></tr>
+</table>

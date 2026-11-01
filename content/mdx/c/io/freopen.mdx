@@ -1,0 +1,257 @@
+---
+title: "freopen, freopen_s"
+slug: "c/io/freopen"
+category: "io"
+source: "https://en.cppreference.com/w/c/io/freopen"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+<p class="decl-note">(1)</p>
+
+```c
+FILE *freopen( const char *filename, const char *mode,
+               FILE *stream );
+```
+
+<p class="decl-note"><span class="std std-until std-c99">(until C99)</span></p>
+
+```c
+FILE *freopen( const char *restrict filename, const char *restrict mode, 
+               FILE *restrict stream );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+errno_t freopen_s( FILE *restrict *restrict newstreamptr,
+                   const char *restrict filename, const char *restrict mode,
+
+                   FILE *restrict stream );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  First, attempts to close the file associated with <code>stream</code>, ignoring any errors. Then, if <code>filename</code> is not null, attempts to open the file specified by <code>filename</code> using <code>mode</code> as if by <a href="/reference/c/io/fopen/">fopen</a>, and associates that file with the file stream pointed to by <code>stream</code>. If <code>filename</code> is a null pointer, then the function attempts to reopen the file that is already associated with <code>stream</code> (it is implementation defined which mode changes are allowed in this case).</p>
+
+<div class="li-note"><span class="li-num">2)</span>
+
+<p>Same as</p>
+
+(1)
+
+<p>, except that</p>
+
+<code>mode</code>
+
+<p>is treated as in</p>
+
+fopen_s
+
+<p>and that the pointer to the file stream is written to</p>
+
+<code>newstreamptr</code>
+
+<p>and the following errors are detected at runtime and call the currently installed</p>
+
+<a href="/reference/c/error/set_constraint_handler_s/">constraint handler</a>
+
+<p>function:</p>
+
+<dl>
+<dd><ul>
+<li>
+<code>newstreamptr</code>
+
+<p>is a null pointer</p>
+</li>
+<li>
+<code>stream</code>
+
+<p>is a null pointer</p>
+</li>
+<li>
+<code>mode</code>
+
+<p>is a null pointer</p>
+</li>
+</ul></dd>
+<dd><p>As with all bounds-checked functions,</p>
+
+<code>freopen_s</code>
+
+<p>is only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<a href="/reference/c/io/"><code>&lt;stdio.h&gt;</code></a>
+
+<p>.</p></dd>
+</dl></div>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>filename</td><td>-</td><td>file name to associate the file stream to</td></tr>
+<tr><td>mode</td><td>-</td><td>null-terminated character string determining new <a href="/reference/c/io/freopen/#File_access_flags">file access mode</a></td></tr>
+<tr><td>stream</td><td>-</td><td>the file stream to modify</td></tr>
+<tr><td>newstreamptr</td><td>-</td><td>pointer to a pointer where the function stores the result (an out-parameter)</td></tr>
+</table>
+
+<h3 id="File_access_flags">File access flags</h3>
+
+<table class="ref-table">
+<tr><th>File access  mode string</th><th>Meaning</th><th>Explanation</th><th>Action if file   already exists</th><th>Action if file   does not exist</th></tr>
+<tr><td><code>&quot;r&quot;</code></td><td>read</td><td>Open a file for reading</td><td>read from start</td><td>failure to open</td></tr>
+<tr><td><code>&quot;w&quot;</code></td><td>write</td><td>Create a file for writing</td><td>destroy contents</td><td>create new</td></tr>
+<tr><td><code>&quot;a&quot;</code></td><td>append</td><td>Append to a file</td><td>write to end</td><td>create new</td></tr>
+<tr><td><code>&quot;r+&quot;</code></td><td>read extended</td><td>Open a file for read/write</td><td>read from start</td><td>error</td></tr>
+<tr><td><code>&quot;w+&quot;</code></td><td>write extended</td><td>Create a file for read/write</td><td>destroy contents</td><td>create new</td></tr>
+<tr><td><code>&quot;a+&quot;</code></td><td>append extended</td><td>Open a file for read/write</td><td>write to end</td><td>create new</td></tr>
+<tr><td colspan="5">File access mode flag <code>&quot;b&quot;</code> can optionally be specified to open a file in binary mode. This flag has no effect on POSIX systems, but on Windows it disables special handling of <code>&#x27;\n&#x27;</code> and <code>&#x27;\x1A&#x27;</code>.   On the append file access modes, data is written to the end of the file regardless of the current position of the file position indicator.</td></tr>
+<tr><td colspan="5">The behavior is undefined if the mode is not one of the strings listed above. Some implementations define additional supported modes (e.g. <a href="https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/fopen-wfopen" rel="noreferrer" target="_blank">Windows</a>).</td></tr>
+<tr><td colspan="5">In update mode (<code>&#x27;+&#x27;</code>), both input and output may be performed, but output cannot be followed by input without an intervening call to <a href="/reference/c/io/fflush/">fflush</a>, <a href="/reference/c/io/fseek/">fseek</a>, <a href="/reference/c/io/fsetpos/">fsetpos</a> or <a href="/reference/c/io/rewind/">rewind</a>, and input cannot be followed by output without an intervening call to <a href="/reference/c/io/fseek/">fseek</a>, <a href="/reference/c/io/fsetpos/">fsetpos</a> or <a href="/reference/c/io/rewind/">rewind</a>, unless the input operation encountered end of file. In update mode, implementations are permitted to use binary mode even when text mode is specified.</td></tr>
+<tr><td colspan="5">File access mode flag <code>&quot;x&quot;</code> can optionally be appended to <code>&quot;w&quot;</code> or <code>&quot;w+&quot;</code> specifiers. This flag forces the function to fail if the file exists, instead of overwriting it. <span class="std std-since std-c11">(C11)</span></td></tr>
+<tr><td colspan="5">When using fopen_s or freopen_s, file access permissions for any file created with <code>&quot;w&quot;</code> or <code>&quot;a&quot;</code> prevents other users from accessing it. File access mode flag <code>&quot;u&quot;</code> can optionally be prepended to any specifier that begins with <code>&quot;w&quot;</code> or <code>&quot;a&quot;</code>, to enable the default <a href="/reference/c/io/fopen/">fopen</a> permissions. <span class="std std-since std-c11">(C11)</span></td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  A copy of the value of <code>stream</code> on success, null pointer on failure.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  zero on success (and a copy of the value of <code>stream</code> is written to <code>*newstreamptr</code>, non-zero on error (and null pointer is written to <code>*newstreamptr</code> unless <code>newstreamptr</code> is itself a null pointer).</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p><code>freopen</code> is the only way to change the narrow/wide orientation of a stream once it has been established by an I/O operation or by fwide.</p>
+
+<p>Microsoft CRT version of <code>freopen</code> does not support any mode changes when <code>filename</code> is a null pointer and treats this as an error (see <a href="https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/freopen-wfreopen" rel="noreferrer" target="_blank">documentation</a>). A possible workaround is the non-standard function <a href="https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/setmode" rel="noreferrer" target="_blank"><code>_setmode()</code></a>.</p>
+
+<h3 id="Example">Example</h3>
+
+<p>The following code redirects <code>stdout</code> to a file.</p>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(void)
+{
+    puts("stdout is printed to console");
+    if (freopen("redir.txt", "w", stdout) == NULL)
+    {
+       perror("freopen() failed");
+       return EXIT_FAILURE;
+    }
+    puts("stdout is redirected to a file"); // this is written to redir.txt
+    fclose(stdout);
+    return EXIT_SUCCESS;
+}
+```
+
+<p>Output:</p>
+
+```text
+stdout is printed to console
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.5.4 The freopen function (p: 224-225)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.5.2.2 The freopen_s function (p: 429-430)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.5.4 The freopen function (p: 307)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.5.2.2 The freopen_s function (p: 590)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.5.4 The freopen function (p: 272-273)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9.5.4 The freopen function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/fopen/">fopen<br />fopen_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>opens a file   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fclose/">fclose</a></td><td>closes a file   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c/freopen" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+freopen</td></tr>
+</table>

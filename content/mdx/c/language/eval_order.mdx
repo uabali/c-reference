@@ -1,0 +1,155 @@
+---
+title: "Order of evaluation"
+slug: "c/language/eval_order"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/eval_order"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Order of evaluation of the operands of any C operator, including the order of evaluation of function arguments in a function-call expression, and the order of evaluation of the subexpressions within any expression is unspecified (except where noted below). The compiler will evaluate them in any order, and may choose another order when the same expression is evaluated again.</p>
+
+<p>There is no concept of left-to-right or right-to-left evaluation in C, which is not to be confused with left-to-right and right-to-left associativity of operators: the expression <code>f1() + f2() + f3()</code> is parsed as <code>(f1() + f2()) + f3()</code> due to left-to-right associativity of operator+, but the function call to <code>f3</code> may be evaluated first, last, or between <code>f1()</code> or <code>f2()</code> at run time.</p>
+
+<h3 id="Definitions">Definitions</h3>
+
+<h4 id="Evaluations">Evaluations</h4>
+
+<p>There are two kinds of evaluations performed by the compiler for each expression or subexpression (both of which are optional):</p>
+
+<ul>
+<li>
+<em>value computation</em>
+
+<p>: calculation of the value that is returned by the expression. This may involve determination of the identity of the object (</p>
+
+<a href="/reference/c/language/value_category/">lvalue evaluation</a>
+
+<p>) or reading the value previously assigned to an object (rvalue evaluation)</p>
+</li>
+<li>
+<em>side effect</em>
+
+<p>: access (read or write) to an object designated by a</p>
+
+<a href="/reference/c/language/volatile/">volatile</a>
+
+<p>lvalue, modification (writing) to an object</p>
+
+, atomic synchronization<span class="std std-since std-c11">(since C11)</span>
+
+<p>, modifying a file, modifying the floating-point environment (if supported), or calling a function that does any of those operations.</p>
+</li>
+</ul>
+
+<p>If no side effects are produced by an expression and the compiler can determine that the value is not used, the expression <a href="/reference/c/language/as_if/">may not be evaluated</a>.</p>
+
+<h4 id="Ordering">Ordering</h4>
+
+<p>"sequenced-before" is an asymmetric, transitive, pair-wise relationship between evaluations within the same thread (it may extend across threads if atomic types and memory barriers are involved).</p>
+
+<ul>
+<li>
+<p>If a</p>
+
+<a href="https://en.wikipedia.org/wiki/Sequence_point" rel="noreferrer" target="_blank"><em>sequence point</em></a>
+
+<p>is present between the subexpressions E1 and E2, then both value computation and side effects of E1 are</p>
+
+<em>sequenced-before</em>
+
+<p>every value computation and side effect of E2</p>
+</li>
+</ul>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><ul>
+<li>
+<p>If evaluation A is sequenced before evaluation B, then evaluation of A will be complete before evaluation of B begins.</p>
+</li>
+<li>
+<p>If A is not sequenced before B and B is sequenced before A, then evaluation of B will be complete before evaluation of A begins.</p>
+</li>
+<li>
+<p>If A is not sequenced before B and B is not sequenced before A, then two possibilities exist:</p>
+
+<ul>
+<li>
+<p>evaluations of A and B are unsequenced: they may be performed in any order and may overlap (within a single thread of execution, the compiler may interleave the CPU instructions that comprise A and B)</p>
+</li>
+<li>
+<p>evaluations of A and B are indeterminably-sequenced: they may be performed in any order but may not overlap: either A will be complete before B, or B will be complete before A. The order may be the opposite the next time the same expression is evaluated.</p>
+</li>
+</ul>
+</li>
+</ul></aside>
+
+<h3 id="Rules">Rules</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  There is a sequence point after the evaluation of all function arguments and of the function designator, and before the actual function call.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  There is a sequence point after evaluation of the first (left) operand and before evaluation of the second (right) operand of the following binary operators: <code>&amp;&amp;</code> (logical AND), <code>||</code> (logical OR), and <code>,</code> (comma).</p>
+
+<p class="li-note"><span class="li-num">3)</span>  There is a sequence point after evaluation of the first (left) operand and before evaluation of the second or third operand (whichever is evaluated) of the conditional operator <code>?:</code></p>
+
+<p class="li-note"><span class="li-num">4)</span>  There is a sequence point after the evaluation of a full expression (an expression that is not a subexpression: typically something that ends with a semicolon or a <a href="/reference/c/language/statements/">controlling statement</a> of <code>if</code>/<code>switch</code>/<code>while</code>/<code>do</code>) and before the next full expression.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><p class="li-note"><span class="li-num">5)</span>  There is a sequence point at the end of a full declarator.</p>
+
+<p class="li-note"><span class="li-num">6)</span>  There is a sequence point immediately before the return of a library function.</p>
+
+<p class="li-note"><span class="li-num">7)</span>  There is a sequence point after the action associated with each conversion specifier in formatted I/O (in particular, it is well-formed for <a href="/reference/c/io/fscanf/">scanf</a> to write different fields into the same variable and for <a href="/reference/c/io/fprintf/">printf</a> to read and modify or modify the same variable more than once using <code>%n</code>)</p>
+
+<p class="li-note"><span class="li-num">8)</span>  There are sequence points before and immediately after each call to a comparison function made by the library functions <a href="/reference/c/algorithm/qsort/">qsort</a> and <a href="/reference/c/algorithm/bsearch/">bsearch</a>, as well as between any call to the comparison function and the movement of the associated objects made by <a href="/reference/c/algorithm/qsort/">qsort</a></p></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><p class="li-note"><span class="li-num">9)</span>  The value computations (but not the side-effects) of the operands to any operator are sequenced before the value computation of the result of the operator (but not its side-effects).</p>
+
+<p class="li-note"><span class="li-num">10)</span>  The side effect (modification of the left argument) of the direct assignment operator and of all compound assignment operators is sequenced after the value computation (but not the side effects) of both left and right arguments.</p>
+
+<p class="li-note"><span class="li-num">11)</span>  The value computation of the postincrement and postdecrement operators is sequenced before its side-effect.</p>
+
+<p class="li-note"><span class="li-num">12)</span>  A function call that is not sequenced before or sequenced after another function call is indeterminately sequenced (CPU instructions that constitute different function calls cannot be interleaved, even if the functions are inlined)</p>
+
+<p class="li-note"><span class="li-num">13)</span>  In <a href="/reference/c/language/initialization/">initialization</a> list expressions, all evaluations are indeterminately sequenced</p>
+
+<p class="li-note"><span class="li-num">14)</span>  With respect to an indeterminately-sequenced function call, the operation of compound assignment operators, and both prefix and postfix forms of increment and decrement operators are single evaluations.</p></aside>
+
+<h3 id="Undefined_behavior">Undefined behavior</h3>
+
+<div class="li-note"><span class="li-num">1)</span>
+
+<p>If a side effect on a scalar object is unsequenced relative to another side effect on the same scalar object, the</p>
+
+<a href="/reference/c/language/behavior/#UB_and_optimization">behavior is undefined</a>
+
+<p>.</p>
+
+```c
+i = ++i + i++; // undefined behavior
+i = i++ + 1; // undefined behavior
+f(++i, ++i); // undefined behavior
+f(i = -1, i = -1); // undefined behavior
+```</div>
+
+<div class="li-note"><span class="li-num">2)</span>
+
+<p>If a side effect on a scalar object is unsequenced relative to a value computation using the value of the same scalar object, the behavior is undefined.</p>
+
+```c
+f(i, i++); // undefined behavior
+a[i] = i++; // undefined bevahior
+```</div>
+
+<p class="li-note"><span class="li-num">3)</span>  The above rules apply as long as at least one allowable ordering of subexpressions permits such an unsequenced side-effect.</p>
+
+<h3 id="See_also">See also</h3>
+
+<p><a href="/reference/c/language/operator_precedence/">Operator precedence</a> which defines how expressions are built from their source code representation.</p>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/eval_order" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Order of evaluation</td></tr>
+</table>

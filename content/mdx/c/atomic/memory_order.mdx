@@ -1,0 +1,315 @@
+---
+title: "memory_order"
+slug: "c/atomic/memory_order"
+category: "atomic"
+source: "https://en.cppreference.com/w/c/atomic/memory_order"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdatomic.h&gt;</code></p>
+
+```c
+enum memory_order
+{
+    memory_order_relaxed,
+    memory_order_consume,
+    memory_order_acquire,
+    memory_order_release,
+    memory_order_acq_rel,
+    memory_order_seq_cst
+
+};
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p><code>memory_order</code> specifies how memory accesses, including regular, non-atomic memory accesses, are to be ordered around an atomic operation. Absent any constraints on a multi-core system, when multiple threads simultaneously read and write to several variables, one thread can observe the values change in an order different from the order another thread wrote them. Indeed, the apparent order of changes can even differ among multiple reader threads. Some similar effects can occur even on uniprocessor systems due to compiler transformations allowed by the memory model.</p>
+
+<p>The default behavior of all atomic operations in the <a href="/reference/c/language/atomic/">language</a> and the library provides for <em>sequentially consistent ordering</em> (see discussion below). That default can hurt performance, but the library's atomic operations can be given an additional <code>memory_order</code> argument to specify the exact constraints, beyond atomicity, that the compiler and processor must enforce for that operation.</p>
+
+<h3 id="Constants">Constants</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdatomic.h&gt;</code></td></tr>
+<tr><td>Value</td><td>Explanation</td></tr>
+<tr><td><code>memory_order_relaxed</code></td><td>Relaxed operation: there are no synchronization or ordering constraints imposed on other reads or writes, only this operation's atomicity is guaranteed (see <a href="/reference/c/atomic/memory_order/#Relaxed_ordering">Relaxed ordering</a> below).</td></tr>
+<tr><td><code>memory_order_consume</code></td><td>A load operation with this memory order performs a <em>consume operation</em> on the affected memory location: no reads or writes in the current thread dependent on the value currently loaded can be reordered before this load. Writes to data-dependent variables in other threads that release the same atomic variable are visible in the current thread. On most platforms, this affects compiler optimizations only (see <a href="/reference/c/atomic/memory_order/#Release-Consume_ordering">Release-Consume ordering</a> below).</td></tr>
+<tr><td><code>memory_order_acquire</code></td><td>A load operation with this memory order performs the <em>acquire operation</em> on the affected memory location: no reads or writes in the current thread can be reordered before this load. All writes in other threads that release the same atomic variable are visible in the current thread (see <a href="/reference/c/atomic/memory_order/#Release-Acquire_ordering">Release-Acquire ordering</a> below).</td></tr>
+<tr><td><code>memory_order_release</code></td><td>A store operation with this memory order performs the <em>release operation</em>: no reads or writes in the current thread can be reordered after this store. All writes in the current thread are visible in other threads that acquire the same atomic variable (see <a href="/reference/c/atomic/memory_order/#Release-Acquire_ordering">Release-Acquire ordering</a> below) and writes that carry a dependency into the atomic variable become visible in other threads that consume the same atomic (see <a href="/reference/c/atomic/memory_order/#Release-Consume_ordering">Release-Consume ordering</a> below).</td></tr>
+<tr><td><code>memory_order_acq_rel</code></td><td>A read-modify-write operation with this memory order is both an <em>acquire operation</em> and a <em>release operation</em>. No memory reads or writes in the current thread can be reordered before the load, nor after the store. All writes in other threads that release the same atomic variable are visible before the modification and the modification is visible in other threads that acquire the same atomic variable.</td></tr>
+<tr><td><code>memory_order_seq_cst</code></td><td>A load operation with this memory order performs an <em>acquire operation</em>, a store performs a <em>release operation</em>, and read-modify-write performs both an <em>acquire operation</em> and a <em>release operation</em>, plus a single total order exists in which all threads observe all modifications in the same order (see <a href="/reference/c/atomic/memory_order/#Sequentially-consistent_ordering">Sequentially-consistent ordering</a> below).</td></tr>
+</table>
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: happens-before and other concepts, as in C++, but keep modification orders and the four consistencies in <a href="/reference/c/language/atomic/">c/language/atomic</a></td></tr>
+</table>
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: when doing above, don't forget that although happens-before wasn't acyclic in C11 as published, this was updated to match C++11 via DR 401</td></tr>
+</table>
+
+<h4 id="Relaxed_ordering">Relaxed ordering</h4>
+
+<p>Atomic operations tagged <code>memory_order_relaxed</code> are not synchronization operations; they do not impose an order among concurrent memory accesses. They only guarantee atomicity and modification order consistency.</p>
+
+<p>For example, with <code>x</code> and <code>y</code> initially zero,</p>
+
+<p><code>// Thread 1: r1 = atomic_load_explicit(y, memory_order_relaxed); // A atomic_store_explicit(x, r1, memory_order_relaxed); // B // Thread 2: r2 = atomic_load_explicit(x, memory_order_relaxed); // C atomic_store_explicit(y, 42, memory_order_relaxed); // D</code> is allowed to produce <code>r1 == r2 == 42</code> because, although A is <em>sequenced-before</em> B within thread 1 and C is <em>sequenced before</em> D within thread 2, nothing prevents D from appearing before A in the modification order of <code>y</code>, and B from appearing before C in the modification order of <code>x</code>. The side-effect of D on <code>y</code> could be visible to the load A in thread 1 while the side effect of B on <code>x</code> could be visible to the load C in thread 2. In particular, this may occur if D is completed before C in thread 2, either due to compiler reordering or at runtime.</p>
+
+<p>Typical use for relaxed memory ordering is incrementing counters, such as the reference counters , since this only requires atomicity, but not ordering or synchronization .</p>
+
+<h4 id="Release-Consume_ordering">Release-Consume ordering</h4>
+
+<p>If an atomic store in thread A is tagged <code>memory_order_release</code>, an atomic load in thread B from the same variable is tagged <code>memory_order_consume</code>, and the load in thread B reads a value written by the store in thread A, then the store in thread A is <em>dependency-ordered before</em> the load in thread B.</p>
+
+<p>All memory writes (non-atomic and relaxed atomic) that <em>happened-before</em> the atomic store from the point of view of thread A, become <em>visible side-effects</em> within those operations in thread B into which the load operation <em>carries dependency</em>, that is, once the atomic load is completed, those operators and functions in thread B that use the value obtained from the load are guaranteed to see what thread A wrote to memory.</p>
+
+<p>The synchronization is established only between the threads <em>releasing</em> and <em>consuming</em> the same atomic variable. Other threads can see different order of memory accesses than either or both of the synchronized threads.</p>
+
+<p>On all mainstream CPUs other than DEC Alpha, dependency ordering is automatic, no additional CPU instructions are issued for this synchronization mode, only certain compiler optimizations are affected (e.g. the compiler is prohibited from performing speculative loads on the objects that are involved in the dependency chain).</p>
+
+<p>Typical use cases for this ordering involve read access to rarely written concurrent data structures (routing tables, configuration, security policies, firewall rules, etc) and publisher-subscriber situations with pointer-mediated publication, that is, when the producer publishes a pointer through which the consumer can access information: there is no need to make everything else the producer wrote to memory visible to the consumer (which may be an expensive operation on weakly-ordered architectures). An example of such scenario is <a href="https://en.wikipedia.org/wiki/Read-copy-update" rel="noreferrer" target="_blank"><code>rcu_dereference</code></a>.</p>
+
+<p>Note that currently (2/2015) no known production compilers track dependency chains: consume operations are lifted to acquire operations.</p>
+
+<h4 id="Release_sequence">Release sequence</h4>
+
+<p>If some atomic is store-released and several other threads perform read-modify-write operations on that atomic, a "release sequence" is formed: all threads that perform the read-modify-writes to the same atomic synchronize with the first thread and each other even if they have no <code>memory_order_release</code> semantics. This makes single producer - multiple consumers situations possible without imposing unnecessary synchronization between individual consumer threads.</p>
+
+<h4 id="Release-Acquire_ordering">Release-Acquire ordering</h4>
+
+<p>If an atomic store in thread A is tagged <code>memory_order_release</code>, an atomic load in thread B from the same variable is tagged <code>memory_order_acquire</code>, and the load in thread B reads a value written by the store in thread A, then the store in thread A <em>synchronizes-with</em> the load in thread B.</p>
+
+<p>All memory writes (including non-atomic and relaxed atomic) that <em>happened-before</em> the atomic store from the point of view of thread A, become <em>visible side-effects</em> in thread B. That is, once the atomic load is completed, thread B is guaranteed to see everything thread A wrote to memory. This promise only holds if B actually returns the value that A stored, or a value from later in the release sequence.</p>
+
+<p>The synchronization is established only between the threads <em>releasing</em> and <em>acquiring</em> the same atomic variable. Other threads can see different order of memory accesses than either or both of the synchronized threads.</p>
+
+<p>On strongly-ordered systems — x86, SPARC TSO, IBM mainframe, etc. — release-acquire ordering is automatic for the majority of operations. No additional CPU instructions are issued for this synchronization mode; only certain compiler optimizations are affected (e.g., the compiler is prohibited from moving non-atomic stores past the atomic store-release or performing non-atomic loads earlier than the atomic load-acquire). On weakly-ordered systems (ARM, Itanium, PowerPC), special CPU load or memory fence instructions are used.</p>
+
+<p>Mutual exclusion locks, such as <a href="/reference/c/thread/#Mutual_exclusion">mutexes</a> or <a href="/reference/c/atomic/atomic_flag_test_and_set/">atomic spinlocks</a>, are an example of release-acquire synchronization: when the lock is released by thread A and acquired by thread B, everything that took place in the critical section (before the release) in the context of thread A has to be visible to thread B (after the acquire) which is executing the same critical section.</p>
+
+<h4 id="Sequentially-consistent_ordering">Sequentially-consistent ordering</h4>
+
+<p>Atomic operations tagged <code>memory_order_seq_cst</code> not only order memory the same way as release/acquire ordering (everything that <em>happened-before</em> a store in one thread becomes a <em>visible side effect</em> in the thread that did a load), but also establish a <em>single total modification order</em> of all atomic operations that are so tagged.</p>
+
+<p>Formally,</p>
+
+<p>each <code>memory_order_seq_cst</code> operation B that loads from atomic variable M, observes one of the following:</p>
+
+<ul>
+<li>
+<p>the result of the last operation A that modified M, which appears before B in the single total order,</p>
+</li>
+<li>
+<p>OR, if there was such an A, B may observe the result of some modification on M that is not</p>
+
+<code>memory_order_seq_cst</code>
+
+<p>and does not</p>
+
+<em>happen-before</em>
+
+<p>A,</p>
+</li>
+<li>
+<p>OR, if there wasn't such an A, B may observe the result of some unrelated modification of M that is not</p>
+
+<code>memory_order_seq_cst</code>
+
+<p>.</p>
+</li>
+</ul>
+
+<p>If there was a <code>memory_order_seq_cst</code> <a href="/reference/c/atomic/atomic_thread_fence/">atomic_thread_fence</a> operation X <em>sequenced-before</em> B, then B observes one of the following:</p>
+
+<ul>
+<li>
+<p>the last</p>
+
+<code>memory_order_seq_cst</code>
+
+<p>modification of M that appears before X in the single total order,</p>
+</li>
+<li>
+<p>some unrelated modification of M that appears later in M's modification order.</p>
+</li>
+</ul>
+
+<p>For a pair of atomic operations on M called A and B, where A writes and B reads M's value, if there are two <code>memory_order_seq_cst</code> <a href="/reference/c/atomic/atomic_thread_fence/">atomic_thread_fence</a>s X and Y, and if A is <em>sequenced-before</em> X, Y is <em>sequenced-before</em> B, and X appears before Y in the Single Total Order, then B observes either:</p>
+
+<ul>
+<li>
+<p>the effect of A,</p>
+</li>
+<li>
+<p>some unrelated modification of M that appears after A in M's modification order.</p>
+</li>
+</ul>
+
+<p>For a pair of atomic modifications of M called A and B, B occurs after A in M's modification order if</p>
+
+<ul>
+<li>
+<p>there is a</p>
+
+<code>memory_order_seq_cst</code>
+
+<a href="/reference/c/atomic/atomic_thread_fence/">atomic_thread_fence</a>
+
+<p>X such that A is</p>
+
+<em>sequenced-before</em>
+
+<p>X and X appears before B in the Single Total Order,</p>
+</li>
+<li>
+<p>or, there is a</p>
+
+<code>memory_order_seq_cst</code>
+
+<a href="/reference/c/atomic/atomic_thread_fence/">atomic_thread_fence</a>
+
+<p>Y such that Y is</p>
+
+<em>sequenced-before</em>
+
+<p>B and A appears before Y in the Single Total Order,</p>
+</li>
+<li>
+<p>or, there are</p>
+
+<code>memory_order_seq_cst</code>
+
+<a href="/reference/c/atomic/atomic_thread_fence/">atomic_thread_fence</a>
+
+<p>s X and Y such that A is</p>
+
+<em>sequenced-before</em>
+
+<p>X, Y is</p>
+
+<em>sequenced-before</em>
+
+<p>B, and X appears before Y in the Single Total Order.</p>
+</li>
+</ul>
+
+<p>Note that this means that:</p>
+
+<p class="li-note"><span class="li-num">1)</span>  as soon as atomic operations that are not tagged <code>memory_order_seq_cst</code> enter the picture, the sequential consistency is lost,</p>
+
+<p class="li-note"><span class="li-num">2)</span>  the sequentially-consistent fences are only establishing total ordering for the fences themselves, not for the atomic operations in the general case (<em>sequenced-before</em> is not a cross-thread relationship, unlike <em>happens-before</em>).</p>
+
+<p>Sequential ordering may be necessary for multiple producer-multiple consumer situations where all consumers must observe the actions of all producers occurring in the same order.</p>
+
+<p>Total sequential ordering requires a full memory fence CPU instruction on all multi-core systems. This may become a performance bottleneck since it forces the affected memory accesses to propagate to every core.</p>
+
+<h3 id="Relationship_with_volatile">Relationship with volatile</h3>
+
+<p>Within a thread of execution, accesses (reads and writes) through <a href="/reference/c/language/volatile/">volatile lvalues</a> cannot be reordered past observable side-effects (including other volatile accesses) that are separated by a sequence point within the same thread, but this order is not guaranteed to be observed by another thread, since volatile access does not establish inter-thread synchronization.</p>
+
+<p>In addition, volatile accesses are not atomic (concurrent read and write is a <a href="/reference/c/language/memory_model/">data race</a>) and do not order memory (non-volatile memory accesses may be freely reordered around the volatile access).</p>
+
+<p>One notable exception is Visual Studio, where, with default settings, every volatile write has release semantics and every volatile read has acquire semantics (<a href="https://learn.microsoft.com/en-us/cpp/cpp/volatile-cpp" rel="noreferrer" target="_blank">Microsoft Docs</a>), and thus volatiles may be used for inter-thread synchronization. Standard <code>volatile</code> semantics are not applicable to multi-threaded programming, although they are sufficient for e.g. communication with a <a href="/reference/c/program/signal/">signal</a> handler that runs in the same thread when applied to <code>sig_atomic_t</code> variables.</p>
+
+<h3 id="Examples">Examples</h3>
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: no example</td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17.1/4 memory_order (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17.3 Order and consistency (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17.1/4 memory_order (p: 200)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17.3 Order and consistency (p: 201-203)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17.1/4 memory_order (p: 273)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.17.3 Order and consistency (p: 275-277)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/atomic/memory_order" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+memory order</td></tr>
+</table>
+
+<h3 id="External_links">External links</h3>
+
+<table class="ref-table">
+<tr><td>1.</td><td><a href="https://en.wikipedia.org/wiki/MOESI_protocol" rel="noreferrer" target="_blank">MOESI protocol</a></td></tr>
+<tr><td>2.</td><td><a href="https://www.cl.cam.ac.uk/~pes20/weakmemory/cacm.pdf" rel="noreferrer" target="_blank">x86-TSO: A Rigorous and Usable Programmer’s Model for x86 Multiprocessors</a> P. Sewell et. al., 2010</td></tr>
+<tr><td>3.</td><td><a href="https://www.cl.cam.ac.uk/~pes20/ppc-supplemental/test7.pdf" rel="noreferrer" target="_blank">A Tutorial Introduction to the ARM and POWER Relaxed Memory Models</a> P. Sewell et al, 2012</td></tr>
+<tr><td>4.</td><td><a href="https://researchspace.auckland.ac.nz/bitstream/handle/2292/11594/MESIF-2009.pdf?sequence=6" rel="noreferrer" target="_blank">MESIF: A Two-Hop Cache Coherency Protocol for Point-to-Point Interconnects</a> J.R. Goodman, H.H.J. Hum, 2009</td></tr>
+<tr><td>5.</td><td><a href="https://research.swtch.com/mm" rel="noreferrer" target="_blank">Memory Models</a> Russ Cox, 2021</td></tr>
+</table>
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: Let's find good refs on QPI, MOESI, and maybe Dragon.</td></tr>
+</table>

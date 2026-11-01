@@ -1,0 +1,148 @@
+---
+title: "fegetexceptflag, fesetexceptflag"
+slug: "c/numeric/fenv/feexceptflag"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/fenv/feexceptflag"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;fenv.h&gt;</code></p>
+
+```c
+int fegetexceptflag( fexcept_t* flagp, int excepts );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+int fesetexceptflag( const fexcept_t* flagp, int excepts );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p>1) Attempts to obtain the full contents of the floating-point exception flags that are listed in the bitmask argument <code>excepts</code>, which is a bitwise OR of the <a href="/reference/c/numeric/fenv/FE_exceptions/">floating-point exception macros</a>.</p>
+
+<p>2) Attempts to copy the full contents of the floating-point exception flags that are listed in <code>excepts</code> from <code>flagp</code> into the floating-point environment. Does not raise any exceptions, only modifies the flags.</p>
+
+<p>The full contents of a floating-point exception flag is not necessarily a boolean value indicating whether the exception is raised or cleared. For example, it may be a struct which includes the boolean status and the address of the code that triggered the exception. These functions obtain all such content and obtain/store it in <code>flagp</code> in implementation-defined format.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>flagp</td><td>-</td><td>pointer to an <code>fexcept_t</code> object where the flags will be stored or read from</td></tr>
+<tr><td>excepts</td><td>-</td><td>bitmask listing the exception flags to get/set</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p><code>0</code> on success, non-zero otherwise.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <fenv.h>
+ 
+#pragma STDC FENV_ACCESS ON
+ 
+void show_fe_exceptions(void)
+{
+    printf("current exceptions raised: ");
+    if(fetestexcept(FE_DIVBYZERO))     printf(" FE_DIVBYZERO");
+    if(fetestexcept(FE_INEXACT))       printf(" FE_INEXACT");
+    if(fetestexcept(FE_INVALID))       printf(" FE_INVALID");
+    if(fetestexcept(FE_OVERFLOW))      printf(" FE_OVERFLOW");
+    if(fetestexcept(FE_UNDERFLOW))     printf(" FE_UNDERFLOW");
+    if(fetestexcept(FE_ALL_EXCEPT)==0) printf(" none");
+    printf("\n");
+}
+ 
+int main(void)
+{
+    fexcept_t excepts;
+ 
+    /* Setup a "current" set of exception flags. */
+    feraiseexcept(FE_INVALID);
+    show_fe_exceptions();
+ 
+    /* Save current exception flags. */
+    fegetexceptflag(&excepts,FE_ALL_EXCEPT);
+ 
+    /* Temporarily raise two other exceptions. */
+    feclearexcept(FE_ALL_EXCEPT);
+    feraiseexcept(FE_OVERFLOW | FE_INEXACT);
+    show_fe_exceptions();
+ 
+    /* Restore previous exception flags. */
+    fesetexceptflag(&excepts,FE_ALL_EXCEPT);
+    show_fe_exceptions();
+ 
+    return 0;
+}
+```
+
+<p>Output:</p>
+
+```text
+current exceptions raised: FE_INVALID
+current exceptions raised: FE_INEXACT FE_OVERFLOW
+current exceptions raised: FE_INVALID
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.6.2.2 The fegetexceptflag function (p: 210)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.6.2.4 The fesetexceptflag function (p: 211)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.6.2.2 The fegetexceptflag function (p: 191)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.6.2.4 The fesetexceptflag function (p: 192)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/fenv/feexceptflag" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+fegetexceptflag, fesetexceptflag</td></tr>
+</table></section>

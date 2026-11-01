@@ -1,0 +1,291 @@
+---
+title: "memcpy, memcpy_s"
+slug: "c/string/byte/memcpy"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/byte/memcpy"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;string.h&gt;</code></p>
+
+<p class="decl-note">(1)</p>
+
+```c
+void* memcpy( void *dest, const void *src, size_t count );
+```
+
+<p class="decl-note"><span class="std std-until std-c99">(until C99)</span></p>
+
+```c
+void* memcpy( void *restrict dest, const void *restrict src, size_t count );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+errno_t memcpy_s( void *restrict dest, rsize_t destsz,
+                  const void *restrict src, rsize_t count );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Copies <code>count</code> characters from the object pointed to by <code>src</code> to the object pointed to by <code>dest</code>. Both objects are interpreted as arrays of <code>unsigned char</code>.</p>
+
+<p class="li-note">The behavior is undefined if access occurs beyond the end of the <code>dest</code> array. If the objects overlap (which is a violation of the <a href="/reference/c/language/restrict/"><code>restrict</code></a> contract)<span class="std std-since std-c99">(since C99)</span>, the behavior is undefined. The behavior is undefined if either <code>dest</code> or <code>src</code> is an invalid or null pointer.</p>
+
+<div class="li-note"><span class="li-num">2)</span>
+
+<p>Same as</p>
+
+(1)
+
+<p>, except that the following errors are detected at runtime and cause the entire destination range</p>
+
+<code>[dest, dest+destsz)</code>
+
+<p>to be zeroed out (if both</p>
+
+<code>dest</code>
+
+<p>and</p>
+
+<code>destsz</code>
+
+<p>are valid), as well as call the currently installed</p>
+
+<a href="/reference/c/error/set_constraint_handler_s/">constraint handler</a>
+
+<p>function:</p>
+
+<dl>
+<dd><ul>
+<li>
+<code>dest</code>
+
+<p>or</p>
+
+<code>src</code>
+
+<p>is a null pointer</p>
+</li>
+<li>
+<code>destsz</code>
+
+<p>or</p>
+
+<code>count</code>
+
+<p>is greater than</p>
+
+RSIZE_MAX
+</li>
+<li>
+<code>count</code>
+
+<p>is greater than</p>
+
+<code>destsz</code>
+
+<p>(buffer overflow would occur)</p>
+</li>
+<li>
+<p>the source and the destination objects overlap</p>
+</li>
+</ul></dd>
+</dl></div>
+
+<div class="li-note"><p>The behavior is undefined if the size of the character array pointed to by</p>
+
+<code>dest</code>
+
+<p>&lt;</p>
+
+<code>count</code>
+
+<p>&lt;=</p>
+
+<code>destsz</code>
+
+<p>; in other words, an erroneous value of</p>
+
+<code>destsz</code>
+
+<p>does not expose the impending buffer overflow.</p>
+
+<dl>
+<dd><p>As with all bounds-checked functions,</p>
+
+<code>memcpy_s</code>
+
+<p>is only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<a href="/reference/c/string/byte/"><code>&lt;string.h&gt;</code></a>
+
+<p>.</p></dd>
+</dl></div>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>dest</td><td>-</td><td>pointer to the object to copy to</td></tr>
+<tr><td>destsz</td><td>-</td><td>max number of bytes to modify in the destination (typically the size of the destination object)</td></tr>
+<tr><td>src</td><td>-</td><td>pointer to the object to copy from</td></tr>
+<tr><td>count</td><td>-</td><td>number of bytes to copy</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  Returns a copy of <code>dest</code></p>
+
+<p class="li-note"><span class="li-num">2)</span>  Returns zero on success and non-zero value on error. Also on error, if <code>dest</code> is not a null pointer and <code>destsz</code> is valid, writes <code>destsz</code> zero bytes in to the destination array.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p><code>memcpy</code> may be used to set the <a href="/reference/c/language/object/#Effective_type">effective type</a> of an object obtained by an allocation function.</p>
+
+<p><code>memcpy</code> is the fastest library routine for memory-to-memory copy. It is usually more efficient than <a href="/reference/c/string/byte/strcpy/">strcpy</a>, which must scan the data it copies or <a href="/reference/c/string/byte/memmove/">memmove</a>, which must take precautions to handle overlapping inputs.</p>
+
+<p>Several C compilers transform suitable memory-copying loops to <code>memcpy</code> calls.</p>
+
+<p>Where <a href="/reference/c/language/object/#Strict_aliasing">strict aliasing</a> prohibits examining the same memory as values of two different types, <code>memcpy</code> may be used to convert the values.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#define __STDC_WANT_LIB_EXT1__ 1
+#include <stdio.h>
+#include <stdint.h>
+#include <inttypes.h>
+#include <string.h>
+#include <stdlib.h>
+ 
+int main(void)
+{
+    // simple usage
+    char source[] = "once upon a midnight dreary...", dest[4];
+    memcpy(dest, source, sizeof dest);
+    for(size_t n = 0; n < sizeof dest; ++n)
+        putchar(dest[n]);
+ 
+    // setting effective type of allocated memory to be int
+    int *p = malloc(3*sizeof(int));   // allocated memory has no effective type
+    int arr[3] = {1,2,3};
+    memcpy(p,arr,3*sizeof(int));      // allocated memory now has an effective type
+ 
+    // reinterpreting data
+    double d = 0.1;
+//    int64_t n = *(int64_t*)(&d); // strict aliasing violation
+    int64_t n;
+    memcpy(&n, &d, sizeof d); // OK
+    printf("\n%a is %" PRIx64 " as an int64_t\n", d, n);
+ 
+#ifdef __STDC_LIB_EXT1__
+    set_constraint_handler_s(ignore_handler_s);
+    char src[] = "aaaaaaaaaa";
+    char dst[] = "xyxyxyxyxy";
+    int r = memcpy_s(dst,sizeof dst,src,5);
+    printf("dst = \"%s\", r = %d\n", dst,r);
+    r = memcpy_s(dst,5,src,10);            //  count is greater than destsz  
+    printf("dst = \"");
+    for(size_t ndx=0; ndx<sizeof dst; ++ndx) {
+        char c = dst[ndx];
+        c ? printf("%c", c) : printf("\\0");
+    }
+    printf("\", r = %d\n", r);
+#endif
+}
+```
+
+<p>Possible output:</p>
+
+```text
+once
+0x1.999999999999ap-4 is 3fb999999999999a as an int64_t
+dst = "aaaaayxyxy", r = 0
+dst = "\0\0\0\0\0yxyxy", r = 22
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.2.1 The memcpy function (p: 362)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.7.1.1 The memcpy_s function (p: 614)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.2.1 The memcpy function (p: 325)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.11.2.1 The memcpy function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/byte/memccpy/">memccpy</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>copies one buffer to another, stopping after the specified delimiter   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/memmove/">memmove<br />memmove_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>moves one buffer to another   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wmemcpy/">wmemcpy<br />wmemcpy_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>copies a certain amount of wide characters between two non-overlapping arrays   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/byte/memcpy" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+memcpy</td></tr>
+</table></section></section>

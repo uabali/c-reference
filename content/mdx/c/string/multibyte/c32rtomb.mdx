@@ -1,0 +1,129 @@
+---
+title: "c32rtomb"
+slug: "c/string/multibyte/c32rtomb"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/multibyte/c32rtomb"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;uchar.h&gt;</code></p>
+
+```c
+size_t c32rtomb( char* restrict s, char32_t c32, mbstate_t* restrict ps );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Converts a single code point from its variable-length 32-bit wide character representation (but typically, UTF-32) to its narrow multibyte character representation.</p>
+
+<p>If <code>s</code> is not a null pointer, the function determines the number of bytes necessary to store the multibyte character representation of <code>c32</code> (including any shift sequences, and taking into account the current multibyte conversion state <code>*ps</code>), and stores the multibyte character representation in the character array whose first element is pointed to by <code>s</code>, updating <code>*ps</code> as necessary. At most <code>MB_CUR_MAX</code> bytes can be written by this function.</p>
+
+<p>If <code>s</code> is a null pointer, the call is equivalent to <code>c32rtomb(buf, U&#x27;\0&#x27;, ps)</code> for some internal buffer <code>buf</code>.</p>
+
+<p>If <code>c32</code> is the null wide character <code>U&#x27;\0&#x27;</code>, a null byte is stored, preceded by any shift sequence necessary to restore the initial shift state and the conversion state parameter <code>*ps</code> is updated to represent the initial shift state.</p>
+
+<p>If the macro <code>__STDC_UTF_32__</code> is defined, the 32-bit encoding used by this function is UTF-32; otherwise, it is implementation-defined. The macro is always defined and the encoding is always UTF-32.<span class="std std-since std-c23">(since C23)</span> In any case, the multibyte character encoding used by this function is specified by the currently active C locale.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>s</td><td>-</td><td>pointer to narrow character array where the multibyte character will be stored</td></tr>
+<tr><td>c32</td><td>-</td><td>the 32-bit wide character to convert</td></tr>
+<tr><td>ps</td><td>-</td><td>pointer to the conversion state object used when interpreting the multibyte string</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>On success, returns the number of bytes (including any shift sequences) written to the character array whose first element is pointed to by <code>s</code>. This value may be <code>0</code>, e.g. when processing the leading <code>char32_t</code> units in a multi-<code>char32_t</code>-unit sequence (does not occur in UTF-32).</p>
+
+<p>On failure (if <code>c32</code> is not a valid 32-bit wide character), returns <code>-1</code>, stores <a href="/reference/c/error/errno_macros/">EILSEQ</a> in <a href="/reference/c/error/errno/">errno</a>, and leaves <code>*ps</code> in unspecified state.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <locale.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <uchar.h>
+ 
+mbstate_t state;
+ 
+int main(void)
+{
+    setlocale(LC_ALL, "en_US.utf8");
+    const char32_t in[] = U"zß水🍌"; // or "z\u00df\u6c34\U0001F34C"
+    size_t in_sz = sizeof in / sizeof *in;
+ 
+    printf("Processing %zu UTF-32 code units: [ ", in_sz);
+    for (size_t n = 0; n < in_sz; ++n)
+        printf("%#x ", in[n]);
+    puts("]");
+ 
+    char out[MB_CUR_MAX * in_sz];
+    char* p = out;
+    for (size_t n = 0; n < in_sz; ++n)
+    {
+        size_t rc = c32rtomb(p, in[n], &state);
+        if(rc == (size_t)-1) break;
+        p += rc;
+    }
+ 
+    size_t out_sz = p - out;
+    printf("into %zu UTF-8 code units: [ ", out_sz);
+    for (size_t x = 0; x < out_sz; ++x)
+        printf("%#x ", +(unsigned char)out[x]);
+    puts("]");
+}
+```
+
+<p>Output:</p>
+
+```text
+Processing 5 UTF-32 code units: [ 0x7a 0xdf 0x6c34 0x1f34c 0 ]
+into 11 UTF-8 code units: [ 0x7a 0xc3 0x9f 0xe6 0xb0 0xb4 0xf0 0x9f 0x8d 0x8c 0 ]
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.30.1.6 The c32rtomb function (p: 411)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.28.1.4 The c32rtomb function (p: 401)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/multibyte/mbrtoc32/">mbrtoc32</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>converts a narrow multibyte character to UTF-32 encoding   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/multibyte/c32rtomb" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+c32rtomb</td></tr>
+</table>

@@ -1,0 +1,31 @@
+---
+title: "Basic concepts"
+slug: "c/language/basic_concepts"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/basic_concepts"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>This section provides definitions for the specific terminology and the concepts used when describing the C programming language.</p>
+
+<p>A C program is a sequence of text files (typically header and source files) that contain <a href="/reference/c/language/declarations/">declarations</a>. They undergo <a href="/reference/c/language/translation_phases/">translation</a> to become an executable program, which is executed when the OS calls its <a href="/reference/c/language/main_function/">main function</a> (unless it is itself the OS or another <em>freestanding</em> program, in which case the entry point is implementation-defined).</p>
+
+<p>Certain words in a C program have special meaning, they are <a href="/reference/c/keyword/">keywords</a>. Others can be used as <a href="/reference/c/language/identifier/">identifiers</a>, which may be used to identify <a href="/reference/c/language/object/">objects</a>, <a href="/reference/c/language/functions/">functions</a>, <a href="/reference/c/language/struct/">struct</a>, <a href="/reference/c/language/union/">union</a>, or <a href="/reference/c/language/enum/">enumeration</a> tags, their members, <a href="/reference/c/language/typedef/">typedef</a> names, <a href="/reference/c/language/statements/#Labels">labels</a>, or <a href="/reference/c/preprocessor/replace/">macros</a>.</p>
+
+<p>Each identifier (other than macro) is only valid within a part of the program called its <a href="/reference/c/language/scope/">scope</a> and belongs to one of four kinds of <a href="/reference/c/language/name_space/">name spaces</a>. Some identifiers have <a href="/reference/c/language/storage_duration/">linkage</a> which makes them refer to the same entities when they appear in different scopes or translation units.</p>
+
+<p>Definitions of functions include sequences of <a href="/reference/c/language/statements/">statements</a> and <a href="/reference/c/language/declarations/">declarations</a>, some of which include <a href="/reference/c/language/expressions/">expressions</a>, which specify the computations to be performed by the program.</p>
+
+<p><a href="/reference/c/language/declarations/">Declarations</a> and <a href="/reference/c/language/expressions/">expressions</a> create, destroy, access, and manipulate <a href="/reference/c/language/object/">objects</a>. Each <a href="/reference/c/language/object/">object</a>, <a href="/reference/c/language/functions/">function</a>, and <a href="/reference/c/language/expressions/">expression</a> in C is associated with a <a href="/reference/c/language/compatible_type/">type</a>.</p>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/basic_concepts" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Basic concepts</td></tr>
+</table>

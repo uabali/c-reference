@@ -1,0 +1,136 @@
+---
+title: "tolower"
+slug: "c/string/byte/tolower"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/byte/tolower"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;ctype.h&gt;</code></p>
+
+```c
+int tolower( int ch );
+```
+
+<p>Converts the given character to lowercase according to the character conversion rules defined by the currently installed C locale.</p>
+
+<p>In the default "C" locale, the following uppercase letters <code>ABCDEFGHIJKLMNOPQRSTUVWXYZ</code> are replaced with respective lowercase letters <code>abcdefghijklmnopqrstuvwxyz</code>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>ch</td><td>-</td><td>character to be converted. If the value of <code>ch</code> is not representable as <code>unsigned char</code> and does not equal <code>EOF</code>, the behavior is undefined.</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Lowercase version of <code>ch</code> or unmodified <code>ch</code> if no lowercase version is listed in the current C locale.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <ctype.h>
+#include <locale.h>
+#include <limits.h>
+ 
+int main(void)
+{
+    /* In the default locale: */
+    for (unsigned char u = 0; u < UCHAR_MAX; u++) {
+        unsigned char l = tolower(u);
+        if (l != u) printf("%c%c ", u, l);
+    }
+    printf("\n\n");
+ 
+    unsigned char c = '\xb4'; // the character Ž in ISO-8859-15
+                              // but ´ (acute accent) in ISO-8859-1
+    setlocale(LC_ALL, "en_US.iso88591");
+    printf("in iso8859-1, tolower('0x%x') gives 0x%x\n", c, tolower(c));
+    setlocale(LC_ALL, "en_US.iso885915");
+    printf("in iso8859-15, tolower('0x%x') gives 0x%x\n", c, tolower(c));
+}
+```
+
+<p>Possible output:</p>
+
+```text
+Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm Nn Oo Pp Qq Rr Ss Tt Uu Vv Ww Xx Yy Zz
+ 
+in iso8859-1, tolower('0xb4') gives 0xb4
+in iso8859-15, tolower('0xb4') gives 0xb8
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.4.2.1 The tolower function (p: 147)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.4.2.1 The tolower function (p: 203)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.4.2.1 The tolower function (p: 184)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.3.2.1 The tolower function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/byte/toupper/">toupper</a></td><td>converts a character to uppercase   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/towlower/">towlower</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>converts a wide character to lowercase   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/byte/tolower" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+tolower</td></tr>
+</table>

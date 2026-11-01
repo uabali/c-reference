@@ -1,0 +1,81 @@
+---
+title: "nullptr_t"
+slug: "c/types/nullptr_t"
+category: "types"
+source: "https://en.cppreference.com/w/c/types/nullptr_t"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stddef.h&gt;</code></p>
+
+```c
+typedef typeof(nullptr) nullptr_t;
+```
+
+<p class="decl-note"><span class="std std-since std-c23">(since C23)</span></p>
+
+<p><code>nullptr_t</code> is the type of the predefined null pointer constant, <a href="/reference/c/language/nullptr/"><code>nullptr</code></a>. It is a distinct type that is not itself a pointer type. It can be <a href="/reference/c/language/conversion/">implicitly converted</a> to any pointer type or <code>bool</code>, and the result is the null pointer value of that type or <code>false</code> respectively. No type other than <code>nullptr_t</code> itself can be converted or explicitly cast to <code>nullptr_t</code>.</p>
+
+<p><code>sizeof(nullptr_t)</code> and <code>alignof(nullptr_t)</code> are equal to <code>sizeof(void*)</code> and <code>alignof(void*)</code> respectively.</p>
+
+<p><code>nullptr_t</code> has only one valid value, i.e., <code>nullptr</code>. The object representation of <code>nullptr</code> is same as that of <code>(void*)0</code>. If an <a href="/reference/c/language/conversion/#Lvalue_conversion">lvalue conversion</a> produces a <code>nullptr_t</code> value with a different object representation, the behavior is undefined.</p>
+
+<h3 id="Example">Example</h3>
+
+<p>Demonstrate that <code>nullptr_t</code> is a distinct type.</p>
+
+```c
+#include <stddef.h>
+#include <stdio.h>
+ 
+#define DETECT_NULL_POINTER_CONSTANT(e) \
+    _Generic(e,                         \
+        void* : puts("void*"),          \
+        nullptr_t : puts("nullptr_t"),  \
+        default : puts("other")         \
+    )
+ 
+int main()
+{
+    DETECT_NULL_POINTER_CONSTANT(((void*)0));
+    DETECT_NULL_POINTER_CONSTANT(0);
+    DETECT_NULL_POINTER_CONSTANT(nullptr);
+}
+```
+
+<p>Output:</p>
+
+```text
+void*
+other
+nullptr_t
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.2 The nullptr_t type (p: 315-316)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/types/NULL/">NULL</a></td><td>implementation-defined null pointer constant   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/types/nullptr_t" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+nullptr_t</td></tr>
+</table>

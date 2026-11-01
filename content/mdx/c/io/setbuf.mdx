@@ -1,0 +1,153 @@
+---
+title: "setbuf"
+slug: "c/io/setbuf"
+category: "io"
+source: "https://en.cppreference.com/w/c/io/setbuf"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+```c
+void setbuf( FILE          *stream, char          *buffer );
+```
+
+<p class="decl-note"><span class="std std-until std-c99">(until C99)</span></p>
+
+```c
+void setbuf( FILE *restrict stream, char *restrict buffer );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+#define BUFSIZ     /*unspecified*/
+```
+
+<p>Sets the internal buffer to use for stream operations. It should be at least <code>BUFSIZ</code> characters long.</p>
+
+<p>If <code>buffer</code> is not null, equivalent to <code>setvbuf(stream, buffer, _IOFBF, BUFSIZ)</code>.</p>
+
+<p>If <code>buffer</code> is null, equivalent to <code>setvbuf(stream, NULL, _IONBF, 0)</code>, which turns off buffering.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>stream</td><td>-</td><td>the file stream to set the buffer to</td></tr>
+<tr><td>buffer</td><td>-</td><td>pointer to a buffer for the stream to use. If a null pointer is supplied, the buffering is turned off</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>None.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>If <a href="/reference/c/io/">BUFSIZ</a> is not the appropriate buffer size, <a href="/reference/c/io/setvbuf/">setvbuf</a> can be used to change it.</p>
+
+<p><a href="/reference/c/io/setvbuf/">setvbuf</a> should also be used to detect errors, since <code>setbuf</code> does not indicate success or failure.</p>
+
+<p>This function may only be used after <code>stream</code> has been associated with an open file, but before any other operation (other than a failed call to <strong>setbuf</strong>/<code>setvbuf</code>).</p>
+
+<p>A common error is setting the buffer of stdin or stdout to an array whose lifetime ends before the program terminates:</p>
+
+```c
+int main(void) {
+    char buf[BUFSIZ];
+    setbuf(stdin, buf);
+} // lifetime of buf ends, undefined behavior
+```
+
+<h3 id="Example">Example</h3>
+
+<p><code>setbuf</code> may be used to disable buffering on streams that require immediate output.</p>
+
+```c
+#include <stdio.h>
+#include <threads.h>
+ 
+int main(void)
+{
+    setbuf(stdout, NULL); // unbuffered stdout
+    putchar('a'); // 'a' appears immediately if stdout is unbuffered
+    thrd_sleep(&(struct timespec){.tv_sec=1}, NULL); // sleep 1 sec
+    putchar('b'); 
+}
+```
+
+<p>Output:</p>
+
+```text
+ab
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.5.5 The setbuf function (p: 225)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.5.5 The setbuf function (p: 307-308)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.5.5 The setbuf function (p: 273)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9.5.5 The setbuf function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/setvbuf/">setvbuf</a></td><td>sets the buffer and its size for a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c/setbuf" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+setbuf</td></tr>
+</table>

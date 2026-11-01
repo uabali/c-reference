@@ -1,0 +1,457 @@
+---
+title: "strtok, strtok_s"
+slug: "c/string/byte/strtok"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/byte/strtok"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;string.h&gt;</code></p>
+
+<p class="decl-note">(1)</p>
+
+```c
+char* strtok( char* str, const char* delim );
+```
+
+<p class="decl-note"><span class="std std-until std-c99">(until C99)</span></p>
+
+```c
+char* strtok( char* restrict str, const char* restrict delim );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+char* strtok_s( char* restrict str, rsize_t* restrict strmax,
+                const char* restrict delim, char** restrict ptr );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Finds the next token in a null-terminated byte string pointed to by <code>str</code>. The separator characters are identified by null-terminated byte string pointed to by <code>delim</code>.</p>
+
+<p class="li-note">This function is designed to be called multiple times to obtain successive tokens from the same string.</p>
+
+<dl>
+<dd><ul>
+<li>
+<p>If</p>
+
+<code>str</code>
+
+<p>is not a null pointer, the call is treated as the first call to</p>
+
+<code>strtok</code>
+
+<p>for this particular string. The function searches for the first character which is</p>
+
+<em>not</em>
+
+<p>contained in</p>
+
+<code>delim</code>
+
+<p>.</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>If no such character was found, there are no tokens in</p>
+
+<code>str</code>
+
+<p>at all, and the function returns a null pointer.</p>
+</li>
+<li>
+<p>If such character was found, it is the</p>
+
+<em>beginning of the token</em>
+
+<p>. The function then searches from that point on for the first character that</p>
+
+<em>is</em>
+
+<p>contained in</p>
+
+<code>delim</code>
+
+<p>.</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>If no such character was found,</p>
+
+<code>str</code>
+
+<p>has only one token, and future calls to</p>
+
+<code>strtok</code>
+
+<p>will return a null pointer</p>
+</li>
+<li>
+<p>If such character was found, it is</p>
+
+<em>replaced</em>
+
+<p>by the null character</p>
+
+<code>&#x27;\0&#x27;</code>
+
+<p>and the pointer to the following character is stored in a static location for subsequent invocations.</p>
+</li>
+</ul></dd>
+</dl>
+
+<ul>
+<li>
+<p>The function then returns the pointer to the beginning of the token</p>
+</li>
+</ul></dd>
+</dl>
+
+<ul>
+<li>
+<p>If</p>
+
+<code>str</code>
+
+<p>is a null pointer, the call is treated as a subsequent call to</p>
+
+<code>strtok</code>
+
+<p>: the function continues from where it left in previous invocation. The behavior is the same as if the previously stored pointer is passed as</p>
+
+<code>str</code>
+
+<p>.</p>
+</li>
+</ul></dd>
+</dl>
+
+<p class="li-note">The behavior is undefined if either <code>str</code> or <code>delim</code> is not a pointer to a null-terminated byte string.</p>
+
+<div class="li-note"><span class="li-num">2)</span>
+
+<p>Same as</p>
+
+(1)
+
+<p>, except that on every step, writes the number of characters left to see in</p>
+
+<code>str</code>
+
+<p>into</p>
+
+<code>*strmax</code>
+
+<p>and writes the tokenizer's internal state to</p>
+
+<code>*ptr</code>
+
+<p>. Repeat calls (with null</p>
+
+<code>str</code>
+
+<p>) must pass</p>
+
+<code>strmax</code>
+
+<p>and</p>
+
+<code>ptr</code>
+
+<p>with the values stored by the previous call. Also, the following errors are detected at runtime and call the currently installed</p>
+
+<a href="/reference/c/error/set_constraint_handler_s/">constraint handler</a>
+
+<p>function, without storing anything in the object pointed to by</p>
+
+<code>ptr</code>
+
+<dl>
+<dd><ul>
+<li>
+<code>strmax</code>
+
+<p>,</p>
+
+<code>delim</code>
+
+<p>, or</p>
+
+<code>ptr</code>
+
+<p>is a null pointer</p>
+</li>
+<li>
+<p>on a non-initial call (with null</p>
+
+<code>str</code>
+
+<p>),</p>
+
+<code>*ptr</code>
+
+<p>is a null pointer</p>
+</li>
+<li>
+<p>on the first call,</p>
+
+<code>*strmax</code>
+
+<p>is zero or greater than</p>
+
+RSIZE_MAX
+</li>
+<li>
+<p>search for the end of a token reaches the end of the source string (as measured by the initial value of</p>
+
+<code>*strmax</code>
+
+<p>) without encountering the null terminator</p>
+</li>
+</ul></dd>
+</dl></div>
+
+<div class="li-note"><p>The behavior is undefined if both</p>
+
+<code>str</code>
+
+<p>points to a character array which lacks the null character and</p>
+
+<code>strmax</code>
+
+<p>points to a value which is greater than the size of that character array.</p>
+
+<dl>
+<dd><p>As with all bounds-checked functions,</p>
+
+<code>strtok_s</code>
+
+<p>is only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<a href="/reference/c/string/byte/"><code>&lt;string.h&gt;</code></a>
+
+<p>.</p></dd>
+</dl></div>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>str</td><td>-</td><td>pointer to the null-terminated byte string to tokenize</td></tr>
+<tr><td>delim</td><td>-</td><td>pointer to the null-terminated byte string identifying delimiters</td></tr>
+<tr><td>strmax</td><td>-</td><td>pointer to an object which initially holds the size of <code>str</code>: strtok_s stores the number of characters that remain to be examined</td></tr>
+<tr><td>ptr</td><td>-</td><td>pointer to an object of type <code>char*</code>, which is used by strtok_s to store its internal state</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Returns pointer to the beginning of the next token or a null pointer if there are no more tokens.</p>
+
+<h3 id="Note">Note</h3>
+
+<p>This function is destructive: it writes the <code>&#x27;\0&#x27;</code> characters in the elements of the string <code>str</code>. In particular, a string literal cannot be used as the first argument of <code>strtok</code>.</p>
+
+<p>Each call to <code>strtok</code> modifies a static variable: is not thread safe.</p>
+
+<p>Unlike most other tokenizers, the delimiters in <code>strtok</code> can be different for each subsequent token, and can even depend on the contents of the previous tokens.</p>
+
+<p>The <code>strtok_s</code> function differs from the POSIX <a href="https://pubs.opengroup.org/onlinepubs/9799919799/functions/strtok.html" rel="noreferrer" target="_blank"><code>strtok_r</code></a> function by guarding against storing outside of the string being tokenized, and by checking runtime constraints. The Microsoft CRT <a href="https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/strtok-s-strtok-s-l-wcstok-s-wcstok-s-l-mbstok-s-mbstok-s-l" rel="noreferrer" target="_blank"><code>strtok_s</code></a> signature matches this POSIX <code>strtok_r</code> definition, not the C11 <code>strtok_s</code>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#define __STDC_WANT_LIB_EXT1__ 1
+#include <stdio.h>
+#include <string.h>
+ 
+int main(void)
+{
+    char input[] = "A bird came down the walk";
+    printf("Parsing the input string '%s'\n", input);
+    char* token = strtok(input, " ");
+    while (token)
+    {
+        puts(token);
+        token = strtok(NULL, " ");
+    }
+ 
+    printf("Contents of the input string now: '");
+    for (size_t n = 0; n < sizeof input; ++n)
+        input[n] ? putchar(input[n]) : fputs("\\0", stdout);
+    puts("'");
+ 
+#ifdef __STDC_LIB_EXT1__
+    char str[] = "A bird came down the walk";
+    rsize_t strmax = sizeof str;
+    const char* delim = " ";
+    char* next_token;
+    printf("Parsing the input string '%s'\n", str);
+    token = strtok_s(str, &strmax, delim, &next_token);
+    while (token)
+    {
+        puts(token);
+        token = strtok_s(NULL, &strmax, delim, &next_token);
+    }
+ 
+    printf("Contents of the input string now: '");
+    for (size_t n = 0; n < sizeof str; ++n)
+        str[n] ? putchar(str[n]) : fputs("\\0", stdout);
+    puts("'");
+#endif
+}
+```
+
+<p>Possible output:</p>
+
+```text
+Parsing the input string 'A bird came down the walk'
+A
+bird
+came
+down
+the
+walk
+Contents of the input string now: 'A\0bird\0came\0down\0the\0walk\0'
+Parsing the input string 'A bird came down the walk'
+A
+bird
+came
+down
+the
+walk
+Contents of the input string now: 'A\0bird\0came\0down\0the\0walk\0'
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.5.8 The strtok function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.7.3.1 The strtok_s function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.5.8 The strtok function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.7.3.1 The strtok_s function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.5.8 The strtok function (p: 369-370)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.7.3.1 The strtok_s function (p: 620-621)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.5.8 The strtok function (p: 332-333)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.11.5.8 The strtok function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/byte/strpbrk/">strpbrk</a></td><td>finds the first location of any character in one string, in another string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strcspn/">strcspn</a></td><td>returns the length of the maximum initial segment that consists   of only the characters not found in another byte string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strspn/">strspn</a></td><td>returns the length of the maximum initial segment that consists   of only the characters found in another byte string   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcstok/">wcstok<br />wcstok_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>finds the next token in a wide string   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/byte/strtok" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+strtok</td></tr>
+</table>

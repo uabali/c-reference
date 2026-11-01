@@ -1,0 +1,568 @@
+---
+title: "vscanf, vfscanf, vsscanf, vscanf_s, vfscanf_s, vsscanf_s"
+slug: "c/io/vfscanf"
+category: "io"
+source: "https://en.cppreference.com/w/c/io/vfscanf"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+```c
+int vscanf( const char *restrict format, va_list vlist );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+int vfscanf( FILE *restrict stream, const char *restrict format, 
+             va_list vlist );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+int vsscanf( const char *restrict buffer, const char *restrict format, 
+             va_list vlist );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+int vscanf_s(const char *restrict format, va_list vlist);
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c11">(since C11)</span></p>
+
+```c
+int vfscanf_s( FILE *restrict stream, const char *restrict format,
+               va_list vlist);
+```
+
+<p class="decl-note">(5) <span class="std std-since std-c11">(since C11)</span></p>
+
+```c
+int vsscanf_s( const char *restrict buffer, const char *restrict format,
+               va_list vlist);
+```
+
+<p class="decl-note">(6) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Reads data from the a variety of sources, interprets it according to <code>format</code> and stores the results into locations defined by <code>vlist</code>.</p>
+
+<p class="li-note"><span class="li-num">1)</span>  Reads the data from <a href="/reference/c/io/std_streams/">stdin</a></p>
+
+<p class="li-note"><span class="li-num">2)</span>  Reads the data from file stream <code>stream</code></p>
+
+<p class="li-note"><span class="li-num">3)</span>  Reads the data from null-terminated character string <code>buffer</code>. Reaching the end of the string is equivalent to reaching the end-of-file condition for <code>fscanf</code></p>
+
+<div class="li-note"><span class="li-num">4-6)</span>
+
+<p>Same as</p>
+
+(1-3)
+
+<p>, except that</p>
+
+<code>%c</code>
+
+<p>,</p>
+
+<code>%s</code>
+
+<p>, and</p>
+
+<code>%[</code>
+
+<p>conversion specifiers each expect two arguments (the usual pointer and a value of type</p>
+
+rsize_t
+
+<p>indicating the size of the receiving array, which may be 1 when reading with a %c into a single char) and except that the following errors are detected at runtime and call the currently installed</p>
+
+<a href="/reference/c/error/set_constraint_handler_s/">constraint handler</a>
+
+<p>function:</p>
+
+<dl>
+<dd><ul>
+<li>
+<p>any of the arguments of pointer type is a null pointer</p>
+</li>
+<li>
+<code>format</code>
+
+<p>,</p>
+
+<code>stream</code>
+
+<p>, or</p>
+
+<code>buffer</code>
+
+<p>is a null pointer</p>
+</li>
+<li>
+<p>the number of characters that would be written by %c, %s, or %[, plus the terminating null character, would exceed the second (rsize_t) argument provided for each of those conversion specifiers</p>
+</li>
+<li>
+<p>optionally, any other detectable error, such as unknown conversion specifier</p>
+</li>
+</ul></dd>
+<dd><p>As with all bounds-checked functions,</p>
+
+<code>vscanf_s</code>
+
+<p>,</p>
+
+<code>vfscanf_s</code>
+
+<p>, and</p>
+
+<code>vsscanf_s</code>
+
+<p>are only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<a href="/reference/c/io/"><code>&lt;stdio.h&gt;</code></a>
+
+<p>.</p></dd>
+</dl></div>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>stream</td><td>-</td><td>input file stream to read from</td></tr>
+<tr><td>buffer</td><td>-</td><td>pointer to a null-terminated character string to read from</td></tr>
+<tr><td>format</td><td>-</td><td>pointer to a null-terminated character string specifying how to read the input</td></tr>
+<tr><td>vlist</td><td>-</td><td>variable argument list containing the receiving arguments.</td></tr>
+</table>
+
+<p>The <strong>format</strong> string consists of</p>
+
+<ul>
+<li>
+<p>non-whitespace multibyte characters except</p>
+
+<code>%</code>
+
+<p>: each such character in the format string consumes exactly one identical character from the input stream, or causes the function to fail if the next character on the stream does not compare equal.</p>
+</li>
+<li>
+<p>whitespace characters: any single whitespace character in the format string consumes all available consecutive whitespace characters from the input (determined as if by calling</p>
+
+<a href="/reference/c/string/byte/isspace/"><code>isspace</code></a>
+
+<p>in a loop). Note that there is no difference between</p>
+
+<code>&quot;\n&quot;</code>
+
+<p>,</p>
+
+<code>&quot; &quot;</code>
+
+<p>,</p>
+
+<code>&quot;\t\t&quot;</code>
+
+<p>, or other whitespace in the format string.</p>
+</li>
+<li>
+<p>conversion specifications. Each conversion specification has the following format:</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>introductory</p>
+
+<code>%</code>
+
+<p>character.</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<span class="mark-note">(optional)</span>
+
+<p>assignment-suppressing character</p>
+
+<code>*</code>
+
+<p>. If this option is present, the function does not assign the result of the conversion to any receiving argument.</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<span class="mark-note">(optional)</span>
+
+<p>integer number (greater than zero) that specifies</p>
+
+<em>maximum field width</em>
+
+<p>, that is, the maximum number of characters that the function is allowed to consume when doing the conversion specified by the current conversion specification. Note that</p>
+
+<code>%s</code>
+
+<p>and</p>
+
+<code>%[</code>
+
+<p>may lead to buffer overflow if the width is not provided.</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<span class="mark-note">(optional)</span>
+
+<em>length modifier</em>
+
+<p>that specifies the size of the receiving argument, that is, the actual destination type. This affects the conversion accuracy and overflow rules. The default destination type is different for each conversion type (see table below).</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>conversion format specifier.</p>
+</li>
+</ul></dd>
+</dl>
+
+<p>The following format specifiers are available:</p>
+
+<table class="ref-table">
+<tr><th rowspan="1">Conversion specifier</th><th rowspan="1">Explanation</th><th colspan="9">Argument type</th></tr>
+<tr><th colspan="2"><strong>Length modifier →</strong></th><th><code>hh</code>
+
+<p><span class="std std-since std-c99">(C99)</span></p></th><th><code>h</code></th><th>(none)</th><th><code>l</code></th><th><code>ll</code>
+
+<p><span class="std std-since std-c99">(C99)</span></p></th><th><code>j</code>
+
+<p><span class="std std-since std-c99">(C99)</span></p></th><th><code>z</code>
+
+<p><span class="std std-since std-c99">(C99)</span></p></th><th><code>t</code>
+
+<p><span class="std std-since std-c99">(C99)</span></p></th><th><code>L</code></th></tr>
+<tr><th><code>%</code></th><td>Matches literal <code>%</code>.</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td></tr>
+<tr><th><code>c</code></th><td><dl>
+<dd><p>Matches a</p>
+
+<strong>character</strong>
+
+<p>or a sequence of</p>
+
+<strong>characters</strong>
+
+<p>.</p></dd>
+</dl>
+
+<p>If a width specifier is used, matches exactly <em>width</em> characters (the argument must be a pointer to an array with sufficient room). Unlike %s and %[, does not append the null character to the array.</p></td><td rowspan="3">N/A</td><td rowspan="3">N/A</td><td rowspan="3"><code>char*</code></td><td rowspan="3"><code>wchar_t*</code></td><td rowspan="3">N/A</td><td rowspan="3">N/A</td><td rowspan="3">N/A</td><td rowspan="3">N/A</td><td rowspan="3">N/A</td></tr>
+<tr><th><code>s</code></th><td><dl>
+<dd><p>Matches a sequence of non-whitespace characters (a</p>
+
+<strong>string</strong>
+
+<p>).</p></dd>
+</dl>
+
+<p>If width specifier is used, matches up to <em>width</em> or until the first whitespace character, whichever appears first. Always stores a null character in addition to the characters matched (so the argument array must have room for at least <em>width+1</em> characters)</p></td></tr>
+<tr><th><code>[</code><em>set</em><code>]</code></th><td><dl>
+<dd><p>Matches a non-empty sequence of character from</p>
+
+<em>set</em>
+
+<p>of characters.</p></dd>
+</dl>
+
+<p>If the first character of the set is <code>^</code>, then all characters not in the set are matched. If the set begins with <code>]</code> or <code>^]</code> then the <code>]</code> character is also included into the set. It is implementation-defined whether the character <code>-</code> in the non-initial position in the scanset may be indicating a range, as in <code>[0-9]</code>. If width specifier is used, matches only up to <em>width</em>. Always stores a null character in addition to the characters matched (so the argument array must have room for at least <em>width+1</em> characters)</p></td></tr>
+<tr><th><code>d</code></th><td><dl>
+<dd><p>Matches a</p>
+
+<strong>decimal integer</strong>
+
+<p>.</p></dd>
+</dl>
+
+<p>The format of the number is the same as expected by <a href="/reference/c/string/byte/strtol/"><code>strtol</code></a> with the value <code>10</code> for the <code>base</code> argument</p></td><td rowspan="6"><code>signed char*</code>
+
+<p>or</p>
+
+<code>unsigned char*</code></td><td rowspan="6"><code>signed short*</code>
+
+<p>or</p>
+
+<code>unsigned short*</code></td><td rowspan="6"><code>signed int*</code>
+
+<p>or</p>
+
+<code>unsigned int*</code></td><td rowspan="6"><code>signed long*</code>
+
+<p>or</p>
+
+<code>unsigned long*</code></td><td rowspan="6"><code>signed long long*</code>
+
+<p>or</p>
+
+<code>unsigned long long*</code></td><td rowspan="6"><code>intmax_t*</code>
+
+<p>or</p>
+
+<code>uintmax_t*</code></td><td rowspan="6"><code>size_t*</code></td><td rowspan="6"><code>ptrdiff_t*</code></td><td rowspan="6">N/A</td></tr>
+<tr><th><code>i</code></th><td><dl>
+<dd><p>Matches an</p>
+
+<strong>integer</strong>
+
+<p>.</p></dd>
+</dl>
+
+<p>The format of the number is the same as expected by <a href="/reference/c/string/byte/strtol/"><code>strtol</code></a> with the value <code>0</code> for the <code>base</code> argument (base is determined by the first characters parsed)</p></td></tr>
+<tr><th><code>u</code></th><td><dl>
+<dd><p>Matches an unsigned</p>
+
+<strong>decimal integer</strong>
+
+<p>.</p></dd>
+</dl>
+
+<p>The format of the number is the same as expected by <a href="/reference/c/string/byte/strtoul/"><code>strtoul</code></a> with the value <code>10</code> for the <code>base</code> argument.</p></td></tr>
+<tr><th><code>o</code></th><td><dl>
+<dd><p>Matches an unsigned</p>
+
+<strong>octal integer</strong>
+
+<p>.</p></dd>
+</dl>
+
+<p>The format of the number is the same as expected by <a href="/reference/c/string/byte/strtoul/"><code>strtoul</code></a> with the value <code>8</code> for the <code>base</code> argument</p></td></tr>
+<tr><th><code>x</code>, <code>X</code></th><td><dl>
+<dd><p>Matches an unsigned</p>
+
+<strong>hexadecimal integer</strong>
+
+<p>.</p></dd>
+</dl>
+
+<p>The format of the number is the same as expected by <a href="/reference/c/string/byte/strtoul/"><code>strtoul</code></a> with the value <code>16</code> for the <code>base</code> argument</p></td></tr>
+<tr><th><code>n</code></th><td><dl>
+<dd><p>Returns the</p>
+
+<strong>number of characters read so far</strong>
+
+<p>.</p></dd>
+</dl>
+
+<p>No input is consumed. Does not increment the assignment count. If the specifier has assignment-suppressing operator defined, the behavior is undefined</p></td></tr>
+<tr><th><code>a</code>, <code>A</code><span class="std std-since std-c99">(C99)</span> <code>e</code>, <code>E</code> <code>f</code>, <code>F</code><span class="std std-since std-c99">(C99)</span> <code>g</code>, <code>G</code></th><td><dl>
+<dd><p>Matches a</p>
+
+<strong>floating-point number</strong>
+
+<p>.</p></dd>
+</dl>
+
+<p>The format of the number is the same as expected by <a href="/reference/c/string/byte/strtof/"><code>strtof</code></a></p></td><td>N/A</td><td>N/A</td><td><code>float*</code></td><td><code>double*</code></td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td><code>long double*</code></td></tr>
+<tr><th><code>p</code></th><td><dl>
+<dd><p>Matches implementation defined character sequence defining a</p>
+
+<strong>pointer</strong>
+
+<p>.</p></dd>
+</dl>
+
+<p><code>printf</code> family of functions should produce the same sequence using <code>%p</code> format specifier</p></td><td>N/A</td><td>N/A</td><td><code>void**</code></td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td></tr>
+</table>
+
+<p>For every conversion specifier other than <code>n</code>, the longest sequence of input characters which does not exceed any specified ﬁeld width and which either is exactly what the conversion specifier expects or is a prefix of a sequence it would expect, is what's consumed from the stream. The ﬁrst character, if any, after this consumed sequence remains unread. If the consumed sequence has length zero or if the consumed sequence cannot be converted as specified above, the matching failure occurs unless end-of-ﬁle, an encoding error, or a read error prevented input from the stream, in which case it is an input failure.</p>
+
+<p>All conversion specifiers other than <code>[</code>, <code>c</code>, and <code>n</code> consume and discard all leading whitespace characters (determined as if by calling <a href="/reference/c/string/byte/isspace/"><code>isspace</code></a>) before attempting to parse the input. These consumed characters do not count towards the specified maximum field width.</p>
+
+<p>The conversion specifiers <code>lc</code>, <code>ls</code>, and <code>l[</code> perform multibyte-to-wide character conversion as if by calling <a href="/reference/c/string/multibyte/mbrtowc/"><code>mbrtowc</code></a> with an <a href="/reference/c/string/multibyte/mbstate_t/"><code>mbstate_t</code></a> object initialized to zero before the first character is converted.</p>
+
+<p>The conversion specifiers <code>s</code> and <code>[</code> always store the null terminator in addition to the matched characters. The size of the destination array must be at least one greater than the specified field width. The use of <code>%s</code> or <code>%[</code>, without specifying the destination array size, is as unsafe as <a href="/reference/c/io/gets/">gets</a>.</p>
+
+<p>The correct conversion specifications for the <a href="/reference/c/types/integer/">fixed-width integer types</a> (<a href="/reference/c/types/integer/">int8_t</a>, etc) are defined in the header <a href="/reference/c/types/integer/"><code>&lt;inttypes.h&gt;</code></a> (although <a href="/reference/c/types/integer/"><code>SCNdMAX</code></a>, <a href="/reference/c/types/integer/"><code>SCNuMAX</code></a>, etc is synonymous with <code>%jd</code>, <code>%ju</code>, etc).</p>
+
+<p>There is a <a href="/reference/c/language/eval_order/">sequence point</a> after the action of each conversion specifier; this permits storing multiple fields in the same "sink" variable.</p>
+
+<p>When parsing an incomplete floating-point value that ends in the exponent with no digits, such as parsing <code>&quot;100er&quot;</code> with the conversion specifier <code>%f</code>, the sequence <code>&quot;100e&quot;</code> (the longest prefix of a possibly valid floating-point number) is consumed, resulting in a matching error (the consumed sequence cannot be converted to a floating-point number), with <code>&quot;r&quot;</code> remaining. Some existing implementations do not follow this rule and roll back to consume only <code>&quot;100&quot;</code>, leaving <code>&quot;er&quot;</code>, e.g. <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=1765" rel="noreferrer" target="_blank">glibc bug 1765</a>.</p>
+
+<p>A conversion specification must be valid. Otherwise, the behavior is undefined.</p>
+
+<h3 id="Return_value">Return value</h3>
+
+<p class="li-note"><span class="li-num">1-3)</span>  Number of receiving arguments successfully assigned, or <a href="/reference/c/io/">EOF</a> if read failure occurs before the first receiving argument was assigned.</p>
+
+<p class="li-note"><span class="li-num">4-6)</span>  Same as (1-3), except that <a href="/reference/c/io/">EOF</a> is also returned if there is a runtime constraint violation.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>All these functions invoke va_arg at least once, the value of <code>arg</code> is indeterminate after the return. These functions to not invoke va_end, and it must be done by the caller.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdarg.h>
+ 
+bool checked_sscanf(int count, const char* buf, const char *fmt, ...)
+{
+    va_list ap;
+    va_start(ap, fmt);
+    int rc = vsscanf(buf, fmt, ap);
+    va_end(ap);
+    return rc == count;
+}
+ 
+int main(void)
+{
+    int n, m;
+ 
+    printf("Parsing '1 2'...");
+    if(checked_sscanf(2, "1 2", "%d %d", &n, &m))
+        puts("success");
+    else
+        puts("failure");
+ 
+    printf("Parsing '1 a'...");
+    if(checked_sscanf(2, "1 a", "%d %d", &n, &m))
+        puts("success");
+    else
+        puts("failure");
+}
+```
+
+<p>Output:</p>
+
+```text
+Parsing '1 2'...success
+Parsing '1 a'...failure
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.6.9 The vfscanf function (p: 327)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.6.11 The vscanf function (p: 328)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.6.14 The vsscanf function (p: 330)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.5.3.9 The vfscanf_s function (p: 597-598)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.5.3.11 The vscanf_s function (p: 599)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.5.3.14 The vsscanf_s function (p: 602)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.6.9 The vfscanf function (p: 293)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.6.11 The vscanf function (p: 294)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.6.14 The vsscanf function (p: 295)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/fscanf/">scanf<br />fscanf<br />sscanf<br />scanf_s<br />fscanf_s<br />sscanf_s</a>
+
+<span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>reads formatted input from <a href="/reference/c/io/std_streams/">stdin</a>, a file stream or a buffer   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/vfprintf/">vprintf<br />vfprintf<br />vsprintf<br />vsnprintf<br />vprintf_s<br />vfprintf_s<br />vsprintf_s<br />vsnprintf_s</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>prints formatted output to <a href="/reference/c/io/std_streams/">stdout</a>, a file stream or a buffer  using variable argument list   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c/vfscanf" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+vscanf, vfscanf, vsscanf</td></tr>
+</table></section>

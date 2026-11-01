@@ -1,0 +1,130 @@
+---
+title: "mbrtoc8"
+slug: "c/string/multibyte/mbrtoc8"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/multibyte/mbrtoc8"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;uchar.h&gt;</code></p>
+
+```c
+size_t mbrtoc8( char8_t * restrict pc8, const char * restrict s,
+                size_t n, mbstate_t * restrict ps );
+```
+
+<p class="decl-note"><span class="std std-since std-c23">(since C23)</span></p>
+
+<p>Converts a narrow multibyte character to UTF-8 encoding.</p>
+
+<p>If <code>s</code> is not a null pointer, inspects at most <code>n</code> bytes of the multibyte character string, beginning with the byte pointed to by <code>s</code> to determine the number of bytes necessary to complete the next multibyte character (including any shift sequences). If the function determines that the next multibyte character in <code>s</code> is complete and valid, converts it to UTF-8 and stores the first UTF-8 code unit in <code>*pc8</code> (if <code>pc8</code> is not null).</p>
+
+<p>If UTF-8 encoding of the multibyte character in <code>*s</code> consists of more than one UTF-8 code unit, then after the first call to this function, <code>*ps</code> is updated in such a way that the next call to <code>mbrtoc8</code> will write out the additional UTF-8 code units, without considering <code>*s</code>.</p>
+
+<p>If <code>s</code> is a null pointer, the values of <code>n</code> and <code>pc8</code> are ignored and the call is equivalent to <code>mbrtoc8(nullptr, &quot;&quot;, 1, ps)</code>.</p>
+
+<p>If UTF-8 code unit produced is <code>u8&#x27;\0&#x27;</code>, the conversion state <code>*ps</code> represents the initial shift state.</p>
+
+<p>The multibyte encoding used by this function is specified by the currently active C locale.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>pc8</td><td>-</td><td>pointer to the location where the resulting UTF-8 code units will be written</td></tr>
+<tr><td>s</td><td>-</td><td>pointer to the multibyte character string used as input</td></tr>
+<tr><td>n</td><td>-</td><td>limit on the number of bytes in s that can be examined</td></tr>
+<tr><td>ps</td><td>-</td><td>pointer to the conversion state object used when interpreting the multibyte string</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>The first of the following that applies:</p>
+
+<ul>
+<li>
+<code>0</code>
+
+<p>if the character converted from</p>
+
+<code>s</code>
+
+<p>(and stored in</p>
+
+<code>*pc8</code>
+
+<p>if non-null) was the null character</p>
+</li>
+<li>
+<p>the number of bytes</p>
+
+<code>[1...n]</code>
+
+<p>of the multibyte character successfully converted from</p>
+
+<code>s</code>
+</li>
+<li>
+<code>(size_t)-3</code>
+
+<p>if the next UTF-8 code unit from a character whose encoding consists of multiple code units has now been written to</p>
+
+<code>*pc8</code>
+
+<p>. No bytes are processed from the input in this case.</p>
+</li>
+<li>
+<code>(size_t)-2</code>
+
+<p>if the next</p>
+
+<code>n</code>
+
+<p>bytes constitute an incomplete, but so far valid, multibyte character. Nothing is written to</p>
+
+<code>*pc8</code>
+
+<p>.</p>
+</li>
+<li>
+<code>(size_t)-1</code>
+
+<p>if encoding error occurs. Nothing is written to</p>
+
+<code>*pc8</code>
+
+<p>, the value</p>
+
+<a href="/reference/c/error/errno_macros/">EILSEQ</a>
+
+<p>is stored in</p>
+
+<a href="/reference/c/error/errno/">errno</a>
+
+<p>and the value of</p>
+
+<code>*ps</code>
+
+<p>is unspecified.</p>
+</li>
+</ul>
+
+<h3 id="Example">Example</h3>
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: no example</td></tr>
+</table>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/multibyte/c8rtomb/">c8rtomb</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>converts UTF-8 string to narrow multibyte encoding   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/multibyte/mbrtoc8" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+mbrtoc8</td></tr>
+</table>

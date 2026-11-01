@@ -1,0 +1,147 @@
+---
+title: "getchar"
+slug: "c/io/getchar"
+category: "io"
+source: "https://en.cppreference.com/w/c/io/getchar"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+```c
+int getchar( void );
+```
+
+<p>Reads the next character from <a href="/reference/c/io/std_streams/">stdin</a>.</p>
+
+<p>Equivalent to <code>getc(stdin)</code>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<p>(none)</p>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>The obtained character on success or <a href="/reference/c/io/">EOF</a> on failure.</p>
+
+<p>If the failure has been caused by end-of-file condition, additionally sets the <em>eof</em> indicator (see <a href="/reference/c/io/feof/">feof()</a>) on <a href="/reference/c/io/std_streams/">stdin</a>. If the failure has been caused by some other error, sets the <em>error</em> indicator (see <a href="/reference/c/io/ferror/">ferror()</a>) on <a href="/reference/c/io/std_streams/">stdin</a>.</p>
+
+<h3 id="Example">Example</h3>
+
+<p>Demonstrates <code>getchar</code> with error checking</p>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(void)
+{
+    for (int ch; (ch = getchar()) != EOF;) // read/print "abcde" from stdin
+        printf("%c", ch);
+ 
+    // Test reason for reaching EOF.
+    if (feof(stdin)) // if failure caused by end-of-file condition
+        puts("End of file reached");
+    else if (ferror(stdin)) // if failure caused by some other error
+    {
+        perror("getchar()");
+        fprintf(stderr, "getchar() failed in file %s at line # %d\n",
+                __FILE__, __LINE__ - 9);
+        exit(EXIT_FAILURE);
+    }
+ 
+    return EXIT_SUCCESS;
+}
+```
+
+<p>Possible output:</p>
+
+```text
+abcde
+End of file reached
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.7.6 The getchar function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.7.6 The getchar function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.7.6 The getchar function (p: 332)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.7.6 The getchar function (p: 298)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9.7.6 The getchar function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/fgetc/">fgetc<br />getc</a></td><td>gets a character from a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c/getchar" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+getchar</td></tr>
+</table>

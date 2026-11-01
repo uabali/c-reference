@@ -1,0 +1,386 @@
+---
+title: "Enumerations"
+slug: "c/language/enum"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/enum"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>An <em>enumerated type</em> is a distinct <a href="/reference/c/language/compatible_type/">type</a> whose value is a value of its <em>underlying type</em> (see below), which includes the values of explicitly named constants (<em>enumeration constants</em>).</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+<p>Enumerated type is declared using the following <em>enumeration specifier</em> as the <em>type-specifier</em> in the <a href="/reference/c/language/declarations/">declaration grammar</a>:</p>
+
+```text
+enum attr-spec-seq (optional) identifier (optional) { enumerator-list }
+enum attr-spec-seq (optional) identifier (optional) : type { enumerator-list }
+```
+
+<p class="li-note"><span class="li-num">1)</span>  Declares an enumeration without a fixed underlying type.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Declares an enumeration of fixed underlying type <em>type</em>.</p>
+
+<p>where <em>enumerator-list</em> is a comma-separated list(with trailing comma permitted)<span class="std std-since std-c99">(since C99)</span> of <em>enumerator</em>, each of which has the form:</p>
+
+```text
+enumeration-constant attr-spec-seq (optional)
+enumeration-constant attr-spec-seq (optional) = constant-expression
+```
+
+<p>where</p>
+
+<table class="ref-table ref-params">
+<tr><td><em>identifier</em>, <em>enumeration-constant</em></td><td>-</td><td>identifiers that are introduced by this declaration</td></tr>
+<tr><td><em>constant-expression</em></td><td>-</td><td><a href="/reference/c/language/constant_expression/">integer constant expression</a> whose value is representable as a value of type <code>int</code><span class="std std-until std-c23">(until C23)</span>. If the enumeration has a fixed underlying type, representable as a value of <em>type</em><span class="std std-since std-c23">(since C23)</span></td></tr>
+<tr><td><em>attr-spec-seq</em></td><td>-</td><td><span class="std std-since std-c23">(C23)</span>
+
+<p>optional list of</p>
+
+<a href="/reference/c/language/attributes/">attributes</a>
+
+<p>,</p>
+
+<ul>
+<li>
+<p>applied to the whole enumeration if appears after</p>
+
+<code>enum</code>
+
+<p>,</p>
+</li>
+<li>
+<p>applied to the</p>
+
+<em>enumerator</em>
+
+<p>if appears after</p>
+
+<em>enumeration-constant</em>
+</li>
+</ul></td></tr>
+</table>
+
+<p>As with <a href="/reference/c/language/struct/">struct</a> or <a href="/reference/c/language/union/">union</a>, a declaration that introduced an enumerated type and one or more enumeration constants may also declare one or more objects of that type or type derived from it.</p>
+
+```c
+enum color { RED, GREEN, BLUE } c = RED, *cp = &c;
+// introduces the type enum color
+// the integer constants RED, GREEN, BLUE
+// the object c of type enum color
+// the object cp of type pointer to enum color
+```
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>Each <em>enumeration-constant</em> that appears in the body of an enumeration specifier becomes an <a href="/reference/c/language/constant_expression/">integer constant</a> with type <code>int</code><span class="std std-until std-c23">(until C23)</span> in the enclosing scope and can be used whenever integer constants are required (e.g. as a case label or as a non-VLA array size).</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>During the processing of each enumeration constant in the enumerator list, the type of the enumeration constant shall be:</p>
+
+<ul>
+<li>
+<p>the previously declared type, if it is a redeclaration of the same enumeration constant; or,</p>
+</li>
+<li>
+<p>the enumerated type, for an enumeration with fixed underlying type; or,</p>
+</li>
+<li>
+<code>int</code>
+
+<p>, if there are no previous enumeration constants in the enumerator list and no explicit = with a defining integer constant expression; or,</p>
+</li>
+<li>
+<code>int</code>
+
+<p>, if given explicitly with = and the value of the integer constant expression is representable by an int; or,</p>
+</li>
+<li>
+<p>the type of the integer constant expression, if given explicitly with = and if the value of the integer constant expression is not representable by</p>
+
+<code>int</code>
+
+<p>; or,</p>
+</li>
+<li>
+<p>the type of the value from last enumeration constant with 1 added to it. If such an integer constant expression would overflow or wraparound the value of the previous enumeration constant from the addition of 1, the type takes on either:</p>
+
+<ul>
+<li>
+<p>a suitably sized signed integer type (excluding the bit-precise signed integer types) capable of representing the value of the previous enumeration constant plus 1; or,</p>
+</li>
+<li>
+<p>a suitably sized unsigned integer type (excluding the bit-precise unsigned integer types) capable of representing the value of the previous enumeration constant plus 1.</p>
+</li>
+</ul>
+</li>
+</ul>
+
+<p>A signed integer type is chosen if the previous enumeration constant being added is of signed integer type. An unsigned integer type is chosen if the previous enumeration constant is of unsigned integer type. If there is no suitably sized integer type described previous which can represent the new value, then the enumeration has no type which is capable of representing all of its values.</p></aside>
+
+```c
+enum color { RED, GREEN, BLUE } r = RED;
+switch(r)
+{
+case RED:
+    puts("red");
+    break;
+case GREEN:
+    puts("green");
+    break;
+case BLUE:
+    puts("blue");
+    break;
+}
+```
+
+<p>If <em>enumeration-constant</em> is followed by <em>= constant-expression</em>, its value is the value of that constant expression. If <em>enumeration-constant</em> is not followed by <em>= constant-expression</em>, its value is the value one greater than the value of the previous enumerator in the same enumeration. The value of the first enumerator (if it does not use <em>= constant-expression</em>) is zero.</p>
+
+```c
+enum Foo { A, B, C = 10, D, E = 1, F, G = F + C };
+// A=0, B=1, C=10, D=11, E=1, F=2, G=12
+```
+
+<p>The <em>identifier</em> itself, if used, becomes the name of the enumerated type in the tags <a href="/reference/c/language/name_space/">name space</a> and requires the use of the keyword enum (unless typedef'd into the ordinary name space).</p>
+
+```c
+enum color { RED, GREEN, BLUE };
+enum color r = RED; // OK
+// color x = GREEN; // Error: color is not in ordinary name space
+typedef enum color color_t;
+color_t x = GREEN; // OK
+```
+
+<p>Each enumerated type without a fixed underlying type<span class="std std-since std-c23">(since C23)</span> is <a href="/reference/c/language/compatible_type/#Compatible_types">compatible</a> with one of: <code>char</code>, a signed integer type, or an unsigned integer type (excluding <code>bool</code> and the bit-precise integer types)<span class="std std-since std-c23">(since C23)</span>. It is implementation-defined which type is compatible with any given enumerated type, but whatever it is, it must be capable of representing all enumerator values of that enumeration. For all enumerations with a fixed underlying type, the enumerated type is compatible with the underlying type of the enumeration.<span class="std std-since std-c23">(since C23)</span></p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>The enumeration member type for an enumerated type without fixed underlying type upon completion is:</p>
+
+<ul>
+<li>
+<code>int</code>
+
+<p>if all the values of the enumeration are representable as an</p>
+
+<code>int</code>
+
+<p>; or,</p>
+</li>
+<li>
+<p>the enumerated type.</p>
+</li>
+</ul></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>All enumerations have an underlying type. The underlying type can be explicitly specified using an enum-type-specifier and is its fixed underlying type. If it is not explicitly specified, the underlying type is the enumeration’s compatible type, which is either a signed or unsigned integer type, or</p>
+
+<code>char</code>
+
+<p>.</p></aside>
+
+<p>Enumerated types are integer types, and as such can be used anywhere other integer types can, including in <a href="/reference/c/language/conversion/">implicit conversions</a> and <a href="/reference/c/language/operator_arithmetic/">arithmetic operators</a>.</p>
+
+```c
+enum { ONE = 1, TWO } e;
+long n = ONE; // promotion
+double d = ONE; // conversion
+e = 1.2; // conversion, e is now ONE
+e = e + 1; // e is now TWO
+```
+
+<h3 id="Notes">Notes</h3>
+
+<p>Unlike <a href="/reference/c/language/struct/">struct</a> or <a href="/reference/c/language/union/">union</a>, there are no forward-declared enums in C:</p>
+
+```c
+enum Color; // Error: no forward-declarations for enums in C
+enum Color { RED, GREEN, BLUE };
+```
+
+<p>Enumerations permit the declaration of named constants in a more convenient and structured fashion than does <code>#define</code>; they are visible in the debugger, obey scope rules, and participate in the type system.</p>
+
+```c
+#define TEN 10
+struct S { int x : TEN; }; // OK
+```
+
+<p>or</p>
+
+```c
+enum { TEN = 10 };
+struct S { int x : TEN; }; // also OK
+```
+
+<p>Since C23 <a href="/reference/c/language/constexpr/">constexpr</a> can be used for the same purpose:</p>
+
+```c
+constexpr int TEN = 10;
+struct S { int x : TEN; }; // also OK
+```
+
+<p>Moreover, as a <a href="/reference/c/language/struct/">struct</a> or <a href="/reference/c/language/union/">union</a> does not establish its scope in C, an enumeration type and its enumeration constants may be introduced in the member specification of the former, and their scope is the same as of the former, afterwards.</p>
+
+```c
+struct Element
+{
+    int z;
+    enum State { SOLID, LIQUID, GAS, PLASMA } state;
+} oxygen = { 8, GAS };
+ 
+// type enum State and its enumeration constants stay visible here, e.g.
+void foo(void)
+{
+    enum State e = LIQUID; // OK
+    printf("%d %d %d ", e, oxygen.state, PLASMA); // prints 1 2 3
+}
+```
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+ 
+int main(void)
+{
+    enum TV { FOX = 11, CNN = 25, ESPN = 15, HBO = 22, MAX = 30, NBC = 32 };
+ 
+    printf("List of cable stations:\n");
+    printf(" FOX: \t%2d\n", FOX);
+    printf(" HBO: \t%2d\n", HBO);
+    printf(" MAX: \t%2d\n", MAX);
+}
+```
+
+<p>Output:</p>
+
+```text
+List of cable stations:
+ FOX:   11
+ HBO:   22
+ MAX:   30
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.5/21 Types (p: 39)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.2.2 Enumeration specifiers (p: 107-112)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.5/16 Types (p: 32)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.2.2 Enumeration specifiers (p: 84-85)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.5/16 Types (p: 41)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.2.2 Enumeration specifiers (p: 117-118)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.2.5/16 Types (p: 35)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.2.2 Enumeration specifiers (p: 105-106)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.1.2.5 Types</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.5.2.2 Enumeration specifiers</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="Keywords">Keywords</h3>
+
+<p><a href="/reference/c/keyword/enum/"><code>enum</code></a></p>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/enum" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+enumeration declaration</td></tr>
+</table>

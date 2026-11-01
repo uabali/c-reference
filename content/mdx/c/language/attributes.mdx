@@ -1,0 +1,183 @@
+---
+title: "Attribute specifier sequence (since C23)"
+slug: "c/language/attributes"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/attributes"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Introduces implementation-defined attributes for types, objects, expressions, etc.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+<dl>
+<dd><code>[[</code>
+
+<em>attr</em>
+
+<code>]]</code>
+
+<code>[[</code>
+
+<em>attr1</em>
+
+<p>,</p>
+
+<em>attr2</em>
+
+<p>,</p>
+
+<em>attr3</em>
+
+<code>(</code>
+
+<em>args</em>
+
+<code>)</code>
+
+<code>]]</code>
+
+<code>[[</code>
+
+<em>attribute-prefix</em>
+
+<code>::</code>
+
+<em>attr</em>
+
+<code>(</code>
+
+<em>args</em>
+
+<code>)</code>
+
+<code>]]</code></dd>
+</dl>
+
+<p>Formally, the syntax is</p>
+
+```text
+[[ attribute-list ]]
+```
+
+<p>where <em>attribute-list</em> is a comma-separated sequence of zero or more <em>attribute-token</em> s</p>
+
+```text
+standard-attribute
+attribute-prefix :: identifier
+standard-attribute ( argument-list (optional) )
+attribute-prefix :: identifier ( argument-list (optional) )
+```
+
+<p>where <em>attribute-prefix</em> is an <em>identifier</em> and <em>argument-list</em> is a sequence of tokens where parentheses, brackets and braces are balanced (<em>balanced-token-sequence</em>).</p>
+
+<p class="li-note"><span class="li-num">1)</span>  standard attribute, such as <code>[[fallthrough]]</code></p>
+
+<p class="li-note"><span class="li-num">2)</span>  attribute with a namespace, such as <code>[[gnu::unused]]</code></p>
+
+<p class="li-note"><span class="li-num">3)</span>  standard attribute with arguments, such as <code>[[deprecated(&quot;reason&quot;)]]</code></p>
+
+<p class="li-note"><span class="li-num">4)</span>  attribute with both a namespace and an argument list, such as <code>[[gnu::nonnull(1)]]</code></p>
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>Attributes provide the unified standard syntax for implementation-defined language extensions, such as the GNU and IBM language extensions <code>__attribute__((...))</code>, Microsoft extension <code>__declspec()</code>, etc.</p>
+
+<p>An attribute can be used almost everywhere in the C program, and can be applied to almost everything: to types, to variables, to functions, to names, to code blocks, to entire translation units, although each particular attribute is only valid where it is permitted by the implementation: <code>[[expect_true]]</code> could be an attribute that can only be used with an <code>if</code>, and not with a class declaration. <code>[[omp::parallel()]]</code> could be an attribute that applies to a code block or to a <code>for</code> loop, but not to the type <code>int</code>, etc. (note these two attributes are fictional examples, see below for the standard and some non-standard attributes)</p>
+
+<p>In declarations, attributes may appear both before the whole declaration and directly after the name of the entity that is declared, in which case they are combined. In most other situations, attributes apply to the directly preceding entity.</p>
+
+<p>Two consecutive left square bracket tokens (<code>[[</code>) may only appear when introducing an attribute-specifier or inside an attribute argument.</p>
+
+<p>Besides the standard attributes listed below, implementations may support arbitrary non-standard attributes with implementation-defined behavior. All attributes unknown to an implementation are ignored without causing an error.</p>
+
+<p>Every <em>standard-attribute</em> is reserved for standardization. That is, every non-standard attribute is prefixed by a <em>attribute-prefix</em> provided by the implementation, e.g. <code>[[gnu::may_alias]]</code> and <code>[[clang::no_sanitize]]</code>.</p>
+
+<h3 id="Standard_attributes">Standard attributes</h3>
+
+<p>Only the following attributes are defined by the C standard. Every standard attribute whose name is of form <code>attr</code> can be also spelled as <code>__attr__</code> and its meaning is not changed.</p>
+
+<table class="ref-table ref-dsc">
+<tr><td><code>[[deprecated]]</code><span class="std std-since std-c23">(C23)</span> <code>[[deprecated(&quot;reason&quot;)]]</code><span class="std std-since std-c23">(C23)</span></td><td>indicates that the use of the name or entity declared with this attribute is allowed, but discouraged for some <em>reason</em> <span class="mark-note">(attribute specifier)</span></td></tr>
+<tr><td><code>[[fallthrough]]</code><span class="std std-since std-c23">(C23)</span></td><td>indicates that the fall through from the previous case label is intentional and should not be diagnosed by a compiler that warns on fall-through <span class="mark-note">(attribute specifier)</span></td></tr>
+<tr><td><code>[[nodiscard]]</code><span class="std std-since std-c23">(C23)</span> <code>[[nodiscard(&quot;reason&quot;)]]</code><span class="std std-since std-c23">(C23)</span></td><td>encourages the compiler to issue a warning if the return value is discarded <span class="mark-note">(attribute specifier)</span></td></tr>
+<tr><td><code>[[maybe_unused]]</code><span class="std std-since std-c23">(C23)</span></td><td>suppresses compiler warnings on unused entities, if any <span class="mark-note">(attribute specifier)</span></td></tr>
+<tr><td><code>[[noreturn]]</code><span class="std std-since std-c23">(C23)</span> <code>[[_Noreturn]]</code><span class="std std-since std-c23">(C23)</span><span class="mark-note">(deprecated)</span></td><td>indicates that the function does not return <span class="mark-note">(attribute specifier)</span></td></tr>
+<tr><td><code>[[unsequenced]]</code><span class="std std-since std-c23">(C23)</span></td><td>indicates that a function is stateless, effectless, idempotent and independent <span class="mark-note">(attribute specifier)</span></td></tr>
+<tr><td><code>[[reproducible]]</code><span class="std std-since std-c23">(C23)</span></td><td>indicates that a function is effectless and idempotent <span class="mark-note">(attribute specifier)</span></td></tr>
+</table>
+
+<h3 id="Attribute_testing">Attribute testing</h3>
+
+```text
+__has_c_attribute( attribute-token )
+```
+
+<p>Checks for the presence of an attribute token named by <em>attribute-token</em>.</p>
+
+<p>For standard attributes, it will expand to the year and month in which the attribute was added to the working draft (see table below), the presence of vendor-specific attributes is determined by a non-zero integer constant.</p>
+
+<p><code>__has_c_attribute</code> can be expanded in the expression of <a href="/reference/c/preprocessor/conditional/"><code>#if</code></a> and <a href="/reference/c/preprocessor/conditional/"><code>#elif</code></a>. It is treated as a defined macro by <a href="/reference/c/preprocessor/conditional/"><code>#ifdef</code></a>, <a href="/reference/c/preprocessor/conditional/"><code>#ifndef</code></a> and <a href="/reference/c/preprocessor/conditional/"><code>defined</code></a> but cannot be used anywhere else.</p>
+
+<table class="ref-table">
+<tr><th><em>attribute-token</em></th><th>Attribute</th><th>Value</th><th>Standard</th></tr>
+<tr><td><code>deprecated</code></td><td><code>[[deprecated]]</code></td><td><code>201904L</code></td><td><span class="std std-since std-c23">(C23)</span></td></tr>
+<tr><td><code>fallthrough</code></td><td><code>[[fallthrough]]</code></td><td><code>201904L</code></td><td><span class="std std-since std-c23">(C23)</span></td></tr>
+<tr><td><code>maybe_unused</code></td><td><code>[[maybe_unused]]</code></td><td><code>201904L</code></td><td><span class="std std-since std-c23">(C23)</span></td></tr>
+<tr><td><code>nodiscard</code></td><td><code>[[nodiscard]]</code></td><td><code>202003L</code></td><td><span class="std std-since std-c23">(C23)</span></td></tr>
+<tr><td><code>noreturn</code> <code>_Noreturn</code></td><td><code>[[noreturn]]</code> <code>[[_Noreturn]]</code></td><td><code>202202L</code></td><td><span class="std std-since std-c23">(C23)</span></td></tr>
+<tr><td><code>unsequenced</code></td><td><code>[[unsequenced]]</code></td><td><code>202207L</code></td><td><span class="std std-since std-c23">(C23)</span></td></tr>
+<tr><td><code>reproducible</code></td><td><code>[[reproducible]]</code></td><td><code>202207L</code></td><td><span class="std std-since std-c23">(C23)</span></td></tr>
+</table>
+
+<h3 id="Example">Example</h3>
+
+```c
+[[gnu::hot]] [[gnu::const]] [[nodiscard]]
+int f(void); // declare f with three attributes
+ 
+[[gnu::const, gnu::hot, nodiscard]]
+int f(void); // the same as above, but uses a single attr
+             // specifier that contains three attributes
+ 
+int f(void) { return 0; }
+ 
+int main(void)
+{
+}
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.12 Attributes (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/attributes" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Attribute specifier sequence</td></tr>
+</table>
+
+<h3 id="External_links">External links</h3>
+
+<table class="ref-table">
+<tr><td>1.</td><td><a href="https://gcc.gnu.org/onlinedocs/gcc/Attribute-Syntax.html#Attribute-Syntax" rel="noreferrer" target="_blank">Attributes in GCC</a></td></tr>
+<tr><td>2.</td><td><a href="https://clang.llvm.org/docs/AttributeReference.html" rel="noreferrer" target="_blank">Attributes in Clang</a></td></tr>
+</table>

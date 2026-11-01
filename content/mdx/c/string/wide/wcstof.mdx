@@ -1,0 +1,303 @@
+---
+title: "wcstof, wcstod, wcstold"
+slug: "c/string/wide/wcstof"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/wide/wcstof"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;wchar.h&gt;</code></p>
+
+```c
+float       wcstof( const wchar_t* restrict str, wchar_t** restrict str_end );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+double      wcstod( const wchar_t* str, wchar_t** str_end );
+```
+
+<p class="decl-note"><span class="std std-since std-c95">(since C95)</span>  <span class="std std-until std-c99">(until C99)</span></p>
+
+```c
+double      wcstod( const wchar_t* restrict str, wchar_t** restrict str_end );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+long double wcstold( const wchar_t* restrict str, wchar_t** restrict str_end );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>Interprets a floating-point value in a wide string pointed to by <code>str</code>.</p>
+
+<p>Function discards any whitespace characters (as determined by <a href="/reference/c/string/wide/iswspace/">iswspace</a>) until first non-whitespace character is found. Then it takes as many characters as possible to form a valid floating-point representation and converts them to a floating-point value. The valid floating-point value can be one of the following:</p>
+
+<ul>
+<li>
+<p>decimal floating-point expression. It consists of the following parts:</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<span class="mark-note">(optional)</span>
+
+<p>plus or minus sign</p>
+</li>
+<li>
+<p>nonempty sequence of decimal digits optionally containing decimal-point character (as determined by the current C</p>
+
+<a href="/reference/c/locale/setlocale/">locale</a>
+
+<p>) (defines significand)</p>
+</li>
+<li>
+<span class="mark-note">(optional)</span>
+
+<code>e</code>
+
+<p>or</p>
+
+<code>E</code>
+
+<p>followed with optional minus or plus sign and nonempty sequence of decimal digits (defines exponent to base 10)</p>
+</li>
+</ul></dd>
+</dl>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><ul>
+<li>
+<p>hexadecimal floating-point expression. It consists of the following parts:</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<span class="mark-note">(optional)</span>
+
+<p>plus or minus sign</p>
+</li>
+<li>
+<code>0x</code>
+
+<p>or</p>
+
+<code>0X</code>
+</li>
+<li>
+<p>nonempty sequence of hexadecimal digits optionally containing a decimal-point character (as determined by the current C</p>
+
+<a href="/reference/c/locale/setlocale/">locale</a>
+
+<p>) (defines significand)</p>
+</li>
+<li>
+<span class="mark-note">(optional)</span>
+
+<code>p</code>
+
+<p>or</p>
+
+<code>P</code>
+
+<p>followed with optional minus or plus sign and nonempty sequence of decimal digits (defines exponent to base 2)</p>
+</li>
+</ul></dd>
+</dl>
+
+<ul>
+<li>
+<p>infinity expression. It consists of the following parts:</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<span class="mark-note">(optional)</span>
+
+<p>plus or minus sign</p>
+</li>
+<li>
+<code>INF</code>
+
+<p>or</p>
+
+<code>INFINITY</code>
+
+<p>ignoring case</p>
+</li>
+</ul></dd>
+</dl>
+
+<ul>
+<li>
+<p>not-a-number expression. It consists of the following parts:</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<span class="mark-note">(optional)</span>
+
+<p>plus or minus sign</p>
+</li>
+<li>
+<code>NAN</code>
+
+<p>or</p>
+
+<code>NAN(</code>
+
+<em>char_sequence</em>
+
+<code>)</code>
+
+<p>ignoring case of the</p>
+
+<code>NAN</code>
+
+<p>part.</p>
+
+<em>char_sequence</em>
+
+<p>can only contain digits, Latin letters, and underscores. The result is a quiet NaN floating-point value.</p>
+</li>
+</ul></dd>
+</dl></aside>
+
+<ul>
+<li>
+<p>any other expression that may be accepted by the currently installed C</p>
+
+<a href="/reference/c/locale/setlocale/">locale</a>
+</li>
+</ul>
+
+<p>The functions sets the pointer pointed to by <code>str_end</code> to point to the wide character past the last character interpreted. If <code>str_end</code> is a null pointer, it is ignored.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>str</td><td>-</td><td>pointer to the null-terminated wide string to be interpreted</td></tr>
+<tr><td>str_end</td><td>-</td><td>pointer to a pointer to a wide character.</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Floating-point value corresponding to the contents of <code>str</code> on success. If the converted value falls out of range of corresponding return type, range error occurs and <a href="/reference/c/numeric/math/HUGE_VAL/">HUGE_VAL</a>, <a href="/reference/c/numeric/math/HUGE_VAL/">HUGE_VALF</a> or <a href="/reference/c/numeric/math/HUGE_VAL/">HUGE_VALL</a> is returned. If no conversion can be performed, <code>0</code> is returned.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <errno.h>
+#include <stdio.h>
+#include <wchar.h>
+ 
+int main(void)
+{
+    const wchar_t* p = L"111.11 -2.22 0X1.BC70A3D70A3D7P+6  1.18973e+4932zzz";
+    printf("Parsing L\"%ls\":\n", p);
+    wchar_t* end;
+    for (double f = wcstod(p, &end); p != end; f = wcstod(p, &end))
+    {
+        printf("'%.*ls' -> ", (int)(end-p), p);
+        p = end;
+        if (errno == ERANGE){
+            printf("range error, got ");
+            errno = 0;
+        }
+        printf("%f\n", f);
+    }
+}
+```
+
+<p>Output:</p>
+
+```text
+Parsing L"111.11 -2.22 0X1.BC70A3D70A3D7P+6  1.18973e+4932zzz":
+'111.11' -> 111.110000
+' -2.22' -> -2.220000
+' 0X1.BC70A3D70A3D7P+6' -> 111.110000
+'  1.18973e+4932' -> range error, got inf
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.4.1.1 The wcstod, wcstof, and wcstold functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.4.1.1 The wcstod, wcstof, and wcstold functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.4.1.1 The wcstod, wcstof, and wcstold functions (p: 426-428)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.4.1.1 The wcstod, wcstof, and wcstold functions (p: 372-374)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/byte/strtof/">strtof<br />strtod<br />strtold</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>converts a byte string to a floating-point value   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/wide/wcstof" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+wcstof, wcstod, wcstold</td></tr>
+</table>

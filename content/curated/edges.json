@@ -1,0 +1,232 @@
+[
+  {
+    "source": "c/language/pointer",
+    "target": "c/language/array",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/array",
+    "target": "c/language/string_literal",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/string_literal",
+    "target": "c/string/byte",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/string/byte",
+    "target": "c/string/byte/strlen",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/string/byte/strlen",
+    "target": "c/string/byte/strcpy",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/string/byte/strlen",
+    "target": "c/string/byte/strcmp",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/pointer",
+    "target": "c/memory/malloc",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/memory/malloc",
+    "target": "c/memory/free",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/memory/malloc",
+    "target": "c/memory/realloc",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/pointer",
+    "target": "c/language/struct",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/struct",
+    "target": "c/language/union",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/pointer",
+    "target": "c/algorithm/qsort",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/if",
+    "target": "c/language/for",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/for",
+    "target": "c/language/switch",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/switch",
+    "target": "c/program/setjmp",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/arithmetic_types",
+    "target": "c/language/const",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/const",
+    "target": "c/language/volatile",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/volatile",
+    "target": "c/language/restrict",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/typedef",
+    "target": "c/language/enum",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/enum",
+    "target": "c/language/union",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/types/NULL",
+    "target": "c/language/nullptr",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/nullptr",
+    "target": "c/language/attributes",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/attributes",
+    "target": "c/language/attributes/nodiscard",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/attributes",
+    "target": "c/language/constexpr",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/constexpr",
+    "target": "c/language/typeof",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/typeof",
+    "target": "c/language/arithmetic_types",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/preprocessor",
+    "target": "c/preprocessor/embed",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/operator_arithmetic",
+    "target": "c/numeric/ckd_add",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/string_literal",
+    "target": "c/io/fprintf",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/io/fprintf",
+    "target": "c/io/fopen",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/io/fopen",
+    "target": "c/error/errno",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/struct",
+    "target": "c/language/alignof",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/storage_duration",
+    "target": "c/memory/malloc",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/scope",
+    "target": "c/language/storage_duration",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/function_declaration",
+    "target": "c/language/function_definition",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/language/function_definition",
+    "target": "c/algorithm/qsort",
+    "kind": "prerequisite"
+  },
+  {
+    "source": "c/memory/free",
+    "target": "c/memory/malloc",
+    "kind": "uses"
+  },
+  {
+    "source": "c/memory/realloc",
+    "target": "c/memory/malloc",
+    "kind": "uses"
+  },
+  {
+    "source": "c/string/byte/strcpy",
+    "target": "c/string/byte/strlen",
+    "kind": "uses"
+  },
+  {
+    "source": "c/io/fprintf",
+    "target": "c/language/string_literal",
+    "kind": "uses"
+  },
+  {
+    "source": "c/algorithm/qsort",
+    "target": "c/language/pointer",
+    "kind": "uses"
+  },
+  {
+    "source": "c/numeric/ckd_add",
+    "target": "c/language/operator_arithmetic",
+    "kind": "uses"
+  },
+  {
+    "source": "c/language/alignof",
+    "target": "c/language/struct",
+    "kind": "uses"
+  },
+  {
+    "source": "c/thread/thrd_create",
+    "target": "c/language/storage_duration",
+    "kind": "uses"
+  },
+  {
+    "source": "c/language/atomic",
+    "target": "c/thread/thrd_create",
+    "kind": "uses"
+  },
+  {
+    "source": "c/preprocessor/embed",
+    "target": "c/preprocessor",
+    "kind": "uses"
+  }
+]

@@ -1,0 +1,153 @@
+---
+title: "fputs"
+slug: "c/io/fputs"
+category: "io"
+source: "https://en.cppreference.com/w/c/io/fputs"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+```c
+int fputs( const char*          str, FILE*          stream );
+```
+
+<p class="decl-note"><span class="std std-until std-c99">(until C99)</span></p>
+
+```c
+int fputs( const char* restrict str, FILE* restrict stream );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>Writes every character from the null-terminated string <code>str</code> to the output stream <code>stream</code>, as if by repeatedly executing <a href="/reference/c/io/putc/">fputc</a>.</p>
+
+<p>The terminating null character from <code>str</code> is not written.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>str</td><td>-</td><td>null-terminated character string to be written</td></tr>
+<tr><td>stream</td><td>-</td><td>output stream</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>On success, returns a non-negative value.</p>
+
+<p>On failure, returns <a href="/reference/c/io/">EOF</a> and sets the <em>error</em> indicator (see <a href="/reference/c/io/ferror/">ferror()</a>) on <code>stream</code>.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The related function <a href="/reference/c/io/puts/">puts</a> appends a newline character to the output, while <code>fputs</code> writes the string unmodified.</p>
+
+<p>Different implementations return different non-negative numbers: some return the last character written, some return the number of characters written (or <a href="/reference/c/types/limits/">INT_MAX</a> if the string was longer than that), some simply return a non-negative constant such as zero.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+ 
+int main(void)
+{
+    int rc = fputs("Hello World", stdout);
+ 
+    if (rc == EOF)
+       perror("fputs()"); // POSIX requires that errno is set
+}
+```
+
+<p>Output:</p>
+
+```text
+Hello World
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.7.4 The fputs function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.7.4 The fputs function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.7.4 The fputs function (p: 331-332)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.7.4 The fputs function (p: 297)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9.7.4 The fputs function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/fprintf/">printf<br />fprintf<br />sprintf<br />snprintf<br />printf_s<br />fprintf_s<br />sprintf_s<br />snprintf_s</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>prints formatted output to <a href="/reference/c/io/std_streams/">stdout</a>, a file stream or a buffer   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/puts/">puts</a></td><td>writes a character string to <a href="/reference/c/io/std_streams/">stdout</a>   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fgets/">fgets</a></td><td>gets a character string from a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c/fputs" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+fputs</td></tr>
+</table>

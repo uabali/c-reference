@@ -1,0 +1,375 @@
+---
+title: "fma, fmaf, fmal"
+slug: "c/numeric/math/fma"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/fma"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+float       fmaf( float x, float y, float z );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+double      fma( double x, double y, double z );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+long double fmal( long double x, long double y, long double z );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+#define FP_FAST_FMA  /* implementation-defined */
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+#define FP_FAST_FMAF /* implementation-defined */
+```
+
+<p class="decl-note">(5) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+#define FP_FAST_FMAL /* implementation-defined */
+```
+
+<p class="decl-note">(6) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;tgmath.h&gt;</code></p>
+
+```c
+#define fma( x, y, z )
+```
+
+<p class="decl-note">(7) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="li-note"><span class="li-num">1-3)</span>  Computes <code>(x * y) + z</code> as if to infinite precision and rounded only once to fit the result type.</p>
+
+<p class="li-note"><span class="li-num">4-6)</span>  If the macro constants <code>FP_FAST_FMA</code>, <code>FP_FAST_FMAF</code>, or <code>FP_FAST_FMAL</code> are defined, the corresponding function <code>fma</code>, <code>fmaf</code>, or <code>fmal</code> evaluates faster (in addition to being more precise) than the expression <code>x * y + z</code> for <code>double</code>, <code>float</code>, and <code>long double</code> arguments, respectively. If defined, these macros evaluate to integer <code>1</code>.</p>
+
+<p class="li-note"><span class="li-num">7)</span>  Type-generic macro: If any argument has type <code>long double</code>, <code>fmal</code> is called. Otherwise, if any argument has integer type or has type <code>double</code>, <code>fma</code> is called. Otherwise, <code>fmaf</code> is called.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>x, y, z</td><td>-</td><td>floating-point values</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>If successful, returns the value of <code>(x * y) + z</code> as if calculated to infinite precision and rounded once to fit the result type (or, alternatively, calculated as a single ternary floating-point operation).</p>
+
+<p>If a range error due to overflow occurs, <a href="/reference/c/numeric/math/HUGE_VAL/">±HUGE_VAL</a>, <code>±HUGE_VALF</code>, or <code>±HUGE_VALL</code> is returned.</p>
+
+<p>If a range error due to underflow occurs, the correct value (after rounding) is returned.</p>
+
+<h3 id="Error_handling">Error handling</h3>
+
+<p>Errors are reported as specified in <a href="/reference/c/numeric/math/math_errhandling/"><code>math_errhandling</code></a>.</p>
+
+<p>If the implementation supports IEEE floating-point arithmetic (IEC 60559),</p>
+
+<ul>
+<li>
+<p>If</p>
+
+<code>x</code>
+
+<p>is zero and</p>
+
+<code>y</code>
+
+<p>is infinite or if</p>
+
+<code>x</code>
+
+<p>is infinite and</p>
+
+<code>y</code>
+
+<p>is zero, and</p>
+
+<ul>
+<li>
+<p>if</p>
+
+<code>z</code>
+
+<p>is not a NaN, then NaN is returned and</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>is raised,</p>
+</li>
+<li>
+<p>if</p>
+
+<code>z</code>
+
+<p>is a NaN, then NaN is returned and</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>may be raised.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>If</p>
+
+<code>x * y</code>
+
+<p>is an exact infinity and</p>
+
+<code>z</code>
+
+<p>is an infinity with the opposite sign, NaN is returned and</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>is raised.</p>
+</li>
+<li>
+<p>If</p>
+
+<code>x</code>
+
+<p>or</p>
+
+<code>y</code>
+
+<p>are NaN, NaN is returned.</p>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is NaN, and</p>
+
+<code>x * y</code>
+
+<p>is not</p>
+
+<code>0 * Inf</code>
+
+<p>or</p>
+
+<code>Inf * 0</code>
+
+<p>, then NaN is returned (without</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>).</p>
+</li>
+</ul>
+
+<h3 id="Notes">Notes</h3>
+
+<p>This operation is commonly implemented in hardware as <a href="https://en.wikipedia.org/wiki/Multiply%E2%80%93accumulate_operation" rel="noreferrer" target="_blank">fused multiply-add</a> CPU instruction. If supported by hardware, the appropriate <code>FP_FAST_FMA*</code> macros are expected to be defined, but many implementations make use of the CPU instruction even when the macros are not defined.</p>
+
+<p><a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/fma.html" rel="noreferrer" target="_blank">POSIX specifies</a> that the situation where the value <code>x * y</code> is invalid and <code>z</code> is a NaN is a domain error.</p>
+
+<p>Due to its infinite intermediate precision, <code>fma</code> is a common building block of other correctly-rounded mathematical operations, such as <a href="/reference/c/numeric/math/sqrt/">sqrt</a> or even the division (where not provided by the CPU, e.g. <a href="https://en.wikipedia.org/wiki/Itanium" rel="noreferrer" target="_blank">Itanium</a>).</p>
+
+<p>As with all floating-point expressions, the expression <code>(x * y) + z</code> may be compiled as a fused mutiply-add unless the <a href="/reference/c/preprocessor/impl/"><code>#pragma</code></a> <code>STDC FP_CONTRACT</code> is off.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <fenv.h>
+#include <float.h>
+#include <math.h>
+#include <stdio.h>
+// #pragma STDC FENV_ACCESS ON
+ 
+int main(void)
+{
+    // demo the difference between fma and built-in operators
+    double in = 0.1;
+    printf("0.1 double is %.23f (%a)\n", in, in);
+    printf("0.1*10 is 1.0000000000000000555112 (0x8.0000000000002p-3),"
+           " or 1.0 if rounded to double\n");
+    double expr_result = 0.1 * 10 - 1;
+    printf("0.1 * 10 - 1 = %g : 1 subtracted after "
+           "intermediate rounding to 1.0\n", expr_result);
+    double fma_result = fma(0.1, 10, -1);
+    printf("fma(0.1, 10, -1) = %g (%a)\n", fma_result, fma_result);
+ 
+    // fma use in double-double arithmetic
+    printf("\nin double-double arithmetic, 0.1 * 10 is representable as ");
+    double high = 0.1 * 10;
+    double low = fma(0.1, 10, -high);
+    printf("%g + %g\n\n", high, low);
+ 
+    // error handling
+    feclearexcept(FE_ALL_EXCEPT);
+    printf("fma(+Inf, 10, -Inf) = %f\n", fma(INFINITY, 10, -INFINITY));
+    if (fetestexcept(FE_INVALID))
+        puts("    FE_INVALID raised");
+}
+```
+
+<p>Possible output:</p>
+
+```text
+0.1 double is 0.10000000000000000555112 (0x1.999999999999ap-4)
+0.1*10 is 1.0000000000000000555112 (0x8.0000000000002p-3), or 1.0 if rounded to double
+0.1 * 10 - 1 = 0 : 1 subtracted after intermediate rounding to 1.0
+fma(0.1, 10, -1) = 5.55112e-17 (0x1p-54)
+ 
+in double-double arithmetic, 0.1 * 10 is representable as 1 + 5.55112e-17
+ 
+fma(+Inf, 10, -Inf) = -nan
+    FE_INVALID raised
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.13.1 The fma functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.10.1 The fma functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.13.1 The fma functions (p: 188-189)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 272-273)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.10.1 The fma functions (p: 386)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.13.1 The fma functions (p: 258)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 373-375)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.10.1 The fma functions (p: 530)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.13.1 The fma functions (p: 239)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 Type-generic math &lt;tgmath.h&gt; (p: 335-337)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.9.10.1 The fma functions (p: 466)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/remainder/">remainder<br />remainderf<br />remainderl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes signed remainder of the floating-point division operation   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/remquo/">remquo<br />remquof<br />remquol</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes signed remainder as well as the three last bits of the division operation   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/fma" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+fma</td></tr>
+</table>

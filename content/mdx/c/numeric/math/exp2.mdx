@@ -1,0 +1,258 @@
+---
+title: "exp2, exp2f, exp2l"
+slug: "c/numeric/math/exp2"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/exp2"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+float       exp2f( float n );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+double      exp2( double n );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+long double exp2l( long double n );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;tgmath.h&gt;</code></p>
+
+```c
+#define exp2( n )
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="li-note"><span class="li-num">1-3)</span>  Computes 2 raised to the given power <code>n</code>.</p>
+
+<p class="li-note"><span class="li-num">4)</span>  Type-generic macro: If <code>n</code> has type <code>long double</code>, <code>exp2l</code> is called. Otherwise, if <code>n</code> has integer type or the type <code>double</code>, <code>exp2</code> is called. Otherwise, <code>exp2f</code> is called.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>n</td><td>-</td><td>floating-point value</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>If no errors occur, the base-<em>2</em> exponential of <code>n</code> (2n ) is returned.</p>
+
+<p>If a range error due to overflow occurs, <a href="/reference/c/numeric/math/HUGE_VAL/">+HUGE_VAL</a>, <code>+HUGE_VALF</code>, or <code>+HUGE_VALL</code> is returned.</p>
+
+<p>If a range error occurs due to underflow, the correct result (after rounding) is returned.</p>
+
+<h3 id="Error_handling">Error handling</h3>
+
+<p>Errors are reported as specified in <a href="/reference/c/numeric/math/math_errhandling/"><code>math_errhandling</code></a>.</p>
+
+<p>If the implementation supports IEEE floating-point arithmetic (IEC 60559),</p>
+
+<ul>
+<li>
+<p>If the argument is ±0, 1 is returned</p>
+</li>
+<li>
+<p>If the argument is -∞, +0 is returned</p>
+</li>
+<li>
+<p>If the argument is +∞, +∞ is returned</p>
+</li>
+<li>
+<p>If the argument is NaN, NaN is returned</p>
+</li>
+</ul>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <errno.h>
+#include <fenv.h>
+#include <float.h>
+#include <math.h>
+#include <stdio.h>
+// #pragma STDC FENV_ACCESS ON
+ 
+int main(void)
+{
+    printf("exp2(5) = %f\n", exp2(5));
+    printf("exp2(0.5) = %f\n", exp2(0.5));
+    printf("exp2(-4) = %f\n", exp2(-4));
+    // special values
+    printf("exp2(-0.9) = %f\n", exp2(-0.9));
+    printf("exp2(-Inf) = %f\n", exp2(-INFINITY));
+    //error handling
+    errno = 0; feclearexcept(FE_ALL_EXCEPT);
+    printf("exp2(1024) = %f\n", exp2(1024));
+    if (errno == ERANGE)
+        perror("    errno == ERANGE");
+    if (fetestexcept(FE_OVERFLOW))
+        puts("    FE_OVERFLOW raised");
+}
+```
+
+<p>Possible output:</p>
+
+```text
+exp2(5) = 32.000000
+exp2(0.5) = 1.414214
+exp2(-4) = 0.062500
+exp2(-0.9) = 0.535887
+exp2(-Inf) = 0.000000
+exp2(1024) = Inf
+    errno == ERANGE: Result too large
+    FE_OVERFLOW raised
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.6.2 The exp2 functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.3.2 The exp2 functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.6.2 The exp2 functions (p: 177)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 272-273)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.3.2 The exp2 functions (p: 379)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.6.2 The exp2 functions (p: 242-243)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 373-375)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.3.2 The exp2 functions (p: 521)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.6.2 The exp2 functions (p: 223)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 Type-generic math &lt;tgmath.h&gt; (p: 335-337)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.9.3.2 The exp2 functions (p: 458)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/exp/">exp<br />expf<br />expl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes <em>e</em> raised to the given power (\({\small e^x}\)e<sup>x</sup>)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/expm1/">expm1<br />expm1f<br />expm1l</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes <em>e</em> raised to the given power, minus one (\({\small e^x-1}\)e<sup>x</sup>-1)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/log2/">log2<br />log2f<br />log2l</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes base-2 logarithm (\({\small \log_{2}{x} }\)log<sub>2</sub>(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/exp2" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+exp2</td></tr>
+</table>

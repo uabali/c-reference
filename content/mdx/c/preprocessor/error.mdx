@@ -1,0 +1,137 @@
+---
+title: "Diagnostic directives"
+slug: "c/preprocessor/error"
+category: "preprocessor"
+source: "https://en.cppreference.com/w/c/preprocessor/error"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Shows the given error message and renders the program ill-formed, or given warning message without affect the validity of the program<span class="std std-since std-c23">(since C23)</span>.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+#error diagnostic-message
+#warning diagnostic-message
+```
+
+<h3 id="Explanation">Explanation</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  After encountering the <code>#error</code> directive, an implementation displays the message <em>diagnostic-message</em> and renders the program ill-formed (the compilation stops).</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Same as (1), except that the validity of the program is not affected and the compilation continues.</p>
+
+<p><em>diagnostic-message</em> can consist of several words not necessarily in quotes.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Before its standardization in C23, <code>#warning</code> has been provided by many compilers in all modes as a conforming extension.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#if __STDC__ != 1
+#  error "Not a standard compliant compiler"
+#endif
+ 
+#if __STDC_VERSION__ >= 202311L
+#  warning "Using #warning as a standard feature"
+#endif
+ 
+#include <stdio.h>
+ 
+int main (void)
+{
+    printf("The compiler used conforms to the ISO C Standard !!");
+}
+```
+
+<p>Possible output:</p>
+
+```text
+The compiler used conforms to the ISO C Standard !!
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.5 Error directive (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.5 Error directive (p: 126-127)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.5 Error directive (p: 174)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.5 Error directive (p: 159)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.8.5 Error directive</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/preprocessor/error" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Diagnostic directives</td></tr>
+</table>

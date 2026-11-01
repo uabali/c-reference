@@ -1,0 +1,112 @@
+---
+title: "RAND_MAX"
+slug: "c/numeric/random/RAND_MAX"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/random/RAND_MAX"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdlib.h&gt;</code></p>
+
+```c
+#define RAND_MAX /*implementation defined*/
+```
+
+<p>Expands to an integer constant expression equal to the maximum value returned by the function <a href="/reference/c/numeric/random/rand/">rand()</a>. This value is implementation dependent. It's guaranteed that this value is at least <code>32767</code>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <limits.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+ 
+int main(void)
+{
+    srand(time(NULL)); // use current time as seed for random generator
+    printf("RAND_MAX: %i\n", RAND_MAX);
+    printf("INT_MAX: %i\n", INT_MAX);
+    printf("Random value on [0,1]: %f\n", (double)rand() / RAND_MAX);
+}
+```
+
+<p>Possible output:</p>
+
+```text
+RAND_MAX: 2147483647
+INT_MAX: 2147483647
+Random value on [0,1]: 0.362509
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22/3 General utilities &lt;stdlib.h&gt; (p: 248)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22/3 General utilities &lt;stdlib.h&gt; (p: 340)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20/3 General utilities &lt;stdlib.h&gt; (p: 306)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.10 GENERAL UTILITIES &lt;stdlib.h&gt;</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/random/rand/">rand</a></td><td>generates a pseudo-random number   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/random/srand/">srand</a></td><td>seeds pseudo-random number generator   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/random/RAND_MAX" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+RAND_MAX</td></tr>
+</table>

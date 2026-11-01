@@ -1,0 +1,241 @@
+---
+title: "Source file inclusion"
+slug: "c/preprocessor/include"
+category: "preprocessor"
+source: "https://en.cppreference.com/w/c/preprocessor/include"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Includes another source file into the current source file at the line immediately after the directive.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+#include < h-char-sequence > new-line
+#include " q-char-sequence " new-line
+#include pp-tokens new-line
+__has_include ( " q-char-sequence " )__has_include ( < h-char-sequence > )
+__has_include ( string-literal )__has_include ( < h-pp-tokens > )
+```
+
+<p class="li-note"><span class="li-num">1)</span>  Searches for a header identified uniquely by <em>h-char-sequence</em> and replaces the directive by the entire contents of the header.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Searches for a source file identified by <em>q-char-sequence</em> and replaces the directive by the entire contents of the source file. It may fallback to (1) and treat <em>q-char-sequence</em> as a header identifier.</p>
+
+<p class="li-note"><span class="li-num">3)</span>  If neither (1) nor (2) is matched, <em>pp-tokens</em> will undergo macro replacement. The directive after replacement will be tried to match with (1) or (2) again.</p>
+
+<p class="li-note"><span class="li-num">4)</span>  Checks whether a header or source file is available for inclusion.</p>
+
+<p class="li-note"><span class="li-num">5)</span>  If (4) is not matched, <em>h-pp-tokens</em> will undergo macro replacement. The directive after replacement will be tried to match with (4) again.</p>
+
+<table class="ref-table ref-params">
+<tr><td><em>new-line</em></td><td>-</td><td>The new-line character</td></tr>
+<tr><td><em>h-char-sequence</em></td><td>-</td><td><p>A sequence of one or more</p>
+
+<em>h-char</em>
+
+<p>s, where the appearance of any of the following causes undefined behavior:</p>
+
+<ul>
+<li>
+<p>the character</p>
+
+<code>&#x27;</code>
+</li>
+<li>
+<p>the character</p>
+
+<code>&quot;</code>
+</li>
+<li>
+<p>the character</p>
+
+<code>\</code>
+</li>
+<li>
+<p>the character sequence</p>
+
+<code>//</code>
+</li>
+<li>
+<p>the character sequence</p>
+
+<code>/*</code>
+</li>
+</ul></td></tr>
+<tr><td><em>h-char</em></td><td>-</td><td>Any member of the <a href="/reference/c/language/translation_phases/#Phase_5">source character set</a> except new-line and <code>&gt;</code></td></tr>
+<tr><td><em>q-char-sequence</em></td><td>-</td><td><p>A sequence of one or more</p>
+
+<em>q-char</em>
+
+<p>s, where the appearance of any of the following causes undefined behavior:</p>
+
+<ul>
+<li>
+<p>the character</p>
+
+<code>&#x27;</code>
+</li>
+<li>
+<p>the character</p>
+
+<code>\</code>
+</li>
+<li>
+<p>the character sequence</p>
+
+<code>//</code>
+</li>
+<li>
+<p>the character sequence</p>
+
+<code>/*</code>
+</li>
+</ul></td></tr>
+<tr><td><em>q-char</em></td><td>-</td><td>Any member of the <a href="/reference/c/language/translation_phases/#Phase_5">source character set</a> except new-line and <code>&quot;</code></td></tr>
+<tr><td><em>pp-tokens</em></td><td>-</td><td>A sequence of one or more <a href="/reference/c/language/translation_phases/#Phase_3">preprocessing tokens</a></td></tr>
+<tr><td><em>string-literal</em></td><td>-</td><td>A <a href="/reference/c/language/string_literal/">string literal</a></td></tr>
+<tr><td><em>h-pp-tokens</em></td><td>-</td><td>A sequence of one or more <a href="/reference/c/language/translation_phases/#Phase_3">preprocessing tokens</a> except <code>&gt;</code></td></tr>
+</table>
+
+<h3 id="Explanation">Explanation</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  Searches for the file identified by <em>h-char-sequence</em> in implementation-defined manner. The intent of this syntax is to search for the files under control of the implementation. Typical implementations search only standard include directories. The standard C library is implicitly included in these standard include directories. The standard include directories usually can be controlled by the user through compiler options.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Searches for the file identified by <em>q-char-sequence</em> in implementation-defined manner. The intent of this syntax is to search for the files that are not controlled by the implementation. Typical implementations first search the directory where the current file resides and, only if the file is not found, search the standard include directories as with (1).</p>
+
+<p class="li-note"><span class="li-num">3)</span>  The preprocessing tokens after <code>include</code> in the directive are processed just as in normal text (i.e., each identifier currently defined as a macro name is replaced by its replacement list of preprocessing tokens). The directive resulting after all replacements shall match one of the two previous forms. The method by which a sequence of preprocessing tokens between <code>&lt;</code> and <code>&gt;</code> preprocessing token pair or a pair of <code>&quot;</code> characters is combined into a single header name preprocessing token is implementation-defined.</p>
+
+<p class="li-note"><span class="li-num">4)</span>  The header or source file identified by <em>h-char-sequence</em> or <em>q-char-sequence</em> is searched for as if that preprocessing token sequence were the <em>pp-tokens</em> in syntax (3), except that no further macro expansion is performed. If such a directive would not satisfy the syntactic requirements of an <code>#include</code> directive, the program is ill-formed. The <code>__has_include</code> expression evaluates to <code>1</code> if the search for the source file succeeds, and to <code>0</code> if the search fails.</p>
+
+<p class="li-note"><span class="li-num">5)</span>  This form is considered only if syntax (4) does not match, in which case the preprocessing tokens are processed just as in normal text.</p>
+
+<p>In the case the file is not found, the program is ill-formed.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p><code>__has_include</code> can be expanded in the expression of <a href="/reference/c/preprocessor/conditional/"><code>#if</code></a> and <a href="/reference/c/preprocessor/conditional/"><code>#elif</code></a>. It is treated as a defined macro by <a href="/reference/c/preprocessor/conditional/"><code>#ifdef</code></a>, <a href="/reference/c/preprocessor/conditional/"><code>#ifndef</code></a>, <a href="/reference/c/preprocessor/conditional/"><code>#elifdef</code></a>, <a href="/reference/c/preprocessor/conditional/"><code>#elifndef</code></a> and <a href="/reference/c/preprocessor/conditional/"><code>defined</code></a> but cannot be used anywhere else.</p></aside>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Typical implementations search only standard include directories for syntax (1). The standard C library is implicitly included in these standard include directories. The standard include directories usually can be controlled by the user through compiler options.</p>
+
+<p>The intent of syntax (2) is to search for the files that are not controlled by the implementation. Typical implementations first search the directory where the current file resides then falls back to (1).</p>
+
+<p>When a file is included, it is processed by <a href="/reference/c/language/translation_phases/">translation phases</a> 1-4, which may include, recursively, expansion of the nested <code>#include</code> directives, up to an implementation-defined nesting limit. To avoid repeated inclusion of the same file and endless recursion when a file includes itself, perhaps transitively, <em>header guards</em> are commonly used: the entire header is wrapped in</p>
+
+```c
+#ifndef FOO_H_INCLUDED /* any name uniquely mapped to file name */
+#define FOO_H_INCLUDED
+// contents of the file are here
+#endif
+```
+
+<p>Many compilers also implement the non-standard <a href="/reference/c/preprocessor/impl/"><code>pragma</code></a> <code>#pragma once</code> with similar effects: it disables processing of a file if the same file (where file identity is determined in OS-specific way) has already been included.</p>
+
+<p>A <code>__has_include</code> result of <code>1</code> only means that a header or source file with the specified name exists. It does not mean that the header or source file, when included, would not cause an error or would contain anything useful.</p>
+
+<h3 id="Example">Example</h3>
+
+<table class="ref-table">
+<tr><td></td><td>This section is incomplete Reason: no example</td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.4.7 Header names (p: 69)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.1 Conditional inclusion (p: 165-169)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.2 Source file inclusion (p: 169-170)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.2 Source file inclusion (p: 119-120)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.2 Source file inclusion (p: 164-166)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.2 Source file inclusion (p: 149-151)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.8.2 Source file inclusion</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="/reference/c/header/">A list of C Standard Library header files</a></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/preprocessor/include" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Source file inclusion</td></tr>
+</table>

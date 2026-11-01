@@ -1,0 +1,398 @@
+---
+title: "File input/output"
+slug: "c/io"
+category: "overview"
+source: "https://en.cppreference.com/w/c/io"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>The <strong><code>&lt;stdio.h&gt;</code></strong> header provides generic file operation support and supplies functions with narrow character input/output capabilities.</p>
+
+<p>The <a href="/reference/c/string/wide/"><code>&lt;wchar.h&gt;</code></a> header supplies functions with wide character input/output capabilities.</p>
+
+<p>I/O streams are denoted by objects of type <a href="/reference/c/io/FILE/">FILE</a> that can only be accessed and manipulated through pointers of type <code>FILE*</code>. Each stream is associated with an external physical device (file, standard input stream, printer, serial port, etc).</p>
+
+<h3 id="Types">Types</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdio.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/io/FILE/">FILE</a></td><td>object type, capable of holding all information needed to control a C I/O stream   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td><a href="/reference/c/io/fpos_t/">fpos_t</a></td><td>non-array complete object type, capable of uniquely specifying a position and multibyte parser state in a file   <span class="mark-note">(typedef)</span></td></tr>
+</table>
+
+<h3 id="Predefined_standard_streams">Predefined standard streams</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdio.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/io/std_streams/">stdin<br />stdout<br />stderr</a></td><td>expression of type <code>FILE*</code> associated with the input stream expression of type <code>FILE*</code> associated with the output stream expression of type <code>FILE*</code> associated with the error output stream   <span class="mark-note">(macro constant)</span></td></tr>
+</table>
+
+<h3 id="Functions">Functions</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2">File access</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdio.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/io/fopen/">fopen<br />fopen_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>opens a file   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/freopen/">freopen<br />freopen_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>open an existing stream with a different name   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fclose/">fclose</a></td><td>closes a file   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fflush/">fflush</a></td><td>synchronizes an output stream with the actual file   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/setbuf/">setbuf</a></td><td>sets the buffer for a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/setvbuf/">setvbuf</a></td><td>sets the buffer and its size for a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;wchar.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/io/fwide/">fwide</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>switches a file stream between wide character I/O and narrow character I/O   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Direct input/output</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdio.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/io/fread/">fread</a></td><td>reads from a file   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fwrite/">fwrite</a></td><td>writes to a file   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Unformatted input/output</td></tr>
+<tr><td colspan="2">Narrow character</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdio.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/io/fgetc/">fgetc<br />getc</a></td><td>gets a character from a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fgets/">fgets</a></td><td>gets a character string from a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/putc/">fputc<br />putc</a></td><td>writes a character to a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fputs/">fputs</a></td><td>writes a character string to a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/getchar/">getchar</a></td><td>reads a character from <a href="/reference/c/io/std_streams/">stdin</a>   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/gets/">gets<br />gets_s</a>
+
+<span class="std std-until std-c11">(removed in C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>reads a character string from <a href="/reference/c/io/std_streams/">stdin</a>   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/putchar/">putchar</a></td><td>writes a character to <a href="/reference/c/io/std_streams/">stdout</a>   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/puts/">puts</a></td><td>writes a character string to <a href="/reference/c/io/std_streams/">stdout</a>   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/ungetc/">ungetc</a></td><td>puts a character back into a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Wide character</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;wchar.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/io/fgetwc/">fgetwc<br />getwc</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>gets a wide character from a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fgetws/">fgetws</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>gets a wide string from a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fputwc/">fputwc<br />putwc</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>writes a wide character to a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fputws/">fputws</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>writes a wide string to a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/getwchar/">getwchar</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>reads a wide character from <a href="/reference/c/io/std_streams/">stdin</a>   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/putwchar/">putwchar</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>writes a wide character to <a href="/reference/c/io/std_streams/">stdout</a>   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/ungetwc/">ungetwc</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>puts a wide character back into a file stream   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Formatted input/output</td></tr>
+<tr><td colspan="2">Narrow character</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdio.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/io/fscanf/">scanf<br />fscanf<br />sscanf<br />scanf_s<br />fscanf_s<br />sscanf_s</a>
+
+<span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>reads formatted input from <a href="/reference/c/io/std_streams/">stdin</a>, a file stream or a buffer   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/vfscanf/">vscanf<br />vfscanf<br />vsscanf<br />vscanf_s<br />vfscanf_s<br />vsscanf_s</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>reads formatted input from <a href="/reference/c/io/std_streams/">stdin</a>, a file stream or a buffer  using variable argument list   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fprintf/">printf<br />fprintf<br />sprintf<br />snprintf<br />printf_s<br />fprintf_s<br />sprintf_s<br />snprintf_s</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>prints formatted output to <a href="/reference/c/io/std_streams/">stdout</a>, a file stream or a buffer   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/vfprintf/">vprintf<br />vfprintf<br />vsprintf<br />vsnprintf<br />vprintf_s<br />vfprintf_s<br />vsprintf_s<br />vsnprintf_s</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>prints formatted output to <a href="/reference/c/io/std_streams/">stdout</a>, a file stream or a buffer  using variable argument list   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Wide character</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;wchar.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/io/fwscanf/">wscanf<br />fwscanf<br />swscanf<br />wscanf_s<br />fwscanf_s<br />swscanf_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>reads formatted wide character input from <a href="/reference/c/io/std_streams/">stdin</a>, a file stream or a buffer   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/vfwscanf/">vwscanf<br />vfwscanf<br />vswscanf<br />vwscanf_s<br />vfwscanf_s<br />vswscanf_s</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>reads formatted wide character input from <a href="/reference/c/io/std_streams/">stdin</a>, a file stream  or a buffer using variable argument list   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fwprintf/">wprintf<br />fwprintf<br />swprintf<br />wprintf_s<br />fwprintf_s<br />swprintf_s<br />snwprintf_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>prints formatted wide character output to <a href="/reference/c/io/std_streams/">stdout</a>, a file stream or a buffer   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/vfwprintf/">vwprintf<br />vfwprintf<br />vswprintf<br />vwprintf_s<br />vfwprintf_s<br />vswprintf_s<br />vsnwprintf_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>prints formatted wide character output to <a href="/reference/c/io/std_streams/">stdout</a>, a file stream  or a buffer using variable argument list   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">File positioning</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdio.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/io/ftell/">ftell</a></td><td>returns the current file position indicator   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fgetpos/">fgetpos</a></td><td>gets the file position indicator   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fseek/">fseek</a></td><td>moves the file position indicator to a specific location in a file   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fsetpos/">fsetpos</a></td><td>moves the file position indicator to a specific location in a file   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/rewind/">rewind</a></td><td>moves the file position indicator to the beginning in a file   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Error handling</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdio.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/io/clearerr/">clearerr</a></td><td>clears errors   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/feof/">feof</a></td><td>checks for the end-of-file   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/ferror/">ferror</a></td><td>checks for a file error   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/perror/">perror</a></td><td>displays a character string corresponding of the current error to <a href="/reference/c/io/std_streams/">stderr</a>   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2">Operations on files</td></tr>
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdio.h&gt;</code></td></tr>
+<tr><td><a href="/reference/c/io/remove/">remove</a></td><td>erases a file   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/rename/">rename</a></td><td>renames a file   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/tmpfile/">tmpfile<br />tmpfile_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>returns a pointer to a temporary file   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/tmpnam/">tmpnam<br />tmpnam_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>returns a unique filename   <span class="mark-note">(function)</span></td></tr>
+</table>
+
+<h3 id="Macro_constants">Macro constants</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;stdio.h&gt;</code></td></tr>
+<tr><td>EOF</td><td>integer constant expression of type <code>int</code> and negative value   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>FOPEN_MAX</td><td>maximum number of files that can be open simultaneously   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>FILENAME_MAX</td><td>size needed for an array of <code>char</code> to hold the longest supported file name   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>BUFSIZ</td><td>size of the buffer used by <a href="/reference/c/io/setbuf/">setbuf</a>   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>_IOFBF<br />_IOLBF<br />_IONBF</td><td>argument to <a href="/reference/c/io/setvbuf/">setvbuf</a> indicating fully buffered I/O argument to <a href="/reference/c/io/setvbuf/">setvbuf</a> indicating line buffered I/O argument to <a href="/reference/c/io/setvbuf/">setvbuf</a> indicating unbuffered I/O   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>SEEK_SET<br />SEEK_CUR<br />SEEK_END</td><td>argument to <a href="/reference/c/io/fseek/">fseek</a> indicating seeking from beginning of the file argument to <a href="/reference/c/io/fseek/">fseek</a> indicating seeking from the current file position argument to <a href="/reference/c/io/fseek/">fseek</a> indicating seeking from end of the file   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>TMP_MAX<br />TMP_MAX_S
+
+<span class="std std-since std-c11">(C11)</span></td><td>maximum number of unique filenames that can be generated by <a href="/reference/c/io/tmpnam/">tmpnam</a> maximum number of unique filenames that can be generated by tmpnam_s   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td>L_tmpnam<br />L_tmpnam_s
+
+<span class="std std-since std-c11">(C11)</span></td><td>size needed for an array of <code>char</code> to hold the result of <a href="/reference/c/io/tmpnam/">tmpnam</a> size needed for an array of <code>char</code> to hold the result of tmpnam_s   <span class="mark-note">(macro constant)</span></td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21 Input/output &lt;stdio.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.11 Input/output &lt;stdio.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.16 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.5 Input/output &lt;stdio.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21 Input/output &lt;stdio.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.11 Input/output &lt;stdio.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.16 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.5 Input/output &lt;stdio.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21 Input/output &lt;stdio.h&gt; (p: 296-339)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: 402-446)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.11 Input/output &lt;stdio.h&gt; (p: 456)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.16 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: 456)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.5 Input/output &lt;stdio.h&gt; (p: 586-603)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19 Input/output &lt;stdio.h&gt; (p: 262-305)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: 348-392)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.9 Input/output &lt;stdio.h&gt; (p: 402)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.12 Extended multibyte and wide character utilities &lt;wchar.h&gt; (p: 402)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9 INPUT/OUTPUT &lt;stdio.h&gt;</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.13.6 Input/output &lt;stdio.h&gt;</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+C-style file input/output</td></tr>
+</table>

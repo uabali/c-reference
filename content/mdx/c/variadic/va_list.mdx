@@ -1,0 +1,81 @@
+---
+title: "va_list"
+slug: "c/variadic/va_list"
+category: "variadic"
+source: "https://en.cppreference.com/w/c/variadic/va_list"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdarg.h&gt;</code></p>
+
+```c
+/* unspecified */ va_list;
+```
+
+<p><code>va_list</code> is a complete object type suitable for holding the information needed by the macros va_start, va_copy, va_arg, and va_end.</p>
+
+<p>If a <code>va_list</code> instance is created, passed to another function, and used via va_arg in that function, then any subsequent use in the calling function should be preceded by a call to va_end.</p>
+
+<p>It is legal to pass a pointer to a <code>va_list</code> object to another function and then use that object after the function returns.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.16/3 Variable arguments &lt;stdarg.h&gt; (p: 269)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.15/3 Variable arguments &lt;stdarg.h&gt; (p: 249)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.8 VARIABLE ARGUMENTS &lt;stdarg.h&gt;</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/variadic/va_arg/">va_arg</a></td><td>accesses the next variadic function argument   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/variadic/va_copy/">va_copy</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>makes a copy of the variadic function arguments   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/variadic/va_end/">va_end</a></td><td>ends traversal of the variadic function arguments   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/variadic/va_start/">va_start</a></td><td>enables access to variadic function arguments   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/utility/variadic/va_list" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+va_list</td></tr>
+</table></section></section>

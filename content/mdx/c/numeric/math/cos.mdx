@@ -1,0 +1,310 @@
+---
+title: "cos, cosf, cosl"
+slug: "c/numeric/math/cos"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/cos"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+float       cosf( float arg );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+double      cos( double arg );
+```
+
+<p class="decl-note">(2)</p>
+
+```c
+long double cosl( long double arg );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+_Decimal32  cosd32( _Decimal32 arg );
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+_Decimal64  cosd64( _Decimal64 arg );
+```
+
+<p class="decl-note">(5) <span class="std std-since std-c23">(since C23)</span></p>
+
+```c
+_Decimal128 cosd128( _Decimal128 arg );
+```
+
+<p class="decl-note">(6) <span class="std std-since std-c23">(since C23)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;tgmath.h&gt;</code></p>
+
+```c
+#define cos( arg )
+```
+
+<p class="decl-note">(7) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="li-note"><span class="li-num">1-6)</span>  Computes the cosine of <code>arg</code> (measured in radians).</p>
+
+<p class="li-note"><span class="li-num">7)</span>  Type-generic macro: If the argument has type <code>long double</code>, (3) (<code>cosl</code>) is called. Otherwise, if the argument has integer type or the type <code>double</code>, (2) (<code>cos</code>) is called. Otherwise, (1) (<code>cosf</code>) is called. If the argument is complex, then the macro invokes the corresponding complex function (<a href="/reference/c/numeric/complex/ccos/">ccosf</a>, <a href="/reference/c/numeric/complex/ccos/">ccos</a>, <a href="/reference/c/numeric/complex/ccos/">ccosl</a>).</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>The functions (4-6) are declared if and only if the implementation predefines <code>__STDC_IEC_60559_DFP__</code> (i.e. the implementation supports decimal floating-point numbers).</p></aside>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>arg</td><td>-</td><td>floating-point value representing angle in radians</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>If no errors occur, the cosine of <code>arg</code> (cos(arg)) in the range [-1 ; +1], is returned.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-until std-c99">(until C99)</span></p><p>The result may have little or no significance if the magnitude of <code>arg</code> is large.</p></aside>
+
+<p>If a domain error occurs, an implementation-defined value is returned (NaN where supported).</p>
+
+<p>If a range error occurs due to underflow, the correct result (after rounding) is returned.</p>
+
+<h3 id="Error_handling">Error handling</h3>
+
+<p>Errors are reported as specified in <a href="/reference/c/numeric/math/math_errhandling/"><code>math_errhandling</code></a>.</p>
+
+<p>If the implementation supports IEEE floating-point arithmetic (IEC 60559):</p>
+
+<ul>
+<li>
+<p>if the argument is ±0, the result is</p>
+
+<code>1.0</code>
+
+<p>;</p>
+</li>
+<li>
+<p>if the argument is ±∞, NaN is returned and</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>is raised;</p>
+</li>
+<li>
+<p>if the argument is NaN, NaN is returned.</p>
+</li>
+</ul>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The case where the argument is infinite is not specified to be a domain error in C, but it is defined as a <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/cos.html" rel="noreferrer" target="_blank">domain error in POSIX</a>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <errno.h>
+#include <fenv.h>
+#include <math.h>
+#include <stdio.h>
+ 
+#ifndef __GNUC__
+#pragma STDC FENV_ACCESS ON
+#endif
+ 
+int main(void)
+{
+    const double pi = acos(-1);
+ 
+    // typical usage
+    printf("cos(pi/3) = %f\n", cos(pi / 3));
+    printf("cos(pi/2) = %f\n", cos(pi / 2));
+    printf("cos(-3*pi/4) = %f\n", cos(-3 * pi / 4));
+ 
+    // special values
+    printf("cos(+0) = %f\n", cos(0.0));
+    printf("cos(-0) = %f\n", cos(-0.0));
+ 
+    // error handling
+    feclearexcept(FE_ALL_EXCEPT);
+    printf("cos(INFINITY) = %f\n", cos(INFINITY));
+    if (fetestexcept(FE_INVALID))
+        puts("    FE_INVALID raised");
+}
+```
+
+<p>Possible output:</p>
+
+```text
+cos(pi/3) = 0.500000
+cos(pi/2) = 0.000000
+cos(-3*pi/4) = -0.707107
+cos(+0) = 1.000000
+cos(-0) = 1.000000
+cos(INFINITY) = -nan
+    FE_INVALID raised
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.4.5 The cos functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.1.5 The cos functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.4.5 The cos functions (p: 174)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 272-273)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.1.5 The cos functions (p: 378)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.4.5 The cos functions (p: 239)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 373-375)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.1.5 The cos functions (p: 519)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.4.5 The cos functions (p: 220)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 Type-generic math &lt;tgmath.h&gt; (p: 335-337)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.9.1.5 The cos functions (p: 456)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.5.2.5 The cos function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/sin/">sin<br />sinf<br />sinl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes sine (\({\small\sin{x} }\)sin(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/tan/">tan<br />tanf<br />tanl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes tangent (\({\small\tan{x} }\)tan(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/acos/">acos<br />acosf<br />acosl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes arc cosine (\({\small\arccos{x} }\)arccos(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/ccos/">ccos<br />ccosf<br />ccosl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex cosine   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/cos" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+cos</td></tr>
+</table>

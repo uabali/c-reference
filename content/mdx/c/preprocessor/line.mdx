@@ -1,0 +1,130 @@
+---
+title: "Filename and line information"
+slug: "c/preprocessor/line"
+category: "preprocessor"
+source: "https://en.cppreference.com/w/c/preprocessor/line"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Changes the current line number and file name in the preprocessor.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+#line lineno
+#line lineno "filename"
+```
+
+<h3 id="Explanation">Explanation</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  Changes the current preprocessor line number to <em>lineno</em>. Occurrences of the macro __LINE__ beyond this point will expand to <em>lineno</em> plus the number of actual source code lines encountered since.</p>
+
+<p class="li-note"><span class="li-num">2)</span>  Also changes the current preprocessor file name to <em>filename</em>. Occurrences of the macro __FILE__ beyond this point will produce <em>filename</em>.</p>
+
+<p>Any preprocessing tokens (macro constants or expressions) are permitted as arguments to <code>#line</code> as long as they expand to a valid decimal integer optionally following a valid character string.</p>
+
+<p><em>lineno</em> must be a sequence of at least one decimal digit (the program is ill-formed, otherwise) and is always interpreted as decimal (even if it starts with <code>0</code>).</p>
+
+<p>If <em>lineno</em> is <code>0</code> or greater than <code>32767</code><span class="std std-until std-c99">(until C99)</span><code>2147483647</code><span class="std std-since std-c99">(since C99)</span>, the behavior is undefined.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>This directive is used by some automatic code generation tools which produce C source files from a file written in another language. In that case, <code>#line</code> directives may be inserted in the generated C file referencing line numbers and the file name of the original (human-editable) source file.</p>
+
+<p>The line number following the directive <code>#line __LINE__</code> is unspecified (there are two possible values that __LINE__ can expand to in this case: number of endlines seen so far, or number of endlines seen so far plus the endline that ends the <code>#line</code> directive). This is the result of <a href="https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2257.htm#dr_464" rel="noreferrer" target="_blank">DR 464</a>, which applies retroactively.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <assert.h>
+#define FNAME "test.c"
+int main(void)
+{
+#line 777 FNAME
+        assert(2+2 == 5);
+}
+```
+
+<p>Possible output:</p>
+
+```text
+test: test.c:777: int main(): Assertion `2+2 == 5' failed.
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.4 Line control (p: 126)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>J.1 Unspecified behavior</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.4 Line control (p: 173)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.10.4 Line control (p: 158)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.8.4 Line control</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/preprocessor/line" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Filename and line information</td></tr>
+</table>

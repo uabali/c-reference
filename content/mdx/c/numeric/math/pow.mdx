@@ -1,0 +1,511 @@
+---
+title: "pow, powf, powl"
+slug: "c/numeric/math/pow"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/math/pow"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;math.h&gt;</code></p>
+
+```c
+float powf( float base, float exponent );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+double pow( double base, double exponent );
+```
+
+<p class="decl-note">(2)</p>
+
+```c
+long double powl( long double base, long double exponent );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;tgmath.h&gt;</code></p>
+
+```c
+#define pow( base, exponent )
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="li-note"><span class="li-num">1-3)</span>  Computes the value of <code>base</code> raised to the power <code>exponent</code>.</p>
+
+<p class="li-note"><span class="li-num">4)</span>  Type-generic macro: If any argument has type <code>long double</code>, <code>powl</code> is called. Otherwise, if any argument has integer type or has type <code>double</code>, <code>pow</code> is called. Otherwise, <code>powf</code> is called. If at least one argument is complex or imaginary, then the macro invokes the corresponding complex function (<code>cpowf</code>, <code>cpow</code>, <code>cpowl</code>).</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>base</td><td>-</td><td>base as floating-point value</td></tr>
+<tr><td>exponent</td><td>-</td><td>exponent as floating-point value</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>If no errors occur, <code>base</code> raised to the power of <code>exponent</code> (baseexponent ) is returned.</p>
+
+<p>If a domain error occurs, an implementation-defined value is returned (NaN where supported).</p>
+
+<p>If a pole error or a range error due to overflow occurs, <code>±HUGE_VAL</code>, <code>±HUGE_VALF</code>, or <code>±HUGE_VALL</code> is returned.</p>
+
+<p>If a range error occurs due to underflow, the correct result (after rounding) is returned.</p>
+
+<h3 id="Error_handling">Error handling</h3>
+
+<p>Errors are reported as specified in <a href="/reference/c/numeric/math/math_errhandling/"><code>math_errhandling</code></a>.</p>
+
+<p>If <code>base</code> is finite and negative and <code>exponent</code> is finite and non-integer, a domain error occurs and a range error may occur.</p>
+
+<p>If <code>base</code> is zero and <code>exponent</code> is zero, a domain error may occur.</p>
+
+<p>If <code>base</code> is zero and <code>exponent</code> is negative, a domain error or a pole error may occur.</p>
+
+<p>If the implementation supports IEEE floating-point arithmetic (IEC 60559),</p>
+
+<ul>
+<li>
+<code>pow(+0, exponent)</code>
+
+<p>, where</p>
+
+<code>exponent</code>
+
+<p>is a negative odd integer, returns</p>
+
+<code>+∞</code>
+
+<p>and raises</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_DIVBYZERO</a>
+</li>
+<li>
+<code>pow(-0, exponent)</code>
+
+<p>, where</p>
+
+<code>exponent</code>
+
+<p>is a negative odd integer, returns</p>
+
+<code>-∞</code>
+
+<p>and raises</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_DIVBYZERO</a>
+</li>
+<li>
+<code>pow(±0, exponent)</code>
+
+<p>, where</p>
+
+<code>exponent</code>
+
+<p>is negative, finite, and is an even integer or a non-integer, returns +∞ and raises</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_DIVBYZERO</a>
+</li>
+<li>
+<code>pow(±0, -∞)</code>
+
+<p>returns +∞</p>
+
+and may raise <a href="/reference/c/numeric/fenv/FE_exceptions/">FE_DIVBYZERO</a><span class="std std-until std-c23">(until C23)</span>
+</li>
+<li>
+<code>pow(+0, exponent)</code>
+
+<p>, where</p>
+
+<code>exponent</code>
+
+<p>is a positive odd integer, returns +0</p>
+</li>
+<li>
+<code>pow(-0, exponent)</code>
+
+<p>, where</p>
+
+<code>exponent</code>
+
+<p>is a positive odd integer, returns -0</p>
+</li>
+<li>
+<code>pow(±0, exponent)</code>
+
+<p>, where</p>
+
+<code>exponent</code>
+
+<p>is positive non-integer or a positive even integer, returns +0</p>
+</li>
+<li>
+<code>pow(-1, ±∞)</code>
+
+<p>returns</p>
+
+<code>1</code>
+</li>
+<li>
+<code>pow(+1, exponent)</code>
+
+<p>returns</p>
+
+<code>1</code>
+
+<p>for any</p>
+
+<code>exponent</code>
+
+<p>, even when</p>
+
+<code>exponent</code>
+
+<p>is</p>
+
+<code>NaN</code>
+</li>
+<li>
+<code>pow(base, ±0)</code>
+
+<p>returns</p>
+
+<code>1</code>
+
+<p>for any</p>
+
+<code>base</code>
+
+<p>, even when</p>
+
+<code>base</code>
+
+<p>is</p>
+
+<code>NaN</code>
+</li>
+<li>
+<code>pow(base, exponent)</code>
+
+<p>returns</p>
+
+<code>NaN</code>
+
+<p>and raises</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>if</p>
+
+<code>base</code>
+
+<p>is finite and negative and</p>
+
+<code>exponent</code>
+
+<p>is finite and non-integer.</p>
+</li>
+<li>
+<code>pow(base, -∞)</code>
+
+<p>returns +∞ for any</p>
+
+<code>|base|&lt;1</code>
+</li>
+<li>
+<code>pow(base, -∞)</code>
+
+<p>returns +0 for any</p>
+
+<code>|base|&gt;1</code>
+</li>
+<li>
+<code>pow(base, +∞)</code>
+
+<p>returns +0 for any</p>
+
+<code>|base|&lt;1</code>
+</li>
+<li>
+<code>pow(base, +∞)</code>
+
+<p>returns +∞ for any</p>
+
+<code>|base|&gt;1</code>
+</li>
+<li>
+<code>pow(-∞, exponent)</code>
+
+<p>returns -0 if</p>
+
+<code>exponent</code>
+
+<p>is a negative odd integer</p>
+</li>
+<li>
+<code>pow(-∞, exponent)</code>
+
+<p>returns +0 if</p>
+
+<code>exponent</code>
+
+<p>is a negative non-integer or negative even integer</p>
+</li>
+<li>
+<code>pow(-∞, exponent)</code>
+
+<p>returns -∞ if</p>
+
+<code>exponent</code>
+
+<p>is a positive odd integer</p>
+</li>
+<li>
+<code>pow(-∞, exponent)</code>
+
+<p>returns +∞ if</p>
+
+<code>exponent</code>
+
+<p>is a positive non-integer or positive even integer</p>
+</li>
+<li>
+<code>pow(+∞, exponent)</code>
+
+<p>returns +0 for any negative</p>
+
+<code>exponent</code>
+</li>
+<li>
+<code>pow(+∞, exponent)</code>
+
+<p>returns +∞ for any positive</p>
+
+<code>exponent</code>
+</li>
+<li>
+<p>except where specified above, if any argument is NaN, NaN is returned.</p>
+</li>
+</ul>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Although <code>pow</code> cannot be used to obtain a root of a negative number, <a href="/reference/c/numeric/math/cbrt/">cbrt</a> is provided for the common case where <code>exponent</code> is <code>1 / 3</code>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <errno.h>
+#include <fenv.h>
+#include <math.h>
+#include <stdio.h>
+// #pragma STDC FENV_ACCESS ON
+ 
+int main(void)
+{
+    // typical usage
+    printf("pow(2, 10) = %f\n", pow(2, 10));
+    printf("pow(2, 0.5) = %f\n", pow(2, 0.5));
+    printf("pow(-2, -3) = %f\n", pow(-2, -3));
+ 
+    // special values
+    printf("pow(-1, NAN) = %f\n", pow(-1, NAN));
+    printf("pow(+1, NAN) = %f\n", pow(+1, NAN));
+    printf("pow(INFINITY, 2) = %f\n", pow(INFINITY, 2));
+    printf("pow(INFINITY, -1) = %f\n", pow(INFINITY, -1));
+ 
+    // error handling
+    errno = 0; feclearexcept(FE_ALL_EXCEPT);
+    printf("pow(-1, 1/3) = %f\n", pow(-1, 1.0 / 3));
+    if (errno == EDOM)
+        perror("    errno == EDOM");
+    if (fetestexcept(FE_INVALID))
+        puts("    FE_INVALID raised");
+ 
+    feclearexcept(FE_ALL_EXCEPT);
+    printf("pow(-0, -3) = %f\n", pow(-0.0, -3));
+    if (fetestexcept(FE_DIVBYZERO))
+        puts("    FE_DIVBYZERO raised");
+}
+```
+
+<p>Possible output:</p>
+
+```text
+pow(2, 10) = 1024.000000
+pow(2, 0.5) = 1.414214
+pow(-2, -3) = -0.125000
+pow(-1, NAN) = nan
+pow(+1, NAN) = 1.000000
+pow(INFINITY, 2) = inf
+pow(INFINITY, -1) = 0.000000
+pow(-1, 1/3) = -nan
+    errno == EDOM: Numerical argument out of domain
+    FE_INVALID raised
+pow(-0, -3) = -inf
+    FE_DIVBYZERO raised
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.7.5 The pow functions</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.27 Type-generic math &lt;tgmath.h&gt;</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.4.5 The pow functions (p: 524-525)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.7.4 The pow functions (p: 248-249)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 373-375)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.4.4 The pow functions (p: 524-525)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.7.4 The pow functions (p: 248-249)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 373-375)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.10.4.4 The pow functions (p: 524-525)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.12.7.4 The pow functions (p: 229)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 Type-generic math &lt;tgmath.h&gt; (p: 335-337)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>F.9.4.4 The pow functions (p: 461)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.5.5.1 The pow function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/math/sqrt/">sqrt<br />sqrtf<br />sqrtl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes square root (\(\small{\sqrt{x} }\)√x)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/cbrt/">cbrt<br />cbrtf<br />cbrtl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes cube root (\(\small{\sqrt[3]{x} }\)3√x)   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/hypot/">hypot<br />hypotf<br />hypotl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes square root of the sum of the squares of two given numbers (\(\scriptsize{\sqrt{x^2+y^2} }\)√x2 +y2 )   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/cpow/">cpow<br />cpowf<br />cpowl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex power function   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/math/pow" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+pow</td></tr>
+</table>

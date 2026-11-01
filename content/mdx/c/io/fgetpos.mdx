@@ -1,0 +1,167 @@
+---
+title: "fgetpos"
+slug: "c/io/fgetpos"
+category: "io"
+source: "https://en.cppreference.com/w/c/io/fgetpos"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+```c
+int fgetpos( FILE*          stream, fpos_t*          pos );
+```
+
+<p class="decl-note"><span class="std std-until std-c99">(until C99)</span></p>
+
+```c
+int fgetpos( FILE* restrict stream, fpos_t* restrict pos );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>Obtains the file position indicator and the current parse state (if any) for the file stream <code>stream</code> and stores them in the object pointed to by <code>pos</code>. The value stored is only meaningful as the input to <a href="/reference/c/io/fsetpos/">fsetpos</a>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>stream</td><td>-</td><td>file stream to examine</td></tr>
+<tr><td>pos</td><td>-</td><td>pointer to a <a href="/reference/c/io/fpos_t/">fpos_t</a> object to store the file position indicator to</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p><code>0</code> upon success, nonzero value otherwise.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(void)
+{
+    // prepare a file holding 4 values of type double
+    enum {SIZE = 4};
+    FILE* fp = fopen("test.bin", "wb");
+    assert(fp);
+    int rc = fwrite((double[SIZE]){1.1, 2.2, 3.3, 4.4}, sizeof(double), SIZE, fp);
+    assert(rc == SIZE);
+    fclose(fp);
+ 
+    // demo using fsetpos to return to the beginning of a file
+    fp = fopen("test.bin", "rb");
+    fpos_t pos;
+    fgetpos(fp, &pos);               // store start of file in pos
+    double d;
+    rc = fread(&d, sizeof d, 1, fp); // read the first double
+    assert(rc == 1);
+    printf("First value in the file: %.1f\n", d);
+    fsetpos(fp,&pos);                // move file position back to the start of the file
+    rc = fread(&d, sizeof d, 1, fp); // read the first double again
+    assert(rc == 1);
+    printf("First value in the file again: %.1f\n", d);
+    fclose(fp);
+ 
+    // demo error handling
+    rc = fsetpos(stdin, &pos);
+    if (rc)
+        perror("could not fsetpos stdin");
+}
+```
+
+<p>Output:</p>
+
+```text
+First value in the file: 1.1
+First value in the file again: 1.1
+could not fsetpos stdin: Illegal seek
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.9.1 The fgetpos function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.9.1 The fgetpos function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.9.1 The fgetpos function (p: 336)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.9.1 The fgetpos function (p: 302)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9.9.1 The fgetpos function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/ftell/">ftell</a></td><td>returns the current file position indicator   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fseek/">fseek</a></td><td>moves the file position indicator to a specific location in a file   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fsetpos/">fsetpos</a></td><td>moves the file position indicator to a specific location in a file   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c/fgetpos" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+fgetpos</td></tr>
+</table>

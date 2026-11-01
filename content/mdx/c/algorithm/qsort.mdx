@@ -1,0 +1,290 @@
+---
+title: "qsort, qsort_s"
+slug: "c/algorithm/qsort"
+category: "algorithm"
+source: "https://en.cppreference.com/w/c/algorithm/qsort"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdlib.h&gt;</code></p>
+
+```c
+void qsort( void* ptr, size_t count, size_t size,
+            int (*comp)(const void*, const void*) );
+```
+
+<p class="decl-note">(1)</p>
+
+```c
+errno_t qsort_s( void* ptr, rsize_t count, rsize_t size,
+                 int (*comp)(const void*, const void*, void*),
+
+                 void* context );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Sorts the given array pointed to by <code>ptr</code> in ascending order. The array contains <code>count</code> elements of <code>size</code> bytes. Function pointed to by <code>comp</code> is used for object comparison.</p>
+
+<div class="li-note"><span class="li-num">2)</span>
+
+<p>Same as</p>
+
+(1)
+
+<p>, except that the additional context parameter</p>
+
+<code>context</code>
+
+<p>is passed to</p>
+
+<code>comp</code>
+
+<p>and that the following errors are detected at runtime and call the currently installed</p>
+
+<a href="/reference/c/error/set_constraint_handler_s/">constraint handler</a>
+
+<p>function:</p>
+
+<dl>
+<dd><ul>
+<li>
+<code>count</code>
+
+<p>or</p>
+
+<code>size</code>
+
+<p>is greater than</p>
+
+RSIZE_MAX
+</li>
+<li>
+<code>ptr</code>
+
+<p>or</p>
+
+<code>comp</code>
+
+<p>is a null pointer (unless</p>
+
+<code>count</code>
+
+<p>is zero)</p>
+</li>
+</ul></dd>
+<dd><p>As with all bounds-checked functions,</p>
+
+<code>qsort_s</code>
+
+<p>is only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<a href="/reference/c/program/"><code>&lt;stdlib.h&gt;</code></a>
+
+<p>.</p></dd>
+</dl></div>
+
+<p>If <code>comp</code> indicates two elements as equivalent, their order in the resulting sorted array is unspecified.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>ptr</td><td>-</td><td>pointer to the array to sort</td></tr>
+<tr><td>count</td><td>-</td><td>number of elements in the array</td></tr>
+<tr><td>size</td><td>-</td><td>size of each element in the array in bytes</td></tr>
+<tr><td>comp</td><td>-</td><td><p>comparison function which returns a negative integer value if the first argument is</p>
+
+<em>less</em>
+
+<p>than the second, a positive integer value if the first argument is</p>
+
+<em>greater</em>
+
+<p>than the second and zero if the arguments are equivalent.</p>
+
+<p>The signature of the comparison function should be equivalent to the following:</p>
+
+<p><code>int cmp(const void *a, const void *b);</code></p>
+
+<p>The function must not modify the objects passed to it and must return consistent results when called for the same objects, regardless of their positions in the array.</p></td></tr>
+<tr><td>context</td><td>-</td><td>additional information (e.g., collating sequence), passed to <code>comp</code> as the third argument</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  (none)</p>
+
+<p class="li-note"><span class="li-num">2)</span>  zero on success, non-zero if a runtime constraints violation was detected</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Despite the name, neither C nor POSIX standards require this function to be implemented using <a href="https://en.wikipedia.org/wiki/Quicksort" rel="noreferrer" target="_blank">quicksort</a> or make any complexity or stability guarantees.</p>
+
+<p>Unlike other bounds-checked functions, <code>qsort_s</code> does not treat arrays of zero size as a runtime constraint violation and instead returns successfully without altering the array (the other function that accepts arrays of zero size is bsearch_s).</p>
+
+<p>The implementation of <code>qsort_s</code> in the <a href="https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/qsort-s" rel="noreferrer" target="_blank">Windows CRT</a> is incompatible with the C standard. The Microsoft's version is declared as: <code>void qsort_s(void *base, size_t num, size_t width, int (*compare )(void *, const void *, const void *), void * context);</code>. It does not return a value, and the comparison function has a reversed parameter order with regard to the standard: the <code>context</code> is passed first.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <limits.h>
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int compare_ints(const void* a, const void* b)
+{
+    int arg1 = *(const int*)a;
+    int arg2 = *(const int*)b;
+ 
+    if (arg1 < arg2) return -1;
+    if (arg1 > arg2) return 1;
+    return 0;
+ 
+    // return (arg1 > arg2) - (arg1 < arg2); // possible shortcut
+ 
+    // return arg1 - arg2; // erroneous shortcut: undefined behavior in case of
+                           // integer overflow, such as with INT_MIN here
+}
+ 
+int main(void)
+{
+    int ints[] = {-2, 99, 0, -743, 2, INT_MIN, 4};
+    int size = sizeof ints / sizeof *ints;
+ 
+    qsort(ints, size, sizeof(int), compare_ints);
+ 
+    for (int i = 0; i < size; i++)
+        printf("%d ", ints[i]);
+ 
+    printf("\n");
+}
+```
+
+<p>Output:</p>
+
+```text
+-2147483648 -743 -2 0 2 4 99
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.5.2 The qsort function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.6.3.2 The qsort_s function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.5.2 The qsort function (p: 258-259)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.6.3.2 The qsort_s function (p: 442-443)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.5.2 The qsort function (p: 355-356)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.6.3.2 The qsort_s function (p: 609)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20.5.2 The qsort function (p: 319)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.10.5.2 The qsort function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/algorithm/bsearch/">bsearch<br />bsearch_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>searches an array for an element of unspecified type   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/algorithm/qsort" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+qsort</td></tr>
+</table>

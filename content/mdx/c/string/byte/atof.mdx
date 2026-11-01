@@ -1,0 +1,269 @@
+---
+title: "atof"
+slug: "c/string/byte/atof"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/byte/atof"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdlib.h&gt;</code></p>
+
+```c
+double atof( const char* str );
+```
+
+<p>Interprets a floating-point value in a byte string pointed to by <code>str</code>.</p>
+
+<p>Function discards any whitespace characters (as determined by <a href="/reference/c/string/byte/isspace/">isspace</a>) until first non-whitespace character is found. Then it takes as many characters as possible to form a valid floating-point representation and converts them to a floating-point value. The valid floating-point value can be one of the following:</p>
+
+<ul>
+<li>
+<p>decimal floating-point expression. It consists of the following parts:</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<span class="mark-note">(optional)</span>
+
+<p>plus or minus sign</p>
+</li>
+<li>
+<p>nonempty sequence of decimal digits optionally containing decimal-point character (as determined by the current C</p>
+
+<a href="/reference/c/locale/setlocale/">locale</a>
+
+<p>) (defines significand)</p>
+</li>
+<li>
+<span class="mark-note">(optional)</span>
+
+<code>e</code>
+
+<p>or</p>
+
+<code>E</code>
+
+<p>followed with optional minus or plus sign and nonempty sequence of decimal digits (defines exponent to base 10)</p>
+</li>
+</ul></dd>
+</dl>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><ul>
+<li>
+<p>hexadecimal floating-point expression. It consists of the following parts:</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<span class="mark-note">(optional)</span>
+
+<p>plus or minus sign</p>
+</li>
+<li>
+<code>0x</code>
+
+<p>or</p>
+
+<code>0X</code>
+</li>
+<li>
+<p>nonempty sequence of hexadecimal digits optionally containing a decimal-point character (as determined by the current C</p>
+
+<a href="/reference/c/locale/setlocale/">locale</a>
+
+<p>) (defines significand)</p>
+</li>
+<li>
+<span class="mark-note">(optional)</span>
+
+<code>p</code>
+
+<p>or</p>
+
+<code>P</code>
+
+<p>followed with optional minus or plus sign and nonempty sequence of decimal digits (defines exponent to base 2)</p>
+</li>
+</ul></dd>
+</dl>
+
+<ul>
+<li>
+<p>infinity expression. It consists of the following parts:</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<span class="mark-note">(optional)</span>
+
+<p>plus or minus sign</p>
+</li>
+<li>
+<code>INF</code>
+
+<p>or</p>
+
+<code>INFINITY</code>
+
+<p>ignoring case</p>
+</li>
+</ul></dd>
+</dl>
+
+<ul>
+<li>
+<p>not-a-number expression. It consists of the following parts:</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<span class="mark-note">(optional)</span>
+
+<p>plus or minus sign</p>
+</li>
+<li>
+<code>NAN</code>
+
+<p>or</p>
+
+<code>NAN(</code>
+
+<em>char_sequence</em>
+
+<code>)</code>
+
+<p>ignoring case of the</p>
+
+<code>NAN</code>
+
+<p>part.</p>
+
+<em>char_sequence</em>
+
+<p>can only contain digits, Latin letters, and underscores. The result is a quiet NaN floating-point value.</p>
+</li>
+</ul></dd>
+</dl></aside>
+
+<ul>
+<li>
+<p>any other expression that may be accepted by the currently installed C</p>
+
+<a href="/reference/c/locale/setlocale/">locale</a>
+</li>
+</ul>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>str</td><td>-</td><td>pointer to the null-terminated byte string to be interpreted</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p><code>double</code> value corresponding to the contents of <code>str</code> on success. If the converted value falls out of range of the return type, the return value is undefined. If no conversion can be performed, <code>0.0</code> is returned.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The name stands for "ASCII to float".</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdlib.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    printf("%g\n", atof("  -0.0000000123junk"));
+    printf("%g\n", atof("0.012"));
+    printf("%g\n", atof("15e16"));
+    printf("%g\n", atof("-0x1afp-2"));
+    printf("%g\n", atof("inF"));
+    printf("%g\n", atof("Nan"));
+    printf("%g\n", atof("1.0e+309"));   // UB: out of range of double
+    printf("%g\n", atof("0.0"));
+    printf("%g\n", atof("junk"));       // no conversion can be performed
+}
+```
+
+<p>Possible output:</p>
+
+```text
+-1.23e-08
+0.012
+1.5e+17
+-107.75
+inf
+nan
+inf
+0
+0
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.1.1 The atof function (p: 341)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20.1.1 The atof function (p: 307)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.10.1.1 The atof function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/byte/strtof/">strtof<br />strtod<br />strtold</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>converts a byte string to a floating-point value   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/byte/atof" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+atof</td></tr>
+</table></section></section>

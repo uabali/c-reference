@@ -1,0 +1,158 @@
+---
+title: "Floating-point environment"
+slug: "c/numeric/fenv"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/fenv"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>The floating-point environment is the set of floating-point status flags and control modes supported by the implementation. It is thread-local, each thread inherits the initial state of its floating-point environment from the parent thread. Floating-point operations modify the floating-point status flags to indicate abnormal results or auxiliary information. The state of floating-point control modes affects the outcomes of some floating-point operations.</p>
+
+<p>The floating-point environment access and modification is only meaningful when <a href="https://en.cppreference.com/w/cpp/preprocessor/impl" rel="noreferrer" target="_blank"><code>#pragma STDC FENV_ACCESS</code></a> is set to <code>ON</code>. Otherwise the implementation is free to assume that floating-point control modes are always the default ones and that floating-point status flags are never tested or modified. In practice, few current compilers, such as HP aCC, Oracle Studio, and IBM XL, support the <code>#pragma</code> explicitly, but most compilers allow meaningful access to the floating-point environment anyway.</p>
+
+<h3 id="Types">Types</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;fenv.h&gt;</code></td></tr>
+<tr><td><code>fenv_t</code></td><td>The type representing the entire floating-point environment</td></tr>
+<tr><td><code>fexcept_t</code></td><td>The type representing all floating-point status flags collectively</td></tr>
+</table>
+
+<h3 id="Functions">Functions</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/fenv/feclearexcept/">feclearexcept</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>clears the specified floating-point status flags   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/fenv/fetestexcept/">fetestexcept</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>determines which of the specified floating-point status flags are set   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/fenv/feraiseexcept/">feraiseexcept</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>raises the specified floating-point exceptions   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/fenv/feexceptflag/">fegetexceptflag<br />fesetexceptflag</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>copies the state of the specified floating-point status flags from or to the floating-point environment   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/fenv/feround/">fegetround<br />fesetround</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>gets or sets rounding direction   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/fenv/feenv/">fegetenv<br />fesetenv</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>saves or restores the current floating-point environment   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/fenv/feholdexcept/">feholdexcept</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>saves the environment, clears all status flags and ignores all future errors   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/fenv/feupdateenv/">feupdateenv</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>restores the floating-point environment and raises the previously raise exceptions   <span class="mark-note">(function)</span></td></tr>
+</table>
+
+<h3 id="Macros">Macros</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/fenv/FE_exceptions/">FE_ALL_EXCEPT<br />FE_DIVBYZERO<br />FE_INEXACT<br />FE_INVALID<br />FE_OVERFLOW<br />FE_UNDERFLOW</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>floating-point exceptions   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/fenv/FE_round/">FE_DOWNWARD<br />FE_TONEAREST<br />FE_TOWARDZERO<br />FE_UPWARD</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>floating-point rounding direction   <span class="mark-note">(macro constant)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/fenv/FE_DFL_ENV/">FE_DFL_ENV</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>default floating-point environment   <span class="mark-note">(macro constant)</span></td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.6 Floating-point environment &lt;fenv.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.4 Floating-point environment &lt;fenv.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.6 Floating-point environment &lt;fenv.h&gt; (p: 150-156)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.4 Floating-point environment &lt;fenv.h&gt; (p: 332)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.6 Floating-point environment &lt;fenv.h&gt; (p: 206-215)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.31.4 Floating-point environment &lt;fenv.h&gt; (p: 455)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.6 Floating-point environment &lt;fenv.h&gt; (p: 187-196)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/fenv" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Floating-point environment</td></tr>
+</table>

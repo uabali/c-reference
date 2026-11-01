@@ -1,0 +1,130 @@
+---
+title: "imaginary"
+slug: "c/numeric/complex/imaginary"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/complex/imaginary"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;complex.h&gt;</code></p>
+
+```c
+#define imaginary _Imaginary
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>This macro expands to the keyword <a href="/reference/c/keyword/_Imaginary/"><code>_Imaginary</code></a>.</p>
+
+<p>This is a convenience macro that makes it possible to use <code>float imaginary</code>, <code>double imaginary</code>, and <code>long double imaginary</code> as an alternative way to write the three pure imaginary C types <code>float _Imaginary</code>, <code>double _Imaginary</code>, and <code>long double _Imaginary</code></p>
+
+<p>As with any pure imaginary number support in C, this macro is only defined if the imaginary numbers are supported.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span> <span class="std std-until std-c11">(until C11)</span></p><p>A compiler that defines <code>__STDC_IEC_559_COMPLEX__</code> is not required to support imaginary numbers. POSIX recommends checking if the macro <code>_Imaginary_I</code> is defined to identify imaginary number support.</p></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><p>Imaginary numbers are supported if <code>__STDC_IEC_559_COMPLEX__</code> is defined.</p></aside>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Programs are allowed to undefine and perhaps redefine the <code>imaginary</code> macro.</p>
+
+<p>To date, only Oracle C compiler is known to have implemented imaginary types.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <complex.h>
+ 
+int main(void)
+{
+    double imaginary i = -2.0*I; // pure imaginary
+    double f = 1.0; // pure real
+    double complex z = f + i; // complex number
+    printf("z = %.1f%+.1fi\n", creal(z), cimag(z));
+}
+```
+
+<p>Output:</p>
+
+```text
+z = 1.0-2.0i
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3.1/5 imaginary (p: 136)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>G.6/1 imaginary (p: 391-392)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3.1/5 imaginary (p: 188)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>G.6/1 imaginary (p: 537)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3.1/3 imaginary (p: 170)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>G.6/1 imaginary (p: 472)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/complex/complex/">complex</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>complex type macro   <span class="mark-note">(keyword macro)</span></td></tr>
+</table>

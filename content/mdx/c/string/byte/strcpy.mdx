@@ -1,0 +1,298 @@
+---
+title: "strcpy, strcpy_s"
+slug: "c/string/byte/strcpy"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/byte/strcpy"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;string.h&gt;</code></p>
+
+<p class="decl-note">(1)</p>
+
+```c
+char *strcpy( char *dest, const char *src );
+```
+
+<p class="decl-note"><span class="std std-until std-c99">(until C99)</span></p>
+
+```c
+char *strcpy( char *restrict dest, const char *restrict src );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+errno_t strcpy_s( char *restrict dest, rsize_t destsz, const char *restrict src );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Copies the null-terminated byte string pointed to by <code>src</code>, including the null terminator, to the character array whose first element is pointed to by <code>dest</code>.</p>
+
+<p class="li-note">The behavior is undefined if the <code>dest</code> array is not large enough. The behavior is undefined if the strings overlap. The behavior is undefined if either <code>dest</code> is not a pointer to a character array or <code>src</code> is not a pointer to a null-terminated byte string.</p>
+
+<div class="li-note"><span class="li-num">2)</span>
+
+<p>Same as</p>
+
+(1)
+
+<p>, except that it may clobber the rest of the destination array with unspecified values and that the following errors are detected at runtime and call the currently installed</p>
+
+<a href="/reference/c/error/set_constraint_handler_s/">constraint handler</a>
+
+<p>function:</p>
+
+<dl>
+<dd><ul>
+<li>
+<code>src</code>
+
+<p>or</p>
+
+<code>dest</code>
+
+<p>is a null pointer</p>
+</li>
+<li>
+<code>destsz</code>
+
+<p>is zero or greater than</p>
+
+RSIZE_MAX
+</li>
+<li>
+<code>destsz</code>
+
+<p>is less or equal</p>
+
+<code>strnlen_s(src, destsz)</code>
+
+<p>; in other words, truncation would occur</p>
+</li>
+<li>
+<p>overlap would occur between the source and the destination strings</p>
+</li>
+</ul></dd>
+</dl></div>
+
+<div class="li-note"><p>The behavior is undefined if the size of the character array pointed to by</p>
+
+<code>dest</code>
+
+<p>&lt;=</p>
+
+<code>strnlen_s(src, destsz)</code>
+
+<p>&lt;</p>
+
+<code>destsz</code>
+
+<p>; in other words, an erroneous value of</p>
+
+<code>destsz</code>
+
+<p>does not expose the impending buffer overflow.</p>
+
+<dl>
+<dd><p>As with all bounds-checked functions,</p>
+
+<code>strcpy_s</code>
+
+<p>is only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<a href="/reference/c/string/byte/"><code>&lt;string.h&gt;</code></a>
+
+<p>.</p></dd>
+</dl></div>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>dest</td><td>-</td><td>pointer to the character array to write to</td></tr>
+<tr><td>src</td><td>-</td><td>pointer to the null-terminated byte string to copy from</td></tr>
+<tr><td>destsz</td><td>-</td><td>maximum number of characters to write, typically the size of the destination buffer</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  returns a copy of <code>dest</code></p>
+
+<p class="li-note"><span class="li-num">2)</span>  returns zero on success, returns non-zero on error. Also, on error, writes zero to <code>dest[0]</code> (unless <code>dest</code> is a null pointer or <code>destsz</code> is zero or greater than RSIZE_MAX).</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p><code>strcpy_s</code> is allowed to clobber the destination array from the last character written up to <code>destsz</code> in order to improve efficiency: it may copy in multibyte blocks and then check for null bytes.</p>
+
+<p>The function <code>strcpy_s</code> is similar to the BSD function <code>strlcpy</code>, except that</p>
+
+<ul>
+<li>
+<code>strlcpy</code>
+
+<p>truncates the source string to fit in the destination (which is a security risk)</p>
+</li>
+<li>
+<code>strlcpy</code>
+
+<p>does not perform all the runtime checks that</p>
+
+<code>strcpy_s</code>
+
+<p>does</p>
+</li>
+<li>
+<code>strlcpy</code>
+
+<p>does not make failures obvious by setting the destination to a null string or calling a handler if the call fails.</p>
+</li>
+</ul>
+
+<p>Although <code>strcpy_s</code> prohibits truncation due to potential security risks, it's possible to truncate a string using bounds-checked <a href="/reference/c/string/byte/strncpy/">strncpy_s</a> instead.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#define __STDC_WANT_LIB_EXT1__ 1
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(void)
+{
+    const char *src = "Take the test.";
+//  src[0] = 'M' ; // this would be undefined behavior
+    char dst[strlen(src) + 1]; // +1 to accommodate for the null terminator
+    strcpy(dst, src);
+    dst[0] = 'M'; // OK
+    printf("src = %s\ndst = %s\n", src, dst);
+ 
+#ifdef __STDC_LIB_EXT1__
+    set_constraint_handler_s(ignore_handler_s);
+    int r = strcpy_s(dst, sizeof dst, src);
+    printf("dst = \"%s\", r = %d\n", dst, r);
+    r = strcpy_s(dst, sizeof dst, "Take even more tests.");
+    printf("dst = \"%s\", r = %d\n", dst, r);
+#endif
+}
+```
+
+<p>Possible output:</p>
+
+```text
+src = Take the test.
+dst = Make the test.
+dst = "Take the test.", r = 0
+dst = "", r = 22
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.2.3 The strcpy function (p: 264-265)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.7.1.3 The strcpy_s function (p: 447)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.2.3 The strcpy function (p: 363)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.7.1.3 The strcpy_s function (p: 615-616)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.2.3 The strcpy function (p: 326)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.11.2.3 The strcpy function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/byte/strncpy/">strncpy<br />strncpy_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>copies a certain amount of characters from one string to another   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/memcpy/">memcpy<br />memcpy_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>copies one buffer to another   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcscpy/">wcscpy<br />wcscpy_s</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c11">(C11)</span></td><td>copies one wide string to another   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/experimental/dynamic/strdup/">strdup</a>
+
+<span class="std std-since std-other">(dynamic memory TR)</span></td><td>allocate a copy of a string   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/byte/strcpy" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+strcpy</td></tr>
+</table>

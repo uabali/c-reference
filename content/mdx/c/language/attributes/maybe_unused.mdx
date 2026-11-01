@@ -1,0 +1,115 @@
+---
+title: "C attribute: maybe_unused (since C23)"
+slug: "c/language/attributes/maybe_unused"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/attributes/maybe_unused"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Suppresses warnings on unused entities.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+```text
+[[ maybe_unused ]][[ __maybe_unused__ ]]
+```
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>This attribute can appear in the declaration of the following entities:</p>
+
+<ul>
+<li>
+<a href="/reference/c/language/struct/">struct</a>
+
+<p>/</p>
+
+<a href="/reference/c/language/union/">union</a>
+
+<p>:</p>
+
+<code>struct [[maybe_unused]] S;</code>
+
+<p>,</p>
+</li>
+<li>
+<a href="/reference/c/language/typedef/">typedef name</a>
+
+<p>:</p>
+
+<code>[[maybe_unused]] typedef S* PS;</code>
+
+<p>,</p>
+</li>
+<li>
+<p>object:</p>
+
+<code>[[maybe_unused]] int x;</code>
+
+<p>,</p>
+</li>
+<li>
+<p>struct/union member:</p>
+
+<code>union U { [[maybe_unused]] int n; };</code>
+
+<p>,</p>
+</li>
+<li>
+<a href="/reference/c/language/function_definition/">function</a>
+
+<p>:</p>
+
+<code>[[maybe_unused]] void f(void);</code>
+
+<p>,</p>
+</li>
+<li>
+<a href="/reference/c/language/enum/">enumeration</a>
+
+<p>:</p>
+
+<code>enum [[maybe_unused]] E {};</code>
+
+<p>,</p>
+</li>
+<li>
+<p>enumerator:</p>
+
+<code>enum { A [[maybe_unused]], B [[maybe_unused]] = 42 };</code>
+
+<p>.</p>
+</li>
+</ul>
+
+<p>If the compiler issues warnings on unused entities, that warning is suppressed for any entity declared <code>maybe_unused</code>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <assert.h>
+ 
+[[maybe_unused]] void f([[maybe_unused]] _Bool cond1, [[maybe_unused]] _Bool cond2)
+{
+   [[maybe_unused]] _Bool b = cond1 && cond2;
+   assert(b); // in release mode, assert is compiled out, and b is unused
+              // no warning because it is declared [[maybe_unused]]
+} // parameters cond1 and cond2 are not used, no warning
+ 
+int main(void)
+{
+    f(1, 1);
+}
+```
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/attributes/maybe_unused" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+maybe_unused</td></tr>
+</table>

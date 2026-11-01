@@ -1,0 +1,89 @@
+---
+title: "va_end"
+slug: "c/variadic/va_end"
+category: "variadic"
+source: "https://en.cppreference.com/w/c/variadic/va_end"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdarg.h&gt;</code></p>
+
+```c
+void va_end( va_list ap );
+```
+
+<p>The <code>va_end</code> macro performs cleanup for an <code>ap</code> object initialized by a call to va_start or va_copy. <code>va_end</code> may modify <code>ap</code> so that it is no longer usable.</p>
+
+<p>If there is no corresponding call to va_start or va_copy, or if <code>va_end</code> is not called before a function that calls va_start or va_copy returns, the behavior is undefined.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>ap</td><td>-</td><td>an instance of the va_list type to clean up</td></tr>
+</table>
+
+<h3 id="Expanded_value">Expanded value</h3>
+
+<p>(none)</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.16.1.3 The va_end macro (p: 270-271)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.15.1.3 The va_end macro (p: 250-251)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.8.1.3 The va_end macro</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/variadic/va_arg/">va_arg</a></td><td>accesses the next variadic function argument   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/variadic/va_copy/">va_copy</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>makes a copy of the variadic function arguments   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/variadic/va_list/">va_list</a></td><td>holds the information needed by va_start, va_arg, va_end, and va_copy   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td><a href="/reference/c/variadic/va_start/">va_start</a></td><td>enables access to variadic function arguments   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/utility/variadic/va_end" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+va_end</td></tr>
+</table></section></section>

@@ -1,0 +1,124 @@
+---
+title: "NULL"
+slug: "c/types/NULL"
+category: "types"
+source: "https://en.cppreference.com/w/c/types/NULL"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;locale.h&gt;</code></p>
+
+<p class="decl-header">Defined in header <code>&lt;stddef.h&gt;</code></p>
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+<p class="decl-header">Defined in header <code>&lt;stdlib.h&gt;</code></p>
+
+<p class="decl-header">Defined in header <code>&lt;string.h&gt;</code></p>
+
+<p class="decl-header">Defined in header <code>&lt;time.h&gt;</code></p>
+
+<p class="decl-header">Defined in header <code>&lt;wchar.h&gt;</code></p>
+
+```c
+#define NULL /*implementation-defined*/
+```
+
+<p>The macro <code>NULL</code> is an implementation-defined null pointer constant, which may be</p>
+
+<ul>
+<li>
+<p>an integer</p>
+
+<a href="/reference/c/language/constant_expression/#Integer_constant_expression">constant expression</a>
+
+<p>with the value</p>
+
+<code>0</code>
+</li>
+<li>
+<p>an integer constant expression with the value</p>
+
+<code>0</code>
+
+<a href="/reference/c/language/conversion/#Pointer_conversions">cast to the type</a>
+
+<code>void*</code>
+</li>
+</ul>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><ul>
+<li>
+<p>predefined constant</p>
+
+<a href="/reference/c/language/nullptr/"><code>nullptr</code></a>
+</li>
+</ul></aside>
+
+<p>A null pointer constant may be <a href="/reference/c/language/conversion/#Pointer_conversions">converted</a> to any pointer type; such conversion results in the null pointer value of that type.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p><a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stddef.h.html" rel="noreferrer" target="_blank">POSIX requires</a> <code>NULL</code> to be defined as an integer constant expression with the value <code>0</code> cast to <code>void*</code>.</p>
+
+<h3 id="Possible_implementation">Possible implementation</h3>
+
+<table class="ref-table">
+<tr><td>```c
+// C++ compatible:
+#define NULL 0
+// C++ incompatible:
+#define NULL (10*2 - 20)
+#define NULL ((void*)0)
+// since C23 (compatible with C++11 and later)
+#define NULL nullptr
+```</td></tr>
+</table>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <inttypes.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(void)
+{
+    // any kind of pointer can be set to NULL
+    int* p = NULL;
+    struct S *s = NULL;
+    void(*f)(int, double) = NULL;
+    printf("%p %p %p\n", (void*)p, (void*)s, (void*)(long)f);
+ 
+    // many pointer-returning functions use null pointers to indicate error
+    char *ptr = malloc(0xFULL);
+    if (ptr == NULL)
+        printf("Out of memory");
+    else
+        printf("ptr = %#" PRIxPTR"\n", (uintptr_t)ptr);
+    free(ptr);
+}
+```
+
+<p>Possible output:</p>
+
+```text
+(nil) (nil) (nil)
+ptr = 0xc001cafe
+```
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/types/nullptr_t/">nullptr_t</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>the type of the predefined null pointer constant <a href="/reference/c/language/nullptr/"><code>nullptr</code></a>   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/types/NULL" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+NULL</td></tr>
+</table>

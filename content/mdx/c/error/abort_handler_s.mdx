@@ -1,0 +1,129 @@
+---
+title: "abort_handler_s"
+slug: "c/error/abort_handler_s"
+category: "error"
+source: "https://en.cppreference.com/w/c/error/abort_handler_s"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdlib.h&gt;</code></p>
+
+```c
+void abort_handler_s( const char * restrict msg,
+                      void * restrict ptr,
+                      errno_t error
+
+                    );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Writes an implementation-defined message to <a href="/reference/c/io/std_streams/">stderr</a> which must include the string pointed to by <code>msg</code> and calls <a href="/reference/c/program/abort/">abort()</a>.</p>
+
+<p>A pointer to this function can be passed to <a href="/reference/c/error/set_constraint_handler_s/">set_constraint_handler_s</a> to establish a runtime constraints violation handler.</p>
+
+<dl>
+<dd><p>As with all bounds-checked functions,</p>
+
+<code>abort_handler_s</code>
+
+<p>is only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<code>&lt;stdlib.h&gt;</code>
+
+<p>.</p></dd>
+</dl>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>msg</td><td>-</td><td>pointer to the message written to the standard error stream</td></tr>
+<tr><td>ptr</td><td>-</td><td>pointer to an implementation-defined object or a null pointer. Examples of implementation-defined objects are objects that give the name of the function that detected the violation and the line number when the violation was detected</td></tr>
+<tr><td>error</td><td>-</td><td>a positive value of type errno_t</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>none; this function does not return to its caller</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>If <code>set_constraint_handler_s</code> is never called, the default handler is implementation-defined: it may be abort_handler_s, ignore_handler_s, or some other implementation-defined handler.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#define __STDC_WANT_LIB_EXT1__ 1
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(void)
+{
+#ifdef __STDC_LIB_EXT1__
+    char dst[2];
+    set_constraint_handler_s(ignore_handler_s);
+    int r = strcpy_s(dst, sizeof dst, "Too long!");
+    printf("dst = \"%s\", r = %d\n", dst, r);
+    set_constraint_handler_s(abort_handler_s);
+    r = strcpy_s(dst, sizeof dst, "Too long!");
+    printf("dst = \"%s\", r = %d\n", dst, r);
+#endif
+}
+```
+
+<p>Possible output:</p>
+
+```text
+dst = "", r = 22
+abort_handler_s was called in response to a runtime-constraint violation.
+ 
+The runtime-constraint violation was caused by the following expression in strcpy_s:
+(s1max <= (s2_len=strnlen_s(s2, s1max)) ) (in string_s.c:62)
+ 
+Note to end users: This program was terminated as a result
+of a bug present in the software. Please reach out to your
+software's vendor to get more help.
+Aborted
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.6.1.2 The abort_handler_s function (p: 605)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/error/ignore_handler_s/">ignore_handler_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>ignore callback for the bounds-checked functions   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/error/set_constraint_handler_s/">set_constraint_handler_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>set the error callback for bounds-checked functions   <span class="mark-note">(function)</span></td></tr>
+</table>

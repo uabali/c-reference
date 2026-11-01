@@ -1,0 +1,120 @@
+---
+title: "va_copy"
+slug: "c/variadic/va_copy"
+category: "variadic"
+source: "https://en.cppreference.com/w/c/variadic/va_copy"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdarg.h&gt;</code></p>
+
+```c
+void va_copy( va_list dest, va_list src );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>The <code>va_copy</code> macro copies <code>src</code> to <code>dest</code>.</p>
+
+<p>va_end should be called on <code>dest</code> before the function returns or any subsequent re-initialization of <code>dest</code> (via calls to va_start or va_copy).</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>dest</td><td>-</td><td>an instance of the va_list type to initialize</td></tr>
+<tr><td>src</td><td>-</td><td>the source va_list that will be used to initialize <code>dest</code></td></tr>
+</table>
+
+<h3 id="Expanded_value">Expanded value</h3>
+
+<p>(none)</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <stdarg.h>
+#include <math.h>
+ 
+double sample_stddev(int count, ...) 
+{
+    /* Compute the mean with args1. */
+    double sum = 0;
+    va_list args1;
+    va_start(args1, count);
+    va_list args2;
+    va_copy(args2, args1);   /* copy va_list object */
+    for (int i = 0; i < count; ++i) {
+        double num = va_arg(args1, double);
+        sum += num;
+    }
+    va_end(args1);
+    double mean = sum / count;
+ 
+    /* Compute standard deviation with args2 and mean. */
+    double sum_sq_diff = 0;
+    for (int i = 0; i < count; ++i) {
+        double num = va_arg(args2, double);
+        sum_sq_diff += (num-mean) * (num-mean);
+    }
+    va_end(args2);
+    return sqrt(sum_sq_diff / count);
+}
+ 
+int main(void) 
+{
+    printf("%f\n", sample_stddev(4, 25.0, 27.3, 26.9, 25.7));
+}
+```
+
+<p>Possible output:</p>
+
+```text
+0.920258
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.16.1.2 The va_copy macro (p: 270)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.15.1.2 The va_copy macro (p: 250)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/variadic/va_arg/">va_arg</a></td><td>accesses the next variadic function argument   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/variadic/va_end/">va_end</a></td><td>ends traversal of the variadic function arguments   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/variadic/va_list/">va_list</a></td><td>holds the information needed by va_start, va_arg, va_end, and va_copy   <span class="mark-note">(typedef)</span></td></tr>
+<tr><td><a href="/reference/c/variadic/va_start/">va_start</a></td><td>enables access to variadic function arguments   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/utility/variadic/va_copy" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+va_copy</td></tr>
+</table></section>

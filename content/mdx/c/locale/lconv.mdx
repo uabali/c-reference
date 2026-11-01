@@ -1,0 +1,198 @@
+---
+title: "lconv"
+slug: "c/locale/lconv"
+category: "locale"
+source: "https://en.cppreference.com/w/c/locale/lconv"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;locale.h&gt;</code></p>
+
+```c
+struct lconv;
+```
+
+<p>The struct <code>lconv</code> contains numeric and monetary formatting rules as defined by a C locale. Objects of this struct may be obtained with <a href="/reference/c/locale/localeconv/">localeconv</a>. The members of <code>lconv</code> are values of type <code>char</code> and of type <code>char*</code>. Each <code>char*</code> member except <code>decimal_point</code> may be pointing at a null character (that is, at an empty C-string). The members of type <code>char</code> are all non-negative numbers, any of which may be <a href="/reference/c/types/limits/">CHAR_MAX</a> if the corresponding value is not available in the current C locale.</p>
+
+<h3 id="Member_objects">Member objects</h3>
+
+<h4 id="Non-monetary_numeric_formatting_parameters">Non-monetary numeric formatting parameters</h4>
+
+<table class="ref-table ref-dsc">
+<tr><td>char* decimal_point</td><td>the character used as the decimal point   <span class="mark-note">(public member object)</span></td></tr>
+<tr><td>char* thousands_sep</td><td>the character used to separate groups of digits before the decimal point   <span class="mark-note">(public member object)</span></td></tr>
+<tr><td>char* grouping</td><td>a string whose elements indicate the sizes of digit groups   <span class="mark-note">(public member object)</span></td></tr>
+</table>
+
+<h4 id="Monetary_numeric_formatting_parameters">Monetary numeric formatting parameters</h4>
+
+<table class="ref-table ref-dsc">
+<tr><td>char* mon_decimal_point</td><td>the character used as the decimal point   <span class="mark-note">(public member object)</span></td></tr>
+<tr><td>char* mon_thousands_sep</td><td>the character used to separate groups of digits before the decimal point   <span class="mark-note">(public member object)</span></td></tr>
+<tr><td>char* mon_grouping</td><td>a string whose elements indicate the sizes of digit groups   <span class="mark-note">(public member object)</span></td></tr>
+<tr><td>char* positive_sign</td><td>a string used to indicate non-negative monetary quantity   <span class="mark-note">(public member object)</span></td></tr>
+<tr><td>char* negative_sign</td><td>a string used to indicate negative monetary quantity   <span class="mark-note">(public member object)</span></td></tr>
+</table>
+
+<h4 id="Local_monetary_numeric_formatting_parameters">Local monetary numeric formatting parameters</h4>
+
+<table class="ref-table ref-dsc">
+<tr><td>char* currency_symbol</td><td>the symbol used for currency in the current C locale   <span class="mark-note">(public member object)</span></td></tr>
+<tr><td>char frac_digits</td><td>the number of digits after the decimal point to display in a monetary quantity   <span class="mark-note">(public member object)</span></td></tr>
+<tr><td>char p_cs_precedes</td><td><code>1</code> if <code>currency_symbol</code> is placed before non-negative value, <code>0</code> if after   <span class="mark-note">(public member object)</span></td></tr>
+<tr><td>char n_cs_precedes</td><td><code>1</code> if <code>currency_symbol</code> is placed before negative value, <code>0</code> if after   <span class="mark-note">(public member object)</span></td></tr>
+<tr><td>char p_sep_by_space</td><td>indicates the separation of <code>currency_symbol</code>, <code>positive_sign</code>, and the non-negative monetary value   <span class="mark-note">(public member object)</span></td></tr>
+<tr><td>char n_sep_by_space</td><td>indicates the separation of <code>currency_symbol</code>, <code>negative_sign</code>, and the negative monetary value   <span class="mark-note">(public member object)</span></td></tr>
+<tr><td>char p_sign_posn</td><td>indicates the position of <code>positive_sign</code> in a non-negative monetary value   <span class="mark-note">(public member object)</span></td></tr>
+<tr><td>char n_sign_posn</td><td>indicates the position of <code>negative_sign</code> in a negative monetary value   <span class="mark-note">(public member object)</span></td></tr>
+</table>
+
+<h4 id="International_monetary_numeric_formatting_parameters">International monetary numeric formatting parameters</h4>
+
+<table class="ref-table ref-dsc">
+<tr><td>char* int_curr_symbol</td><td>the string used as international currency name in the current C locale   <span class="mark-note">(public member object)</span></td></tr>
+<tr><td>char int_frac_digits</td><td>the number of digits after the decimal point to display in an international monetary quantity   <span class="mark-note">(public member object)</span></td></tr>
+<tr><td>char int_p_cs_precedes
+
+<span class="std std-since std-c99">(C99)</span></td><td><code>1</code> if <code>int_curr_symbol</code> is placed before non-negative international monetary value, <code>0</code> if after   <span class="mark-note">(public member object)</span></td></tr>
+<tr><td>char int_n_cs_precedes
+
+<span class="std std-since std-c99">(C99)</span></td><td><code>1</code> if <code>int_curr_symbol</code> is placed before negative international monetary value, <code>0</code> if after   <span class="mark-note">(public member object)</span></td></tr>
+<tr><td>char int_p_sep_by_space
+
+<span class="std std-since std-c99">(C99)</span></td><td>indicates the separation of <code>int_curr_symbol</code>, <code>positive_sign</code>, and the non-negative international monetary value   <span class="mark-note">(public member object)</span></td></tr>
+<tr><td>char int_n_sep_by_space
+
+<span class="std std-since std-c99">(C99)</span></td><td>indicates the separation of <code>int_curr_symbol</code>, <code>negative_sign</code>, and the negative international monetary value   <span class="mark-note">(public member object)</span></td></tr>
+<tr><td>char int_p_sign_posn
+
+<span class="std std-since std-c99">(C99)</span></td><td>indicates the position of <code>positive_sign</code> in a non-negative international monetary value   <span class="mark-note">(public member object)</span></td></tr>
+<tr><td>char int_n_sign_posn
+
+<span class="std std-since std-c99">(C99)</span></td><td>indicates the position of <code>negative_sign</code> in a negative international monetary value   <span class="mark-note">(public member object)</span></td></tr>
+</table>
+
+<p>The characters of the C-strings pointed to by <code>grouping</code> and <code>mon_grouping</code> are interpreted according to their numeric values. When the terminating <code>&#x27;\0&#x27;</code> is encountered, the last value seen is assumed to repeat for the remainder of digits. If <a href="/reference/c/types/limits/">CHAR_MAX</a> is encountered, no further digits are grouped. The typical grouping of three digits at a time is <code>&quot;\003&quot;</code>.</p>
+
+<p>The values of <code>p_sep_by_space</code>, <code>n_sep_by_space</code>, <code>int_p_sep_by_space</code>, <code>int_n_sep_by_space</code> are interpreted as follows:</p>
+
+<table class="ref-table ref-dsc">
+<tr><td><code>0</code></td><td>no space separates the currency symbol and the value</td></tr>
+<tr><td><code>1</code></td><td>sign sticks to the currency symbol, value is separated by a space</td></tr>
+<tr><td><code>2</code></td><td>sign sticks to the value. Currency symbol is separated by a space</td></tr>
+</table>
+
+<p>The values of <code>p_sign_posn</code>, <code>n_sign_posn</code>, <code>int_p_sign_posn</code>, <code>int_n_sign_posn</code> are interpreted as follows:</p>
+
+<table class="ref-table ref-dsc">
+<tr><td><code>0</code></td><td>parentheses around the value and the currency symbol are used to represent the sign</td></tr>
+<tr><td><code>1</code></td><td>sign before the value and the currency symbol</td></tr>
+<tr><td><code>2</code></td><td>sign after the value and the currency symbol</td></tr>
+<tr><td><code>3</code></td><td>sign before the currency symbol</td></tr>
+<tr><td><code>4</code></td><td>sign after the currency symbol</td></tr>
+</table>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <locale.h>
+#include <stdio.h>
+ 
+int main(void)
+{
+    setlocale(LC_ALL, "ja_JP.UTF-8");
+    struct lconv* lc = localeconv();
+    printf("Japanese currency symbol: %s(%s)\n", lc->currency_symbol, lc->int_curr_symbol);
+}
+```
+
+<p>Possible output:</p>
+
+```text
+Japanese currency symbol: ￥(JPY )
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.11/2 Localization &lt;locale.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.11/2 Localization &lt;locale.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.11/2 Localization &lt;locale.h&gt; (p: 223)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.11/2 Localization &lt;locale.h&gt; (p: 204)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.4 LOCALIZATION &lt;locale.h&gt;</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/locale/localeconv/">localeconv</a></td><td>queries numeric and monetary formatting details of the current locale   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/locale/lconv" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+lconv</td></tr>
+</table>

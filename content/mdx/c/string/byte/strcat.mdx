@@ -1,0 +1,289 @@
+---
+title: "strcat, strcat_s"
+slug: "c/string/byte/strcat"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/byte/strcat"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;string.h&gt;</code></p>
+
+<p class="decl-note">(1)</p>
+
+```c
+char *strcat( char *dest, const char *src );
+```
+
+<p class="decl-note"><span class="std std-until std-c99">(until C99)</span></p>
+
+```c
+char *strcat( char *restrict dest, const char *restrict src );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+errno_t strcat_s(char *restrict dest, rsize_t destsz, const char *restrict src);
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Appends a copy of the null-terminated byte string pointed to by <code>src</code> to the end of the null-terminated byte string pointed to by <code>dest</code>. The character <code>src[0]</code> replaces the null terminator at the end of <code>dest</code>. The resulting byte string is null-terminated.</p>
+
+<p class="li-note">The behavior is undefined if the destination array is not large enough for the contents of both <code>src</code> and <code>dest</code> and the terminating null character. The behavior is undefined if the strings overlap. The behavior is undefined if either <code>dest</code> or <code>src</code> is not a pointer to a null-terminated byte string.</p>
+
+<div class="li-note"><span class="li-num">2)</span>
+
+<p>Same as</p>
+
+(1)
+
+<p>, except that it may clobber the rest of the destination array (from the last character written to</p>
+
+<code>destsz</code>
+
+<p>) with unspecified values and that the following errors are detected at runtime and call the currently installed</p>
+
+<a href="/reference/c/error/set_constraint_handler_s/">constraint handler</a>
+
+<p>function:</p>
+
+<dl>
+<dd><ul>
+<li>
+<code>src</code>
+
+<p>or</p>
+
+<code>dest</code>
+
+<p>is a null pointer</p>
+</li>
+<li>
+<code>destsz</code>
+
+<p>is zero or greater than</p>
+
+RSIZE_MAX
+</li>
+<li>
+<p>there is no null terminator in the first</p>
+
+<code>destsz</code>
+
+<p>bytes of</p>
+
+<code>dest</code>
+</li>
+<li>
+<p>truncation would occur (the available space at the end of</p>
+
+<code>dest</code>
+
+<p>would not fit every character, including the null terminator, of</p>
+
+<code>src</code>
+
+<p>)</p>
+</li>
+<li>
+<p>overlap would occur between the source and the destination strings</p>
+</li>
+</ul></dd>
+</dl></div>
+
+<div class="li-note"><p>The behavior is undefined if the size of the character array pointed to by</p>
+
+<code>dest</code>
+
+<p>&lt;</p>
+
+<code>strlen(dest)+strlen(src)+1</code>
+
+<p>&lt;=</p>
+
+<code>destsz</code>
+
+<p>; in other words, an erroneous value of</p>
+
+<code>destsz</code>
+
+<p>does not expose the impending buffer overflow.</p>
+
+<dl>
+<dd><p>As with all bounds-checked functions,</p>
+
+<code>strcat_s</code>
+
+<p>is only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<a href="/reference/c/string/byte/"><code>&lt;string.h&gt;</code></a>
+
+<p>.</p></dd>
+</dl></div>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>dest</td><td>-</td><td>pointer to the null-terminated byte string to append to</td></tr>
+<tr><td>src</td><td>-</td><td>pointer to the null-terminated byte string to copy from</td></tr>
+<tr><td>destsz</td><td>-</td><td>maximum number of characters to write, typically the size of the destination buffer</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p class="li-note"><span class="li-num">1)</span>  returns a copy of <code>dest</code></p>
+
+<p class="li-note"><span class="li-num">2)</span>  returns zero on success, returns non-zero on error. Also, on error, writes zero to <code>dest[0]</code> (unless <code>dest</code> is a null pointer or <code>destsz</code> is zero or greater than RSIZE_MAX).</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Because <code>strcat</code> needs to seek to the end of <code>dest</code> on each call, it is inefficient to concatenate many strings into one using <code>strcat</code>.</p>
+
+<p><code>strcat_s</code> is allowed to clobber the destination array from the last character written up to <code>destsz</code> in order to improve efficiency: it may copy in multibyte blocks and then check for null bytes.</p>
+
+<p>The function <code>strcat_s</code> is similar to the <a href="https://www.freebsd.org/cgi/man.cgi?query=strlcat&amp;sektion=3" rel="noreferrer" target="_blank">BSD function <code>strlcat</code></a>, except that</p>
+
+<ul>
+<li>
+<code>strlcat</code>
+
+<p>truncates the source string to fit in the destination</p>
+</li>
+<li>
+<code>strlcat</code>
+
+<p>does not perform all the runtime checks that</p>
+
+<code>strcat_s</code>
+
+<p>does</p>
+</li>
+<li>
+<code>strlcat</code>
+
+<p>does not make failures obvious by setting the destination to a null string or calling a handler if the call fails.</p>
+</li>
+</ul>
+
+<p>Although <code>strcat_s</code> prohibits truncation due to potential security risks, it's possible to truncate a string using bounds-checked <a href="/reference/c/string/byte/strncat/">strncat_s</a> instead.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#define __STDC_WANT_LIB_EXT1__ 1
+#include <string.h> 
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(void) 
+{
+    char str[50] = "Hello ";
+    char str2[50] = "World!";
+    strcat(str, str2);
+    strcat(str, " ...");
+    strcat(str, " Goodbye World!");
+    puts(str);
+ 
+#ifdef __STDC_LIB_EXT1__
+    set_constraint_handler_s(ignore_handler_s);
+    int r = strcat_s(str, sizeof str, " ... ");
+    printf("str = \"%s\", r = %d\n", str, r);
+    r = strcat_s(str, sizeof str, " and this is too much");
+    printf("str = \"%s\", r = %d\n", str, r);
+#endif
+}
+```
+
+<p>Possible output:</p>
+
+```text
+Hello World! ... Goodbye World!
+str = "Hello World! ... Goodbye World! ... ", r = 0
+str = "", r = 22
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.3.1 The strcat function (p: 364)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.7.2.1 The strcat_s function (p: 617-618)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.3.1 The strcat function (p: 327)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.11.3.1 The strcat function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/byte/strncat/">strncat<br />strncat_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>concatenates a certain amount of characters of two strings   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strcpy/">strcpy<br />strcpy_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>copies one string to another   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/memccpy/">memccpy</a>
+
+<span class="std std-since std-c23">(C23)</span></td><td>copies one buffer to another, stopping after the specified delimiter   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/byte/strcat" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+strcat</td></tr>
+</table></section></section>

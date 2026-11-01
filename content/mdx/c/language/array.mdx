@@ -1,0 +1,432 @@
+---
+title: "Array declaration"
+slug: "c/language/array"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/array"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Array is a type consisting of a contiguously allocated nonempty sequence of objects with a particular <em>element type</em>. The number of those objects (the array size) never changes during the array lifetime.</p>
+
+<h3 id="Syntax">Syntax</h3>
+
+<p>In the <a href="/reference/c/language/declarations/">declaration grammar</a> of an array declaration, the <em>type-specifier</em> sequence designates the <em>element type</em> (which must be a complete object type), and the <em>declarator</em> has the form:</p>
+
+```text
+[ static(optional) qualifiers (optional) expression (optional) ] attr-spec-seq (optional)
+[ qualifiers (optional) static(optional) expression (optional) ] attr-spec-seq (optional)
+[ qualifiers (optional) * ] attr-spec-seq (optional)
+```
+
+<p class="li-note"><span class="li-num">1,2)</span>  General array declarator syntax</p>
+
+<p class="li-note"><span class="li-num">3)</span>  Declarator for VLA of unspecified size (can appear in function prototype scope only) where</p>
+
+<table class="ref-table ref-params">
+<tr><td><em>expression</em></td><td>-</td><td>any expression other than <a href="/reference/c/language/operator_other/#Comma_operator">comma operator</a>, designates the number of elements in the array</td></tr>
+<tr><td><em>qualifiers</em></td><td>-</td><td>any combination of <a href="/reference/c/language/const/"><code>const</code></a>, <a href="/reference/c/language/restrict/"><code>restrict</code></a>, or <a href="/reference/c/language/volatile/"><code>volatile</code></a> qualifiers, only allowed in function parameter lists; this qualifies the pointer type to which this array parameter is transformed</td></tr>
+<tr><td><em>attr-spec-seq</em></td><td>-</td><td><span class="std std-since std-c23">(C23)</span>optional list of <a href="/reference/c/language/attributes/">attributes</a>, applied to the declared array</td></tr>
+</table>
+
+```c
+float fa[11], *afp[17]; // fa is an array of 11 floats
+                        // afp is an array of 17 pointers to floats
+```
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>There are several variations of array types: arrays of known constant size, variable-length arrays, and arrays of unknown size.</p>
+
+<h4 id="Arrays_of_constant_known_size">Arrays of constant known size</h4>
+
+<p>If <em>expression</em> in an array declarator is an <a href="/reference/c/language/constant_expression/#Integer_constant_expression">integer constant expression</a> with a value greater than zero and the element type is a type with a known constant size (that is, elements are not VLA)<span class="std std-since std-c99">(since C99)</span>, then the declarator declares an array of constant known size:</p>
+
+```c
+int n[10]; // integer constants are constant expressions
+char o[sizeof(double)]; // sizeof is a constant expression
+enum { MAX_SZ=100 };
+int n[MAX_SZ]; // enum constants are constant expressions
+```
+
+<p>Arrays of constant known size can use <a href="/reference/c/language/array_initialization/">array initializers</a> to provide their initial values:</p>
+
+```c
+int a[5] = {1,2,3}; // declares int[5] initialized to 1,2,3,0,0
+char str[] = "abc"; // declares char[4] initialized to 'a','b','c','\0'
+```
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><p>In function parameter lists, additional syntax elements are allowed within the array declarators: the keyword <code>static</code> and <em>qualifiers</em>, which may appear in any order before the size expression (they may also appear even when the size expression is omitted).</p>
+
+<p>In each <a href="/reference/c/language/operator_other/#Function_call">function call</a> to a function where an array parameter uses the keyword <code>static</code> between <code>[</code> and <code>]</code>, the value of the actual parameter must be a valid pointer to the first element of an array with at least as many elements as specified by <em>expression</em>:</p>
+
+```c
+void fadd(double a[static 10], const double b[static 10])
+{
+    for (int i = 0; i < 10; i++)
+    {
+        if (a[i] < 0.0) return;
+        a[i] += b[i];
+    }
+}
+// a call to fadd may perform compile-time bounds checking
+// and also permits optimizations such as prefetching 10 doubles
+int main(void)
+{
+    double a[10] = {0}, b[20] = {0};
+    fadd(a, b); // OK
+    double x[5] = {0};
+    fadd(x, b); // undefined behavior: array argument is too small
+}
+```
+
+<p>If <em>qualifiers</em> are present, they qualify the pointer type to which the array parameter type is transformed:</p>
+
+```c
+int f(const int a[20])
+{
+    // in this function, a has type const int* (pointer to const int)
+}
+int g(const int a[const 20])
+{
+    // in this function, a has type const int* const (const pointer to const int)
+}
+```
+
+<p>This is commonly used with the <a href="/reference/c/language/restrict/"><code>restrict</code></a> type qualifier:</p>
+
+```c
+void fadd(double a[static restrict 10],
+          const double b[static restrict 10])
+{
+    for (int i = 0; i < 10; i++) // loop can be unrolled and reordered
+    {
+        if (a[i] < 0.0)
+            break;
+        a[i] += b[i];
+    }
+}
+```
+
+<h4 id="Variable-length_arrays">Variable-length arrays</h4>
+
+<p>If <em>expression</em> is not an <a href="/reference/c/language/constant_expression/#Integer_constant_expression">integer constant expression</a>, the declarator is for an array of variable size.</p>
+
+<p>Each time the flow of control passes over the declaration, <em>expression</em> is evaluated (and it must always evaluate to a value greater than zero), and the array is allocated (correspondingly, <a href="/reference/c/language/lifetime/">lifetime</a> of a VLA ends when the declaration goes out of scope). The size of each VLA instance does not change during its lifetime, but on another pass over the same code, it may be allocated with a different size.</p>
+
+```c
+#include <stdio.h>
+ 
+int main(void)
+{
+   int n = 1;
+label:;
+   int a[n]; // re-allocated 10 times, each with a different size
+   printf("The array has %zu elements\n", sizeof a / sizeof *a);
+   if (n++ < 10)
+       goto label; // leaving the scope of a VLA ends its lifetime
+}
+```
+
+<p>If the size is <code>*</code>, the declaration is for a VLA of unspecified size. Such declaration may only appear in a function prototype scope, and declares an array of a complete type. In fact, all VLA declarators in function prototype scope are treated as if <em>expression</em> were replaced by <code>*</code>.</p>
+
+```c
+void foo(size_t x, int a[*]);
+void foo(size_t x, int a[x])
+{
+    printf("%zu\n", sizeof a); // same as sizeof(int*)
+}
+```
+
+<p>Variable-length arrays and the types derived from them (pointers to them, etc) are commonly known as "variably-modified types" (VM). Objects of any variably-modified type may only be declared at block scope or function prototype scope.</p>
+
+```c
+extern int n;
+int A[n];            // Error: file scope VLA
+extern int (*p2)[n]; // Error: file scope VM
+int B[100];          // OK: file-scope array of constant known size
+void fvla(int m, int C[m][m]); // OK: prototype-scope VLA
+```
+
+<p>VLA must have automatic or allocated storage duration. Pointers to VLA, but not VLA themselves may also have static storage duration. No VM type may have linkage.</p>
+
+```c
+void fvla(int m, int C[m][m]) // OK: block scope/auto duration pointer to VLA
+{
+    typedef int VLA[m][m]; // OK: block scope VLA
+    int D[m];              // OK: block scope/auto duration VLA
+//  static int E[m]; // Error: static duration VLA
+//  extern int F[m]; // Error: VLA with linkage
+    int (*s)[m];     // OK: block scope/auto duration VM
+    s = malloc(m * sizeof(int)); // OK: s points to VLA in allocated storage
+//  extern int (*r)[m]; // Error: VM with linkage
+    static int (*q)[m] = &B; // OK: block scope/static duration VM}
+}
+```
+
+<p>Variably-modified types cannot be members of structs or unions.</p>
+
+```c
+struct tag
+{
+    int z[n]; // Error: VLA struct member
+    int (*y)[n]; // Error: VM struct member
+};
+```</aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span> <span class="std std-until std-c23">(until C23)</span></p><p>If the compiler defines the macro constant <code>__STDC_NO_VLA__</code> to integer constant <code>1</code>, then VLA and VM types are not supported.</p></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>If the compiler defines the macro constant <code>__STDC_NO_VLA__</code> to integer constant <code>1</code>, then VLA objects with automatic storage duration are not supported.</p>
+
+<p>The support for VM types and VLAs with allocated storage durations is mandated.</p></aside>
+
+<h4 id="Arrays_of_unknown_size">Arrays of unknown size</h4>
+
+<p>If <em>expression</em> in an array declarator is omitted, it declares an array of unknown size. Except in function parameter lists (where such arrays are transformed to pointers) and when an <a href="/reference/c/language/array_initialization/">initializer</a> is available, such type is an <a href="/reference/c/language/compatible_type/#Incomplete_types">incomplete type</a> (note that VLA of unspecified size, declared with <code>*</code> as the size, is a complete type)<span class="std std-since std-c99">(since C99)</span>:</p>
+
+```c
+extern int x[]; // the type of x is "array of unknown bound of int"
+int a[] = {1,2,3}; // the type of a is "array of 3 int"
+```
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><p>Within a <a href="/reference/c/language/struct/">struct</a> definition, an array of unknown size may appear as the last member (as long as there is at least one other named member), in which case it is a special case known as <em>flexible array member</em>. See <a href="/reference/c/language/struct/">struct</a> for details:</p>
+
+```c
+struct s { int n; double d[]; }; // s.d is a flexible array member
+struct s *s1 = malloc(sizeof (struct s) + (sizeof (double) * 8)); // as if d was double d[8]
+```</aside>
+
+<h4 id="Qualifiers">Qualifiers</h4>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-until std-c23">(until C23)</span></p><p>If an array type is declared with a <a href="/reference/c/language/const/"><code>const</code></a>, <a href="/reference/c/language/volatile/"><code>volatile</code></a>, or <a href="/reference/c/language/restrict/"><code>restrict</code></a><span class="std std-since std-c99">(since C99)</span> qualifier (which is possible through the use of <a href="/reference/c/language/typedef/">typedef</a>), the array type is not qualified, but its element type is:</p></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><p>An array type and its element type are always considered to be identically qualified, except that an array type is never considered to be <a href="/reference/c/language/atomic/"><code>_Atomic</code></a>-qualified.</p></aside>
+
+```c
+typedef int A[2][3];
+const A a = {{4, 5, 6}, {7, 8, 9}}; // array of array of const int
+int* pi = a[0]; // Error: a[0] has type const int*
+void* unqual_ptr = a; // OK until C23; error since C23
+// Notes: clang applies the rule in C++/C23 even in C89-C17 modes
+```
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><p><a href="/reference/c/language/atomic/"><code>_Atomic</code></a> is not allowed to be applied to an array type, although an array of atomic type is allowed.</p>
+
+```c
+typedef int A[2];
+// _Atomic A a0 = {0};    // Error
+// _Atomic(A) a1 = {0};   // Error
+_Atomic int a2[2] = {0};  // OK
+_Atomic(int) a3[2] = {0}; // OK
+```</aside>
+
+<h4 id="Assignment">Assignment</h4>
+
+<p>Objects of array type are not <a href="/reference/c/language/value_category/">modifiable lvalues</a>, and although their address may be taken, they cannot appear on the left hand side of an assignment operator. However, structs with array members are modifiable lvalues and can be assigned:</p>
+
+```c
+int a[3] = {1,2,3}, b[3] = {4,5,6};
+int (*p)[3] = &a; // okay, address of a can be taken
+// a = b;            // error, a is an array
+struct { int c[3]; } s1, s2 = {3,4,5};
+s1 = s2; // okay: can assign structs holding array members
+```
+
+<h4 id="Array_to_pointer_conversion">Array to pointer conversion</h4>
+
+<p>Any <a href="/reference/c/language/value_category/">lvalue expression</a> of array type, when used in any context other than</p>
+
+<ul>
+<li>
+<p>as the operand of the</p>
+
+<a href="/reference/c/language/operator_member_access/">address-of operator</a>
+</li>
+<li>
+<p>as the operand of</p>
+
+<a href="/reference/c/language/sizeof/"><code>sizeof</code></a>
+</li>
+<li>
+<p>as the operand of</p>
+
+<a href="/reference/c/language/typeof_unqual/"><code>typeof</code></a>
+
+<p>and</p>
+
+<a href="/reference/c/language/typeof_unqual/"><code>typeof_unqual</code></a>
+
+<span class="std std-since std-c23">(since C23)</span>
+</li>
+<li>
+<p>as the string literal used for</p>
+
+<a href="/reference/c/language/array_initialization/">array initialization</a>
+</li>
+</ul>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><ul>
+<li>
+<p>as the operand of</p>
+
+<a href="/reference/c/language/alignof/"><code>_Alignof</code></a><span class="std std-since std-c11">(since C11)</span><span class="std std-until std-c23">(until C23)</span>
+
+<a href="/reference/c/language/alignof/"><code>alignof</code></a><span class="std std-since std-c23">(since C23)</span>
+</li>
+</ul></aside>
+
+<p>undergoes an <a href="/reference/c/language/conversion/">implicit conversion</a> to the pointer to its first element. The result is not an lvalue.</p>
+
+<p>If the array was declared <a href="/reference/c/language/storage_duration/"><code>register</code></a>, the behavior of the program that attempts such conversion is undefined.</p>
+
+```c
+int a[3] = {1,2,3};
+int* p = a;
+printf("%zu\n", sizeof a); // prints size of array
+printf("%zu\n", sizeof p); // prints size of a pointer
+```
+
+<p>When an array type is used in a function parameter list, it is transformed to the corresponding pointer type: <code>int f(int a[2])</code> and <code>int f(int* a)</code> declare the same function. Since the function's actual parameter type is pointer type, a function call with an array argument performs array-to-pointer conversion; the size of the argument array is not available to the called function and must be passed explicitly:</p>
+
+```c
+#include <stdio.h>
+ 
+void f(int a[], int sz) // actually declares void f(int* a, int sz)
+{
+    for (int i = 0; i < sz; ++i)
+        printf("%d\n", a[i]);
+}
+ 
+void g(int (*a)[10]) // pointer to array parameter is not transformed
+{
+    for (int i = 0; i < 10; ++i)
+        printf("%d\n", (*a)[i]);
+}
+ 
+int main(void)
+{
+    int a[10] = {0};
+    f(a, 10); // converts a to int*, passes the pointer
+    g(&a);    // passes a pointer to the array (no need to pass the size)
+}
+```
+
+<h4 id="Multidimensional_arrays">Multidimensional arrays</h4>
+
+<p>When the element type of an array is another array, it is said that the array is multidimensional:</p>
+
+```c
+// array of 2 arrays of 3 ints each
+int a[2][3] = {{1,2,3},  // can be viewed as a 2x3 matrix
+               {4,5,6}}; // with row-major layout
+```
+
+<p>Note that when array-to-pointer conversion is applied, a multidimensional array is converted to a pointer to its first element, e.g., pointer to the first row:</p>
+
+```c
+int a[2][3]; // 2x3 matrix
+int (*p1)[3] = a; // pointer to the first 3-element row
+int b[3][3][3]; // 3x3x3 cube
+int (*p2)[3][3] = b; // pointer to the first 3x3 plane
+```
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><p>Multidimensional arrays may be variably modified in every dimension if VLAs are supported<span class="std std-since std-c11">(since C11)</span>:</p>
+
+```c
+int n = 10;
+int a[n][2*n];
+```</aside>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Zero-length array declarations are not allowed, even though some compilers offer them as extensions (typically as a pre-C99 implementation of <a href="/reference/c/language/struct/">flexible array members</a>).</p>
+
+<p>If the size <em>expression</em> of a VLA has side effects, they are guaranteed to be produced except when it is a part of a sizeof expression whose result doesn't depend on it:</p>
+
+```c
+int n = 5, m = 5;
+size_t sz = sizeof(int (*[n++])[m++]); // n is incremented, m may or may not be incremented
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.6.2 Array declarators (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.6.2 Array declarators (p: 94-96)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.6.2 Array declarators (p: 130-132)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.5.2 Array declarators (p: 116-118)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.5.4.2 Array declarators</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/array" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Array declaration</td></tr>
+</table>

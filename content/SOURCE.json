@@ -1,0 +1,10 @@
+{
+  "dump": "v20250209",
+  "archive": "html-book-20250209.tar.xz",
+  "archiveUrl": "https://github.com/PeterFeicht/cppreference-doc/releases/download/v20250209/html-book-20250209.tar.xz",
+  "retrieved": "2025-02-09",
+  "license": "CC BY-SA 3.0",
+  "original": "https://en.cppreference.com/w/c",
+  "upstreamRepo": "https://github.com/PeterFeicht/cppreference-doc",
+  "note": "Latest html-book release verified on 2026-11-01. The April 2026 cppreference redesign broke the upstream update scripts (PeterFeicht/cppreference-doc issue 51); no newer html-book has been published."
+}

@@ -1,0 +1,205 @@
+---
+title: "strcoll"
+slug: "c/string/byte/strcoll"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/byte/strcoll"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;string.h&gt;</code></p>
+
+```c
+int strcoll( const char* lhs, const char* rhs );
+```
+
+<p>Compares two null-terminated byte strings according to the current locale as defined by the <a href="/reference/c/locale/LC_categories/">LC_COLLATE</a> category.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>lhs, rhs</td><td>-</td><td>pointers to the null-terminated byte strings to compare</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<ul>
+<li>
+<p>Negative value if</p>
+
+<code>lhs</code>
+
+<p>is</p>
+
+<em>less than</em>
+
+<p>(precedes)</p>
+
+<code>rhs</code>
+
+<p>.</p>
+</li>
+<li>
+<code>0</code>
+
+<p>if</p>
+
+<code>lhs</code>
+
+<p>is</p>
+
+<em>equal to</em>
+
+<code>rhs</code>
+
+<p>.</p>
+</li>
+<li>
+<p>Positive value if</p>
+
+<code>lhs</code>
+
+<p>is</p>
+
+<em>greater than</em>
+
+<p>(follows)</p>
+
+<code>rhs</code>
+
+<p>.</p>
+</li>
+</ul>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Collation order is the dictionary order: the position of the letter in the national alphabet (its <em>equivalence class</em>) has higher priority than its case or variant. Within an equivalence class, lowercase characters collate before their uppercase equivalents and locale-specific order may apply to the characters with diacritics. In some locales, groups of characters compare as single <em>collation units</em>. For example, <code>&quot;ch&quot;</code> in Czech follows <code>&quot;h&quot;</code> and precedes <code>&quot;i&quot;</code>, and <code>&quot;dzs&quot;</code> in Hungarian follows <code>&quot;dz&quot;</code> and precedes <code>&quot;g&quot;</code>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <locale.h>
+#include <stdio.h>
+#include <string.h>
+ 
+int main(void)
+{
+    setlocale(LC_COLLATE, "cs_CZ.utf8");
+    // Alternatively, ISO-8859-2 (a.k.a. Latin-2)
+    // may also work on some OS:
+    // setlocale(LC_COLLATE, "cs_CZ.iso88592");
+ 
+    const char* s1 = "hrnec";
+    const char* s2 = "chrt";
+ 
+    printf("In the Czech locale: ");
+    if (strcoll(s1, s2) < 0)
+        printf("%s before %s\n", s1, s2);
+    else
+        printf("%s before %s\n", s2, s1);
+ 
+    printf("In lexicographical comparison: ");
+    if (strcmp(s1, s2) < 0)
+        printf("%s before %s\n", s1, s2);
+    else
+        printf("%s before %s\n", s2, s1);
+}
+```
+
+<p>Output:</p>
+
+```text
+In the Czech locale: hrnec before chrt
+In lexicographical comparison: chrt before hrnec
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.4.3 The strcoll function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.4.3 The strcoll function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.4.3 The strcoll function (p: 366)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.4.3 The strcoll function (p: 329)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.11.4.3 The strcoll function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/wide/wcscoll/">wcscoll</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>compares two wide strings in accordance to the current locale   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strxfrm/">strxfrm</a></td><td>transform a string so that strcmp would produce the same result as strcoll   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcsxfrm/">wcsxfrm</a>
+
+<span class="std std-since std-c95">(C95)</span></td><td>transform a wide string so that wcscmp would produce the same result as wcscoll   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strcmp/">strcmp</a></td><td>compares two strings   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/byte/strcoll" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+strcoll</td></tr>
+</table>

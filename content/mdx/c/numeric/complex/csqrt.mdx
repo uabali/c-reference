@@ -1,0 +1,321 @@
+---
+title: "csqrtf, csqrt, csqrtl"
+slug: "c/numeric/complex/csqrt"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/complex/csqrt"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;complex.h&gt;</code></p>
+
+```c
+float complex       csqrtf( float complex z );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+double complex      csqrt( double complex z );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+long double complex csqrtl( long double complex z );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;tgmath.h&gt;</code></p>
+
+```c
+#define sqrt( z )
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="li-note"><span class="li-num">1-3)</span>  Computes the complex square root of <code>z</code> with branch cut along the negative real axis.</p>
+
+<p class="li-note"><span class="li-num">4)</span>  Type-generic macro: If <code>z</code> has type <code>long double complex</code>, <code>csqrtl</code> is called. if <code>z</code> has type <code>double complex</code>, <code>csqrt</code> is called, if <code>z</code> has type <code>float complex</code>, <code>csqrtf</code> is called. If <code>z</code> is real or integer, then the macro invokes the corresponding real function (<code>sqrtf</code>, <code>sqrt</code>, <code>sqrtl</code>). If <code>z</code> is imaginary, the corresponding complex number version is called.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>z</td><td>-</td><td>complex argument</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>If no errors occur, returns the square root of <code>z</code>, in the range of the right half-plane, including the imaginary axis ([0; +∞) along the real axis and (−∞; +∞) along the imaginary axis.)</p>
+
+<h3 id="Error_handling_and_special_values">Error handling and special values</h3>
+
+<p>Errors are reported consistent with <a href="/reference/c/numeric/math/math_errhandling/">math_errhandling</a></p>
+
+<p>If the implementation supports IEEE floating-point arithmetic,</p>
+
+<ul>
+<li>
+<p>The function is continuous onto the branch cut taking into account the sign of imaginary part</p>
+</li>
+<li>
+<code>csqrt(conj(z)) == conj(csqrt(z))</code>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>±0+0i</code>
+
+<p>, the result is</p>
+
+<code>+0+0i</code>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>x+∞i</code>
+
+<p>, the result is</p>
+
+<code>+∞+∞i</code>
+
+<p>even if x is NaN</p>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>x+NaNi</code>
+
+<p>, the result is</p>
+
+<code>NaN+NaNi</code>
+
+<p>(unless x is ±∞) and</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>may be raised</p>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>-∞+yi</code>
+
+<p>, the result is</p>
+
+<code>+0+∞i</code>
+
+<p>for finite positive y</p>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>+∞+yi</code>
+
+<p>, the result is</p>
+
+<code>+∞+0i)</code>
+
+<p>for finite positive y</p>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>-∞+NaNi</code>
+
+<p>, the result is</p>
+
+<code>NaN±∞i</code>
+
+<p>(sign of imaginary part unspecified)</p>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>+∞+NaNi</code>
+
+<p>, the result is</p>
+
+<code>+∞+NaNi</code>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>NaN+yi</code>
+
+<p>, the result is</p>
+
+<code>NaN+NaNi</code>
+
+<p>and</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>may be raised</p>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>NaN+NaNi</code>
+
+<p>, the result is</p>
+
+<code>NaN+NaNi</code>
+</li>
+</ul>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <complex.h>
+ 
+int main(void)
+{
+    double complex z1 = csqrt(-4);
+    printf("Square root of -4 is %.1f%+.1fi\n", creal(z1), cimag(z1));
+ 
+    double complex z2 = csqrt(conj(-4)); // or, in C11, CMPLX(-4, -0.0)
+    printf("Square root of -4-0i, the other side of the cut, is "
+           "%.1f%+.1fi\n", creal(z2), cimag(z2));
+}
+```
+
+<p>Output:</p>
+
+```text
+Square root of -4 is 0.0+2.0i
+Square root of -4-0i, the other side of the cut, is 0.0-2.0i
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3.8.3 The csqrt functions (p: 196)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 373-375)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>G.6.4.2 The csqrt functions (p: 544)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>G.7 Type-generic math &lt;tgmath.h&gt; (p: 545)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3.8.3 The csqrt functions (p: 178)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 Type-generic math &lt;tgmath.h&gt; (p: 335-337)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>G.6.4.2 The csqrt functions (p: 479)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>G.7 Type-generic math &lt;tgmath.h&gt; (p: 480)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/complex/cpow/">cpow<br />cpowf<br />cpowl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex power function   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/sqrt/">sqrt<br />sqrtf<br />sqrtl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes square root (\(\small{\sqrt{x} }\)√x)   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/complex/sqrt" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+sqrt</td></tr>
+</table></section>

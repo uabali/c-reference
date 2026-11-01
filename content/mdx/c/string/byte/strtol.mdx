@@ -1,0 +1,311 @@
+---
+title: "strtol, strtoll"
+slug: "c/string/byte/strtol"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/byte/strtol"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdlib.h&gt;</code></p>
+
+```c
+long      strtol( const char*          str, char**          str_end, int base );
+```
+
+<p class="decl-note"><span class="std std-until std-c99">(until C99)</span></p>
+
+```c
+long      strtol( const char* restrict str, char** restrict str_end, int base );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+long long strtoll( const char* restrict str, char** restrict str_end, int base );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>Interprets an integer value in a byte string pointed to by <code>str</code>.</p>
+
+<p>Discards any whitespace characters (as identified by calling <a href="/reference/c/string/byte/isspace/"><code>isspace</code></a>) until the first non-whitespace character is found, then takes as many characters as possible to form a valid <em>base-n</em> (where n=<code>base</code>) integer number representation and converts them to an integer value. The valid integer value consists of the following parts:</p>
+
+<ul>
+<li>
+<span class="mark-note">(optional)</span>
+
+<p>plus or minus sign</p>
+</li>
+<li>
+<span class="mark-note">(optional)</span>
+
+<p>prefix (</p>
+
+<code>0</code>
+
+<p>) indicating octal base (applies only when the base is</p>
+
+<code>8</code>
+
+<p>or</p>
+
+<code>0</code>
+
+<p>)</p>
+</li>
+<li>
+<span class="mark-note">(optional)</span>
+
+<p>prefix (</p>
+
+<code>0x</code>
+
+<p>or</p>
+
+<code>0X</code>
+
+<p>) indicating hexadecimal base (applies only when the base is</p>
+
+<code>16</code>
+
+<p>or</p>
+
+<code>0</code>
+
+<p>)</p>
+</li>
+<li>
+<p>a sequence of digits</p>
+</li>
+</ul>
+
+<p>The set of valid values for base is <code>{0, 2, 3, ..., 36}</code>. The set of valid digits for base-<code>2</code> integers is <code>{0, 1}</code>, for base-<code>3</code> integers is <code>{0, 1, 2}</code>, and so on. For bases larger than <code>10</code>, valid digits include alphabetic characters, starting from <code>Aa</code> for base-<code>11</code> integer, to <code>Zz</code> for base-<code>36</code> integer. The case of the characters is ignored.</p>
+
+<p>Additional numeric formats may be accepted by the currently installed C <a href="/reference/c/locale/setlocale/">locale</a>.</p>
+
+<p>If the value of <code>base</code> is <code>0</code>, the numeric base is auto-detected: if the prefix is <code>0</code>, the base is octal, if the prefix is <code>0x</code> or <code>0X</code>, the base is hexadecimal, otherwise the base is decimal.</p>
+
+<p>If the minus sign was part of the input sequence, the numeric value calculated from the sequence of digits is negated as if by <a href="/reference/c/language/operator_arithmetic/#Unary_arithmetic">unary minus</a> in the result type.</p>
+
+<p>The functions set the pointer pointed to by <code>str_end</code> to point to the character past the last numeric character interpreted. If <code>str_end</code> is a null pointer, it is ignored.</p>
+
+<p>If the <code>str</code> is empty or does not have the expected form, no conversion is performed, and (if <code>str_end</code> is not a null pointer) the value of <code>str</code> is stored in the object pointed to by <code>str_end</code>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>str</td><td>-</td><td>pointer to the null-terminated byte string to be interpreted</td></tr>
+<tr><td>str_end</td><td>-</td><td>pointer to a pointer to character</td></tr>
+<tr><td>base</td><td>-</td><td><em>base</em> of the interpreted integer value</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<ul>
+<li>
+<p>If successful, an integer value corresponding to the contents of</p>
+
+<code>str</code>
+
+<p>is returned.</p>
+</li>
+<li>
+<p>If the converted value falls out of range of corresponding return type, a range error occurs (setting</p>
+
+<a href="/reference/c/error/errno/">errno</a>
+
+<p>to</p>
+
+<a href="/reference/c/error/errno_macros/">ERANGE</a>
+
+<p>) and</p>
+
+<a href="/reference/c/types/limits/">LONG_MAX</a>
+
+<p>,</p>
+
+<a href="/reference/c/types/limits/">LONG_MIN</a>
+
+<p>,</p>
+
+<a href="/reference/c/types/limits/">LLONG_MAX</a>
+
+<p>or</p>
+
+<a href="/reference/c/types/limits/">LLONG_MIN</a>
+
+<p>is returned.</p>
+</li>
+<li>
+<p>If no conversion can be performed,</p>
+
+<code>0</code>
+
+<p>is returned.</p>
+</li>
+</ul>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <errno.h>
+#include <limits.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(void)
+{
+    // parsing with error handling
+    const char* p = "10 200000000000000000000000000000 30 -40 junk";
+    printf("Parsing '%s':\n", p);
+ 
+    for (;;)
+    {
+        // errno can be set to any non-zero value by a library function call
+        // regardless of whether there was an error, so it needs to be cleared
+        // in order to check the error set by strtol
+        errno = 0;
+        char* end;
+        const long i = strtol(p, &end, 10);
+        if (p == end)
+            break;
+ 
+        const bool range_error = errno == ERANGE;
+        printf("Extracted '%.*s', strtol returned %ld.", (int)(end-p), p, i);
+        p = end;
+ 
+        if (range_error)
+            printf("\n --> Range error occurred.");
+ 
+        putchar('\n');
+    }
+ 
+    printf("Unextracted leftover: '%s'\n\n", p);
+ 
+    // parsing without error handling
+    printf("\"1010\" in binary  --> %ld\n", strtol("1010", NULL, 2));
+    printf("\"12\"   in octal   --> %ld\n", strtol("12",   NULL, 8));
+    printf("\"A\"    in hex     --> %ld\n", strtol("A",    NULL, 16));
+    printf("\"junk\" in base-36 --> %ld\n", strtol("junk", NULL, 36));
+    printf("\"012\"  in auto-detected base --> %ld\n", strtol("012",  NULL, 0));
+    printf("\"0xA\"  in auto-detected base --> %ld\n", strtol("0xA",  NULL, 0));
+    printf("\"junk\" in auto-detected base --> %ld\n", strtol("junk", NULL, 0));
+}
+```
+
+<p>Possible output:</p>
+
+```text
+Parsing '10 200000000000000000000000000000 30 -40 junk':
+Extracted '10', strtol returned 10.
+Extracted ' 200000000000000000000000000000', strtol returned 9223372036854775807.
+ --> Range error occurred.
+Extracted ' 30', strtol returned 30.
+Extracted ' -40', strtol returned -40.
+Unextracted leftover: ' junk'
+ 
+"1010" in binary  --> 10
+"12"   in octal   --> 10
+"A"    in hex     --> 10
+"junk" in base-36 --> 926192
+"012"  in auto-detected base --> 10
+"0xA"  in auto-detected base --> 10
+"junk" in auto-detected base --> 0
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.1.4 The strtol, strtoll, strtoul, and strtoull functions (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.1.4 The strtol, strtoll, strtoul, and strtoull functions (p: 251-252)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22.1.4 The strtol, strtoll, strtoul, and strtoull functions (p: 344-345)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.20.1.4 The strtol, strtoll, strtoul, and strtoull functions (p: 310-311)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.10.1.5 The strtol function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/byte/atoi/">atoi<br />atol<br />atoll</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>converts a byte string to an integer value   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/byte/strtoul/">strtoul<br />strtoull</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>converts a byte string to an unsigned integer value   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcstol/">wcstol<br />wcstoll</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>converts a wide string to an integer value   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/string/wide/wcstoul/">wcstoul<br />wcstoull</a>
+
+<span class="std std-since std-c95">(C95)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>converts a wide string to an unsigned integer value   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/byte/strtol" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+strtol, strtoll</td></tr>
+</table>

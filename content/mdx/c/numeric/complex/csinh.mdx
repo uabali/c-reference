@@ -1,0 +1,388 @@
+---
+title: "csinhf, csinh, csinhl"
+slug: "c/numeric/complex/csinh"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/complex/csinh"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;complex.h&gt;</code></p>
+
+```c
+float complex       csinhf( float complex z );
+```
+
+<p class="decl-note">(1) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+double complex      csinh( double complex z );
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+long double complex csinhl( long double complex z );
+```
+
+<p class="decl-note">(3) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="decl-header">Defined in header <code>&lt;tgmath.h&gt;</code></p>
+
+```c
+#define sinh( z )
+```
+
+<p class="decl-note">(4) <span class="std std-since std-c99">(since C99)</span></p>
+
+<p class="li-note"><span class="li-num">1-3)</span>  Computes the complex hyperbolic sine of <code>z</code>.</p>
+
+<p class="li-note"><span class="li-num">4)</span>  Type-generic macro: If <code>z</code> has type <code>long double complex</code>, <code>csinhl</code> is called. if <code>z</code> has type <code>double complex</code>, <code>csinh</code> is called, if <code>z</code> has type <code>float complex</code>, <code>csinhf</code> is called. If <code>z</code> is real or integer, then the macro invokes the corresponding real function (<code>sinhf</code>, <code>sinh</code>, <code>sinhl</code>). If <code>z</code> is imaginary, then the macro invokes the corresponding real version of the function <a href="/reference/c/numeric/math/sin/">sin</a>, implementing the formula sinh(iy) = i sin(y), and the return type is imaginary.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>z</td><td>-</td><td>complex argument</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>If no errors occur, complex hyperbolic sine of <code>z</code> is returned</p>
+
+<h3 id="Error_handling_and_special_values">Error handling and special values</h3>
+
+<p>Errors are reported consistent with <a href="/reference/c/numeric/math/math_errhandling/">math_errhandling</a></p>
+
+<p>If the implementation supports IEEE floating-point arithmetic,</p>
+
+<ul>
+<li>
+<code>csinh(conj(z)) == conj(csinh(z))</code>
+</li>
+<li>
+<code>csinh(z) == -csinh(-z)</code>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>+0+0i</code>
+
+<p>, the result is</p>
+
+<code>+0+0i</code>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>+0+∞i</code>
+
+<p>, the result is</p>
+
+<code>±0+NaNi</code>
+
+<p>(the sign of the real part is unspecified) and</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>is raised</p>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>+0+NaNi</code>
+
+<p>, the result is</p>
+
+<code>±0+NaNi</code>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>x+∞i</code>
+
+<p>(for any positive finite x), the result is</p>
+
+<code>NaN+NaNi</code>
+
+<p>and</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>is raised</p>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>x+NaNi</code>
+
+<p>(for any positive finite x), the result is</p>
+
+<code>NaN+NaNi</code>
+
+<p>and</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>may be raised</p>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>+∞+0i</code>
+
+<p>, the result is</p>
+
+<code>+∞+0i</code>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>+∞+yi</code>
+
+<p>(for any positive finite y), the result is</p>
+
+<code>+∞cis(y)</code>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>+∞+∞i</code>
+
+<p>, the result is</p>
+
+<code>±∞+NaNi</code>
+
+<p>(the sign of the real part is unspecified) and</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>is raised</p>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>+∞+NaNi</code>
+
+<p>, the result is</p>
+
+<code>±∞+NaNi</code>
+
+<p>(the sign of the real part is unspecified)</p>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>NaN+0i</code>
+
+<p>, the result is</p>
+
+<code>NaN+0i</code>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>NaN+yi</code>
+
+<p>(for any finite nonzero y), the result is</p>
+
+<code>NaN+NaNi</code>
+
+<p>and</p>
+
+<a href="/reference/c/numeric/fenv/FE_exceptions/">FE_INVALID</a>
+
+<p>may be raised</p>
+</li>
+<li>
+<p>If</p>
+
+<code>z</code>
+
+<p>is</p>
+
+<code>NaN+NaNi</code>
+
+<p>, the result is</p>
+
+<code>NaN+NaNi</code>
+</li>
+</ul>
+
+<p>where cis(y) is cos(y) + i sin(y)</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>Mathematical definition of hyperbolic sine is</p>
+
+sinh z = ez -e-z 2
+
+<p>Hyperbolic sine is an entire function in the complex plane and has no branch cuts. It is periodic with respect to the imaginary component, with period 2πi</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <math.h>
+#include <complex.h>
+ 
+int main(void)
+{
+    double complex z = csinh(1);  // behaves like real sinh along the real line
+    printf("sinh(1+0i) = %f%+fi (sinh(1)=%f)\n", creal(z), cimag(z), sinh(1));
+ 
+    double complex z2 = csinh(I); // behaves like sine along the imaginary line
+    printf("sinh(0+1i) = %f%+fi ( sin(1)=%f)\n", creal(z2), cimag(z2), sin(1));
+}
+```
+
+<p>Output:</p>
+
+```text
+sinh(1+0i) = 1.175201+0.000000i (sinh(1)=1.175201)
+sinh(0+1i) = 0.000000+0.841471i ( sin(1)=0.841471)
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3.6.5 The csinh functions (p: 194)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.25 Type-generic math &lt;tgmath.h&gt; (p: 373-375)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>G.6.2.5 The csinh functions (p: 541-542)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>G.7 Type-generic math &lt;tgmath.h&gt; (p: 545)</p>
+</li>
+</ul></dd>
+</dl>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3.6.5 The csinh functions (p: 175-176)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.22 Type-generic math &lt;tgmath.h&gt; (p: 335-337)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>G.6.2.5 The csinh functions (p: 476-477)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>G.7 Type-generic math &lt;tgmath.h&gt; (p: 480)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/complex/ccosh/">ccosh<br />ccoshf<br />ccoshl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex hyperbolic cosine   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/ctanh/">ctanh<br />ctanhf<br />ctanhl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex hyperbolic tangent   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/complex/casinh/">casinh<br />casinhf<br />casinhl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes the complex arc hyperbolic sine   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/numeric/math/sinh/">sinh<br />sinhf<br />sinhl</a>
+
+<span class="std std-since std-c99">(C99)</span><br /><span class="std std-since std-c99">(C99)</span></td><td>computes hyperbolic sine (\({\small\sinh{x} }\)sinh(x))   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/numeric/complex/sinh" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+sinh</td></tr>
+</table></section>

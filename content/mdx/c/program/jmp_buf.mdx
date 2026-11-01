@@ -1,0 +1,101 @@
+---
+title: "jmp_buf"
+slug: "c/program/jmp_buf"
+category: "program"
+source: "https://en.cppreference.com/w/c/program/jmp_buf"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;setjmp.h&gt;</code></p>
+
+```c
+typedef /* unspecified */ jmp_buf;
+```
+
+<p>The <code>jmp_buf</code> type is an array type suitable for storing information to restore a calling environment. The stored information is sufficient to restore execution at the correct block of the program and invocation of that block. The state of floating-point status flags, or open files, or any other data is not stored in an object of type <code>jmp_buf</code>.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.13/2 Nonlocal jumps &lt;setjmp.h&gt; (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.13/2 Nonlocal jumps &lt;setjmp.h&gt; (p: 191)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.13/2 Nonlocal jumps &lt;setjmp.h&gt; (p: 262)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.13/2 Nonlocal jumps &lt;setjmp.h&gt; (p: 243)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.6 NON-LOCAL JUMPS &lt;setjmp.h&gt;</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/program/setjmp/">setjmp</a></td><td>saves the context   <span class="mark-note">(function macro)</span></td></tr>
+<tr><td><a href="/reference/c/program/longjmp/">longjmp</a></td><td>jumps to specified location   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/utility/program/jmp_buf" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+jmp_buf</td></tr>
+</table>

@@ -1,0 +1,104 @@
+---
+title: "mtx_trylock"
+slug: "c/thread/mtx_trylock"
+category: "thread"
+source: "https://en.cppreference.com/w/c/thread/mtx_trylock"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;threads.h&gt;</code></p>
+
+```c
+int mtx_trylock( mtx_t *mutex );
+```
+
+<p class="decl-note"><span class="std std-since std-c11">(since C11)</span></p>
+
+<p>Tries to lock the mutex pointed to by <code>mutex</code> without blocking. Returns immediately if the mutex is already locked.</p>
+
+<p>Prior calls to <a href="/reference/c/thread/mtx_unlock/">mtx_unlock</a> on the same mutex <em>synchronize-with</em> this operation (if this operation succeeds), and all lock/unlock operations on any given mutex form a single total order (similar to the modification order of an atomic)</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>mutex</td><td>-</td><td>pointer to the mutex to lock</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p><a href="/reference/c/thread/thrd_errors/">thrd_success</a> if successful, <a href="/reference/c/thread/thrd_errors/">thrd_busy</a> if the mutex has already been locked or due to a spurious failure to acquire an available mutex, <a href="/reference/c/thread/thrd_errors/">thrd_error</a> if an error occurs.</p>
+
+<h3 id="Defect_reports">Defect reports</h3>
+
+<p>The following behavior-changing defect reports were applied retroactively to previously published C standards.</p>
+
+<table class="ref-table">
+<tr><th>DR</th><th>Applied to</th><th>Behavior as published</th><th>Correct behavior</th></tr>
+<tr><td><a href="https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2396.htm#dr_470" rel="noreferrer" target="_blank">DR 470</a></td><td>C11</td><td><code>mtx_trylock</code> was not allowed to fail spuriously</td><td>allowed</td></tr>
+</table>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.4.5 The mtx_trylock function (p: 278-279)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.26.4.5 The mtx_trylock function (p: 382)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/thread/mtx_lock/">mtx_lock</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>blocks until locks a mutex   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/mtx_timedlock/">mtx_timedlock</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>blocks until locks a mutex or times out   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/thread/mtx_unlock/">mtx_unlock</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>unlocks a mutex   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/mutex/try_lock" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+mutex::try_lock</td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/timed_mutex/try_lock" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+timed_mutex::try_lock</td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/recursive_mutex/try_lock" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+recursive_mutex::try_lock</td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/thread/recursive_timed_mutex/try_lock" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+recursive_timed_mutex::try_lock</td></tr>
+</table>

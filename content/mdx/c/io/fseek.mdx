@@ -1,0 +1,194 @@
+---
+title: "fseek"
+slug: "c/io/fseek"
+category: "io"
+source: "https://en.cppreference.com/w/c/io/fseek"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+```c
+int fseek( FILE* stream, long offset, int origin );
+```
+
+```c
+#define SEEK_SET    /* unspecified */
+#define SEEK_CUR    /* unspecified */
+
+#define SEEK_END    /* unspecified */
+```
+
+<p>Sets the file position indicator for the file stream <code>stream</code> to the value pointed to by <code>offset</code>.</p>
+
+<p>If the <code>stream</code> is open in binary mode, the new position is exactly <code>offset</code> bytes measured from the beginning of the file if <code>origin</code> is <a href="/reference/c/io/">SEEK_SET</a>, from the current file position if <code>origin</code> is <a href="/reference/c/io/">SEEK_CUR</a>, and from the end of the file if <code>origin</code> is <a href="/reference/c/io/">SEEK_END</a>. Binary streams are not required to support <a href="/reference/c/io/">SEEK_END</a>, in particular if additional null bytes are output.</p>
+
+<p>If the <code>stream</code> is open in text mode, the only supported values for <code>offset</code> are zero (which works with any <code>origin</code>) and a value returned by an earlier call to <a href="/reference/c/io/ftell/">ftell</a> on a stream associated with the same file (which only works with <code>origin</code> of <a href="/reference/c/io/">SEEK_SET</a>).</p>
+
+<p>If the <code>stream</code> is wide-oriented, the restrictions of both text and binary streams apply (result of <a href="/reference/c/io/ftell/">ftell</a> is allowed with <a href="/reference/c/io/">SEEK_SET</a> and zero offset is allowed from <a href="/reference/c/io/">SEEK_SET</a> and <a href="/reference/c/io/">SEEK_CUR</a>, but not <a href="/reference/c/io/">SEEK_END</a>).</p>
+
+<p>In addition to changing the file position indicator, <code>fseek</code> undoes the effects of <a href="/reference/c/io/ungetc/">ungetc</a> and clears the end-of-file status, if applicable.</p>
+
+<p>If a read or write error occurs, the error indicator for the stream (<a href="/reference/c/io/ferror/">ferror</a>) is set and the file position is unaffected.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>stream</td><td>-</td><td>file stream to modify</td></tr>
+<tr><td>offset</td><td>-</td><td>number of characters to shift the position relative to origin</td></tr>
+<tr><td>origin</td><td>-</td><td>position to which <code>offset</code> is added. It can have one of the following values: <a href="/reference/c/io/">SEEK_SET</a>, <a href="/reference/c/io/">SEEK_CUR</a>, <a href="/reference/c/io/">SEEK_END</a></td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p><code>0</code> upon success, nonzero value otherwise.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>After seeking to a non-end position in a wide stream, the next call to any output function may render the remainder of the file undefined, e.g. by outputting a multibyte sequence of a different length.</p>
+
+<p>For text streams, the only valid values of <code>offset</code> are <code>0</code> (applicable to any <code>origin</code>) and a value returned by an earlier call to <a href="/reference/c/io/ftell/">ftell</a> (only applicable to <a href="/reference/c/io/">SEEK_SET</a>).</p>
+
+<p>POSIX allows seeking beyond the existing end of file. If an output is performed after this seek, any read from the gap will return zero bytes. Where supported by the filesystem, this creates a <em>sparse file</em>.</p>
+
+<p>POSIX also requires that <code>fseek</code> first performs <a href="/reference/c/io/fflush/">fflush</a> if there are any unwritten data (but whether the shift state is restored is implementation-defined).</p>
+
+<p>POSIX specifies, that <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/fseek.html" rel="noreferrer" target="_blank"><code>fseek</code></a> should return <code>-1</code> on error, and set <a href="/reference/c/error/errno/">errno</a> to indicate the error.</p>
+
+<p>On Windows, <a href="https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/fseek-fseeki64" rel="noreferrer" target="_blank"><code>_fseeki64</code></a> can be used to work with files larger than 2 GiB.</p>
+
+<h3 id="Example">Example</h3>
+
+<p><code>fseek</code> with error checking:</p>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(void)
+{
+    // Prepare an array of double values.
+    #define SIZE 5
+    double A[SIZE] = {1.0, 2.0, 3.0, 4.0, 5.0};
+ 
+    // Write array to a file.
+    FILE * fp = fopen("test.bin", "wb");
+    fwrite(A, sizeof(double), SIZE, fp);
+    fclose (fp);
+ 
+    // Read the double values into array B.
+    double B[SIZE];
+    fp = fopen("test.bin", "rb");
+ 
+    // Set the file position indicator in front of third double value.
+    if (fseek(fp, sizeof(double) * 2L, SEEK_SET) != 0)
+    {
+        fprintf(stderr, "fseek() failed in file %s at line # %d\n",
+                __FILE__, __LINE__ - 2);
+        fclose(fp);
+        return EXIT_FAILURE;
+    }
+ 
+    int ret_code = fread(B, sizeof(double), 1, fp); // reads one double value
+    printf("ret_code == %d\n", ret_code);           // prints the number of values read
+    printf("B[0] == %.1f\n", B[0]);                 // prints one value
+ 
+    fclose(fp);
+    return EXIT_SUCCESS;
+}
+```
+
+<p>Possible output:</p>
+
+```text
+ret_code == 1
+B[0] == 3.0
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.23.9.2 The fseek function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.9.2 The fseek function (p: 245)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.9.2 The fseek function (p: 336-337)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.9.2 The fseek function (p: 302-303)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9.9.2 The fseek function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/fsetpos/">fsetpos</a></td><td>moves the file position indicator to a specific location in a file   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fgetpos/">fgetpos</a></td><td>gets the file position indicator   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/ftell/">ftell</a></td><td>returns the current file position indicator   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/rewind/">rewind</a></td><td>moves the file position indicator to the beginning in a file   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c/fseek" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+fseek</td></tr>
+</table>

@@ -1,0 +1,185 @@
+---
+title: "ftell"
+slug: "c/io/ftell"
+category: "io"
+source: "https://en.cppreference.com/w/c/io/ftell"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;stdio.h&gt;</code></p>
+
+```c
+long ftell( FILE* stream );
+```
+
+<p>Returns the file position indicator for the file stream <code>stream</code>.</p>
+
+<p>If the stream is open in binary mode, the value obtained by this function is the number of bytes from the beginning of the file.</p>
+
+<p>If the stream is open in text mode, the value returned by this function is unspecified and is only meaningful as the input to <a href="/reference/c/io/fseek/">fseek()</a>.</p>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>stream</td><td>-</td><td>file stream to examine</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>File position indicator on success or <code>-1L</code> if failure occurs.</p>
+
+<p>On error, the <code>errno</code> variable is set to implementation-defined positive value.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>On Windows, <a href="https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/ftell-ftelli64" rel="noreferrer" target="_blank"><code>_ftelli64</code></a> can be used to work with files larger than 2 GiB.</p>
+
+<h3 id="Example">Example</h3>
+
+<p>Demonstrates <code>ftell()</code> with error checking. Writes then reads a few floating-point (FP) values to/from a file.</p>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+ 
+/* If the condition is not met then exit the program with error message. */
+void check(_Bool condition, const char* func, int line)
+{
+    if (condition)
+        return;
+    perror(func);
+    fprintf(stderr, "%s failed in file %s at line # %d\n", func, __FILE__, line - 1);
+    exit(EXIT_FAILURE);
+}
+ 
+int main(void)
+{
+    /* Prepare an array of FP values. */
+    #define SIZE 5
+    double A[SIZE] = {1.1, 2.0, 3.0, 4.0, 5.0};
+ 
+    /* Write array to a file. */
+    const char* fname = "/tmp/test.bin";
+    FILE* file = fopen(fname, "wb");
+    check(file != NULL, "fopen()", __LINE__);
+ 
+    const int write_count = fwrite(A, sizeof(double), SIZE, file);
+    check(write_count == SIZE, "fwrite()", __LINE__);
+ 
+    fclose(file);
+ 
+    /* Read the FP values into array B. */
+    double B[SIZE];
+    file = fopen(fname, "rb");
+    check(file != NULL, "fopen()", __LINE__);
+ 
+    long int pos = ftell(file); /* position indicator at start of file */
+    check(pos != -1L, "ftell()", __LINE__);
+    printf("pos: %ld\n", pos);
+ 
+    const int read_count = fread(B, sizeof(double), 1, file); /* read one FP value */
+    check(read_count == 1, "fread()", __LINE__);
+ 
+    pos = ftell(file); /* position indicator after reading one FP value */
+    check(pos != -1L, "ftell()", __LINE__);
+    printf("pos: %ld\n", pos);
+    printf("B[0]: %.1f\n", B[0]); /* print one FP value */
+ 
+    return EXIT_SUCCESS;
+}
+```
+
+<p>Possible output:</p>
+
+```text
+pos: 0
+pos: 8
+B[0]: 1.1
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.9.4 The ftell function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.9.4 The ftell function (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.21.9.4 The ftell function (p: 337-338)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.19.9.4 The ftell function (p: 303-304)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>4.9.9.4 The ftell function</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/io/fgetpos/">fgetpos</a></td><td>gets the file position indicator   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fseek/">fseek</a></td><td>moves the file position indicator to a specific location in a file   <span class="mark-note">(function)</span></td></tr>
+<tr><td><a href="/reference/c/io/fsetpos/">fsetpos</a></td><td>moves the file position indicator to a specific location in a file   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/io/c/ftell" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+ftell</td></tr>
+</table>

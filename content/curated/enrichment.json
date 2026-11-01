@@ -1,0 +1,1270 @@
+[
+  {
+    "slug": "c/language/pointer",
+    "difficulty": "Beginner",
+    "diagram": "pointers",
+    "why": "A pointer is an address you can store, copy, and follow. C uses that one mechanism for out-parameters, dynamic objects, optional values, and callbacks.",
+    "when": "Use a pointer when a function must change a caller's object, when the object's lifetime is not the caller's frame, or when the callee should not know the concrete type (void *). Prefer a plain value or an index when the data already lives in an array you own.",
+    "pitfalls": [
+      "Dereferencing an uninitialized or null pointer is undefined behavior, not a reliable crash.",
+      "A pointer to a local variable dies with that frame. Returning &local is a dangling pointer.",
+      "Pointer arithmetic is only defined inside an array, or one past its end. You may not dereference one past the end.",
+      "Casting a pointer to an unrelated object type and then reading it breaks strict aliasing, except for char * and similar special cases."
+    ],
+    "practice": [
+      "Initialize every pointer. C23's nullptr is a pointer constant and is clearer than 0.",
+      "Decide who frees the object. One owner, documented at the function boundary.",
+      "Write const on the pointee when the function only reads: const int *.",
+      "int * const is a const pointer. const int * is a pointer to const. They are not the same."
+    ],
+    "c23": "nullptr has type nullptr_t and converts to any pointer type. It does not convert to an ordinary integer the way a bare 0 does, which matters for _Generic and overloaded macros.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Swap through pointers",
+        "code": "#include <stdio.h>\nvoid swap(int *a, int *b) {\n    int tmp = *a;\n    *a = *b;\n    *b = tmp;\n}\nint main(void) {\n    int x = 1, y = 2;\n    swap(&x, &y);\n    printf(\"%d %d\\n\", x, y);\n    return x == 2 && y == 1 ? 0 : 1;\n}\n"
+      },
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Call through a function pointer",
+        "code": "#include <stdio.h>\nint apply(int value, int (*fn)(int)) { return fn(value); }\nint square(int value) { return value * value; }\nint main(void) {\n    int (*fp)(int) = square;\n    printf(\"%d\\n\", apply(5, fp));\n    return fp(5) == 25 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/array",
+    "difficulty": "Beginner",
+    "diagram": "arrays",
+    "why": "An array is a contiguous sequence of objects. In almost every expression it decays to a pointer to its first element, which is why function parameters written as int a[10] are actually int *.",
+    "when": "Use an array when the count is known and the storage should live with the owner: a local buffer, a field in a struct, or a file-scope table. Use malloc when the count is only known at run time.",
+    "pitfalls": [
+      "sizeof on a decayed parameter is the size of a pointer, not the array.",
+      "There is no bounds check. a[i] and *(a + i) are the same, including the lack of a check.",
+      "A variable-length array is an automatic object. A huge VLA can blow the stack, and VLAs are optional in C11 and later."
+    ],
+    "practice": [
+      "Pass the length beside the pointer: void fill(size_t n, int *a).",
+      "Prefer int a[static 1] in a prototype when a null pointer is not allowed (C99).",
+      "For a compile-time count, sizeof a / sizeof a[0] works only while a is still an array."
+    ],
+    "c23": "Empty initialization int a[4] = {}; zeroes the array. The old idiom was = {0}, which is still fine.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "sizeof stays with the array",
+        "code": "#include <stdio.h>\nsize_t words(const char *s) { return sizeof s; }\nint main(void) {\n    char buf[] = \"Hi\";\n    printf(\"array %zu pointer-param %zu\\n\", sizeof buf, words(buf));\n    return sizeof buf == 3 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/string_literal",
+    "difficulty": "Beginner",
+    "diagram": "arrays",
+    "why": "A string literal is a static array of char that already contains the terminating null. It is how most C text enters a program, and it is not a String object.",
+    "when": "Use a literal for fixed messages and keys. Copy it into an array or into malloc storage when the program needs to edit the characters.",
+    "pitfalls": [
+      "Writing through a pointer to a literal is undefined. char *p = \"Hi\"; p[0] = 'h'; is not allowed.",
+      "Adjacent literals concatenate in translation, which can hide a missing comma in an array initializer.",
+      "The size of the literal includes the null. sizeof \"Hi\" is 3, while the text length is 2."
+    ],
+    "practice": [
+      "Point at a literal with const char * so the compiler rejects writes.",
+      "char buf[] = \"Hi\"; makes a writable copy.",
+      "UTF-8 literals (u8\"...\") are char8_t arrays in C23, not a different runtime string type."
+    ],
+    "c23": "char8_t is a distinct type for UTF-8 text. u8 literals have type char8_t[N]. Mixing them with char * may need an explicit cast.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Copy a literal before editing",
+        "code": "#include <stdio.h>\n#include <string.h>\nint main(void) {\n    const char *literal = \"Hi\";\n    char buf[] = \"Hi\";\n    buf[0] = 'h';\n    printf(\"%s %zu\\n\", buf, sizeof literal);\n    return buf[0] == 'h' && literal[2] == '\\0' ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/string/byte",
+    "difficulty": "Beginner",
+    "diagram": "arrays",
+    "why": "The byte-string functions in string.h are the standard library's text tools. They all assume a terminating zero unless the name says otherwise (strncmp, memcpy, memchr).",
+    "when": "Use them for C strings you already own. For untrusted input with a known buffer size, prefer the bounded forms: snprintf, and memchr or an explicit length, not unbounded strcpy.",
+    "pitfalls": [
+      "strlen on a pointer that is not terminated reads off the end of the buffer.",
+      "strncpy does not always write a terminator. It is a poor 'safe strcpy'.",
+      "strcat and sprintf share the same overflow story as strcpy."
+    ],
+    "practice": [
+      "Keep the capacity next to the pointer and refuse to walk past it.",
+      "strdup (C23) allocates a copy; you still have to free it.",
+      "memcmp compares bytes. strcmp compares C strings and stops at the first zero."
+    ],
+    "c23": "strdup and strndup are standard. memset_explicit is the function you want when a compiler might otherwise delete a wipe of a secret.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Bounded copy that always terminates",
+        "code": "#include <stdio.h>\n#include <string.h>\nvoid copy_bounded(char *dst, size_t cap, const char *src) {\n    if (cap == 0) return;\n    size_t n = 0;\n    while (n + 1 < cap && src[n] != '\\0') {\n        dst[n] = src[n];\n        n++;\n    }\n    dst[n] = '\\0';\n}\nint main(void) {\n    char buf[4];\n    copy_bounded(buf, sizeof buf, \"hello\");\n    printf(\"%s\\n\", buf);\n    return strcmp(buf, \"hel\") == 0 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/struct",
+    "difficulty": "Beginner",
+    "diagram": "padding",
+    "why": "A struct is a named layout of objects. It is the usual way to keep related data together and to pass that bundle by pointer.",
+    "when": "Use a struct when several values form one object: a point, a buffer plus its length, a file header. Use separate variables only when they are not a unit.",
+    "pitfalls": [
+      "Padding bytes are not yours to interpret. Comparing structs with memcmp can fail because padding is unspecified.",
+      "Field order changes sizeof. A char between two doubles is expensive.",
+      "A flexible array member must be last, and the struct is allocated with room for the tail."
+    ],
+    "practice": [
+      "Pass structs larger than a couple of words by pointer. Pass small ones by value when you want a copy.",
+      "Initialize with designated initializers: (struct Point){ .x = 1 }.",
+      "If the layout is an external file format, use explicit widths and do not trust the compiler's padding."
+    ],
+    "c23": "Designated initializers can be mixed more freely than in C99, and empty initialization zeroes the object. constexpr can name a compound literal that is a constant.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Designated initializer and sizeof",
+        "code": "#include <stdio.h>\nstruct Sample {\n    char tag;\n    int count;\n    char flag;\n};\nint main(void) {\n    struct Sample s = { .count = 3, .tag = 'A' };\n    printf(\"%zu %d\\n\", sizeof s, s.count);\n    return s.count == 3 && s.flag == 0 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/union",
+    "difficulty": "Intermediate",
+    "why": "A union stores one of several types in the same memory. It is the right tool for a tagged value, a register that has several views, or a careful type pun.",
+    "when": "Use a union with a tag when a value is an int or a pointer or a double, not all at once. Do not use it as a shortcut to break aliasing unless the read is through the union that wrote the value, which C permits as type punning.",
+    "pitfalls": [
+      "Reading a member that is not the active one is not a general conversion. Float bits read as int are a pun, not a cast.",
+      "The size is the largest member, plus padding for alignment.",
+      "A union does not track which member is active. If you need that, store a tag beside it."
+    ],
+    "practice": [
+      "Put the union inside a struct with an enum tag.",
+      "For numeric conversion, write a cast. For bit reinterpretation, a union or memcpy is the honest tool."
+    ],
+    "c23": "Unions may be empty-initialized, which sets the first member to zero. That does not make the other members 'active' in a way you should rely on for trap representations.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Tagged union",
+        "code": "#include <stdio.h>\nenum Kind { KIND_INT, KIND_PTR };\nstruct Value {\n    enum Kind kind;\n    union {\n        int number;\n        int *pointer;\n    } as;\n};\nint read_int(struct Value v) {\n    return v.kind == KIND_INT ? v.as.number : -1;\n}\nint main(void) {\n    struct Value v = { .kind = KIND_INT, .as.number = 9 };\n    printf(\"%d\\n\", read_int(v));\n    return read_int(v) == 9 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/enum",
+    "difficulty": "Beginner",
+    "why": "An enumeration gives names to integer constants. It documents a closed set of choices better than a pile of macros.",
+    "when": "Use an enum for states, tags, and options that are integers. Do not use it when the values must be a specific width on disk; an enum's underlying type was historically int.",
+    "pitfalls": [
+      "Enumerators are integer constants. Nothing stops you assigning an out-of-range int to an enum object.",
+      "Two enumerations are not distinct types for the type checker the way they are in C++. A function taking one enum will accept another."
+    ],
+    "practice": [
+      "Give the enum a name and use it in function signatures so readers see the unit.",
+      "If you need a specific representation, set the values explicitly and static_assert the ones that matter."
+    ],
+    "c23": "C23 lets you specify the underlying type, for example enum Color : unsigned char { RED, GREEN }. That fixes the width.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Named states",
+        "code": "#include <stdio.h>\nenum State { STATE_IDLE, STATE_RUN, STATE_DONE };\nconst char *name(enum State state) {\n    switch (state) {\n    case STATE_IDLE: return \"idle\";\n    case STATE_RUN: return \"run\";\n    case STATE_DONE: return \"done\";\n    }\n    return \"?\";\n}\nint main(void) {\n    printf(\"%s\\n\", name(STATE_RUN));\n    return STATE_DONE == 2 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/function_declaration",
+    "difficulty": "Beginner",
+    "why": "A declaration introduces a function's type without defining it. Headers are full of them so callers and the definition agree.",
+    "when": "Put declarations in a header when more than one file calls the function. Keep a static function's declaration in the .c file, or just define it before use.",
+    "pitfalls": [
+      "An old-style declaration void f(); means 'unspecified arguments', not 'no arguments'. void f(void); means no arguments.",
+      "A declaration and a definition with incompatible types is undefined, often only caught by the linker or not at all if they are in different translation units without a shared header."
+    ],
+    "practice": [
+      "Always write a prototype. Always write (void) for an empty parameter list.",
+      "Include the header in the file that defines the function, so the compiler checks the definition against the declaration."
+    ],
+    "c23": "A parameter list () is treated as (void). The old unspecified-argument meaning is gone. [[nodiscard]] can sit on the declaration.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Prototype checked against the call",
+        "code": "#include <stdio.h>\nint add(int a, int b);\nint main(void) {\n    printf(\"%d\\n\", add(2, 3));\n    return add(2, 3) == 5 ? 0 : 1;\n}\nint add(int a, int b) { return a + b; }\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/function_definition",
+    "difficulty": "Beginner",
+    "why": "A definition is the function body. It is also a declaration. One definition of an external function may exist in the whole program.",
+    "when": "Define a function in a .c file. Mark it static if no other file should see it. That also allows the compiler to inline and drop it.",
+    "pitfalls": [
+      "Forgetting static on a helper can collide with the same name in another file at link time.",
+      "A function that returns a pointer to its own local variable hands the caller a dead address.",
+      "main should be int main(void) or int main(int argc, char **argv). Other signatures are not portable."
+    ],
+    "practice": [
+      "Keep functions short enough that the error paths are visible.",
+      "Return an error code or write through an out-parameter. Do not hide failure."
+    ],
+    "c23": "You can repeat the constexpr and attribute story on a definition. constexpr functions exist in C23 but need a newer compiler than the GCC 13 used to check the object form on this site.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "static helper",
+        "code": "#include <stdio.h>\nstatic int twice(int n) { return n * 2; }\nint main(void) {\n    printf(\"%d\\n\", twice(21));\n    return twice(21) == 42 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/storage_duration",
+    "difficulty": "Intermediate",
+    "diagram": "stack-heap",
+    "why": "Storage duration is when an object's memory exists. Automatic objects die with the block. Static objects live for the whole program. Allocated objects live until free.",
+    "when": "Use automatic storage for ordinary locals. Use static for tables and for state that must outlive a call and is not shared across threads. Use malloc when the lifetime or size is dynamic.",
+    "pitfalls": [
+      "A static local is shared by every caller and is not reset between calls. It is also a race if two threads enter the function.",
+      "Returning the address of an automatic object is the classic dangling pointer.",
+      "thread_local is a fourth duration. A plain static is not per-thread."
+    ],
+    "practice": [
+      "Name the owner of allocated storage in the function comment.",
+      "Do not use static locals as a hidden cache unless the data is immutable after init."
+    ],
+    "c23": "thread_local is a real keyword, not only the _Thread_local macro. The durations themselves are unchanged.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Automatic versus static",
+        "code": "#include <stdio.h>\nint next_id(void) {\n    static int id = 0;\n    return ++id;\n}\nint main(void) {\n    int local = 1;\n    int a = next_id();\n    int b = next_id();\n    printf(\"%d %d %d\\n\", local, a, b);\n    return a == 1 && b == 2 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/const",
+    "difficulty": "Beginner",
+    "why": "const documents that this view of an object is not used for writing. It is a compile-time contract on that expression, not a lock on the bytes.",
+    "when": "Put const on pointer parameters that only read. Put it on tables that should live in read-only storage.",
+    "pitfalls": [
+      "const int * can still point at a non-const object. Another pointer may write it.",
+      "Casting away const and writing an object that was defined const is undefined.",
+      "const on a parameter passed by value only stops the function from reassigning its local copy."
+    ],
+    "practice": [
+      "Read the declaration from the identifier outward: const char * const p is a const pointer to const char.",
+      "String literals should be seen through const char *."
+    ],
+    "c23": "constexpr is a stronger promise than const: the object is a constant expression, not merely read-only.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Two different consts",
+        "code": "#include <stdio.h>\nint main(void) {\n    int n = 1;\n    const int *to_const = &n;\n    int * const const_ptr = &n;\n    n = 2;\n    (void)to_const;\n    printf(\"%d\\n\", *const_ptr);\n    return *const_ptr == 2 && *to_const == 2 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/volatile",
+    "difficulty": "Intermediate",
+    "why": "volatile tells the compiler that every access of this object is observable. Loads and stores may not be deleted or merged. That is what memory-mapped registers and signal handlers need.",
+    "when": "Use volatile for a device register, or for a sig_atomic_t flag set from a signal handler. Do not use it as a mutex, a publish mechanism, or a substitute for atomic.",
+    "pitfalls": [
+      "volatile does not make a read-modify-write atomic. i++ on a volatile int can still tear.",
+      "volatile does not order other memory. It is not a memory barrier.",
+      "A pointer to volatile and a pointer to non-volatile are different types."
+    ],
+    "practice": [
+      "For shared flags between threads, use atomic_int from stdatomic.h.",
+      "Access device registers through a volatile-qualified pointer whose address is fixed by the hardware, not by a guess."
+    ],
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "A flag the compiler must reload",
+        "code": "#include <stdio.h>\n#include <signal.h>\nstatic volatile sig_atomic_t stop = 0;\nint main(void) {\n    stop = 1;\n    sig_atomic_t seen = stop;\n    printf(\"%d\\n\", (int)seen);\n    return seen == 1 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/restrict",
+    "difficulty": "Advanced",
+    "why": "restrict is a promise that, for the lifetime of this pointer, the object it points at is not accessed through another pointer. The compiler can then keep values in registers and vectorize.",
+    "when": "Use it on function parameters that are known not to alias, the way memcpy does and memmove deliberately does not. Do not sprinkle it on to silence a hunch.",
+    "pitfalls": [
+      "If the promise is false, the program is undefined. The bug looks like a miscompile.",
+      "restrict on a local pointer does not change the caller's obligations by itself; the promise is about accesses based on that pointer."
+    ],
+    "practice": [
+      "memcpy is restrict. memmove is the function you call when the ranges might overlap.",
+      "If you are not sure, leave restrict off. Correctness first."
+    ],
+    "c23": "restrict itself is C99. C23 did not soften the aliasing rule.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Non-aliasing inputs",
+        "code": "#include <stdio.h>\nint add(int n, const int * restrict a, const int * restrict b) {\n    int sum = 0;\n    for (int i = 0; i < n; i++) sum += a[i] + b[i];\n    return sum;\n}\nint main(void) {\n    int a[2] = {1, 2};\n    int b[2] = {3, 4};\n    printf(\"%d\\n\", add(2, a, b));\n    return add(2, a, b) == 10 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/initialization",
+    "difficulty": "Beginner",
+    "why": "An uninitialized automatic object has an indeterminate value. Reading it is undefined. Initialization is how you avoid that, and how static-duration objects become zero before main.",
+    "when": "Initialize at the declaration when you know the value. For a buffer you are about to fill completely, a later write is fine if every read happens after a write.",
+    "pitfalls": [
+      "int x; printf(\"%d\", x); is undefined, even if it prints 0 today.",
+      "Partial initialization of a struct zeroes the rest. A partial array initializer zeroes the remaining elements too.",
+      "Padding is not guaranteed to be zero just because you set the fields, unless the whole object was zeroed."
+    ],
+    "practice": [
+      "Zero a struct with = {0} or, in C23, = {}.",
+      "Prefer designated initializers so a new field does not silently shift values."
+    ],
+    "c23": "An empty initializer {} performs the same zero initialization as {0}, and it reads better for aggregates.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Empty initializer zeroes the rest",
+        "code": "#include <stdio.h>\nstruct Pair { int a; int b; };\nint main(void) {\n    struct Pair p = { .a = 4 };\n    int nums[4] = {};\n    printf(\"%d %d\\n\", p.b, nums[3]);\n    return p.a == 4 && p.b == 0 && nums[3] == 0 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/typedef",
+    "difficulty": "Beginner",
+    "why": "typedef creates an alias for a type. It does not create a new type. The alias and the original are compatible.",
+    "when": "Use it to name a complicated pointer, especially a function pointer, and to give a domain name to an integer (UserId) when a bare int would be vague.",
+    "pitfalls": [
+      "typedef hides a pointer sometimes (typedef char *String). That makes const String a const pointer, not a pointer to const.",
+      "A typedef of an array decays the same way the array would."
+    ],
+    "practice": [
+      "Name function pointers: typedef int (*Cmp)(const void *, const void *);",
+      "Do not typedef away a pointer unless the ownership story is part of the name."
+    ],
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "A name for a function pointer",
+        "code": "#include <stdio.h>\ntypedef int (*Binary)(int, int);\nint add(int a, int b) { return a + b; }\nint apply(Binary fn, int a, int b) { return fn(a, b); }\nint main(void) {\n    printf(\"%d\\n\", apply(add, 20, 22));\n    return apply(add, 20, 22) == 42 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/sizeof",
+    "difficulty": "Beginner",
+    "why": "sizeof yields the size in bytes of a type or of an expression. The expression is not evaluated, except for a variable-length array.",
+    "when": "Use sizeof *p when allocating, so the type and the size cannot drift apart. Use sizeof buf for the capacity of a real array.",
+    "pitfalls": [
+      "sizeof on a pointer parameter is not the size of the array that decayed into it.",
+      "sizeof(char) is 1 by definition. sizeof(int) is not required to be 4.",
+      "The type of sizeof is size_t, which is unsigned. Mixing it with a negative int in a comparison is a classic bug."
+    ],
+    "practice": [
+      "Write malloc(n * sizeof *p) and check the multiplication for overflow before the call, or use calloc when zeroing is what you want.",
+      "Parentheses are required for a type: sizeof(int). They are optional for an expression: sizeof x."
+    ],
+    "c23": "sizeof remains unevaluated for ordinary expressions. _BitInt(N) has size large enough for N bits, rounded up to a byte, which you should measure with sizeof rather than guess.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Allocate with sizeof *p",
+        "code": "#include <stdio.h>\n#include <stdlib.h>\nint main(void) {\n    size_t n = 4;\n    int *p = malloc(n * sizeof *p);\n    if (!p) return 1;\n    for (size_t i = 0; i < n; i++) p[i] = (int)i;\n    int ok = p[3] == 3;\n    free(p);\n    printf(\"%d\\n\", ok);\n    return ok ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/operator_arithmetic",
+    "difficulty": "Intermediate",
+    "diagram": "pointers",
+    "why": "Arithmetic operators are where C's integer and pointer rules show up. Integers promote, signed overflow is undefined, and pointer subtraction is only defined inside one array.",
+    "when": "Use ordinary arithmetic for values. Use pointer arithmetic only to walk an array you already have the bounds for. Prefer an index if the bound check reads more clearly.",
+    "pitfalls": [
+      "Signed overflow is undefined. Unsigned overflow wraps.",
+      "a / b truncates toward zero. a % b can be negative if a is negative.",
+      "p + n is defined only when the result stays inside the same array or one past the end."
+    ],
+    "practice": [
+      "For a size calculation that might overflow, use the C23 checked arithmetic functions or check before multiplying.",
+      "Subtract pointers only to get a ptrdiff_t distance within one array."
+    ],
+    "c23": "stdckdint.h provides ckd_add, ckd_sub, and ckd_mul. They store the wrapped result and return true if the mathematical result does not fit.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Pointer stride is the element size",
+        "code": "#include <stdio.h>\nint main(void) {\n    int a[4] = {10, 20, 30, 40};\n    int *p = a;\n    printf(\"%d\\n\", *(p + 2));\n    return (p + 2) - p == 2 && *(p + 2) == 30 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/cast",
+    "difficulty": "Intermediate",
+    "why": "A cast is an explicit conversion. C will also convert quietly in assignments and calls. The explicit form is how you say you meant the conversion, and how you convert a pointer.",
+    "when": "Cast a void * back to the real pointer type after malloc or a generic API. Cast a numeric value when the conversion would otherwise surprise a reader. Do not cast to silence a warning you do not understand.",
+    "pitfalls": [
+      "Casting a pointer to an integer loses bits if the integer is too narrow. Use uintptr_t.",
+      "A cast does not make an aliasing violation defined.",
+      "(void)expr is the idiomatic way to discard a [[nodiscard]] result on purpose."
+    ],
+    "practice": [
+      "In C, malloc's void * converts to any object pointer without a cast. A cast is a C++ habit and can hide a missing declaration.",
+      "Integer-to-pointer casts are implementation-defined and belong at the hardware boundary."
+    ],
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Round trip through void *",
+        "code": "#include <stdio.h>\nint main(void) {\n    int n = 5;\n    void *generic = &n;\n    int *back = generic;\n    printf(\"%d\\n\", *back);\n    return *back == 5 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/arithmetic_types",
+    "difficulty": "Intermediate",
+    "why": "The arithmetic types are the integers, the real floating types, and the complex types. Their widths are not fixed by the language except for the minimums in limits.h and the exact-width typedefs in stdint.h when the platform provides them.",
+    "when": "Use int for ordinary counts that fit. Use size_t for object sizes. Use int32_t or uint64_t when the width is part of the contract. Use _BitInt(N) when you need a width the typedefs do not offer.",
+    "pitfalls": [
+      "char may be signed or unsigned. Do not assume either when the value may be above 127.",
+      "Integer promotions lift small types to int before arithmetic. A uint16_t calculation can happen in signed int.",
+      "long is 32 bits on Windows LLP64 and 64 bits on LP64 Unix. long long is at least 64 everywhere."
+    ],
+    "practice": [
+      "Include stdint.h and stddef.h for the names, not a home-grown header of guesses.",
+      "Check conversions that might not fit. A cast is not a check."
+    ],
+    "c23": "_BitInt(N) is an exact-width integer that does not undergo the integer promotions. unsigned _BitInt(N) wraps at N bits. Signed overflow is still undefined.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Wrapping 8-bit unsigned _BitInt",
+        "code": "#include <stdio.h>\nint main(void) {\n    unsigned _BitInt(8) x = 255;\n    x += 1;\n    printf(\"%u\\n\", (unsigned)x);\n    return x == 0 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/nullptr",
+    "difficulty": "Beginner",
+    "why": "nullptr is a null pointer constant with its own type, nullptr_t. It converts to any pointer type and to bool, and it is not an integer 0.",
+    "when": "Use nullptr for a new null pointer in C23 code. Keep NULL where you are matching an older codebase, but know that NULL may be defined as 0.",
+    "pitfalls": [
+      "nullptr does not convert to an ordinary integer type. If a macro is overloaded on int versus a pointer, nullptr selects the pointer side.",
+      "Dereferencing nullptr is still undefined."
+    ],
+    "practice": [
+      "Prefer nullptr in new C23 code so _Generic can tell a null pointer from an integer zero.",
+      "Check pointer returns before use. nullptr is a value, not a handler."
+    ],
+    "c23": "This is a C23 feature. The type nullptr_t is declared in stddef.h.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "nullptr is not an int",
+        "code": "#include <stddef.h>\n#include <stdio.h>\nint main(void) {\n    int kind = _Generic(nullptr, nullptr_t: 1, int: 2, default: 0);\n    int *p = nullptr;\n    printf(\"%d\\n\", kind);\n    return kind == 1 && p == nullptr ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/types/NULL",
+    "difficulty": "Beginner",
+    "why": "NULL is a macro for a null pointer constant. It has been the portable way to write a null pointer since C89, but the standard allows it to be defined as 0 or as (void *)0.",
+    "when": "Use NULL in C89-through-C17 code and in APIs that already speak NULL. In new C23 code, nullptr is the sharper tool.",
+    "pitfalls": [
+      "If NULL is 0, _Generic(NULL, int: ..., void *: ...) can select the integer association.",
+      "NULL is a pointer constant, not a null character. The terminator is '\\0', which is an int zero in a character context."
+    ],
+    "practice": [
+      "Do not redefine NULL.",
+      "Include the header that documents the API (stddef.h, stdio.h, stdlib.h) rather than assuming a particular definition."
+    ],
+    "c23": "nullptr does not replace NULL in old headers, but it removes the ambiguity for new code.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "NULL compares equal to a null pointer",
+        "code": "#include <stddef.h>\n#include <stdio.h>\nint main(void) {\n    int *p = NULL;\n    printf(\"%d\\n\", p == NULL);\n    return p == NULL ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/constexpr",
+    "difficulty": "Intermediate",
+    "why": "A constexpr object is a constant expression. You can use it for array lengths, case labels, and static initializers, and the compiler must be able to evaluate it during translation.",
+    "when": "Use constexpr for named constants that used to be macros, when you want a type and a scope. A macro is still right for token pasting and for include guards.",
+    "pitfalls": [
+      "You cannot take a value that is only known at run time and mark it constexpr.",
+      "C23 constexpr functions are more restricted than C++ constexpr functions, and GCC 13 accepts constexpr objects but not constexpr functions."
+    ],
+    "practice": [
+      "Prefer constexpr int N = 32; over #define N 32 for a typed constant.",
+      "Keep macros for things the preprocessor must see, such as #if."
+    ],
+    "c23": "constexpr on objects is the C23 replacement for many integer macros. The example below is checked with gcc -std=c2x because this environment's clang 18 does not implement constexpr yet.",
+    "examples": [
+      {
+        "compiler": "gcc",
+        "options": "-std=c2x -Wall -Wextra",
+        "godboltCompiler": "cg133",
+        "title": "Named constant used as an array length",
+        "code": "#include <stdio.h>\nint main(void) {\n    constexpr int n = 6 * 7;\n    int buf[n];\n    buf[0] = 1;\n    printf(\"%d\\n\", n);\n    return n == 42 && buf[0] == 1 ? 0 : 1;\n}\n",
+        "note": "Compiled with gcc -std=c2x. GCC 13 implements constexpr objects, not constexpr functions."
+      }
+    ]
+  },
+  {
+    "slug": "c/language/attributes",
+    "difficulty": "Intermediate",
+    "why": "C23 standardizes attribute syntax, [[...]], for facts that are not part of the type system: nodiscard, maybe_unused, deprecated, fallthrough, noreturn, and the reproducibility attributes.",
+    "when": "Use a standard attribute when you want a portable annotation. Use a vendor attribute (__attribute__, __declspec) only when the standard one does not exist.",
+    "pitfalls": [
+      "An unknown attribute is ignored, not rejected. A typo can vanish.",
+      "[[fallthrough]] is a statement. It belongs where you intentionally drop into the next case, not as a decoration."
+    ],
+    "practice": [
+      "Mark functions whose return value must be checked with [[nodiscard]].",
+      "Mark an intentional fall-through so -Wimplicit-fallthrough stays clean."
+    ],
+    "c23": "The [[ ]] syntax and the standard attributes arrive with C23. Older code used compiler extensions that look similar but are not portable.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "fallthrough and maybe_unused",
+        "code": "#include <stdio.h>\nint classify(int argc) {\n    int n = 0;\n    switch (argc) {\n    case 1:\n        n = 1;\n        [[fallthrough]];\n    default:\n        n += 1;\n        break;\n    }\n    return n;\n}\nint main(void) {\n    [[maybe_unused]] int quiet = 0;\n    printf(\"%d\\n\", classify(1));\n    return classify(1) == 2 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/attributes/nodiscard",
+    "difficulty": "Beginner",
+    "why": "[[nodiscard]] asks the compiler to warn when a caller ignores the return value. It is how you stop a checked error code from being thrown away.",
+    "when": "Put it on functions that return an error code, an allocated pointer the caller must free, or any result that is the whole point of the call.",
+    "pitfalls": [
+      "The warning is not a hard error unless you build with -Werror.",
+      "A cast to void is the way to discard the value on purpose. Do that only at the call site that means it."
+    ],
+    "practice": [
+      "You can attach a message: [[nodiscard(\"check the error\")]] int open_thing(void);",
+      "Put the attribute on the declaration the caller sees, which usually means the header."
+    ],
+    "c23": "[[nodiscard]] is standard in C23. Before that, compilers offered __attribute__((warn_unused_result)).",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "A result that is used",
+        "code": "#include <stdio.h>\n[[nodiscard]] int must_use(int x) { return x + 1; }\nint main(void) {\n    int y = must_use(3);\n    printf(\"%d\\n\", y);\n    return y == 4 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/typeof",
+    "difficulty": "Intermediate",
+    "why": "typeof names the type of an expression. typeof_unqual names that type with the top-level qualifiers removed. They let a macro declare a temporary of the right type without the caller spelling it.",
+    "when": "Use typeof in a macro that must work for several types, such as a swap or a max that should not evaluate an argument twice. Do not use it to hide a type that would be clearer written out.",
+    "pitfalls": [
+      "typeof keeps qualifiers. typeof of a const int is const int, which you cannot assign to. That is what typeof_unqual is for.",
+      "The operand of typeof is not evaluated, but a variably modified type still needs its size expression to be valid."
+    ],
+    "practice": [
+      "In a macro, capture arguments in typeof_unqual temporaries so side effects run once.",
+      "Prefer a plain declaration when the type is known."
+    ],
+    "c23": "typeof and typeof_unqual are standardized in C23. GCC has had typeof as an extension for years; the unqual form is the new part.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Strip const with typeof_unqual",
+        "code": "#include <stdio.h>\nint main(void) {\n    int n = 4;\n    typeof(n) m = n * 2;\n    const int c = 1;\n    typeof_unqual(c) d = 2;\n    d = 3;\n    printf(\"%d %d\\n\", m, d);\n    return m == 8 && d == 3 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/generic",
+    "difficulty": "Advanced",
+    "why": "_Generic picks an expression based on the type of a controlling expression. It is C's type-generic macro tool, used by tgmath.h.",
+    "when": "Use it when one macro must call a different function for float, double, and long double, or to reject a type. Do not use it as a poor substitute for a real function when one type is enough.",
+    "pitfalls": [
+      "The controlling expression is not evaluated, but its type is determined after the usual conversions of a value. A const int lvalue matches int, not const int, for the association.",
+      "No implicit conversion is applied to find an association. int and long are different."
+    ],
+    "practice": [
+      "Always include a default association unless you want a constraint violation for unexpected types.",
+      "Keep the macro a thin wrapper so the compiler still type-checks the chosen call."
+    ],
+    "c23": "C23 lets you match nullptr_t, and the selection rules are tighter about qualified types. The feature itself arrived in C11.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Pick a function by type",
+        "code": "#include <stdio.h>\nint as_int(int x) { return x; }\nint as_double(double x) { return (int)x; }\n#define AS_INT(x) _Generic((x), int: as_int, double: as_double, default: as_int)(x)\nint main(void) {\n    printf(\"%d %d\\n\", AS_INT(3), AS_INT(4.8));\n    return AS_INT(3) == 3 && AS_INT(4.8) == 4 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/static_assert",
+    "difficulty": "Intermediate",
+    "why": "static_assert fails translation when a constant expression is false. It is how you pin a layout, a size, or an assumption before the program runs.",
+    "when": "Assert sizes of file formats, the relationship between two constants, and that an enum value is what the protocol says.",
+    "pitfalls": [
+      "The expression must be an integer constant expression. A run-time value is a constraint violation, not a delayed check.",
+      "A failing assert stops the build. Put the message where a reader can act on it."
+    ],
+    "practice": [
+      "Prefer static_assert over a run-time assert for facts that cannot change at run time.",
+      "In C23 the message is optional. Keep a message when the failure would otherwise be a bare boolean."
+    ],
+    "c23": "The keyword is static_assert, and the one-argument form static_assert(expr); is allowed. _Static_assert remains as the C11 spelling.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "One-argument and two-argument forms",
+        "code": "static_assert(sizeof(char) == 1);\nstatic_assert(sizeof(int) >= 2, \"int is unexpectedly narrow\");\nint main(void) { return 0; }\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/compound_literal",
+    "difficulty": "Intermediate",
+    "why": "A compound literal creates an unnamed object of a given type. It is how you pass a struct to a function without declaring a variable, and how you build a table in an expression.",
+    "when": "Use one for a temporary struct argument or for a pointer to a short-lived aggregate. Do not use one when the object must outlive the block.",
+    "pitfalls": [
+      "At block scope the object has automatic storage. A pointer to it dangles after the block ends.",
+      "At file scope it has static storage."
+    ],
+    "practice": [
+      "Combine it with designated initializers: (struct Point){ .x = 1, .y = 2 }.",
+      "If a function stores the pointer, pass a real object with a lifetime you control."
+    ],
+    "c23": "Compound literals can be constexpr, which gives them a permanent, constant identity. An ordinary block-scope literal is still automatic.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Pass a temporary struct",
+        "code": "#include <stdio.h>\nstruct Point { int x, y; };\nint sum(struct Point p) { return p.x + p.y; }\nint main(void) {\n    int n = sum((struct Point){ .x = 2, .y = 5 });\n    printf(\"%d\\n\", n);\n    return n == 7 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/behavior",
+    "difficulty": "Intermediate",
+    "why": "The standard sorts behavior into defined, unspecified, implementation-defined, and undefined. Undefined behavior means the standard imposes no requirements, including on code that ran earlier in the same execution.",
+    "when": "Read a library page's 'undefined' notes before wrapping the function. If your program depends on a particular compiler's reaction to UB, it is not a C program in the portable sense.",
+    "pitfalls": [
+      "A sanitizer clean run is not a proof. UB can be latent.",
+      "Checking a pointer after you have already dereferenced it does not undo the violation.",
+      "Signed overflow, out-of-bounds access, and use-after-free are the three that compilers exploit most aggressively."
+    ],
+    "practice": [
+      "Turn on -Wall -Wextra and the undefined-behavior sanitizer while developing.",
+      "Write the precondition check before the operation, not after."
+    ],
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Check before dividing",
+        "code": "#include <stdio.h>\nint divide(int a, int b, int *out) {\n    if (b == 0) return -1;\n    *out = a / b;\n    return 0;\n}\nint main(void) {\n    int q = 0;\n    int rc = divide(10, 2, &q);\n    printf(\"%d %d\\n\", rc, q);\n    return rc == 0 && q == 5 && divide(1, 0, &q) == -1 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/scope",
+    "difficulty": "Beginner",
+    "why": "Scope is where a name is visible. It is not the same as storage duration. A static local has permanent storage and block scope.",
+    "when": "Open a block to limit a name. Do not reuse a name from an outer scope unless shadowing is the point and the reader can see both.",
+    "pitfalls": [
+      "A declaration in a for loop's initializer is scoped to the loop.",
+      "An identifier macro-expanded in a header can collide with a local name. That is why macros are spelled in capitals."
+    ],
+    "practice": [
+      "Declare a variable where you can initialize it, in the smallest block that needs it.",
+      "File-scope names that are not part of the API should be static."
+    ],
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Inner name hides the outer one",
+        "code": "#include <stdio.h>\nint main(void) {\n    int n = 1;\n    {\n        int n = 2;\n        printf(\"%d\\n\", n);\n        if (n != 2) return 1;\n    }\n    return n == 1 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/preprocessor",
+    "difficulty": "Beginner",
+    "why": "The preprocessor rewrites tokens before the compiler parses them. It includes files, defines macros, and drops inactive branches.",
+    "when": "Use it for include guards, for conditional compilation, and for macros that must be tokens. Prefer a constexpr, an inline function, or a typedef when those work.",
+    "pitfalls": [
+      "Macros do not respect scope or types, and they evaluate arguments every time they are spelled unless you capture them.",
+      "A macro that looks like a function but uses its argument twice will double a side effect."
+    ],
+    "practice": [
+      "Parenthesize every macro parameter and the whole expression.",
+      "Name macros in capitals so they look different from functions."
+    ],
+    "c23": "#elifdef and #elifndef shorten nested feature tests. #embed pulls binary data in as integer tokens. __VA_OPT__ helps variadic macros.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "#elifdef selects a branch",
+        "code": "#include <stdio.h>\n#define FEATURE 1\nint main(void) {\n    int mode = 0;\n#if 0\n    mode = 1;\n#elifdef FEATURE\n    mode = 2;\n#else\n    mode = 3;\n#endif\n    printf(\"%d\\n\", mode);\n    return mode == 2 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/preprocessor/embed",
+    "difficulty": "Advanced",
+    "why": "#embed is the C23 way to include a file's bytes as a comma-separated list of integer constants. It replaces the xxd-generated array that build scripts used to check in.",
+    "when": "Use it for firmware blobs, certificates, and small assets that should live in the binary. Do not use it for files that change every run; those belong on disk.",
+    "pitfalls": [
+      "The resource is read during translation. A missing file is a build error, which is what you want, but it means the path must be stable.",
+      "limit, prefix, suffix, and if_empty parameters change the token stream. A wrong prefix can break the surrounding syntax."
+    ],
+    "practice": [
+      "Give the array a const unsigned char type and an explicit length via sizeof.",
+      "Keep the embedded file small enough that you are happy to recompile when it changes."
+    ],
+    "c23": "#embed is C23. GCC 15 and recent Clang implement it. The compilers in this project's check (GCC 13, Clang 18) do not, so the runnable example is the array #embed would have produced.",
+    "syntaxNote": {
+      "title": "Syntax, not compiled here",
+      "note": "This spelling needs a compiler with #embed, such as GCC 15. It is shown so the page is not missing the feature. The program under it is the equivalent that this project actually compiles.",
+      "code": "const unsigned char blob[] = {\n#embed \"asset.bin\"\n};\n"
+    },
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "The array an embed would produce",
+        "code": "#include <stdio.h>\nconst unsigned char blob[] = { 104, 105, 33 };\nint main(void) {\n    printf(\"%zu %c\\n\", sizeof blob, blob[0]);\n    return sizeof blob == 3 && blob[0] == 'h' ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/if",
+    "difficulty": "Beginner",
+    "why": "if selects a statement from a condition. The condition is compared with zero after the usual scalar conversions.",
+    "when": "Use if for a branch. Use a switch when you are dispatching on several integer constants. Use a loop when the statement repeats.",
+    "pitfalls": [
+      "if (x = 1) assigns and is always true. The compiler warns; do not silence it blindly.",
+      "A dangling else binds to the nearest if. Brace both branches.",
+      "A pointer in a condition tests nullness. It does not test the pointee."
+    ],
+    "practice": [
+      "Always brace the body, even for one line.",
+      "Compare explicitly when it reads better: if (p != nullptr)."
+    ],
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Braced branches",
+        "code": "#include <stdio.h>\nconst char *sign_of(int n) {\n    if (n < 0) {\n        return \"neg\";\n    } else if (n > 0) {\n        return \"pos\";\n    } else {\n        return \"zero\";\n    }\n}\nint main(void) {\n    printf(\"%s\\n\", sign_of(-3));\n    return sign_of(-3)[0] == 'n' ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/for",
+    "difficulty": "Beginner",
+    "why": "for packs initialization, a condition, and a step around a statement. It is the usual loop for an index.",
+    "when": "Use for when the trip count is an index. Use while when the condition is an external event. Use do while when the body must run once.",
+    "pitfalls": [
+      "for (size_t i = n; i >= 0; i--) never ends if i is unsigned, because i >= 0 is always true.",
+      "The comma operator in the step is easy to misread. Prefer a block if the step is complicated."
+    ],
+    "practice": [
+      "Declare the index in the for initializer so it does not leak.",
+      "Walk arrays with an index or with a pointer plus an end pointer, and keep the end in view."
+    ],
+    "c23": "You can declare a variable in the initializer, which C99 already allowed. C23 does not add a range-for.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Index stays in the loop",
+        "code": "#include <stdio.h>\nint main(void) {\n    int sum = 0;\n    for (int i = 1; i <= 4; i++) sum += i;\n    printf(\"%d\\n\", sum);\n    return sum == 10 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/switch",
+    "difficulty": "Intermediate",
+    "why": "switch dispatches on an integer. Cases are labels, so execution falls through unless you break, return, or mark the fall-through.",
+    "when": "Use switch for a closed set of integer codes. Use if for ranges and for non-integers.",
+    "pitfalls": [
+      "A missing break is usually a bug. C23's [[fallthrough]] makes the intentional ones visible.",
+      "Case labels must be integer constant expressions, and they must be unique.",
+      "Declarations inside a case need a brace if you want to initialize them, because of the jump."
+    ],
+    "practice": [
+      "End every case with break or [[fallthrough]].",
+      "Keep a default that handles the unexpected value, even if it only returns an error."
+    ],
+    "c23": "[[fallthrough]] is the portable annotation. A case can also use a constexpr name.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Intentional fall-through",
+        "code": "#include <stdio.h>\nint score(int kind) {\n    int n = 0;\n    switch (kind) {\n    case 1:\n        n += 10;\n        [[fallthrough]];\n    case 2:\n        n += 1;\n        break;\n    default:\n        n = -1;\n        break;\n    }\n    return n;\n}\nint main(void) {\n    printf(\"%d\\n\", score(1));\n    return score(1) == 11 && score(2) == 1 && score(9) == -1 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/string/byte/strlen",
+    "difficulty": "Beginner",
+    "why": "strlen counts bytes before the first zero. It does not know the size of the buffer, and it does not count the terminator.",
+    "when": "Use it on a string you already trust. For a buffer that might not be terminated, scan with an explicit limit.",
+    "pitfalls": [
+      "strlen(NULL) is undefined.",
+      "The result is size_t. Adding 1 for the terminator can wrap if the length is SIZE_MAX."
+    ],
+    "practice": [
+      "strnlen_s is the bounds-checked Annex K function. It is optional; do not assume it exists.",
+      "If you have the capacity, stop at the capacity even when writing your own scan."
+    ],
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Length excludes the terminator",
+        "code": "#include <stdio.h>\n#include <string.h>\nint main(void) {\n    char buf[] = \"abc\";\n    printf(\"%zu %zu\\n\", strlen(buf), sizeof buf);\n    return strlen(buf) == 3 && sizeof buf == 4 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/string/byte/strcpy",
+    "difficulty": "Beginner",
+    "why": "strcpy copies a C string, including the terminator. It has no size parameter, so the destination must already be large enough.",
+    "when": "Use it only when the destination's capacity is known to be at least strlen(src) + 1. Otherwise copy with an explicit limit.",
+    "pitfalls": [
+      "The source and destination must not overlap. That is memmove's job, or a new buffer.",
+      "strncpy is not the safe version. It can leave the destination unterminated, and it pads with zeros."
+    ],
+    "practice": [
+      "snprintf(dst, cap, \"%s\", src) terminates and reports how many characters it wanted to write.",
+      "strdup (C23) is the allocating copy."
+    ],
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Copy into a buffer that fits",
+        "code": "#include <stdio.h>\n#include <string.h>\nint main(void) {\n    char dst[8];\n    strcpy(dst, \"cat\");\n    printf(\"%s\\n\", dst);\n    return strcmp(dst, \"cat\") == 0 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/string/byte/strcmp",
+    "difficulty": "Beginner",
+    "why": "strcmp compares two C strings lexicographically by unsigned char value. It returns zero when they are equal, not a boolean.",
+    "when": "Use it for exact byte-string equality and ordering. Use strncmp when only a prefix should count. Locale-aware ordering is strcoll, which is slower and depends on setlocale.",
+    "pitfalls": [
+      "if (strcmp(a, b)) is true when they differ. Equality is strcmp(a, b) == 0.",
+      "Both arguments must be terminated. A missing zero walks off the buffer."
+    ],
+    "practice": [
+      "Write the comparison with == 0 so the intent is obvious.",
+      "For structs and binary blobs, use memcmp with an explicit length."
+    ],
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Equality is a zero result",
+        "code": "#include <stdio.h>\n#include <string.h>\nint main(void) {\n    int same = strcmp(\"abc\", \"abc\") == 0;\n    int less = strcmp(\"abc\", \"abd\") < 0;\n    printf(\"%d %d\\n\", same, less);\n    return same && less ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/string/byte/memcpy",
+    "difficulty": "Intermediate",
+    "why": "memcpy copies bytes. It does not stop at a zero, and it does not allow overlap. It is the fast path for objects and for non-overlapping buffers.",
+    "when": "Use memcpy to copy a struct you are willing to copy as bytes, or a slice of an array. Use memmove if the ranges might overlap. Use strcpy only for C strings.",
+    "pitfalls": [
+      "Overlap is undefined for memcpy. memmove is the defined function.",
+      "Copying a struct copies padding. That can leak stack bytes into a file or a hash."
+    ],
+    "practice": [
+      "Copy the size you mean: memcpy(dst, src, n * sizeof *dst) after checking the multiply.",
+      "For a secret, memset_explicit (C23) is the wipe that compilers should not delete."
+    ],
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "memmove overlaps, memcpy does not have to",
+        "code": "#include <stdio.h>\n#include <string.h>\nint main(void) {\n    char buf[8] = \"abcdef\";\n    memmove(buf + 2, buf, 4);\n    printf(\"%s\\n\", buf);\n    return memcmp(buf, \"ababcd\", 6) == 0 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/io/fprintf",
+    "difficulty": "Beginner",
+    "why": "printf and fprintf format values into text. The format string is a little language, and a mismatch with the arguments is undefined.",
+    "when": "Use printf for diagnostics and text protocols you control. Use snprintf when the text must land in a buffer. Check the return value; it is the count written, or a negative error.",
+    "pitfalls": [
+      "A non-literal format string is a format-injection bug if it contains user text.",
+      "%s with a null pointer is undefined. %zu is the specifier for size_t.",
+      "sprintf has no size. It is the strcpy of formatting."
+    ],
+    "practice": [
+      "Keep the format a literal.",
+      "snprintf(buf, sizeof buf, ...) and check that the returned length is non-negative and less than the size."
+    ],
+    "c23": "There are new length modifiers for some bit-precise and decimal types, but the everyday specifiers are unchanged. The habit that matters is still snprintf.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "snprintf reports truncation",
+        "code": "#include <stdio.h>\nint main(void) {\n    char buf[4];\n    int n = snprintf(buf, sizeof buf, \"%s\", \"hello\");\n    printf(\"%d %s\\n\", n, buf);\n    return n == 5 && buf[3] == '\\0' ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/io/fopen",
+    "difficulty": "Beginner",
+    "why": "fopen connects a FILE to a path. The mode string selects read, write, append, and whether the file is text or binary.",
+    "when": "Open a file when you need a stream. For a temporary file that should vanish, tmpfile is simpler and avoids a path.",
+    "pitfalls": [
+      "fopen returns null and sets errno. Ignoring the null crashes on the next call.",
+      "On Windows, text mode translates newlines. Use \"rb\" and \"wb\" for bytes.",
+      "A missing fclose leaks the descriptor. It also may drop a buffered write if you exit carelessly; fclose flushes."
+    ],
+    "practice": [
+      "Check the pointer, and check fclose if the write must hit disk.",
+      "Prefer a bounded read (fread, fgets) over assuming the file fits."
+    ],
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "tmpfile round trip",
+        "code": "#include <stdio.h>\n#include <string.h>\nint main(void) {\n    FILE *fp = tmpfile();\n    if (!fp) return 1;\n    if (fputs(\"hi\\n\", fp) < 0) return 1;\n    rewind(fp);\n    char buf[8] = {0};\n    if (!fgets(buf, sizeof buf, fp)) return 1;\n    fclose(fp);\n    printf(\"%s\", buf);\n    return strcmp(buf, \"hi\\n\") == 0 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/algorithm/qsort",
+    "difficulty": "Intermediate",
+    "diagram": "function-pointers",
+    "why": "qsort sorts an array of objects of a size you specify, using a comparator you pass as a function pointer. It is the standard library's generic sort.",
+    "when": "Use it for in-memory arrays of uniform objects. For a huge external sort or a stable sort, you need something else; qsort is not required to be stable.",
+    "pitfalls": [
+      "The comparator must impose a consistent order. Returning a - b for int can overflow.",
+      "The pointer arguments are const void *. Cast them to the real type before reading.",
+      "qsort on a null pointer with a positive count is undefined. A count of zero is fine."
+    ],
+    "practice": [
+      "Compare with < and > so the subtraction cannot overflow.",
+      "Pass the element size with sizeof *a, not a magic number."
+    ],
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Sort three ints",
+        "code": "#include <stdio.h>\n#include <stdlib.h>\nint cmp_int(const void *left, const void *right) {\n    int a = *(const int *)left;\n    int b = *(const int *)right;\n    return (a > b) - (a < b);\n}\nint main(void) {\n    int a[] = {3, 1, 2};\n    qsort(a, 3, sizeof *a, cmp_int);\n    printf(\"%d %d %d\\n\", a[0], a[1], a[2]);\n    return a[0] == 1 && a[1] == 2 && a[2] == 3 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/numeric/ckd_add",
+    "difficulty": "Intermediate",
+    "why": "ckd_add, ckd_sub, and ckd_mul perform integer arithmetic and tell you whether the mathematical result fits in the result type. The stored value is the wrapped low bits.",
+    "when": "Use them for sizes, offsets, and any addition where overflow would be a security bug. They replace the hand-rolled checks that get the signed case wrong.",
+    "pitfalls": [
+      "A true return means overflow happened. The result is still written.",
+      "The result pointer's type selects the width. Adding two ints into an int can overflow when adding them into a long long would not."
+    ],
+    "practice": [
+      "If the function returns true, do not use the result as a size.",
+      "Include stdckdint.h. It is C23, so a C17 build will not have it."
+    ],
+    "c23": "This header is new in C23. The example is checked with clang -std=c23, which provides stdckdint.h here. GCC 13 does not.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Detect an int overflow",
+        "code": "#include <stdckdint.h>\n#include <stdio.h>\nint main(void) {\n    int result = 0;\n    bool overflow = ckd_add(&result, 2000000000, 2000000000);\n    printf(\"%d\\n\", overflow);\n    return overflow ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/program/setjmp",
+    "difficulty": "Advanced",
+    "why": "setjmp and longjmp are a non-local goto. setjmp records the calling environment; longjmp restores it. They are how some C libraries implement error unwinding without a return code at every level.",
+    "when": "Use them only for a well-defined failure path, usually inside one library. Prefer ordinary return codes for new code. Never use them as a general exception system across threads.",
+    "pitfalls": [
+      "After longjmp, non-volatile automatic objects that were modified after setjmp have indeterminate values.",
+      "longjmp into a function that has already returned is undefined.",
+      "Resources acquired between setjmp and longjmp are not released for you. Locks and FILE handles leak."
+    ],
+    "practice": [
+      "Mark locals that change between the two calls volatile.",
+      "longjmp's second argument becomes the value setjmp returns. Use a non-zero value so it cannot be confused with the direct return."
+    ],
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Volatile step survives longjmp",
+        "code": "#include <setjmp.h>\n#include <stdio.h>\nint main(void) {\n    jmp_buf env;\n    volatile int step = 0;\n    if (setjmp(env) == 0) {\n        step = 1;\n        longjmp(env, 1);\n    }\n    printf(\"%d\\n\", step);\n    return step == 1 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/error/errno",
+    "difficulty": "Beginner",
+    "why": "errno is a thread-local integer that library functions set when they fail. It is not cleared on success, so you only read it after a function reports failure.",
+    "when": "Read errno after fopen, strtol (when the return is the limit and you asked to detect range errors), and other functions whose specification says they set it.",
+    "pitfalls": [
+      "A successful call may leave errno unchanged. Checking it without a failure indication is a bug.",
+      "errno is a macro. Taking its address is not portable in the way people expect; it may be a function call."
+    ],
+    "practice": [
+      "Set errno to 0 before a call only when the specification tells you to, as with strtol range detection.",
+      "Use perror or strerror for a message, and remember strerror's static buffer is not a place to keep the string."
+    ],
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "strtol reports a range error",
+        "code": "#include <errno.h>\n#include <stdio.h>\n#include <stdlib.h>\nint main(void) {\n    errno = 0;\n    char *end = 0;\n    long value = strtol(\"999999999999999999999\", &end, 10);\n    printf(\"%ld %d\\n\", value, errno);\n    return errno == ERANGE ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/language/alignof",
+    "difficulty": "Intermediate",
+    "diagram": "padding",
+    "why": "alignof yields the alignment requirement of a type. Allocators and packed formats need it so that a pointer is safe to dereference as that type.",
+    "when": "Use it when you bump a cursor in an arena, or when you check that a buffer is aligned for an over-aligned type.",
+    "pitfalls": [
+      "A misaligned pointer cast to a stricter type is undefined on many architectures, not merely slow.",
+      "alignof(char) is 1. alignof of a struct is the strictest member alignment."
+    ],
+    "practice": [
+      "Pair alignas on a declaration with alignof when you need a specific alignment.",
+      "aligned_alloc requires the size to be a multiple of the alignment."
+    ],
+    "c23": "The keyword is alignof. _Alignof is the older spelling and is obsolete. alignas likewise replaces _Alignas.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Over-aligned local",
+        "code": "#include <stddef.h>\n#include <stdio.h>\nint main(void) {\n    alignas(16) int slot = 1;\n    printf(\"%zu %d\\n\", alignof(int), slot);\n    return ((unsigned long long)&slot % 16) == 0 && alignof(max_align_t) >= alignof(long) ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/thread/thrd_create",
+    "difficulty": "Advanced",
+    "why": "thrd_create starts a thread running a function of type int (*)(void *). It is the C11 standard thread, not POSIX pthread, though many libraries implement it on top of pthreads.",
+    "when": "Use it when you want standard C threads and the platform provides them. Use pthreads or C11 threads consistently in one program; mixing locking rules is how deadlocks start.",
+    "pitfalls": [
+      "The thread function's argument must stay alive. A pointer to a loop variable is a race.",
+      "A thread that is never joined and never detached leaks. Returning from main ends the process.",
+      "This example links with -pthread."
+    ],
+    "practice": [
+      "Pass a pointer to a struct that the new thread owns, or that is immutable.",
+      "Check the thrd_create result against thrd_success."
+    ],
+    "c23": "C23 did not replace threads. It did make thread_local a keyword, which is how you give each thread its own object.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra -pthread",
+        "godboltCompiler": "cclang1810",
+        "title": "Join a worker",
+        "code": "#include <stdio.h>\n#include <threads.h>\nint worker(void *arg) {\n    int *slot = arg;\n    *slot = 7;\n    return 0;\n}\nint main(void) {\n    int value = 0;\n    thrd_t thread;\n    if (thrd_create(&thread, worker, &value) != thrd_success) return 1;\n    if (thrd_join(thread, 0) != thrd_success) return 1;\n    printf(\"%d\\n\", value);\n    return value == 7 ? 0 : 1;\n}\n",
+        "note": "Linked with -pthread."
+      }
+    ]
+  },
+  {
+    "slug": "c/language/atomic",
+    "difficulty": "Advanced",
+    "why": "An atomic object can be read and written from several threads without a data race. The memory order says how those accesses synchronize with other memory.",
+    "when": "Use atomic_int for a counter or a published flag. Use a mutex when the invariant covers more than one word.",
+    "pitfalls": [
+      "A data race on a non-atomic object is undefined, not 'probably fine on x86'.",
+      "memory_order_relaxed does not publish other writes. Release/acquire or a mutex does.",
+      "Lock-free is not the same as wait-free, and atomic_is_lock_free can be false for a wide type."
+    ],
+    "practice": [
+      "Start with the sequential-consistency default. Drop to a weaker order only with a reason you can explain.",
+      "Do not invent a lock out of volatile."
+    ],
+    "c23": "The atomic library is C11. C23 clarifies some wording and adds more bit utilities elsewhere; the basic atomic_fetch_add pattern is unchanged.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "A counter with the default order",
+        "code": "#include <stdatomic.h>\n#include <stdio.h>\nint main(void) {\n    atomic_int n = 0;\n    atomic_fetch_add(&n, 1);\n    int seen = atomic_load(&n);\n    printf(\"%d\\n\", seen);\n    return seen == 1 ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/memory/malloc",
+    "difficulty": "Beginner",
+    "diagram": "stack-heap",
+    "why": "malloc allocates storage with allocated duration. The bytes are uninitialized. The pointer is the only way back to those bytes, and free is the only way to end their lifetime.",
+    "when": "Use malloc when the size or the lifetime is not known at compile time. Use a local array when the size is small and bounded.",
+    "pitfalls": [
+      "A null return means failure. Using the pointer anyway is undefined.",
+      "n * sizeof *p can overflow size_t before malloc sees it.",
+      "The contents are indeterminate. Do not read them before a write."
+    ],
+    "practice": [
+      "Write T *p = malloc(n * sizeof *p); if (!p) handle it.",
+      "calloc zeroes and checks the multiply. It is the right call when you need both.",
+      "Every successful malloc has one free on every path, including errors."
+    ],
+    "c23": "free_sized and free_aligned_sized are optional performance hints. They do not change the ownership rule. strdup is the allocating string copy.",
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Check the pointer, then free it",
+        "code": "#include <stdio.h>\n#include <stdlib.h>\nint main(void) {\n    size_t n = 4;\n    int *p = malloc(n * sizeof *p);\n    if (!p) return 1;\n    for (size_t i = 0; i < n; i++) p[i] = (int)i;\n    int ok = p[3] == 3;\n    free(p);\n    printf(\"%d\\n\", ok);\n    return ok ? 0 : 1;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/memory/free",
+    "difficulty": "Beginner",
+    "diagram": "stack-heap",
+    "why": "free ends the lifetime of an object allocated by malloc, calloc, realloc, or aligned_alloc. After free, that pointer value is indeterminate.",
+    "when": "Call free when the owner is done. Call it on every exit path. free(nullptr) is defined and does nothing, which makes cleanup code simpler.",
+    "pitfalls": [
+      "free of a pointer that was not returned by the allocator, or free twice, is undefined.",
+      "Using the pointer after free is undefined, even to compare it. Set your copy to nullptr after free if you keep the variable.",
+      "free of a stack address is undefined. So is free of the middle of an allocation."
+    ],
+    "practice": [
+      "Null the owner's pointer after free if anything else might look at it.",
+      "Do not write a free wrapper that hides a null check; the library already does that."
+    ],
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "free(nullptr) is safe",
+        "code": "#include <stdlib.h>\nint main(void) {\n    int *p = 0;\n    free(p);\n    p = malloc(sizeof *p);\n    if (!p) return 1;\n    *p = 1;\n    free(p);\n    p = nullptr;\n    free(p);\n    return 0;\n}\n"
+      }
+    ]
+  },
+  {
+    "slug": "c/memory/realloc",
+    "difficulty": "Intermediate",
+    "diagram": "stack-heap",
+    "why": "realloc grows or shrinks an allocation. It may move the block. On success the old pointer is no longer yours. On failure the old block is unchanged and the function returns null.",
+    "when": "Use it to grow a buffer geometrically. Do not use it to 'free' by passing a size of zero if you care about portability; free is the clear call.",
+    "pitfalls": [
+      "p = realloc(p, n) leaks the old block when realloc fails and returns null, because you overwrote the only copy of the pointer.",
+      "Pointers into the old block are invalid if realloc moved it."
+    ],
+    "practice": [
+      "Assign through a temporary: void *next = realloc(p, n); if (!next) { keep p; } else p = next;",
+      "Grow by doubling so append is amortized constant time, and check the size for overflow."
+    ],
+    "examples": [
+      {
+        "compiler": "clang",
+        "options": "-std=c23 -Wall -Wextra",
+        "godboltCompiler": "cclang1810",
+        "title": "Keep the old pointer if realloc fails",
+        "code": "#include <stdio.h>\n#include <string.h>\n#include <stdlib.h>\nint main(void) {\n    char *p = malloc(4);\n    if (!p) return 1;\n    memcpy(p, \"hi\", 3);\n    char *next = realloc(p, 8);\n    if (!next) {\n        free(p);\n        return 1;\n    }\n    p = next;\n    printf(\"%s\\n\", p);\n    int ok = p[0] == 'h';\n    free(p);\n    return ok ? 0 : 1;\n}\n"
+      }
+    ]
+  }
+]

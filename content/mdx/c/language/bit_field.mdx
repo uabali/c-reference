@@ -1,0 +1,341 @@
+---
+title: "Bit-fields"
+slug: "c/language/bit_field"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/bit_field"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Declares a member with explicit width, in bits. Adjacent bit-field members may be packed to share and straddle the individual bytes.</p>
+
+<p>A bit-field declaration is a <a href="/reference/c/language/struct/">struct</a> or <a href="/reference/c/language/union/">union</a> member declaration which uses the following <a href="/reference/c/language/declarations/">declarator</a>:</p>
+
+```text
+identifier (optional) : width
+```
+
+<table class="ref-table ref-params">
+<tr><td><em>identifier</em></td><td>-</td><td>a name of the bit-field that is being declared. The name is optional: nameless bit-fields introduce the specified number of bits of padding</td></tr>
+<tr><td><em>width</em></td><td>-</td><td>an integer <a href="/reference/c/language/constant_expression/">constant expression</a> with a value greater or equal to zero and less or equal the number of bits in the underlying type. When greater than zero, this is the number of bits that this bit-field will occupy. The value zero is only allowed for nameless bit-fields and has special meaning: it specifies that the next bit-field in the class definition will begin at an allocation unit's boundary.</td></tr>
+</table>
+
+<h3 id="Explanation">Explanation</h3>
+
+<p>Bit-fields can have only one of the following (possibly <a href="/reference/c/language/const/">const</a> or <a href="/reference/c/language/volatile/">volatile</a> qualified) types:</p>
+
+<ul>
+<li>
+<code>unsigned int</code>
+
+<p>, for unsigned bit-fields (e.g.</p>
+
+<code>unsigned int b : 3;</code>
+
+<p>has the range</p>
+
+<code>[</code><code>0</code><code>,</code><code>7</code><code>]</code>
+
+<p>)</p>
+</li>
+<li>
+<code>signed int</code>
+
+<p>, for signed bit-fields (</p>
+
+<code>signed int b : 3;</code>
+
+<p>has the range</p>
+
+<code>[</code><code>-4</code><code>,</code><code>3</code><code>]</code>
+
+<p>)</p>
+</li>
+<li>
+<code>int</code>
+
+<p>, for bit-fields with implementation-defined signedness (note that this differs from the meaning of the keyword</p>
+
+<code>int</code>
+
+<p>everywhere else, where it means "signed int"). For example,</p>
+
+<code>int b : 3;</code>
+
+<p>may have the range of values</p>
+
+<code>[</code><code>0</code><code>,</code><code>7</code><code>]</code>
+
+<p>or</p>
+
+<code>[</code><code>-4</code><code>,</code><code>3</code><code>]</code>
+
+<p>.</p>
+</li>
+</ul>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><ul>
+<li>
+<code>_Bool</code>
+
+<p>, for single-bit bit-fields (e.g.</p>
+
+<code>bool x : 1;</code>
+
+<p>) has the range</p>
+
+<code>[</code><code>0</code><code>,</code><code>1</code><code>]</code>
+
+<p>and</p>
+
+<a href="/reference/c/language/conversion/">implicit conversions</a>
+
+<p>to and from it follow the boolean conversion rules.</p>
+</li>
+</ul></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c23">(since C23)</span></p><ul>
+<li>
+<p>bit-precise integer types (e.g.</p>
+
+<code>_BitInt(5) : 4;</code>
+
+<p>has the range</p>
+
+<code>[</code><code>-8</code><code>,</code><code>7</code><code>]</code>
+
+<p>and</p>
+
+<code>unsigned _BitInt(5) : 4;</code>
+
+<p>has the range</p>
+
+<code>[</code><code>0</code><code>,</code><code>15</code><code>]</code>
+
+<p>).</p>
+</li>
+</ul></aside>
+
+<p>Additional implementation-defined types may be acceptable. It is also implementation-defined whether a bit-field may have <a href="/reference/c/language/atomic/">atomic</a> type.<span class="std std-since std-c11">(since C11)</span> The number of bits in a bit-field (<em>width</em>) sets the limit to the range of values it can hold:</p>
+
+```c
+#include <stdio.h>
+ 
+struct S
+{
+    // three-bit unsigned field,
+    // allowed values are 0...7
+    unsigned int b : 3;
+};
+ 
+int main(void)
+{
+    struct S s = {7};
+    ++s.b; // unsigned overflow
+    printf("%d\n", s.b); // output: 0
+}
+```
+
+<p>Multiple adjacent bit-fields are permitted to be (and usually are) packed together:</p>
+
+```c
+#include <stdio.h>
+ 
+struct S
+{
+    // will usually occupy 4 bytes:
+    // 5 bits: value of b1
+    // 11 bits: unused
+    // 6 bits: value of b2
+    // 2 bits: value of b3
+    // 8 bits: unused
+    unsigned b1 : 5, : 11, b2 : 6, b3 : 2;
+};
+ 
+int main(void)
+{
+    printf("%zu\n", sizeof(struct S)); // usually prints 4
+}
+```
+
+<p>The special <em>unnamed bit-field</em> of <em>width</em> zero breaks up padding: it specifies that the next bit-field begins at the beginning of the next allocation unit:</p>
+
+```c
+#include <stdio.h>
+ 
+struct S
+{
+    // will usually occupy 8 bytes:
+    // 5 bits: value of b1
+    // 27 bits: unused
+    // 6 bits: value of b2
+    // 15 bits: value of b3
+    // 11 bits: unused
+    unsigned b1 : 5;
+    unsigned    : 0; // starts a new unsigned int
+    unsigned b2 : 6;
+    unsigned b3 : 15;
+};
+ 
+int main(void)
+{
+    printf("%zu\n", sizeof(struct S)); // usually prints 8
+}
+```
+
+<p>Because bit-fields do not necessarily begin at the beginning of a byte, address of a bit-field cannot be taken. Pointers to bit-fields are not possible. Bit-fields cannot be used with <a href="/reference/c/language/sizeof/"><code>sizeof</code></a> and <a href="/reference/c/language/alignas/"><code>_Alignas</code></a><span class="std std-since std-c11">(since C11)</span><span class="std std-until std-c23">(until C23)</span><a href="/reference/c/language/alignas/"><code>alignas</code></a><span class="std std-since std-c23">(since C23)</span><span class="std std-since std-c11">(since C11)</span>.</p>
+
+<h3 id="Notes">Notes</h3>
+
+<p>The following usages of bit-fields causes <em>undefined behavior</em>:</p>
+
+<ul>
+<li>
+<p>Calling</p>
+
+<a href="/reference/c/types/offsetof/">offsetof</a>
+
+<p>on a bit-field.</p>
+</li>
+</ul>
+
+<p>The following properties of bit-fields are <em>unspecified</em>:</p>
+
+<ul>
+<li>
+<p>Alignment of the allocation unit that holds a bit-field.</p>
+</li>
+</ul>
+
+<p>The following properties of bit-fields are <em>implementation-defined</em>:</p>
+
+<ul>
+<li>
+<p>Whether bit-fields of type</p>
+
+<code>int</code>
+
+<p>are treated as signed or unsigned.</p>
+</li>
+<li>
+<p>Whether types other than</p>
+
+<code>int</code>
+
+<p>,</p>
+
+<code>signed int</code>
+
+<p>,</p>
+
+<code>unsigned int</code>
+
+, <code>_Bool</code><span class="std std-since std-c99">(since C99)</span>
+
+, and (possibly <code>unsigned</code>) <code>_BitInt(N)</code><span class="std std-since std-c23">(since C23)</span>
+
+<p>are permitted.</p>
+</li>
+</ul>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c11">(since C11)</span></p><ul>
+<li>
+<p>Whether atomic types are permitted.</p>
+</li>
+</ul></aside>
+
+<ul>
+<li>
+<p>Whether a bit-field can straddle an allocation unit boundary.</p>
+</li>
+<li>
+<p>The order of bit-fields within an allocation unit (on some platforms, bit-fields are packed left-to-right, on others right-to-left).</p>
+</li>
+</ul>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><p>Even though the number of bits in the object representation of <code>_Bool</code> is at least <a href="/reference/c/types/limits/">CHAR_BIT</a>, the <em>width</em> of the bit-field of type <code>_Bool</code> cannot be greater than <code>1</code>.</p></aside>
+
+<p>In the C++ programming language, the width of a bit-field can exceed the width of the underlying type (but the extra bits are padding bits), and bit-fields of type <code>int</code> are always signed.</p>
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.2.1 Structure and union specifiers</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.2.1 Structure and union specifiers</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.2.1 Structure and union specifiers</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.7.2.1 Structure and union specifiers</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.5.2.1 Structure and union specifiers</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/bit_field" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Bit-field</td></tr>
+</table>

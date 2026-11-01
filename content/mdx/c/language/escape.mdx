@@ -1,0 +1,207 @@
+---
+title: "Escape sequences"
+slug: "c/language/escape"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/escape"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>Escape sequences are used to represent certain special characters within <a href="/reference/c/language/string_literal/">string literals</a> and <a href="/reference/c/language/character_constant/">character constants</a>.</p>
+
+<p>The following escape sequences are available. ISO C requires a diagnostic if the backslash is followed by any character not listed here:</p>
+
+<table class="ref-table">
+<tr><th>Escape  sequence</th><th>Description</th><th>Representation</th></tr>
+<tr><th colspan="3">Simple escape sequences</th></tr>
+<tr><td><code>\&#x27;</code></td><td>single quote</td><td>byte <code>0x27</code> in ASCII encoding</td></tr>
+<tr><td><code>\&quot;</code></td><td>double quote</td><td>byte <code>0x22</code> in ASCII encoding</td></tr>
+<tr><td><code>\?</code></td><td>question mark</td><td>byte <code>0x3f</code> in ASCII encoding</td></tr>
+<tr><td><code>\\</code></td><td>backslash</td><td>byte <code>0x5c</code> in ASCII encoding</td></tr>
+<tr><td><code>\a</code></td><td>audible bell</td><td>byte <code>0x07</code> in ASCII encoding</td></tr>
+<tr><td><code>\b</code></td><td>backspace</td><td>byte <code>0x08</code> in ASCII encoding</td></tr>
+<tr><td><code>\f</code></td><td>form feed - new page</td><td>byte <code>0x0c</code> in ASCII encoding</td></tr>
+<tr><td><code>\n</code></td><td>line feed - new line</td><td>byte <code>0x0a</code> in ASCII encoding</td></tr>
+<tr><td><code>\r</code></td><td>carriage return</td><td>byte <code>0x0d</code> in ASCII encoding</td></tr>
+<tr><td><code>\t</code></td><td>horizontal tab</td><td>byte <code>0x09</code> in ASCII encoding</td></tr>
+<tr><td><code>\v</code></td><td>vertical tab</td><td>byte <code>0x0b</code> in ASCII encoding</td></tr>
+<tr><th colspan="3">Numeric escape sequences</th></tr>
+<tr><td><code>\nnn</code></td><td>arbitrary octal value</td><td>code unit <code>nnn</code></td></tr>
+<tr><td><code>\xn...</code></td><td>arbitrary hexadecimal value</td><td>code unit <code>n...</code> (arbitrary number of hexadecimal digits)</td></tr>
+<tr><th colspan="3">Universal character names</th></tr>
+<tr><td><code>\unnnn</code> <span class="std std-since std-c99">(since C99)</span></td><td><a href="https://en.wikipedia.org/wiki/Unicode" rel="noreferrer" target="_blank">Unicode</a> value in allowed range; may result in several code units</td><td>code point <code>U+nnnn</code></td></tr>
+<tr><td><code>\Unnnnnnnn</code> <span class="std std-since std-c99">(since C99)</span></td><td><a href="https://en.wikipedia.org/wiki/Unicode" rel="noreferrer" target="_blank">Unicode</a> value in allowed range; may result in several code units</td><td>code point <code>U+nnnnnnnn</code></td></tr>
+</table>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><h3 id="Range_of_universal_character_names">Range of universal character names</h3>
+
+<p>If a universal character name corresponds to a code point that is not <code>0x24</code> (<code>&#x27;$&#x27;</code>), <code>0x40</code> (<code>&#x27;@&#x27;</code>), nor <code>0x60</code> (<code>&#x27;`&#x27;</code>) and less than <code>0xA0</code>, or a surrogate code point (the range <code>0xD800-0xDFFF</code>, inclusive), or greater than <code>0x10FFFF</code>, i.e. not a Unicode code point<span class="std std-since std-c23">(since C23)</span>, the program is ill-formed. In other words, members of <a href="/reference/c/language/translation_phases/">basic source character set</a> and control characters (in ranges <code>0x0-0x1F</code> and <code>0x7F-0x9F</code>) cannot be expressed in universal character names.</p></aside>
+
+<h3 id="Notes">Notes</h3>
+
+<p><code>\0</code> is the most commonly used octal escape sequence, because it represents the terminating null character in null-terminated strings.</p>
+
+<p>The new-line character <code>\n</code> has special meaning when used in <a href="/reference/c/io/">text mode I/O</a>: it is converted to the OS-specific newline byte or byte sequence.</p>
+
+<p>Octal escape sequences have a length limit of three octal digits but terminate at the first character that is not a valid octal digit if encountered sooner.</p>
+
+<p>Hexadecimal escape sequences have no length limit and terminate at the first character that is not a valid hexadecimal digit. If the value represented by a single hexadecimal escape sequence does not fit the range of values represented by the character type used in this string literal or character constant (<code>char</code>, <code>char8_t</code><span class="std std-since std-c23">(since C23)</span>, <code>char16_t</code>, <code>char32_t</code><span class="std std-since std-c11">(since C11)</span>, or <code>wchar_t</code>), the result is unspecified.</p>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span></p><p>A universal character name in a narrow string literal or a 16-bit string literal<span class="std std-since std-c11">(since C11)</span> may map to more than one code unit, e.g. <code>\U0001f34c</code> is 4 <code>char</code> code units in UTF-8 (<code>\xF0\x9F\x8D\x8C</code>) and 2 <code>char16_t</code> code units in UTF-16 (<code>\xD83C\xDF4C</code>)<span class="std std-since std-c11">(since C11)</span>.</p></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-since std-c99">(since C99)</span> <span class="std std-until std-c23">(until C23)</span></p><p>A universal character name corresponding to a code pointer greater than <code>0x10FFFF</code> (which is undefined in ISO/ISC 10646) can be used in <a href="/reference/c/language/character_constant/">character constants</a> and <a href="/reference/c/language/string_literal/">string literals</a>. Such usage is not allowed in C++20.</p></aside>
+
+<aside class="revision"><p class="rev-mark"><span class="std std-until std-c23">(until C23)</span></p><p>The question mark escape sequence <code>\?</code> is used to prevent <a href="/reference/c/language/operator_alternative/">trigraphs</a> from being interpreted inside string literals: a string such as <code>&quot;??/&quot;</code> is compiled as <code>&quot;\&quot;</code>, but if the second question mark is escaped, as in <code>&quot;?\?/&quot;</code>, it becomes <code>&quot;??/&quot;</code></p></aside>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+ 
+int main(void)
+{
+    printf("This\nis\na\ntest\n\nShe said, \"How are you?\"\n");
+}
+```
+
+<p>Output:</p>
+
+```text
+This
+is
+a
+test
+ 
+She said, "How are you?"
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>5.2.2 Character display semantics (p: 18-19)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.4.3 Universal Character names (p: 44)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.4.4.4 Character constants (p: 48-50)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>5.2.2 Character display semantics (p: 24-25)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.4.3 Universal Character names (p: 61)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.4.4.4 Character constants (p: 67-70)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>5.2.2 Character display semantics (p: 19-20)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.4.3 Universal Character names (p: 53)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>6.4.4.4 Character constants (p: 59-61)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c89"><ul>
+<li>
+<p>C89/C90 standard (ISO/IEC 9899:1990):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>2.2.2 Character display semantics</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>3.1.3.4 Character constants</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<ul>
+<li>
+<a href="/reference/c/language/ascii/">ASCII chart</a>
+</li>
+</ul>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/escape" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Escape sequences</td></tr>
+</table>

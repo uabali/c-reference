@@ -1,0 +1,117 @@
+---
+title: "complex"
+slug: "c/numeric/complex/complex"
+category: "numeric"
+source: "https://en.cppreference.com/w/c/numeric/complex/complex"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;complex.h&gt;</code></p>
+
+```c
+#define complex _Complex
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+<p>This macro expands to a type specifier used to identify <a href="/reference/c/language/arithmetic_types/#Complex_floating_types">complex types</a>.</p>
+
+<p>A program may undefine and perhaps then redefine the <code>complex</code> macro.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <complex.h>
+#include <math.h>
+#include <stdio.h>
+ 
+void print_complex(const char* note, complex z)
+{
+    printf("%s %f%+f*i\n", note, creal(z), cimag(z));
+}
+ 
+int main(void)
+{
+    double complex z = -1.0 + 2.0*I;
+    print_complex("z  =", z);
+    print_complex("z\u00B2 =", z * z);
+    double complex z2 = ccos(2.0 * carg(z)) + csin(2.0 * carg(z))*I;
+    print_complex("z\u00B2 =", cabs(z) * cabs(z) * z2);
+}
+```
+
+<p>Output:</p>
+
+```text
+z  = -1.000000+2.000000*i
+z² = -3.000000-4.000000*i
+z² = -3.000000-4.000000*i
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-23"><ul>
+<li>
+<p>C23 standard (ISO/IEC 9899:2024):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3.1/4 complex (p: TBD)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-17"><ul>
+<li>
+<p>C17 standard (ISO/IEC 9899:2018):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3.1/4 complex (p: 136)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3.1/4 complex (p: 188)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.3.1/2 complex (p: 170)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/numeric/complex/imaginary/">imaginary</a>
+
+<span class="std std-since std-c99">(C99)</span></td><td>imaginary type macro   <span class="mark-note">(keyword macro)</span></td></tr>
+</table>

@@ -1,0 +1,110 @@
+---
+title: "Alternative operators and tokens"
+slug: "c/language/operator_alternative"
+category: "language"
+source: "https://en.cppreference.com/w/c/language/operator_alternative"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p>C source code may be written in any 8-bit character set that includes the <a href="https://en.wikipedia.org/wiki/ISO_646" rel="noreferrer" target="_blank">ISO 646:1983</a> invariant character set, even non-ASCII ones. However, several C operators and punctuators require characters that are outside of the ISO 646 codeset: <code>{, }, [, ], #, \, ^, |, ~</code>. To be able to use character encodings where some or all of these symbols do not exist (such as the German <a href="https://en.wikipedia.org/wiki/DIN_66003" rel="noreferrer" target="_blank">DIN 66003</a>), there are two possibilities: alternative spellings of operators that use these characters or special combinations of two or three ISO 646 compatible characters that are interpreted as if they were a single non-ISO 646 character.</p>
+
+<h2 id="Operator_macros_.28C95.29">Operator macros <span class="std std-since std-c95">(C95)</span></h2>
+
+<p>There are alternative spellings for the operators that use non-ISO646 characters, defined in <strong><code>&lt;iso646.h&gt;</code></strong> as macros:</p>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><p>Defined in header</p>
+
+<code>&lt;iso646.h&gt;</code></td></tr>
+<tr><td>Primary</td><td>Alternative</td></tr>
+<tr><td><code>&amp;&amp;</code></td><td><code>and</code>   <span class="mark-note">(operator macro)</span></td></tr>
+<tr><td><code>&amp;=</code></td><td><code>and_eq</code>   <span class="mark-note">(operator macro)</span></td></tr>
+<tr><td><code>&amp;</code></td><td><code>bitand</code>   <span class="mark-note">(operator macro)</span></td></tr>
+<tr><td><code>|</code></td><td><code>bitor</code>   <span class="mark-note">(operator macro)</span></td></tr>
+<tr><td><code>~</code></td><td><code>compl</code>   <span class="mark-note">(operator macro)</span></td></tr>
+<tr><td><code>!</code></td><td><code>not</code>   <span class="mark-note">(operator macro)</span></td></tr>
+<tr><td><code>!=</code></td><td><code>not_eq</code>   <span class="mark-note">(operator macro)</span></td></tr>
+<tr><td><code>||</code></td><td><code>or</code>   <span class="mark-note">(operator macro)</span></td></tr>
+<tr><td><code>|=</code></td><td><code>or_eq</code>   <span class="mark-note">(operator macro)</span></td></tr>
+<tr><td><code>^</code></td><td><code>xor</code>   <span class="mark-note">(operator macro)</span></td></tr>
+<tr><td><code>^=</code></td><td><code>xor_eq</code>   <span class="mark-note">(operator macro)</span></td></tr>
+</table>
+
+<p>The characters <code>&amp;</code> and <code>!</code> are invariant under ISO-646, but alternatives are provided for the operators that use these characters anyway to accommodate even more restrictive historical charsets.</p>
+
+<p>There is no alternative spelling (such as <code>eq</code>) for the equality operator <code>==</code> because the character <code>=</code> was present in all supported charsets.</p>
+
+<h2 id="Alternative_tokens_.28C95.29">Alternative tokens <span class="std std-since std-c95">(C95)</span></h2>
+
+<p>The following alternative tokens are part of the core language, and, in all respects of the language, each alternative token behaves exactly the same as its primary token, except for its spelling (the <a href="/reference/c/preprocessor/replace/">stringification operator</a> can make the spelling visible). The two-letter alternative tokens are sometimes called "digraphs" (even though it is four letters long <code>%:%:</code> is also considered a digraph).</p>
+
+<table class="ref-table">
+<tr><th>Primary</th><th>Alternative</th></tr>
+<tr><td><code>{</code></td><td><code>&lt;%</code></td></tr>
+<tr><td>}</td><td><code>%&gt;</code></td></tr>
+<tr><td><code>[</code></td><td><code>&lt;:</code></td></tr>
+<tr><td><code>]</code></td><td><code>:&gt;</code></td></tr>
+<tr><td><code>#</code></td><td><code>%:</code></td></tr>
+<tr><td><code>##</code></td><td><code>%:%:</code></td></tr>
+</table>
+
+<h2 id="Trigraphs_.28removed_in_C23.29">Trigraphs <span class="std std-until std-c23">(removed in C23)</span></h2>
+
+<p>The following three-character groups (trigraphs) are <a href="/reference/c/language/translation_phases/">parsed before comments and string literals are recognized</a>, and each appearance of a trigraph is replaced by the corresponding primary character:</p>
+
+<table class="ref-table">
+<tr><th>Primary</th><th>Trigraph</th></tr>
+<tr><td><code>{</code></td><td><code>??&lt;</code></td></tr>
+<tr><td>}</td><td><code>??&gt;</code></td></tr>
+<tr><td><code>[</code></td><td><code>??(</code></td></tr>
+<tr><td><code>]</code></td><td><code>??)</code></td></tr>
+<tr><td><code>#</code></td><td><code>??=</code></td></tr>
+<tr><td><code>\</code></td><td><code>??/</code></td></tr>
+<tr><td><code>^</code></td><td><code>??&#x27;</code></td></tr>
+<tr><td><code>|</code></td><td><code>??!</code></td></tr>
+<tr><td><code>~</code></td><td><code>??-</code></td></tr>
+</table>
+
+<p>Because trigraphs are processed early, a comment such as <code>// Will the next line be executed?????/</code> will effectively comment out the following line, and the string literal such as <code>&quot;What&#x27;s going on??!&quot;</code> is parsed as <code>&quot;What&#x27;s going on|&quot;</code>.</p>
+
+<h3 id="Example">Example</h3>
+
+<p>Demonstrates alternative operator spellings from the <strong><code>&lt;iso646.h&gt;</code></strong> as well as use of digraphs and trigraphs. If command line arguments contain spaces they should be wrapped in the quotation marks, e.g., <code>&quot;Third World!&quot;</code>.</p>
+
+```c
+%:include <stdio.h>
+%:include <stdlib.h>
+??=include <iso646.h>
+ 
+int main(int argc, char** argv)
+??<
+    if (argc > 1 and argv<:1:> not_eq NULL)
+    <%
+       printf("Hello %s??/n", argv<:1:>);
+    %>
+    else
+    <%
+       printf("Hello %s??/n", argc? argv??(42??'42??) : __FILE__);
+    %>
+ 
+    return EXIT_SUCCESS;
+??>
+```
+
+<p>Possible output:</p>
+
+```text
+Hello ./a.out
+```
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/language/operator_alternative" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+Alternative operator representations</td></tr>
+</table>

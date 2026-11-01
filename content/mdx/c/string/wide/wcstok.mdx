@@ -1,0 +1,359 @@
+---
+title: "wcstok, wcstok_s"
+slug: "c/string/wide/wcstok"
+category: "string"
+source: "https://en.cppreference.com/w/c/string/wide/wcstok"
+retrieved: "2025-02-09"
+license: "CC BY-SA 3.0"
+dump: "v20250209"
+---
+
+<p class="decl-header">Defined in header <code>&lt;wchar.h&gt;</code></p>
+
+<p class="decl-note">(1)</p>
+
+```c
+wchar_t* wcstok( wchar_t* str, const wchar_t* delim, wchar_t** ptr );
+```
+
+<p class="decl-note"><span class="std std-since std-c95">(since C95)</span>  <span class="std std-until std-c99">(until C99)</span></p>
+
+```c
+wchar_t* wcstok( wchar_t*  restrict str, const wchar_t* restrict delim,
+                 wchar_t** restrict ptr );
+```
+
+<p class="decl-note"><span class="std std-since std-c99">(since C99)</span></p>
+
+```c
+wchar_t* wcstok_s( wchar_t* restrict str, rsize_t* restrict strmax,
+                   const wchar_t* restrict delim, wchar_t** restrict ptr);
+```
+
+<p class="decl-note">(2) <span class="std std-since std-c11">(since C11)</span></p>
+
+<p class="li-note"><span class="li-num">1)</span>  Finds the next token in a null-terminated wide string pointed to by <code>str</code>. The separator characters are identified by null-terminated wide string pointed to by <code>delim</code>.</p>
+
+<p class="li-note">This function is designed to be called multiples times to obtain successive tokens from the same string.</p>
+
+<dl>
+<dd><ul>
+<li>
+<p>If</p>
+
+<code>str != NULL</code>
+
+<p>, the call is treated as the first call to</p>
+
+<code>wcstok</code>
+
+<p>for this particular wide string. The function searches for the first wide character which is</p>
+
+<em>not</em>
+
+<p>contained in</p>
+
+<code>delim</code>
+
+<p>.</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>If no such wide character was found, there are no tokens in</p>
+
+<code>str</code>
+
+<p>at all, and the function returns a null pointer.</p>
+</li>
+<li>
+<p>If such wide character was found, it is the</p>
+
+<em>beginning of the token</em>
+
+<p>. The function then searches from that point on for the first wide character that</p>
+
+<em>is</em>
+
+<p>contained in</p>
+
+<code>delim</code>
+
+<p>.</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>If no such wide character was found,</p>
+
+<code>str</code>
+
+<p>has only one token, and future calls to</p>
+
+<code>wcstok</code>
+
+<p>will return a null pointer</p>
+</li>
+<li>
+<p>If such wide character was found, it is</p>
+
+<em>replaced</em>
+
+<p>by the null wide character</p>
+
+<code>L&#x27;\0&#x27;</code>
+
+<p>and the parser state (typically a pointer to the following wide character) is stored in the user-provided location</p>
+
+<code>*ptr</code>
+
+<p>.</p>
+</li>
+</ul></dd>
+</dl>
+
+<ul>
+<li>
+<p>The function then returns the pointer to the beginning of the token</p>
+</li>
+</ul></dd>
+</dl>
+
+<ul>
+<li>
+<p>If</p>
+
+<code>str == NULL</code>
+
+<p>, the call is treated as a subsequent call to</p>
+
+<code>wcstok</code>
+
+<p>: the function continues from where it left in the previous invocation with the same</p>
+
+<code>*ptr</code>
+
+<p>. The behavior is the same as if the pointer to the wide character that follows the last detected token is passed as</p>
+
+<code>str</code>
+
+<p>.</p>
+</li>
+</ul></dd>
+</dl>
+
+<div class="li-note"><span class="li-num">2)</span>
+
+<p>Same as</p>
+
+(1)
+
+<p>, except that on every step, writes the number of characters left to see in</p>
+
+<code>str</code>
+
+<p>into</p>
+
+<code>*strmax</code>
+
+<p>. Repeat calls (with null</p>
+
+<code>str</code>
+
+<p>) must pass both</p>
+
+<code>strmax</code>
+
+<p>and</p>
+
+<code>ptr</code>
+
+<p>with the values stored by the previous call. Also, the following errors are detected at runtime and call the currently installed</p>
+
+<a href="/reference/c/error/set_constraint_handler_s/">constraint handler</a>
+
+<p>function, without storing anything in the object pointed to by</p>
+
+<code>ptr</code>
+
+<dl>
+<dd><ul>
+<li>
+<code>strmax</code>
+
+<p>,</p>
+
+<code>delim</code>
+
+<p>, or</p>
+
+<code>ptr</code>
+
+<p>is a null pointer</p>
+</li>
+<li>
+<p>on a non-initial call (with null</p>
+
+<code>str</code>
+
+<p>),</p>
+
+<code>*ptr</code>
+
+<p>is a null pointer</p>
+</li>
+<li>
+<p>on the first call,</p>
+
+<code>*strmax</code>
+
+<p>is zero or greater than</p>
+
+<code>RSIZE_MAX / sizeof(wchar_t)</code>
+</li>
+<li>
+<p>search for the end of a token reaches the end of the source string (as measured by the initial value of</p>
+
+<code>*strmax</code>
+
+<p>) without encountering the null terminator</p>
+</li>
+</ul></dd>
+<dd><p>As all bounds-checked functions,</p>
+
+<code>wcstok_s</code>
+
+<p>is only guaranteed to be available if</p>
+
+<code>__STDC_LIB_EXT1__</code>
+
+<p>is defined by the implementation and if the user defines</p>
+
+<code>__STDC_WANT_LIB_EXT1__</code>
+
+<p>to the integer constant</p>
+
+<code>1</code>
+
+<p>before including</p>
+
+<a href="/reference/c/string/wide/"><code>&lt;wchar.h&gt;</code></a>
+
+<p>.</p></dd>
+</dl></div>
+
+<h3 id="Parameters">Parameters</h3>
+
+<table class="ref-table ref-params">
+<tr><td>str</td><td>-</td><td>pointer to the null-terminated wide string to tokenize</td></tr>
+<tr><td>delim</td><td>-</td><td>pointer to the null-terminated wide string identifying delimiters</td></tr>
+<tr><td>ptr</td><td>-</td><td>pointer to an object of type <code>wchar_t*</code>, which is used by both <code>wcstok</code> and <code>wcstok_s</code> to store the internal state of the parser</td></tr>
+<tr><td>strmax</td><td>-</td><td>pointer to an object which initially holds the size of <code>str</code>: wcstok_s stores the number of characters that remain to be examined</td></tr>
+</table>
+
+<h3 id="Return_value">Return value</h3>
+
+<p>Returns pointer to the beginning of the next token or null pointer if there are no more tokens.</p>
+
+<h3 id="Note">Note</h3>
+
+<p>This function is destructive: it writes the <code>L&#x27;\0&#x27;</code> characters in the elements of the string <code>str</code>. In particular, a wide string literal cannot be used as the first argument of <code>wcstok</code>.</p>
+
+<p>Unlike <a href="/reference/c/string/byte/strtok/">strtok</a>, <code>wcstok</code> does not update static storage: it stores the parser state in the user-provided location.</p>
+
+<p>Unlike most other tokenizers, the delimiters in <code>wcstok</code> can be different for each subsequent token, and can even depend on the contents of the previous tokens.</p>
+
+<p>The implementation of <code>wcstok_s</code> in the <a href="https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/strtok-s-strtok-s-l-wcstok-s-wcstok-s-l-mbstok-s-mbstok-s-l" rel="noreferrer" target="_blank">Windows CRT</a> is incompatible with the C standard, it is merely an alias for <code>wcstok</code>.</p>
+
+<h3 id="Example">Example</h3>
+
+```c
+#include <stdio.h>
+#include <wchar.h>
+ 
+int main(void)
+{
+    wchar_t input[] = L"A bird came down the walk";
+    printf("Parsing the input string '%ls'\n", input);
+    wchar_t* buffer;
+    wchar_t* token = wcstok(input, L" ", &buffer);
+    while (token)
+    {
+        printf("%ls\n", token);
+        token = wcstok(NULL, L" ", &buffer);
+    }
+ 
+    printf("Contents of the input string now: '");
+    for (size_t n = 0; n < sizeof input / sizeof *input; ++n)
+        input[n] ? printf("%lc", input[n]) : printf("\\0");
+    puts("'");
+}
+```
+
+<p>Output:</p>
+
+```text
+Parsing the input string 'A bird came down the walk'
+A
+bird
+came
+down
+the
+walk
+Contents of the input string now: 'A\0bird\0came\0down\0the\0walk\0'
+```
+
+<h3 id="References">References</h3>
+
+<section class="std-ref std-ref-11"><ul>
+<li>
+<p>C11 standard (ISO/IEC 9899:2011):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.29.4.5.7 The wcstok function (p: 437-438)</p>
+</li>
+</ul></dd>
+</dl>
+
+<dl>
+<dd><ul>
+<li>
+<p>K.3.9.2.3.1 The wcstok_s function (p: 645-646)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<section class="std-ref std-ref-c99"><ul>
+<li>
+<p>C99 standard (ISO/IEC 9899:1999):</p>
+</li>
+</ul>
+
+<dl>
+<dd><ul>
+<li>
+<p>7.24.4.5.7 The wcstok function (p: 383-384)</p>
+</li>
+</ul></dd>
+</dl></section>
+
+<h3 id="See_also">See also</h3>
+
+<table class="ref-table ref-dsc">
+<tr><td><a href="/reference/c/string/byte/strtok/">strtok<br />strtok_s</a>
+
+<span class="std std-since std-c11">(C11)</span></td><td>finds the next token in a byte string   <span class="mark-note">(function)</span></td></tr>
+<tr><td colspan="2"><a href="https://en.cppreference.com/w/cpp/string/wide/wcstok" rel="noreferrer" target="_blank">C++ documentation</a>
+
+<p>for</p>
+
+wcstok</td></tr>
+</table>
